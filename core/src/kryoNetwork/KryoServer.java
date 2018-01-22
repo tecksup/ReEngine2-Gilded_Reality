@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.esotericsoftware.kryonet.*;
 import com.thecubecast.ReEngine.Data.Common;
+import com.thecubecast.ReEngine.Data.ServerTmxMapLoader;
 
 
 public class KryoServer {
@@ -19,7 +20,7 @@ public class KryoServer {
 		final List<User> Users = new ArrayList<User>();
 		final List<Integer> Admins = new ArrayList<Integer>();
 		
-		TiledMap tiledMap = new AtlasTmxMapLoader().load("Saves/Save1/map.tmx");
+		TiledMap tiledMap = new ServerTmxMapLoader().load("Saves/Save1/map.tmx");
 		
 		final Server server = new Server();
 		
