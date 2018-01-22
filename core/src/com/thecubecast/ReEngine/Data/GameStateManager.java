@@ -6,13 +6,7 @@
 
 package com.thecubecast.ReEngine.Data;
 
-import com.thecubecast.ReEngine.GameStates.LoadingState;
-import com.thecubecast.ReEngine.GameStates.GameState;
-import com.thecubecast.ReEngine.GameStates.IntroState;
-import com.thecubecast.ReEngine.GameStates.MainMenuState;
-import com.thecubecast.ReEngine.GameStates.PlayState;
-import com.thecubecast.ReEngine.GameStates.TestState;
-import com.thecubecast.ReEngine.GameStates.MultiplayerTestState;
+import com.thecubecast.ReEngine.GameStates.*;
 import com.thecubecast.ReEngine.Graphics.Draw;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -105,7 +99,7 @@ public class GameStateManager {
 		}
 		else if(i == PLAY) {
 			Common.print("Loaded state PLAY");
-			gameStates[i] = new PlayState(this);
+			gameStates[i] = new TestState2(this);
 			gameStates[i].init();
 		}
 		

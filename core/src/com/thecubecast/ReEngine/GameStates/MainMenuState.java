@@ -183,6 +183,18 @@ public class MainMenuState extends GameState {
                 button1.setText("Loading");
             }
         });
+
+		button3.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y){
+				//gsm.Audio.stopMusic("8-bit-Digger");
+				//GetLogin("", "");
+				gsm.Username = text1.getText();
+				gsm.IpAdress = text2.getText();
+				gsm.setState(gsm.PLAY);
+				button1.setText("Loading");
+			}
+		});
 		
 		text1.addListener(new InputListener() {
 			public boolean keyUp(InputEvent event, int keycode) {

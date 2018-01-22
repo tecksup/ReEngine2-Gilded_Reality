@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.esotericsoftware.kryonet.*;
-import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.ServerTmxMapLoader;
 
 
@@ -20,7 +18,7 @@ public class KryoServer {
 		final List<User> Users = new ArrayList<User>();
 		final List<Integer> Admins = new ArrayList<Integer>();
 		
-		TiledMap tiledMap = new ServerTmxMapLoader().load("Saves/Save1/map.tmx");
+		final TiledMap tiledMap = new ServerTmxMapLoader().load("Saves/Save1/map.tmx");
 		
 		final Server server = new Server();
 		
@@ -163,7 +161,7 @@ public class KryoServer {
 				if (Users.get(i).ID == connection.hashCode()) {
 					ServerSide send = new ServerSide();
 					send.text = Users.get(i).username + ": " + text;
-					server.sendToAllExceptTCP(connection.getID(), send);
+					server.sendToAllTCP(connection.getID());
 					break;
 				}
 			}
