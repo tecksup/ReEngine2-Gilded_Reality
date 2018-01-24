@@ -2,11 +2,13 @@
 
 package com.thecubecast.ReEngine.GameStates;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -19,6 +21,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.Input.Keys;
@@ -167,7 +171,23 @@ public class MainMenuState extends GameState {
 		final TextButton button1 = new TextButton("Start", skin);
 		table.add(button1).pad(12);
 		table.row();
-		
+
+		final TextButton Discord = new TextButton("Discord", skin);
+		table.add(Discord).pad(12);
+		table.row();
+
+		Discord.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y){
+				try {
+					java.awt.Desktop.getDesktop().browse(new URI ("https://discord.gg/xaktmEZ"));
+					Common.print("Opened Discord Link!");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
 		final TextButton button3 = new TextButton("Quit", skin);
 		table.add(button3);
 		table.row();
@@ -189,10 +209,8 @@ public class MainMenuState extends GameState {
 			public void clicked(InputEvent event, float x, float y){
 				//gsm.Audio.stopMusic("8-bit-Digger");
 				//GetLogin("", "");
-				gsm.Username = text1.getText();
-				gsm.IpAdress = text2.getText();
-				gsm.setState(gsm.PLAY);
 				button1.setText("Loading");
+				Common.ProperShutdown();
 			}
 		});
 		

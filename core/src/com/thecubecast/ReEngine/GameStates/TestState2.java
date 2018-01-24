@@ -179,7 +179,7 @@ public class TestState2 extends GameState {
 
         Vector2 Location = new Vector2(network.GetClient().x, network.GetClient().y);
 
-        Vector2 centerd = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        Vector2 center = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         Vector2 MousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
 
         float angle = Common.GetAngle(center, MousePos);

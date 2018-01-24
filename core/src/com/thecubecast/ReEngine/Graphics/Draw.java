@@ -1,6 +1,7 @@
 package com.thecubecast.ReEngine.Graphics;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -19,7 +20,9 @@ import java.io.File;
 import java.util.List;
 
 public class Draw {
-	
+
+	public AssetManager manager = new AssetManager();
+
 	//Animation Variables
 	public Animation<TextureRegion> LoadingAnimation; // Must declare frame type (TextureRegion)
 	Texture LoadingSheet;
@@ -29,8 +32,8 @@ public class Draw {
 	
 	//Always set to 1 above the number of spites in file
 	public Texture[] Tiles = new Texture[74];
-	public Texture[] GUI = new Texture[26];
-	public Texture[] Images = new Texture[5];
+	public Texture[] GUI = new Texture[25];
+	public Texture[] Images = new Texture[4];
 	
 	BitmapFont font = new BitmapFont();
 	
@@ -47,16 +50,16 @@ public class Draw {
 		for(int i=0; i < Tiles.length; ++i){
 			if (i >= 10) {
 				try {
-					Common.print("Loaded images /Sprites/"+ Integer.toString(i) +".png");
-					Tiles[i] = new Texture("Sprites/megaminer_"+ Integer.toString(i) +".png");
+					manager.load("Sprites/megaminer_"+ Integer.toString(i) +".png", Texture.class);
+					Tiles[i] = manager.get("Sprites/megaminer_"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
 				}
 			} else {
 				try {
-					Common.print("Loaded images /Sprites/0"+ Integer.toString(i) +".png");
-					Tiles[i] = new Texture("Sprites/megaminer_0"+ Integer.toString(i) +".png");
+					manager.load("Sprites/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
+					Tiles[i] = manager.get("Sprites/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
@@ -66,16 +69,16 @@ public class Draw {
 		for(int i=0; i < Images.length; ++i){
 			if (i >= 10) {
 				try {
-					Common.print("Loaded images /Images/"+ Integer.toString(i) +".png");
-					Images[i] = new Texture("Images/image_"+ Integer.toString(i) +".png");
+					manager.load("Images/image_"+ Integer.toString(i) +".png", Texture.class);
+					Images[i] = manager.get("Images/image_"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
 				}
 			} else {
 				try {
-					Common.print("Loaded images /Images/0"+ Integer.toString(i) +".png");
-					Images[i] = new Texture("Images/image_0"+ Integer.toString(i) +".png");
+					manager.load("Images/image_0"+ Integer.toString(i) +".png", Texture.class);
+					Images[i] = manager.get("Images/image_0"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
@@ -85,16 +88,16 @@ public class Draw {
 		for(int i=0; i < GUI.length; ++i){
 			if (i >= 10) {
 				try {
-					Common.print("Loaded GUI images Sprites/GUI/GUI_"+ Integer.toString(i) +".png");
-					GUI[i] = new Texture("Sprites/GUI/GUI_"+ Integer.toString(i) +".png");
+					manager.load("Sprites/GUI/GUI_"+ Integer.toString(i) +".png", Texture.class);
+					GUI[i] = manager.get("Sprites/GUI/GUI_"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
 				}
 			} else {
 				try {
-					Common.print("Loaded GUI images Sprites/GUI/GUI_0"+ Integer.toString(i) +".png");
-					GUI[i] = new Texture("Sprites/GUI/GUI_0"+ Integer.toString(i) +".png");
+					manager.load("Sprites/GUI/GUI_0"+ Integer.toString(i) +".png", Texture.class);
+					GUI[i] = manager.get("Sprites/GUI/GUI_0"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
@@ -111,7 +114,77 @@ public class Draw {
 			//e.printStackTrace();
 		}
 	}
-	
+
+	public void LoadVariables() {
+		//The loops bellow grab the tiles and add them to the variable
+		for(int i=0; i < Tiles.length; ++i){
+			if (i >= 10) {
+				try {
+					Common.print("Loaded images /Sprites/"+ Integer.toString(i) +".png");
+					Tiles[i] = manager.get("Sprites/megaminer_"+ Integer.toString(i) +".png", Texture.class);
+				}
+				catch(Exception e) {
+					//e.printStackTrace();
+				}
+			} else {
+				try {
+					Common.print("Loaded images /Sprites/0"+ Integer.toString(i) +".png");
+					Tiles[i] = manager.get("Sprites/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
+				}
+				catch(Exception e) {
+					//e.printStackTrace();
+				}
+			}
+		}
+		for(int i=0; i < Images.length; ++i){
+			if (i >= 10) {
+				try {
+					Common.print("Loaded images /Images/"+ Integer.toString(i) +".png");
+					Images[i] = manager.get("Images/image_"+ Integer.toString(i) +".png", Texture.class);
+				}
+				catch(Exception e) {
+					//e.printStackTrace();
+				}
+			} else {
+				try {
+					Common.print("Loaded images /Images/0"+ Integer.toString(i) +".png");
+					Images[i] = manager.get("Images/image_0"+ Integer.toString(i) +".png", Texture.class);
+				}
+				catch(Exception e) {
+					//e.printStackTrace();
+				}
+			}
+		}
+		for(int i=0; i < GUI.length; ++i){
+			if (i >= 10) {
+				try {
+					Common.print("Loaded GUI images Sprites/GUI/GUI_"+ Integer.toString(i) +".png");
+					GUI[i] = manager.get("Sprites/GUI/GUI_"+ Integer.toString(i) +".png", Texture.class);
+				}
+				catch(Exception e) {
+					//e.printStackTrace();
+				}
+			} else {
+				try {
+					Common.print("Loaded GUI images Sprites/GUI/GUI_0"+ Integer.toString(i) +".png");
+					GUI[i] = manager.get("Sprites/GUI/GUI_0"+ Integer.toString(i) +".png", Texture.class);
+				}
+				catch(Exception e) {
+					//e.printStackTrace();
+				}
+			}
+		}
+
+		try {
+			GraphicsEnvironment ge =
+					GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Munro.ttf")));
+		}
+		catch(Exception e) {
+			//e.printStackTrace();
+		}
+	}
+
 	private TextureRegion[] loadAnim(Texture TexSheet, String FileLocation, int Cols, int Rows) {
 		// Load the sprite sheet as a Texture
 		TexSheet = new Texture(Gdx.files.internal(FileLocation));
@@ -399,7 +472,7 @@ public class Draw {
 		return SliderValuetemp;
 	}
 	
-	private static ShapeRenderer debugRenderer = new ShapeRenderer();
+	public static ShapeRenderer debugRenderer = new ShapeRenderer();
 
     public void DrawDebugLine(Vector2 start, Vector2 end, int lineWidth, Color color, Matrix4 projectionMatrix)
     {

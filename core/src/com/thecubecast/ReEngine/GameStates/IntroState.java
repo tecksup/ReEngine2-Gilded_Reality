@@ -6,6 +6,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 
@@ -29,8 +34,10 @@ public class IntroState extends GameState {
 	public void init() {
 		//JukeBox.load("/Music/bgmusic.wav", "LogoSound");
 		//JukeBox.play("LogoSound");
+
+
 	}
-	
+
 	public void update() {
 		handleInput();
 		ticks++;
@@ -53,7 +60,7 @@ public class IntroState extends GameState {
 		Gdx.gl.glClearColor(255f, 255f, 255f, 1);
 		
 		
-		gsm.Render.DrawSplash(g, 00, width/2, height/2, 0.1f, 0.1f, true);
+		gsm.Render.DrawSplash(g, 00, width/2, height/2, 0.4f, 0.4f, true);
 		g.end();
 	}
 	
