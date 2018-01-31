@@ -20,11 +20,12 @@
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-controllers-gwt:sources:1.9.6" level="project" />
     <orderEntry type="library" name="Gradle: kryonet:kryonet:2.21" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.6" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.gwt:gwt-servlet:2.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.esotericsoftware.kryo:kryo:2.24.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.gwt:gwt-servlet:2.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-box2d:1.9.6" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-tools:1.9.6" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-ai:1.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.MinnDevelopment:Java-DiscordRPC:-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: com.google.gwt:gwt-user:2.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.esotericsoftware.reflectasm:reflectasm:shaded:1.07" level="project" />
     <orderEntry type="library" name="Gradle: com.esotericsoftware.minlog:minlog:1.2" level="project" />
@@ -33,6 +34,8 @@
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-backend-headless:1.9.6" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-freetype:1.9.6" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.6" level="project" />
+    <orderEntry type="library" name="Gradle: net.java.dev.jna:jna:4.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.MinnDevelopment:discord-rpc-release:v2.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.jsinterop:jsinterop-annotations:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.jsinterop:jsinterop-annotations:sources:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: javax.validation:validation-api:1.0.0.GA" level="project" />

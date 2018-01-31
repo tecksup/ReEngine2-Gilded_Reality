@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.MinnDevelopment:Java-DiscordRPC:-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.MinnDevelopment/Java-DiscordRPC/-SNAPSHOT/ea8fdcb527b58f85cbbe80868e259ad5d099279/Java-DiscordRPC--SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.MinnDevelopment/Java-DiscordRPC/-SNAPSHOT/5c6a025c3282243de827cd1948ae6d85d3bb1d1e/Java-DiscordRPC--SNAPSHOT-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.MinnDevelopment/Java-DiscordRPC/-SNAPSHOT/444bbb21f79228155957473a3e8be6fce0b56bc9/Java-DiscordRPC--SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

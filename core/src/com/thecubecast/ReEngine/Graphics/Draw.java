@@ -17,6 +17,10 @@ import com.thecubecast.ReEngine.Data.GameStateManager;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class Draw {
@@ -31,9 +35,9 @@ public class Draw {
 	Texture StarsSheet;
 	
 	//Always set to 1 above the number of spites in file
-	public Texture[] Tiles = new Texture[74];
-	public Texture[] GUI = new Texture[25];
-	public Texture[] Images = new Texture[4];
+	public Texture[] Tiles;
+	public Texture[] GUI;
+	public Texture[] Images;
 	
 	BitmapFont font = new BitmapFont();
 	
@@ -47,19 +51,34 @@ public class Draw {
 	
 	public void Load() {
 		//The loops bellow grab the tiles and add them to the variable
+
+		Path SpritesPath = Paths.get("Sprites/oldTiles");
+		Path GuiPath = Paths.get("Sprites/GUI");
+		Path ImagePath = Paths.get("Images");
+
+		try {
+			Tiles = new Texture[(int) Files.list(SpritesPath).count()];
+			GUI = new Texture[(int) Files.list(GuiPath).count()];
+			Images = new Texture[(int) Files.list(ImagePath).count()];
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		for(int i=0; i < Tiles.length; ++i){
 			if (i >= 10) {
 				try {
-					manager.load("Sprites/megaminer_"+ Integer.toString(i) +".png", Texture.class);
-					Tiles[i] = manager.get("Sprites/megaminer_"+ Integer.toString(i) +".png", Texture.class);
+					Common.print("Loaded images /Sprites/"+ Integer.toString(i) +".png");
+					manager.load(SpritesPath + "/megaminer_"+ Integer.toString(i) +".png", Texture.class);
+					Tiles[i] = manager.get(SpritesPath + "/megaminer_"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
 				}
 			} else {
 				try {
-					manager.load("Sprites/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
-					Tiles[i] = manager.get("Sprites/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
+
+					manager.load(SpritesPath + "/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
+					Tiles[i] = manager.get(SpritesPath + "/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
@@ -69,16 +88,16 @@ public class Draw {
 		for(int i=0; i < Images.length; ++i){
 			if (i >= 10) {
 				try {
-					manager.load("Images/image_"+ Integer.toString(i) +".png", Texture.class);
-					Images[i] = manager.get("Images/image_"+ Integer.toString(i) +".png", Texture.class);
+					manager.load(ImagePath + "/image_"+ Integer.toString(i) +".png", Texture.class);
+					Images[i] = manager.get(ImagePath + "/image_"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
 				}
 			} else {
 				try {
-					manager.load("Images/image_0"+ Integer.toString(i) +".png", Texture.class);
-					Images[i] = manager.get("Images/image_0"+ Integer.toString(i) +".png", Texture.class);
+					manager.load(ImagePath + "/image_0"+ Integer.toString(i) +".png", Texture.class);
+					Images[i] = manager.get(ImagePath + "/image_0"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
@@ -88,16 +107,16 @@ public class Draw {
 		for(int i=0; i < GUI.length; ++i){
 			if (i >= 10) {
 				try {
-					manager.load("Sprites/GUI/GUI_"+ Integer.toString(i) +".png", Texture.class);
-					GUI[i] = manager.get("Sprites/GUI/GUI_"+ Integer.toString(i) +".png", Texture.class);
+					manager.load(GuiPath + "/GUI_"+ Integer.toString(i) +".png", Texture.class);
+					GUI[i] = manager.get(GuiPath + "/GUI_"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
 				}
 			} else {
 				try {
-					manager.load("Sprites/GUI/GUI_0"+ Integer.toString(i) +".png", Texture.class);
-					GUI[i] = manager.get("Sprites/GUI/GUI_0"+ Integer.toString(i) +".png", Texture.class);
+					manager.load(GuiPath + "/GUI_0"+ Integer.toString(i) +".png", Texture.class);
+					GUI[i] = manager.get(GuiPath + "/GUI_0"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
@@ -309,12 +328,12 @@ public class Draw {
 	//The GUI or Menu would go here.
 	public void GUIDeco(SpriteBatch buffer, int PosX, int PosY, String Text) {
 		buffer.draw(GUI[00], PosX, PosY);
-		buffer.draw(GUI[01], PosX + Tiles[59].getWidth(), PosY);
-		buffer.draw(GUI[01], PosX + (Tiles[59].getWidth()*2), PosY);
-		buffer.draw(GUI[01], PosX + (Tiles[59].getWidth()*3), PosY);
-		buffer.draw(GUI[01], PosX + (Tiles[59].getWidth()*4), PosY);
-		buffer.draw(GUI[02], PosX + (Tiles[59].getWidth()*5), PosY);
-		font.draw(buffer, "testing GUI - " + Text, PosX + Tiles[59].getWidth(), PosY + (Tiles[59].getHeight()/2));
+		buffer.draw(GUI[01], PosX + GUI[00].getWidth(), PosY);
+		buffer.draw(GUI[01], PosX + (GUI[00].getWidth()*2), PosY);
+		buffer.draw(GUI[01], PosX + (GUI[00].getWidth()*3), PosY);
+		buffer.draw(GUI[01], PosX + (GUI[00].getWidth()*4), PosY);
+		buffer.draw(GUI[02], PosX + (GUI[00].getWidth()*5), PosY);
+		font.draw(buffer, "testing GUI - " + Text, PosX + GUI[00].getWidth(), PosY + (GUI[00].getHeight()/2));
 	}
 	
 	public int[] GUIButton(SpriteBatch buffer, int PosX, int PosY, int length, boolean center, String text) {

@@ -6,6 +6,9 @@
 
 package com.thecubecast.ReEngine.Data;
 
+import club.minnced.discord.rpc.DiscordEventHandlers;
+import club.minnced.discord.rpc.DiscordRPC;
+import club.minnced.discord.rpc.DiscordRichPresence;
 import com.thecubecast.ReEngine.GameStates.*;
 import com.thecubecast.ReEngine.Graphics.Draw;
 import com.badlogic.gdx.Gdx;
@@ -15,7 +18,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.thecubecast.ReEngine.Data.Common;
 
 public class GameStateManager {
-	
+
 	public GameState[] gameStates;
 	public int currentState;
 	private int previousState;
@@ -34,7 +37,9 @@ public class GameStateManager {
 	
 	//Public Audio handler
 	public SoundManager Audio;
-	
+
+	public Discord DiscordManager;
+
 	//MousePos
 	public int MouseX;
 	public int MouseY;
@@ -57,8 +62,8 @@ public class GameStateManager {
 	public static final int MultiplayerTestState = 6;
 	
 	public GameStateManager() {
-		
-		//JukeBox.init();
+
+		DiscordManager = new Discord("405784101245943810");
 
 		Render = new Draw();
 		Audio = new SoundManager();
@@ -140,6 +145,8 @@ public class GameStateManager {
 		//MouseClick[0] = 0;
 		
 		Audio.update();
+
+		DiscordManager.UpdatePresence();
 	}
 	
 	public void draw(SpriteBatch bbg, int W, int H, float Time) {
@@ -158,5 +165,9 @@ public class GameStateManager {
 		Matrix4 matrix = new Matrix4();
 		matrix.setToOrtho2D(0, 0, W, H);
 		bbg.setProjectionMatrix(matrix);
+	}
+
+	public void dispose() {
+		DiscordManager.dispose();
 	}
 }

@@ -1,16 +1,24 @@
 package com.thecubecast.ReEngine;
 
+import club.minnced.discord.rpc.DiscordEventHandlers;
+import club.minnced.discord.rpc.DiscordRPC;
+import club.minnced.discord.rpc.DiscordRichPresence;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.Common;
+import com.thecubecast.ReEngine.Data.GameStateManager;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 public class mainclass extends ApplicationAdapter implements InputProcessor{
 	
@@ -31,11 +39,9 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	// A variable for tracking elapsed time for the animation
 	float stateTime;
 	
-	
-	
 	@Override
 	public void create () { // INIT FUNCTION
-		
+
 		Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("cursor0.png")), 0, 0);
 		Gdx.graphics.setCursor(customCursor);
 		
@@ -46,7 +52,7 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		//Just setting up the variables
 		W = Gdx.graphics.getWidth();
 		H = Gdx.graphics.getHeight();
-		
+
 		//This is essentially the graphics object we draw too
 		batch = new SpriteBatch();
 		
@@ -117,7 +123,8 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	@Override
 	public void dispose () { //SHUTDOWN FUNCTION
 		batch.dispose();
-		
+		gsm.dispose();
+		//Common.ProperShutdown();
 		//Cleanup(); SaveAll();
 	}
 

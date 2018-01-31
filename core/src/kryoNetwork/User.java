@@ -10,4 +10,8 @@ package kryoNetwork;
     public float angle = 0;
     
     public String text = "___"; // This can be utilized to send commands or chat through the server
+
+     public String toString() {
+         return "User [ " + username + ", " + ID + ", " + x + ", " + y + ", " + angle + "]";
+     }
  }

@@ -14,6 +14,9 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Window;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -47,7 +50,9 @@ public class MainMenuState extends GameState {
 	}
 	
 	public void init() {
-		
+
+		gsm.DiscordManager.setPresenceState("In Menus");
+
 		MenuInit();
 		
 		cameraGui = new OrthographicCamera();
@@ -129,7 +134,7 @@ public class MainMenuState extends GameState {
 		OldState = currentState;
 		currentState = state;
 	}
-	
+
 	public void setupSkin() {
 		 skin = new Skin(Gdx.files.internal("Skins/flat-earth/skin/flat-earth-ui.json"));
 	}
@@ -209,11 +214,14 @@ public class MainMenuState extends GameState {
 			public void clicked(InputEvent event, float x, float y){
 				//gsm.Audio.stopMusic("8-bit-Digger");
 				//GetLogin("", "");
-				button1.setText("Loading");
-				Common.ProperShutdown();
+
+				Lwjgl3Window window = ((Lwjgl3Graphics)Gdx.graphics).getWindow();
+				window.iconifyWindow(); // iconify the window
+
+				//Common.ProperShutdown();
 			}
 		});
-		
+
 		text1.addListener(new InputListener() {
 			public boolean keyUp(InputEvent event, int keycode) {
 	                Common.print("typed started at" + keycode);

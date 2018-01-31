@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -28,12 +28,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.thecubecast.ReEngine.Data.Achievement;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
+import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
 import kryoNetwork.KryoClient;
 
 import com.thecubecast.ReEngine.Data.KeysDown;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 
 public class MultiplayerTestState extends GameState {
 
@@ -47,19 +51,18 @@ public class MultiplayerTestState extends GameState {
     private long last_time;
     private int deltaTime;
 
-    private Rectangle Collision = new Rectangle(5, 5, gsm.Render.Tiles.length, gsm.Render.Tiles.length);
+    private List<Rectangle> Collisions = new ArrayList<Rectangle>();
 
     TiledMap tiledMap;
+    BitwiseTiles tiledBits;
     TiledMapRenderer tiledMapRenderer;
 
     OrthographicCamera camera;
+    ShaderProgram shaderProgram;
     SpriteBatch guiBatch;
 
     ParticleEffect pe;
     Body body;
-
-    World world;
-    Box2DDebugRenderer debugRenderer;
 
     private List<Achievement> Achievements = new ArrayList<Achievement>();
 
@@ -75,6 +78,11 @@ public class MultiplayerTestState extends GameState {
 
     public void init() {
 
+        gsm.DiscordManager.setPresenceDetails("Multiplayer Demo - Level 1");
+        gsm.DiscordManager.setPresenceState("In Game");
+        gsm.DiscordManager.getPresence().largeImageText = "Level 1";
+        gsm.DiscordManager.getPresence().startTimestamp = System.currentTimeMillis() / 1000;;
+
         //SETUP NETWORK CONNECTION
         try {
             network = new KryoClient(gsm.Username, gsm.IpAdress, 54555, 54777);
@@ -87,10 +95,19 @@ public class MultiplayerTestState extends GameState {
 
 
         //SETUP TILEDMAP
-        tiledMap = new AtlasTmxMapLoader().load("Saves/Save1/map.tmx");
+        tiledMap = new TmxMapLoader().load("Saves/BITWISE/map.tmx");
+        tiledBits = new BitwiseTiles(tiledMap);
+
         if (tiledMap.hashCode() != network.GetTiledMap())
             Common.print("Does not match!");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap , 5f);
+
+//        for(int i = 0; i < tiledMap.getLayers().get("Walls").getObjects().getCount(); i++) {
+//            //tiledMap.getLayers().get("Walls").getObjects().
+//            Collisions.add(new Rectangle(2, 2, 2, 2));
+//        }
+
+        Collisions.add(new Rectangle(2, 2, 2, 2));
+        Collisions.add(new Rectangle(4, 7, 1, 4));
 
         //gsm.Audio.playMusic("Rain", true);
 
@@ -98,14 +115,15 @@ public class MultiplayerTestState extends GameState {
         //SETUP CAMERA SPRITEBATCH AND MENU
         guiBatch = new SpriteBatch();
 
+        //ShaderInit(guiBatch);
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        camera.position.set((network.GetClient().x*80)+40, (network.GetClient().y*80)+40, camera.position.z);
+        camera.position.set((network.GetClient().x*64), (network.GetClient().y*64), camera.position.z);
         position = camera.position;
 
-        last_time = System.nanoTime();
-
+        //Setup Network
         network.Update();
 
         MenuInit();
@@ -113,6 +131,10 @@ public class MultiplayerTestState extends GameState {
         //SETUP SCENE2D INPUT
         Gdx.input.setInputProcessor(stage);
 
+        //Setup the Shaders
+        String vertexShader = Gdx.files.internal("testShader/vertex.glsl").readString();
+        String fragmentShader = Gdx.files.internal("testShader/fragment.glsl").readString();
+        shaderProgram = new ShaderProgram(vertexShader,fragmentShader);
 
         //SETUP THE PARTICLES
         pe = new ParticleEffect();
@@ -120,13 +142,9 @@ public class MultiplayerTestState extends GameState {
         pe.getEmitters().first().setPosition(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         pe.start();
 
-        //SETUP BOX2D
-        Box2DInit();
-
     }
 
     public void update() {
-        Box2DUpdate();
         handleInput();
 
         long time = System.nanoTime();
@@ -144,50 +162,6 @@ public class MultiplayerTestState extends GameState {
         network.Update();
     }
 
-    private void handleInput() {
-
-        Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
-        camera.unproject(pos);
-
-        gsm.MouseX = (int) pos.x;
-        gsm.MouseY = (int) pos.y;
-        gsm.MouseClick[1] = (int) pos.x;
-        gsm.MouseClick[2] = (int) pos.y;
-        gsm.MouseDrag[1] = (int) pos.x;
-        gsm.MouseDrag[2] = (int) pos.y;
-
-        Vector2 Location = new Vector2(network.GetClient().x, network.GetClient().y);
-
-        Vector2 center = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        Vector2 MousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-
-        float angle = Common.GetAngle(center, MousePos);
-
-        //Common.print("Angle: " + Location.angle(MousePos));
-        //Common.print("Start: " + Location + " Mouse: " + MousePos);
-
-        if (Gdx.input.isKeyPressed(Keys.W)) { //KeyHit
-            move(new Vector2(0, 1), Location);
-            //Location.y += 1;
-        }
-        if (Gdx.input.isKeyPressed(Keys.S)) { //KeyHit
-            move(new Vector2(0, -1), Location);
-          //  Location.y -= 1;
-        }
-        if (Gdx.input.isKeyPressed(Keys.A)) { //KeyHit
-            move(new Vector2(-1, 0), Location);
-           // Location.x -= 1;
-        }
-        if (Gdx.input.isKeyPressed(Keys.D)) { //KeyHit
-            move(new Vector2(1, 0), Location);
-           // Location.x += 1;
-        }
-
-        network.updateClientPos(Location, angle);
-        //camera.position.set((network.GetClient().x*40)+40, (network.GetClient().y*40)+40, camera.position.z);
-        FollowCam(camera, Common.roundDown(Location.x), Common.roundDown(Location.y), 0.01f);
-    }
-
     public void draw(SpriteBatch g, int width, int height, float Time) {
         Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
         RenderCam();
@@ -195,25 +169,27 @@ public class MultiplayerTestState extends GameState {
         g.begin();
         g.setProjectionMatrix(camera.combined);
 
-        //gsm.Render.DrawAny(g, tile, "Tiles", Common.roundDown((player.getLocation()[0]+1*80)),  Common.roundDown((player.getLocation()[1]*80)));
-        //gsm.Render.GUIDrawText(g, Common.roundDown((player.getLocation()[0]+1*80)),  Common.roundDown((player.getLocation()[1]*80)-40), "" + tile);
+        tiledBits.draw(g, 64);
+
+        //gsm.Render.DrawAny(g, tile, "Tiles", Common.roundDown((player.getLocation()[0]+1*64)),  Common.roundDown((player.getLocation()[1]*64)));
+        //gsm.Render.GUIDrawText(g, Common.roundDown((player.getLocation()[0]+1*64)),  Common.roundDown((player.getLocation()[1]*64)-40), "" + tile);
         //g.draw(gsm.Render.Images[03], 0, 0, width, height);
 
         if (network.GetUsers().size() != 0) {
             for(int l=0; l< network.GetUsers().size(); l++){
-                gsm.Render.GUIDrawText(g, Common.roundDown((network.GetUsers().get(l).x*80)), Common.roundDown((network.GetUsers().get(l).y*80)), Color.BLACK, network.GetUsers().get(l).username);
-                g.draw(gsm.Render.GUI[24], network.GetUsers().get(l).x*40,	network.GetUsers().get(l).y*40,	gsm.Render.Tiles[59].getWidth()/2, gsm.Render.Tiles[59].getWidth()/2, (gsm.Render.Tiles[59].getWidth()), (gsm.Render.Tiles[59].getWidth()), 1, 1, network.GetUsers().get(l).angle, 0, 0, (gsm.Render.Tiles[59].getWidth()), (gsm.Render.Tiles[59].getWidth()), false, false);
+                gsm.Render.GUIDrawText(g, Common.roundDown((network.GetUsers().get(l).x*64)), Common.roundDown((network.GetUsers().get(l).y*64)), Color.BLACK, network.GetUsers().get(l).username);
+                g.draw(gsm.Render.GUI[24], network.GetUsers().get(l).x*64,	network.GetUsers().get(l).y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, network.GetUsers().get(l).angle, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
             }
 
         }
 
         pe.update(Gdx.graphics.getDeltaTime());
+        g.setShader(shaderProgram);
         pe.draw(g);
+        g.setShader(null);
         pe.setPosition(gsm.MouseX, gsm.MouseY);
         if (pe.isComplete())
             pe.reset();
-
-        debugRenderer.render(world, camera.combined);
 
         g.end();
 
@@ -246,36 +222,49 @@ public class MultiplayerTestState extends GameState {
 
         MenuDraw(guiBatch, width, height, Time);
 
+        gsm.Render.GUIDrawText(guiBatch, 50, 50, null, "" + network.GetClient());
+
+        //ShaderDraw(guiBatch, gsm.MouseX, gsm.MouseY, gsm.Width, gsm.Height);
+
         guiBatch.end();
 
         //gsm.Render.DrawDebugLine(new Vector2(network.GetClient().x, network.GetClient().y), new Vector2(gsm.MouseX, gsm.MouseY), 1, Color.RED, camera.combined);
         //gsm.Render.DrawDebugPoint(center, 2, Color.RED, camera.combined);
 
-        int size = gsm.Render.Tiles.length;
+        int size = gsm.Render.GUI[00].getWidth();
         Rectangle player = new Rectangle(network.GetClient().x, network.GetClient().y, size, size);
         player.setCenter(network.GetClient().x + size/2, network.GetClient().y + size/2);
 
+        //Rectangle player = new Rectangle(posx, posy, size, size);
+        //layer.setCenter(posx + size/2, posy + size/2);
+
+        //Common.print("hit: " + player.overlaps(Collision));
+
+        /*
         gsm.Render.debugRenderer.setProjectionMatrix(camera.combined);
-        gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
         gsm.Render.debugRenderer.setColor(Color.GREEN);
-        gsm.Render.debugRenderer.rect(player.x*40, player.y*40, player.width, player.height);
+        gsm.Render.debugRenderer.rect(player.x*64, player.y*64, player.width, player.height);
         gsm.Render.debugRenderer.setColor(Color.RED);
-        gsm.Render.debugRenderer.rect(Collision.x*40, Collision.y*40, Collision.width, Collision.height);
+        for(int i = 0; i < Collisions.size(); i++) {
+            gsm.Render.debugRenderer.rect(Collisions.get(i).x *64, Collisions.get(i).y *64, (Collisions.get(i).width)*64, (Collisions.get(i).height)*64);
+        }
         gsm.Render.debugRenderer.end();
+        */
     }
 
     public void RenderCam() {
         camera.update();
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
+        //tiledMapRenderer.setView(camera);
+        //tiledMapRenderer.render();
     }
 
     public void FollowCam(OrthographicCamera cam, int playerx, int playery, float lerp) {
         int mapBoundX = 10000;
         int mapBoundY = 10000;
 
-        position.x += (playerx*40 - position.x) * lerp * deltaTime;
-        position.y += (playery*40 - position.y) * lerp * deltaTime;
+        position.x += (playerx*64 - position.x) * lerp * deltaTime;
+        position.y += (playery*64 - position.y) * lerp * deltaTime;
 
     //    float PosibleX = position.x + (playerx - position.x) * lerp * deltaTime;
     //    if (PosibleX - (Gdx.graphics.getWidth()/2) >= 0 && PosibleX - (Gdx.graphics.getWidth()/2) <= mapBoundX) {
@@ -289,22 +278,76 @@ public class MultiplayerTestState extends GameState {
     //        position.y += (playery+160 - position.y) * lerp * deltaTime;
     //    }
 
-        //position.x += ((player.getLocation()[0]*80)+40 - position.x) * lerp * deltaTime;
-        //position.y += ((player.getLocation()[1]*80)+40 - position.y) * lerp * deltaTime;
+        //position.x += ((player.getLocation()[0]*64)+40 - position.x) * lerp * deltaTime;
+        //position.y += ((player.getLocation()[1]*64)+40 - position.y) * lerp * deltaTime;
 
         cam.position.set(position.x, position.y, cam.position.z);
         cam.update();
     }
 
+    private void handleInput() {
+
+        Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+        camera.unproject(pos);
+
+        gsm.MouseX = (int) pos.x;
+        gsm.MouseY = (int) pos.y;
+        gsm.MouseClick[1] = (int) pos.x;
+        gsm.MouseClick[2] = (int) pos.y;
+        gsm.MouseDrag[1] = (int) pos.x;
+        gsm.MouseDrag[2] = (int) pos.y;
+
+        Vector2 Location = new Vector2(network.GetClient().x, network.GetClient().y);
+
+        Vector2 center = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        Vector2 MousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+
+        float angle = Common.GetAngle(center, MousePos);
+
+        //Common.print("Angle: " + Location.angle(MousePos));
+        //Common.print("Start: " + Location + " Mouse: " + MousePos);
+
+            Vector2 move = new Vector2(0,0);
+
+        if (Gdx.input.isKeyPressed(Keys.W)) { //KeyHit
+            move.y += 1;
+            //move(new Vector2(0, 1), Location);
+        }
+        if (Gdx.input.isKeyPressed(Keys.S)) { //KeyHit
+            move.y -= 1;
+            //move(new Vector2(0, -1), Location);
+        }
+        if (Gdx.input.isKeyPressed(Keys.A)) { //KeyHit
+            move.x -= 1;
+            //move(new Vector2(-1, 0), Location);
+        }
+        if (Gdx.input.isKeyPressed(Keys.D)) { //KeyHit
+            move.x += 1;
+            //move(new Vector2(1, 0), Location);
+        }
+
+        if (Gdx.input.isKeyJustPressed(Keys.NUM_9)) {
+            String vertexShader = Gdx.files.internal("testShader/vertex.glsl").readString();
+            String fragmentShader = Gdx.files.internal("testShader/fragment.glsl").readString();
+            shaderProgram = new ShaderProgram(vertexShader,fragmentShader);
+        }
+
+        move(new Vector2(move.x, move.y), Location);
+
+        network.updateClientPos(Location, angle);
+        //camera.position.set((network.GetClient().x*40)+40, (network.GetClient().y*40)+40, camera.position.z);
+        FollowCam(camera, Common.roundDown(Location.x), Common.roundDown(Location.y), 0.01f);
+    }
+
     public void move(Vector2 pos, Vector2 Location) {
         if (pos.x < 0) { //Moving left
-            if (checkCollision(Location.x - pos.x*40, Location.y)) {
+            if (checkCollision(Location.x - (pos.x*-1), Location.y)) {
                 //Cant move
             } else {
                 Location.x -= (pos.x*-1);
             }
         } else if (pos.x > 0) { // Moving right
-            if (checkCollision(Location.x + pos.x*40, Location.y)) {
+            if (checkCollision(Location.x + pos.x, Location.y)) {
                 //Cant move
             } else {
                 Location.x += (pos.x);
@@ -312,13 +355,13 @@ public class MultiplayerTestState extends GameState {
         }
 
         if (pos.y < 0) { // Moving down
-            if (checkCollision(Location.x, Location.y - pos.y*40)) {
+            if (checkCollision(Location.x, Location.y - (pos.y*-1))) {
                 //Cant move
             } else {
                 Location.y -= (pos.y*-1);
             }
         } else if (pos.y > 0) {
-            if (checkCollision(Location.x, Location.y + pos.y*40)) {
+            if (checkCollision(Location.x, Location.y + pos.y)) {
                 //Cant move
             } else {
                 Location.y += pos.y;
@@ -327,16 +370,12 @@ public class MultiplayerTestState extends GameState {
     }
 
     public boolean checkCollision(float posx, float posy) {
-      int size = gsm.Render.Tiles.length;
-      Rectangle player = new Rectangle(posx, posy, size, size);
-      player.setCenter(posx + size/2, posy + size/2);
-
-      if (player.overlaps(Collision)) {
-          return true; // Dont move
-      } else {
-          return false;
+      for(int i = 0; i < Collisions.size(); i++) {
+          if (posx >= Collisions.get(i).getX() && posx < (Collisions.get(i).getX() + Collisions.get(i).getWidth()) && posy >= Collisions.get(i).getY() && posy < (Collisions.get(i).getY() + Collisions.get(i).getHeight())) {
+              return true; // Dont move
+          }
       }
-
+      return false;
     }
 
     public void reSize(SpriteBatch g, int H, int W) {
@@ -349,6 +388,7 @@ public class MultiplayerTestState extends GameState {
         Matrix4 matrix = new Matrix4();
         matrix.setToOrtho2D(0, 0, W, H);
         guiBatch.setProjectionMatrix(matrix);
+        //ShaderResize(W, H);
         //cameraGui.setToOrtho(false);
     }
 
@@ -393,66 +433,82 @@ public class MultiplayerTestState extends GameState {
     }
 
     //Ends the Gui Shit
+/*
+    public void ShaderInit(SpriteBatch batch) {
+        rock = new Texture(Gdx.files.internal("rock.png"));
+        rockNormals = new Texture(Gdx.files.internal("rock_n.png"));
 
-    public void Box2DInit() {
-        Box2D.init();
-        world = new World(new Vector2(0, -10), true);
+        ShaderProgram.pedantic = false;
+        shader = new ShaderProgram(VERT, FRAG);
+        //ensure it compiled
+        if (!shader.isCompiled())
+            throw new GdxRuntimeException("Could not compile shader: "+shader.getLog());
+        //print any warnings
+        if (shader.getLog().length()!=0)
+            System.out.println(shader.getLog());
 
-        debugRenderer = new Box2DDebugRenderer();
+        //setup default uniforms
+        shader.begin();
 
-        // First we create a body definition
-        BodyDef bodyDef = new BodyDef();
-        // We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        // Set our body's starting position in the world
-        bodyDef.position.set(50, 300);
+        //our normal map
+        shader.setUniformi("u_normals", 1); //GL_TEXTURE1
 
-        // Create our body in the world using our body definition
-        body = world.createBody(bodyDef);
+        //light/ambient colors
+        //LibGDX doesn't have Vector4 class at the moment, so we pass them individually...
+        shader.setUniformf("LightColor", LIGHT_COLOR.x, LIGHT_COLOR.y, LIGHT_COLOR.z, LIGHT_INTENSITY);
+        shader.setUniformf("AmbientColor", AMBIENT_COLOR.x, AMBIENT_COLOR.y, AMBIENT_COLOR.z, AMBIENT_INTENSITY);
+        shader.setUniformf("Falloff", FALLOFF);
 
-        // Create a circle shape and set its radius to 6
-        CircleShape circle = new CircleShape();
-        circle.setRadius(6f);
+        //LibGDX likes us to end the shader program
+        shader.end();
 
-        // Create a fixture definition to apply our shape to
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = circle;
-        fixtureDef.density = 0.5f;
-        fixtureDef.friction = 0.4f;
-        fixtureDef.restitution = 0.6f; // Make it bounce a little bit
-
-        // Create our fixture and attach it to the body
-        Fixture fixture = body.createFixture(fixtureDef);
-
-        // Remember to dispose of any shapes after you're done with them!
-        // BodyDef and FixtureDef don't need disposing, but shapes do.
-        circle.dispose();
-
-
-
-
-        // Create our body definition
-        BodyDef groundBodyDef = new BodyDef();
-        // Set its world position
-        groundBodyDef.position.set(new Vector2(gsm.Render.Tiles.length*2, gsm.Render.Tiles.length/2));
-
-        // Create a body from the defintion and add it to the world
-        Body groundBody = world.createBody(groundBodyDef);
-
-        // Create a polygon shape
-        PolygonShape groundBox = new PolygonShape();
-        // Set the polygon shape as a box which is twice the size of our view port and 20 high
-        // (setAsBox takes half-width and half-height as arguments)
-        groundBox.setAsBox(gsm.Render.Tiles.length*5, gsm.Render.Tiles.length/2);
-        // Create a fixture from our polygon shape and add it to our ground body
-        groundBody.createFixture(groundBox, 0.0f);
-        // Clean up after ourselves
-        groundBox.dispose();
     }
 
-    public void Box2DUpdate() {
-        world.step(1/30f, 6, 6);
+    public void ShaderDraw(SpriteBatch batch, int MX, int MY, int W, int H) {
+        batch.setProjectionMatrix(camera.combined);
+        batch.setShader(shader);
+
+        //reset light Z
+        if (Gdx.input.isTouched()) {
+            LIGHT_POS.z = DEFAULT_LIGHT_Z;
+            System.out.println("New light Z: "+LIGHT_POS.z);
+        }
+
+        //shader will now be in use...
+
+        //update light position, normalized to screen resolution
+        float x = MX / (float) W;
+        float y = MY / (float) H;
+
+        LIGHT_POS.x = x;
+        LIGHT_POS.y = y;
+
+        //send a Vector4f to GLSL
+        shader.setUniformf("LightPos", LIGHT_POS);
+
+        //bind normal map to texture unit 1
+        rockNormals.bind(1);
+
+        //bind diffuse color to texture unit 0
+        //important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
+        rock.bind(0);
+
+        //draw the texture unit 0 with our shader effect applied
+        batch.draw(rock, 0, 0);
+
+        //batch.setShader(null);
     }
 
+    public void ShaderResize(int width, int height) {
+        shader.begin();
+        shader.setUniformf("Resolution", width, height);
+        shader.end();
+    }
 
+    public void ShaderDispose() {
+        rock.dispose();
+        rockNormals.dispose();
+        shader.dispose();
+    }
+    */
 }
