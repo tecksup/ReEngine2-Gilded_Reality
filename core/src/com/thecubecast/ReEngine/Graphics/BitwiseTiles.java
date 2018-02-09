@@ -142,11 +142,11 @@ public class BitwiseTiles {
                 int BitDirectionright = bitTileObject.BitTiles.get(y)[x] & 0b1111;
                 int BitDirectionleft = bitTileObject.BitTiles.get(y)[x] >> 4;
 
-                //if (BitDirectionleft > 0)
-                //    batch.draw(bitTiles.get(RealTile-1)[BitDirectionleft+16], x*tileSize, y*tileSize);
-                //else
-                    //batch.draw(bitTiles.get(RealTile-1)[BitDirectionright], x*tileSize, y*tileSize);
-                batch.draw(bitTiles.get(RealTile-1)[bitTileObject.BitTiles.get(y)[x]], x*tileSize,	y*tileSize,	0, 0, bitTiles.get(RealTile-1)[0].getRegionWidth(), bitTiles.get(RealTile-1)[0].getRegionHeight(), 1, 1,0);
+                if (BitDirectionleft > 0)
+                    batch.draw(bitTiles.get(RealTile-1)[BitDirectionleft+16], x*tileSize, y*tileSize);
+                else
+                    batch.draw(bitTiles.get(RealTile-1)[BitDirectionright], x*tileSize, y*tileSize);
+                //batch.draw(bitTiles.get(RealTile-1)[bitTileObject.BitTiles.get(y)[x]], x*tileSize,	y*tileSize,	0, 0, bitTiles.get(RealTile-1)[0].getRegionWidth(), bitTiles.get(RealTile-1)[0].getRegionHeight(), 1, 1,0);
 
 
 

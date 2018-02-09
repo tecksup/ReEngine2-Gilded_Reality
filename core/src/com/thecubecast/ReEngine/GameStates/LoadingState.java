@@ -68,7 +68,7 @@ public class LoadingState extends GameState {
 		if (Load.equals("STARTUP")) {
 			if(gsm.Render.manager.getProgress() == 1) {
 				gsm.Render.LoadVariables();
-				gsm.setState(GameStateManager.INTRO);
+				gsm.setState(GameStateManager.State .INTRO);
 			}
 		}
 		handleInput();

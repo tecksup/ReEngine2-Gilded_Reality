@@ -51,7 +51,7 @@ public class IntroState extends GameState {
 		}
 		if(ticks > FADE_IN + LENGTH + FADE_OUT) {
 			//JukeBox.stop("LogoSound");
-			gsm.setState(GameStateManager.MENU);
+			gsm.setState(GameStateManager.State.MENU);
 		}
 	}
 	
@@ -69,7 +69,7 @@ public class IntroState extends GameState {
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) { //KeyHit
 			//JukeBox.stop("LogoSound");
 			gsm.Render.Images[00] = null;
-			gsm.setState(GameStateManager.MENU);
+			gsm.setState(GameStateManager.State.MENU);
 		}
 
 	}

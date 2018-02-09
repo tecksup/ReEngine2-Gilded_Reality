@@ -6,22 +6,25 @@
 
 package com.thecubecast.ReEngine.Data;
 
-import club.minnced.discord.rpc.DiscordEventHandlers;
-import club.minnced.discord.rpc.DiscordRPC;
-import club.minnced.discord.rpc.DiscordRichPresence;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.thecubecast.ReEngine.GameStates.*;
 import com.thecubecast.ReEngine.Graphics.Draw;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
-import com.thecubecast.ReEngine.Data.Common;
 
 public class GameStateManager {
 
-	public GameState[] gameStates;
-	public int currentState;
-	private int previousState;
+    public enum State {
+        INTRO, MENU, PLAY, LOADING, OPTIONS, TEST, SHADER, MULTIPLAYER
+    }
+
+    public State newcurrentState;
+    private State newpreviousState;
+
+
+    public GameState gameState;
 	
 	public String Username;
 	public String IpAdress = "localhost";
@@ -34,7 +37,7 @@ public class GameStateManager {
 	
 	//Public file handler
 	public ReadWrite Rwr;
-	
+
 	//Public Audio handler
 	public SoundManager Audio;
 
@@ -52,15 +55,6 @@ public class GameStateManager {
 	public int Width;
 	public int Height;
 	
-	public static final int NUM_STATES = 7;
-	public static final int INTRO = 0;
-	public static final int MENU = 1;
-	public static final int PLAY = 2;
-	public static final int LOADING = 3;
-	public static final int OPTIONS = 4;
-	public static final int TEST = 5;
-	public static final int MultiplayerTestState = 6;
-	
 	public GameStateManager() {
 
 		DiscordManager = new Discord("405784101245943810");
@@ -72,59 +66,63 @@ public class GameStateManager {
 		Rwr.init();
 		Audio.init();
 		Render.Init();
-		
-		gameStates = new GameState[NUM_STATES];
+
 		LoadState("STARTUP"); //THIS IS THE STATE WERE WE START WHEN THE GAME IS RUN
 		
 	}
 	
 	public void LoadState(String LoadIt) {
-		previousState = currentState;
-		unloadState(previousState);
-		currentState = LOADING;
+		newpreviousState = newcurrentState;
+		unloadState();
+		newcurrentState = State.LOADING;
 		//Set up the loading state 
-		gameStates[LOADING] = new LoadingState(this);
-		((LoadingState) gameStates[LOADING]).setLoad("STARTUP");
-		gameStates[LOADING].init();
+		gameState = new LoadingState(this);
+		((LoadingState) gameState).setLoad("STARTUP");
+		gameState.init();
 	}
 	
-	public void setState(int i) {
-		previousState = currentState;
-		unloadState(previousState);
-		currentState = i;
-		if(i == INTRO) {
-			Common.print("Loaded state Intro");
-			gameStates[i] = new IntroState(this);
-			gameStates[i].init();
-		}
-		else if(i == MENU) {
-			Common.print("Loaded state MENU");
-			gameStates[i] = new MainMenuState(this);
-			gameStates[i].init();
-		}
-		else if(i == PLAY) {
-			Common.print("Loaded state PLAY");
-			gameStates[i] = new TestState2(this);
-			gameStates[i].init();
-		}
-		
-		else if(i == MultiplayerTestState) {
-			Common.print("Loaded state MultiplayerTestState");
-			gameStates[i] = new MultiplayerTestState(this);
-			gameStates[i].init();
-		}
-		
-		else if(i == TEST) {
-			//Common.print("Loaded state Test");
-			gameStates[i] = new TestState(this);
-			gameStates[i].init();
-		}
+	public void setState(State i) {
+		newpreviousState = newcurrentState;
+		unloadState();
+        newcurrentState = i;
+        switch (newcurrentState) {
+            case INTRO:
+                Common.print("Loaded state Intro");
+                gameState = new IntroState(this);
+                gameState.init();
+                break;
+            case MENU:
+                Common.print("Loaded state MENU");
+                gameState = new MainMenuState(this);
+                gameState.init();
+                break;
+            case PLAY:
+                Common.print("Loaded state PLAY");
+                gameState = new PlayState(this);
+                gameState.init();
+                break;
+            case TEST:
+                Common.print("Loaded state Test");
+                gameState = new TestState(this);
+                gameState.init();
+                break;
+            case SHADER:
+                Common.print("Loaded state ShaderTest");
+                gameState = new ShaderTestState(this);
+                gameState.init();
+                break;
+            case MULTIPLAYER:
+                Common.print("Loaded state MultiplayerTestState");
+                gameState = new MultiplayerTestState(this);
+                gameState.init();
+                break;
+        }
 		
 	}
 	
-	public void unloadState(int i) {
+	public void unloadState() {
 		//Common.print("Unloaded state " + i);
-		gameStates[i] = null;
+		gameState = null;
 	}
 	
 	public void update(int MousX, int MousY, int[] Draging, int[] MousCl) {
@@ -138,9 +136,9 @@ public class GameStateManager {
 		MouseY = MousY;
 		MouseDrag = Draging;
 		MouseClick = MousCl;
-		if(gameStates[currentState] != null) {
+		if(gameState != null) {
 			
-			gameStates[currentState].update();
+			gameState.update();
 		}
 		//MouseClick[0] = 0;
 		
@@ -153,14 +151,14 @@ public class GameStateManager {
 		Width = W;
 		Height = H;
 		CurrentTime = Time;
-		if(gameStates[currentState] != null) {
-			gameStates[currentState].draw(bbg, H, W, Time);
+		if(gameState != null) {
+			gameState.draw(bbg, H, W, Time);
 		}
 	}
 	
 	public void reSize(SpriteBatch bbg, int H, int W) {
-		if(gameStates[currentState] != null) {
-			gameStates[currentState].reSize(bbg, H, W);
+		if(gameState != null) {
+			gameState.reSize(bbg, H, W);
 		}
 		Matrix4 matrix = new Matrix4();
 		matrix.setToOrtho2D(0, 0, W, H);

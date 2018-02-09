@@ -153,6 +153,7 @@ public class MainMenuState extends GameState {
 		final Label label1 = new Label("Username", skin);
 		label1.setColor(0, 0, 0, 1);
 		final TextField text1 = new TextField("", skin);
+		text1.setText(Gdx.app.getPreferences("properties").getString("Username"));
 		table.add(label1);
 		table.add(text1).padLeft(12);
 		table.row();
@@ -203,8 +204,10 @@ public class MainMenuState extends GameState {
             	//gsm.Audio.stopMusic("8-bit-Digger");
 				//GetLogin("", "");
             	gsm.Username = text1.getText();
+				Gdx.app.getPreferences("properties").putString("Username", text1.getText());
+				Gdx.app.getPreferences("properties").flush();
             	gsm.IpAdress = text2.getText();
-            	gsm.setState(gsm.MultiplayerTestState);
+            	gsm.setState(GameStateManager.State.PLAY);
                 button1.setText("Loading");
             }
         });
@@ -216,7 +219,7 @@ public class MainMenuState extends GameState {
 				//GetLogin("", "");
 
 				Lwjgl3Window window = ((Lwjgl3Graphics)Gdx.graphics).getWindow();
-				window.iconifyWindow(); // iconify the window
+				//window.iconifyWindow(); // iconify the window
 
 				//Common.ProperShutdown();
 			}
@@ -227,8 +230,10 @@ public class MainMenuState extends GameState {
 	                Common.print("typed started at" + keycode);
 	                if (keycode == 66) {// Enter
 	                	gsm.Username = text1.getText();
+						Gdx.app.getPreferences("properties").putString("Username", text1.getText());
+						Gdx.app.getPreferences("properties").flush();
 	                	gsm.IpAdress = text2.getText();
-	                	gsm.setState(gsm.MultiplayerTestState);
+						gsm.setState(GameStateManager.State.PLAY);
 	                    button1.setText("Loading");
 	                }
 	                //if (keycode == 66) // Tab
