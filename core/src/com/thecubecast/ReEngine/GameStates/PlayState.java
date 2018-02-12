@@ -28,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.thecubecast.ReEngine.Data.Achievement;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
+import com.thecubecast.ReEngine.Data.PlayerPlatformer;
 import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
 
 import java.util.ArrayList;
@@ -35,89 +36,7 @@ import java.util.List;
 
 public class PlayState extends GameState {
 
-    private class PlayThing {
-        public Vector2 Coords = new Vector2(0, 0);
-        public Vector2 Velocity = new Vector2(0, 0);
-        private Vector2 Gravity;
-        private int Size;
-        Rectangle RectPla;
-        public float angle = 0;
-
-        public PlayThing(int size, Vector2 gravity) {
-            Gravity = gravity;
-            Size = size;
-            //RectPla = new Rectangle(Player.Coords.x, Player.Coords.y, size, size);
-            //RectPla.setCenter(Player.Coords.x + size/2, Player.Coords.y + size/2);
-        }
-
-        public void update(float delta) {
-
-            Velocity.x += Gravity.x * delta*delta;
-            Velocity.y += Gravity.y * delta*delta;
-
-            Vector2 pos = new Vector2(Velocity.x*delta*delta, Velocity.y*delta*delta);
-
-            if (pos.x < 0) { //Moving left
-                if (checkCollision(Coords.x - (pos.x*-1), Coords.y)) {
-                    Velocity.x = 0;
-                } else {
-                    Coords.x -= (Velocity.x*delta*-1);
-                }
-            } else if (pos.x > 0) { // Moving right
-                if (checkCollision(Coords.x + pos.x, Coords.y)) {
-                    Velocity.x = 0;
-                } else {
-                    Coords.x += (Velocity.x*delta);
-                }
-            }
-
-            if (pos.y < 0) { // Moving down
-                if (checkCollision(Coords.x, Coords.y - (pos.y*-1))) {
-                    Velocity.y = 0;
-                } else {
-                    Coords.y -= (Velocity.y*delta*-1);
-                }
-            } else if (pos.y > 0) {
-                if (checkCollision(Coords.x, Coords.y + pos.y)) {
-                    Velocity.y = 0;
-                } else {
-                    Coords.y += Velocity.y*delta;
-                }
-            }
-
-        }
-
-        public void MovePlayerVelocity(Vector2 moveDir, float speed, float delta) {
-            Velocity.x += (moveDir.x * speed) * delta;
-            Velocity.y += (moveDir.y * speed) * delta;
-
-        }
-
-        private boolean checkCollision(float posx, float posy) {
-            RectPla = new Rectangle(posx, posy, 0.9f, 0.9f);
-            RectPla.setCenter(RectPla.x + RectPla.getWidth()/2, RectPla.y + RectPla.getHeight()/2);
-            for(int i = 0; i < Collisions.size(); i++) {
-                if (RectPla.overlaps(Collisions.get(i))) {
-                    return true; // Dont move
-                }
-            }
-            return false;
-        }
-
-        public boolean ifColliding () {
-            RectPla = new Rectangle(Player.Coords.x, Player.Coords.y, 0.9f, 0.9f);
-            RectPla.setCenter(RectPla.x + RectPla.getWidth()/2, RectPla.y + RectPla.getHeight()/2);
-            for(int i = 0; i < Collisions.size(); i++) {
-                if (RectPla.overlaps(Collisions.get(i))) {
-                    return true; // Dont move
-                }
-            }
-            return false;
-        }
-
-    }
-
-    PlayThing Player;
+    PlayerPlatformer Player;
 
     private Skin skin;
     private Stage stage;
@@ -153,7 +72,7 @@ public class PlayState extends GameState {
     }
 
     public void init() {
-        Player = new PlayThing(64, new Vector2(0, -9));
+        Player = new PlayerPlatformer(64, new Vector2(0, -9));
         gsm.DiscordManager.setPresenceDetails("Multiplayer Demo - Level 1");
         gsm.DiscordManager.setPresenceState("In Game");
         gsm.DiscordManager.getPresence().largeImageText = "Level 1";
@@ -163,7 +82,7 @@ public class PlayState extends GameState {
         tiledMap = new TmxMapLoader().load("Saves/BITWISE/map.tmx");
         tiledBits = new BitwiseTiles(tiledMap);
 
-        Collisions.add(new Rectangle(-10, -2, 20, 1));
+        Collisions.add(new Rectangle(-10, 0, 20, 1));
         Collisions.add(new Rectangle(3, 1, 2, 1));
         Collisions.add(new Rectangle(6, 2, 2, 1));
 
@@ -206,7 +125,7 @@ public class PlayState extends GameState {
         deltaTime = (int) ((time - last_time) / 1000000);
         last_time = time;
 
-        Player.update(Gdx.graphics.getDeltaTime());
+        Player.update(Gdx.graphics.getDeltaTime(), Collisions);
 
         camera.update();
 
@@ -296,9 +215,6 @@ public class PlayState extends GameState {
 
         Rectangle player = new Rectangle(Player.Coords.x, Player.Coords.y, 1, 1);
         player.setCenter(player.x + player.getWidth()/2, player.y + player.getHeight()/2);
-        if(Player.ifColliding()) {
-            Common.print("hit! "); // Dont move
-        }
 
         gsm.Render.debugRenderer.setProjectionMatrix(camera.combined);
         gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -375,14 +291,15 @@ public class PlayState extends GameState {
         }
 
         if (Gdx.input.isKeyPressed(Keys.A)) { //KeyHit
-            Player.MovePlayerVelocity(new Vector2(-4, 0), 5, Gdx.graphics.getDeltaTime());
+            Player.MovePlayerVelocity(PlayerPlatformer.Direction.left, Gdx.graphics.getDeltaTime());
         }
         if (Gdx.input.isKeyPressed(Keys.D)) { //KeyHit
-            Player.MovePlayerVelocity(new Vector2(4, 0), 5, Gdx.graphics.getDeltaTime());
+            Player.MovePlayerVelocity(PlayerPlatformer.Direction.right, Gdx.graphics.getDeltaTime());
         }
 
         if (Gdx.input.isKeyJustPressed(Keys.SPACE)) { //KeyHit
-            Player.MovePlayerVelocity(new Vector2(0, 25), 10, Gdx.graphics.getDeltaTime());
+            if (Player.ifColliding(new Vector2(0, -0.5f)))
+                Player.MovePlayerVelocity(PlayerPlatformer.Direction.up, Gdx.graphics.getDeltaTime());
         }
 
         if (Gdx.input.isKeyJustPressed(Keys.NUM_9)) {
