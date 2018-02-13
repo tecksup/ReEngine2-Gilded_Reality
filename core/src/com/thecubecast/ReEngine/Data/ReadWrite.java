@@ -29,35 +29,7 @@ public class ReadWrite {
 			Common.print("Created 'Saves' folder!");
 		}
 	}
-	
-	public static Object[] LoadSettings() {
-		//all the code that reads the file
-		
-		Path SettingsPath = Paths.get("Settings.properties");
-		Object[] settup = null;
-		
-		if (Files.notExists(SettingsPath)) { // runs if the settings file does not exist
-			//create new settings file with universal settings that work for everyone 
-			Path path = Paths.get("", "Settings.properties");
-			ArrayList<String> lines = new ArrayList<String>();
-	        lines.add("#Settings");
-	        lines.add("\n");
-	        lines.add("Agreed:False");
-			try {
-				Files.write(path, lines, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
-			} catch (IOException e) {e.printStackTrace();}
-		}
-		else {
-			//save each setting to a value in the array
-			try {
-				settup = Files.readAllLines(SettingsPath).toArray();
-			} catch (IOException e) {e.printStackTrace();}
-			
-		}
-		return settup; // returns the array containing each value in settings. Settings file format can be dynamically changed to add new values.
-		
-	}
-	
+
 	public boolean CreateSave(String Title) {
 		//creates the world folder
 		new File("Saves/"+Title).mkdir();

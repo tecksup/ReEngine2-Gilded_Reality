@@ -140,7 +140,7 @@ public class Draw {
 			if (i >= 10) {
 				try {
 					Common.print("Loaded images /Sprites/"+ Integer.toString(i) +".png");
-					Tiles[i] = manager.get("Sprites/megaminer_"+ Integer.toString(i) +".png", Texture.class);
+					Tiles[i] = manager.get("Sprites/oldTiles/megaminer_"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
@@ -148,7 +148,7 @@ public class Draw {
 			} else {
 				try {
 					Common.print("Loaded images /Sprites/0"+ Integer.toString(i) +".png");
-					Tiles[i] = manager.get("Sprites/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
+					Tiles[i] = manager.get("Sprites/oldTiles/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
 					//e.printStackTrace();
@@ -204,7 +204,7 @@ public class Draw {
 		}
 	}
 
-	private TextureRegion[] loadAnim(Texture TexSheet, String FileLocation, int Cols, int Rows) {
+	public TextureRegion[] loadAnim(Texture TexSheet, String FileLocation, int Cols, int Rows) {
 		// Load the sprite sheet as a Texture
 		TexSheet = new Texture(Gdx.files.internal(FileLocation));
 

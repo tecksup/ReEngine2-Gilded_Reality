@@ -19,13 +19,15 @@ import java.util.stream.Stream;
 public class BitwiseTiles {
 
     TiledMap tiledMap;
-    bitTileObject bitTileObject;
+    private bitTileObject bitTileObject;
 
     //List<short[]> xcoord = new ArrayList<short[]>();
 
     public class bitTileObject {
-        List<short[]> BitTiles = new ArrayList<short[]>(); //Used to be xcoord
-        List<short[]> realTile = new ArrayList<short[]>();
+        public int height;
+        public int width;
+        public List<short[]> BitTiles = new ArrayList<short[]>(); //Used to be xcoord
+        public List<short[]> realTile = new ArrayList<short[]>();
     }
 
 
@@ -38,7 +40,7 @@ public class BitwiseTiles {
         bitTileObject = new bitTileObject();
 
         //The Size of the images
-        int Rows = 8;
+        int Rows = 4;
         int Cols = 4;
 
         //calculate the map bitwise operations
@@ -92,29 +94,21 @@ public class BitwiseTiles {
                     if (TileLayer.getCell(x, y+1) == null) {}
                     else if (TileCheck == TileLayer.getCell(x, y+1).getTile().getId()) {
                         id += 1;
-                    } else if (TileCheck != TileLayer.getCell(x, y+1).getTile().getId()) {
-                        //id += 16;
                     }
 
                     if (TileLayer.getCell(x+1, y) == null) {}
                     else if (TileCheck == TileLayer.getCell(x+1, y).getTile().getId()) {
                         id += 2;
-                    } else if (TileCheck != TileLayer.getCell(x+1, y).getTile().getId()) {
-                        //id += 32;
                     }
 
                     if (TileLayer.getCell(x, y-1) == null) {}
                     else if (TileCheck == TileLayer.getCell(x, y-1).getTile().getId()) {
                         id += 4;
-                    } else if (TileCheck != TileLayer.getCell(x, y-1).getTile().getId()) {
-                        //id += 64;
                     }
 
                     if (TileLayer.getCell(x-1, y) == null) {}
                     else if (TileCheck == TileLayer.getCell(x-1, y).getTile().getId()) {
                         id += 8;
-                    } else if (TileCheck != TileLayer.getCell(x-1, y).getTile().getId()) {
-                        //id += 128;
                     }
 
                     tempReal[x] += TileLayer.getCell(x, y).getTile().getId();
@@ -123,12 +117,16 @@ public class BitwiseTiles {
                     Common.print("id is " + s2 + " or " + id + " at (" + x + "," + y + ") from tile " + TileLayer.getCell(x, y).getTile().getId());
                 }
             }
+            Common.print("map Width: " + TileLayer.getWidth());
+            Common.print("map Height: " + TileLayer.getHeight());
+            bitTileObject.height = TileLayer.getHeight();
+            bitTileObject.width = TileLayer.getWidth();
             bitTileObject.BitTiles.add(temp2);
             bitTileObject.realTile.add(tempReal);
         }
     }
 
-    public void draw(SpriteBatch batch, int tileSize) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
+    public void draw(SpriteBatch batch, int tileSize, float time) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
         for (int y = 0; y < bitTileObject.realTile.size(); y++) {
             for(int x = 0; x < bitTileObject.realTile.get(y).length; x++) {
 
@@ -144,7 +142,12 @@ public class BitwiseTiles {
 
                 if (BitDirectionleft > 0)
                     batch.draw(bitTiles.get(RealTile-1)[BitDirectionleft+16], x*tileSize, y*tileSize);
-                else
+                else // THIS RUNS BY DEFAULT
+                    if (RealTile == 4) { // So we can animate special tiles
+
+                    } else {
+
+                    }
                     batch.draw(bitTiles.get(RealTile-1)[BitDirectionright], x*tileSize, y*tileSize);
                 //batch.draw(bitTiles.get(RealTile-1)[bitTileObject.BitTiles.get(y)[x]], x*tileSize,	y*tileSize,	0, 0, bitTiles.get(RealTile-1)[0].getRegionWidth(), bitTiles.get(RealTile-1)[0].getRegionHeight(), 1, 1,0);
 
@@ -154,4 +157,7 @@ public class BitwiseTiles {
         }
     }
 
+    public bitTileObject getBitTileObject() {
+        return bitTileObject;
+    }
 }

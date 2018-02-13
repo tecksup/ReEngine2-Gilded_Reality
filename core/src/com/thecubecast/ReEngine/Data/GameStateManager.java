@@ -16,6 +16,8 @@ import com.badlogic.gdx.math.Matrix4;
 
 public class GameStateManager {
 
+	public boolean Debug = false;
+
     public enum State {
         INTRO, MENU, PLAY, LOADING, OPTIONS, TEST, SHADER, MULTIPLAYER
     }

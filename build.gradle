@@ -1,5 +1,5 @@
 buildscript {
-    
+
 
     repositories {
         mavenLocal()
@@ -41,6 +41,11 @@ allprojects {
 project(":desktop") {
     apply plugin: "java"
 
+    jar {
+        manifest {
+            attributes 'Main-Class': 'com.foo.bar.MainClass'
+        }
+    }
 
     dependencies {
         compile project(":core")
@@ -53,23 +58,6 @@ project(":desktop") {
     }
 }
 
-project(":html") {
-    apply plugin: "gwt"
-    apply plugin: "war"
-
-
-    dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
-        
-    }
-}
-
 project(":core") {
     apply plugin: "java"
 
@@ -77,6 +65,7 @@ project(":core") {
     dependencies {
     	compile "kryonet:kryonet:2.21"
 		compile "commons-io:commons-io:2.6"
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
 		compile "com.esotericsoftware.kryo:kryo:2.24.0"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"

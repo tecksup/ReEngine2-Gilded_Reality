@@ -53,6 +53,7 @@ public class PlayState extends GameState {
     TiledMapRenderer tiledMapRenderer;
 
     OrthographicCamera camera;
+    Rectangle cameraBounds;
     ShaderProgram shaderProgram;
     SpriteBatch guiBatch;
 
@@ -72,7 +73,7 @@ public class PlayState extends GameState {
     }
 
     public void init() {
-        Player = new PlayerPlatformer(64, new Vector2(0, -9));
+        Player = new PlayerPlatformer(64, new Vector2(0, -9), gsm);
         gsm.DiscordManager.setPresenceDetails("Multiplayer Demo - Level 1");
         gsm.DiscordManager.setPresenceState("In Game");
         gsm.DiscordManager.getPresence().largeImageText = "Level 1";
@@ -82,9 +83,19 @@ public class PlayState extends GameState {
         tiledMap = new TmxMapLoader().load("Saves/BITWISE/map.tmx");
         tiledBits = new BitwiseTiles(tiledMap);
 
-        Collisions.add(new Rectangle(-10, 0, 20, 1));
-        Collisions.add(new Rectangle(3, 1, 2, 1));
-        Collisions.add(new Rectangle(6, 2, 2, 1));
+        for (int y = 0; y < tiledBits.getBitTileObject().realTile.size(); y++) {
+            for(int x = 0; x < tiledBits.getBitTileObject().realTile.get(y).length; x++) {
+                if (tiledBits.getBitTileObject().realTile.get(y)[x] == 1) {
+
+                } else if ((tiledBits.getBitTileObject().realTile.get(y)[x] == 3)) {
+                    Collisions.add(new Rectangle(x, y, 1, 1));
+                }
+            }
+        }
+
+        //Collisions.add(new Rectangle(-10, 0, 20, 1));
+        //Collisions.add(new Rectangle(3, 1, 2, 1));
+        //Collisions.add(new Rectangle(6, 2, 2, 1));
 
         //gsm.Audio.playMusic("Rain", true);
 
@@ -97,7 +108,7 @@ public class PlayState extends GameState {
         camera = new OrthographicCamera();
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        camera.position.set((Player.Coords.x*64), (Player.Coords.y*64), camera.position.z);
+        camera.position.set((Player.Coords.x*65), (Player.Coords.y*65), camera.position.z);
         position = camera.position;
 
         MenuInit();
@@ -138,13 +149,13 @@ public class PlayState extends GameState {
     }
 
     public void draw(SpriteBatch g, int width, int height, float Time) {
-        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
+        Gdx.gl.glClearColor(13/255f, 32/255f, 48/255f, 1);
         RenderCam();
 
         g.begin();
         g.setProjectionMatrix(camera.combined);
 
-        tiledBits.draw(g, 64);
+        tiledBits.draw(g, 64, Time);
 
         //gsm.Render.DrawAny(g, tile, "Tiles", Common.roundDown((player.getLocation()[0]+1*64)),  Common.roundDown((player.getLocation()[1]*64)));
         //gsm.Render.GUIDrawText(g, Common.roundDown((player.getLocation()[0]+1*64)),  Common.roundDown((player.getLocation()[1]*64)-40), "" + tile);
@@ -160,13 +171,15 @@ public class PlayState extends GameState {
         }
         */
 
-        g.draw(gsm.Render.GUI[24], Player.Coords.x*64,	Player.Coords.y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, Player.angle, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
+        //g.draw(gsm.Render.Tiles[80], Player.Coords.x*64,	Player.Coords.y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, Player.angle, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
+        //g.draw(gsm.Render.Tiles[80], Player.Coords.x*64,	Player.Coords.y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, 0, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
 
+        Player.draw(g, Time);
 
         pe.update(Gdx.graphics.getDeltaTime());
-        g.setShader(shaderProgram);
+        //g.setShader(shaderProgram);
         pe.draw(g);
-        g.setShader(null);
+        //g.setShader(null);
         pe.setPosition(gsm.MouseX, gsm.MouseY);
         if (pe.isComplete())
             pe.reset();
@@ -216,17 +229,22 @@ public class PlayState extends GameState {
         Rectangle player = new Rectangle(Player.Coords.x, Player.Coords.y, 1, 1);
         player.setCenter(player.x + player.getWidth()/2, player.y + player.getHeight()/2);
 
-        gsm.Render.debugRenderer.setProjectionMatrix(camera.combined);
-        gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
-        gsm.Render.debugRenderer.setColor(Color.GREEN);
-        gsm.Render.debugRenderer.rect(player.x*64, player.y*64, player.width*64, player.height*64);
-        gsm.Render.debugRenderer.setColor(Color.RED);
-        for(int i = 0; i < Collisions.size(); i++) {
-            gsm.Render.debugRenderer.rect(Collisions.get(i).x *64, Collisions.get(i).y *64, (Collisions.get(i).width)*64, (Collisions.get(i).height)*64);
+        if (gsm.Debug) {
+            gsm.Render.debugRenderer.setProjectionMatrix(camera.combined);
+            gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
+            gsm.Render.debugRenderer.setColor(Color.GREEN);
+            gsm.Render.debugRenderer.rect(player.x*64, player.y*64, player.width*64, player.height*64);
+            gsm.Render.debugRenderer.setColor(Color.YELLOW);
+            gsm.Render.debugRenderer.rect(cameraBounds.x, cameraBounds.y, (cameraBounds.width), (cameraBounds.height));
+            gsm.Render.debugRenderer.setColor(Color.RED);
+            Collisions.forEach( number -> gsm.Render.debugRenderer.rect(number.x *64, number.y *64, (number.width)*64, (number.height)*64));
+            for(int i = 0; i < Collisions.size(); i++) {
+                //gsm.Render.debugRenderer.rect(Collisions.get(i).x *64, Collisions.get(i).y *64, (Collisions.get(i).width)*64, (Collisions.get(i).height)*64);
+            }
+
+            gsm.Render.debugRenderer.end();
+
         }
-
-        gsm.Render.debugRenderer.end();
-
     }
 
     public void RenderCam() {
@@ -239,8 +257,21 @@ public class PlayState extends GameState {
         int mapBoundX = 10000;
         int mapBoundY = 10000;
 
-        position.x += (playerx*64 - position.x) * lerp * deltaTime;
-        position.y += (playery*64 - position.y) * lerp * deltaTime;
+        float tempx = position.x + (playerx*64 - position.x) * lerp * deltaTime;
+        float tempy = position.y + (playery*64 - position.y) * lerp * deltaTime;
+
+        cameraBounds = new Rectangle(camera.position.x - camera.viewportWidth/2 ,camera.position.y - camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight);
+
+        if (tempx >= 0) {
+            if(tempx + cameraBounds.getWidth() <= tiledBits.getBitTileObject().width*64*4) {
+                position.x += (playerx*64 - position.x) * lerp * deltaTime;
+            }
+        }
+        if (tempy >= 0) {
+            if (tempy + cameraBounds.getHeight() <= tiledBits.getBitTileObject().height*64*4) {
+                position.y += (playery*64 - position.y) * lerp * deltaTime;
+            }
+        }
 
         //    float PosibleX = position.x + (playerx - position.x) * lerp * deltaTime;
         //    if (PosibleX - (Gdx.graphics.getWidth()/2) >= 0 && PosibleX - (Gdx.graphics.getWidth()/2) <= mapBoundX) {
@@ -284,7 +315,12 @@ public class PlayState extends GameState {
 
         if (Gdx.input.isKeyPressed(Keys.W)) { //KeyHit
             //Player.MovePlayerVelocity(new Vector2(0, 10), 5, Gdx.graphics.getDeltaTime());
-            Player.Coords.y += 2;
+            if (gsm.Debug) {
+                Player.Coords.y += 2;
+            } else {
+                //if (Player.ifColliding(new Vector2(0, -0.5f)))
+                    //Player.MovePlayerVelocity(PlayerPlatformer.Direction.up, Gdx.graphics.getDeltaTime());
+            }
         }
         if (Gdx.input.isKeyPressed(Keys.S)) { //KeyHit
             //Player.MovePlayerVelocity(new Vector2(0, -1), 1, Gdx.graphics.getDeltaTime());
@@ -297,9 +333,10 @@ public class PlayState extends GameState {
             Player.MovePlayerVelocity(PlayerPlatformer.Direction.right, Gdx.graphics.getDeltaTime());
         }
 
-        if (Gdx.input.isKeyJustPressed(Keys.SPACE)) { //KeyHit
-            if (Player.ifColliding(new Vector2(0, -0.5f)))
-                Player.MovePlayerVelocity(PlayerPlatformer.Direction.up, Gdx.graphics.getDeltaTime());
+        if (Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.W)) { //KeyHit
+            Player.MovePlayerVelocity(PlayerPlatformer.Direction.up, Gdx.graphics.getDeltaTime());
+            //if (Player.ifColliding(new Vector2(0, -0.5f)))
+            //    Player.MovePlayerVelocity(PlayerPlatformer.Direction.up, Gdx.graphics.getDeltaTime());
         }
 
         if (Gdx.input.isKeyJustPressed(Keys.NUM_9)) {

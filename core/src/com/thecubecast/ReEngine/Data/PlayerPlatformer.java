@@ -1,5 +1,11 @@
 package com.thecubecast.ReEngine.Data;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.thecubecast.ReEngine.GameStates.PlayState;
@@ -11,7 +17,7 @@ public class PlayerPlatformer {
 
     private List<Rectangle> Collisions = new ArrayList<>();
 
-    public Vector2 Coords = new Vector2(0, 1);
+    public Vector2 Coords = new Vector2(2, 1f);
     public Vector2 Velocity = new Vector2(0, 0);
     private Vector2 Gravity;
     private int Size;
@@ -20,15 +26,43 @@ public class PlayerPlatformer {
     Rectangle RectPla;
     public float angle = 0;
 
+    int numberJumps = 2;
+
+    public AnimationState AnimState = AnimationState.Standing;
+
+
+
+    Animation<TextureRegion> StandingAnimation;
+    Texture Standing;
+
+    Animation<TextureRegion> WalkingAnimation;
+    Texture Walking;
+
+    Animation<TextureRegion> RunningAnimation;
+    Texture Running;
+
+    Animation<TextureRegion> FallingAnimation;
+    Texture Falling;
+
     public enum Direction {
         left, right, up, down
     }
 
-    public PlayerPlatformer(int size, Vector2 gravity) {
+    public enum AnimationState {
+        Standing, Walking, Running, Jumping, Falling
+    }
+
+    public PlayerPlatformer(int size, Vector2 gravity, GameStateManager gsm) {
         Gravity = gravity;
         Size = size;
         //RectPla = new Rectangle(Player.Coords.x, Player.Coords.y, size, size);
         //RectPla.setCenter(Player.Coords.x + size/2, Player.Coords.y + size/2);
+
+        StandingAnimation = new Animation<TextureRegion>(0.1f, gsm.Render.loadAnim(Standing, "Sprites/Player/Standing.png", 4, 1));
+        WalkingAnimation = new Animation<TextureRegion>(0.1f, gsm.Render.loadAnim(Walking, "Sprites/Player/Walking.png", 4, 1));
+        RunningAnimation = new Animation<TextureRegion>(0.1f, gsm.Render.loadAnim(Running, "Sprites/Player/Running.png", 4, 1));
+        FallingAnimation = new Animation<TextureRegion>(0.1f, gsm.Render.loadAnim(Falling, "Sprites/Player/Falling.png", 4, 1));
+
     }
 
     public void update(float delta, List<Rectangle> Colls) {
@@ -40,7 +74,11 @@ public class PlayerPlatformer {
         Vector2 pos = new Vector2(Velocity.x*delta, Velocity.y*delta);
 
         if (ifColliding(new Vector2(0, -0.01f))) { // provides Friction when you are on the ground
-            Velocity.x += Velocity.x*-1 * 0.04f;
+            if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D)) { //KeyHit
+
+            } else {
+                Velocity.x += Velocity.x*-1 * 0.1f;
+            }
         }
 
         if (pos.x < 0) { //Moving left
@@ -58,7 +96,8 @@ public class PlayerPlatformer {
         }
 
         if (pos.y < 0) { // Moving down
-            if (checkCollision(Coords.x, Coords.y - (pos.y*-1))) {
+            if (checkCollision(Coords.x, Coords.y - (pos.y*-1))) { // Landed
+                numberJumps = 2;
                 Velocity.y = 0;
             } else {
                 Coords.y -= (Velocity.y*delta*-1);
@@ -71,16 +110,18 @@ public class PlayerPlatformer {
             }
         }
 
+        //Calculate the AnimState
+
     }
 
     public void MovePlayerVelocity(Direction direction, float delta) {
         float speed = 5;
         if (direction == Direction.left && Velocity.x > 0) { // if you want to go left, but are moving right
-            Velocity.x += Velocity.x*-1 * 0.2f;
+            Velocity.x += Velocity.x*-1 * 0.5f;
             //Velocity.x -= 3;
         }
         if (direction == Direction.right && Velocity.x < 0) { // if you want to go right, but are moving left
-            Velocity.x += Velocity.x*-1 * 0.2f;
+            Velocity.x += Velocity.x*-1 * 0.5f;
             //Velocity.x += 3;
         }
 
@@ -94,8 +135,12 @@ public class PlayerPlatformer {
         }
 
         if (Math.abs(tempVelocity.y) < 10) {
-            if(direction == Direction.up)
-                Velocity.y += (jumpSpeed * speed) * delta;
+            if(direction == Direction.up){
+                if (numberJumps > 0) {
+                    Velocity.y += (jumpSpeed * speed) * delta;
+                    numberJumps--;
+                }
+            }
         }
 
 
@@ -105,7 +150,7 @@ public class PlayerPlatformer {
     }
 
     private boolean checkCollision(float posx, float posy) {
-        RectPla = new Rectangle(posx, posy, 0.9f, 0.9f);
+        RectPla = new Rectangle(posx, posy, 0.99f, 0.99f);
         RectPla.setCenter(RectPla.x + RectPla.getWidth()/2, RectPla.y + RectPla.getHeight()/2);
         for(int i = 0; i < Collisions.size(); i++) {
             if (RectPla.overlaps(Collisions.get(i))) {
@@ -124,6 +169,30 @@ public class PlayerPlatformer {
             }
         }
         return false;
+    }
+
+    public void draw(SpriteBatch g, float time) {
+        switch (AnimState) {
+            case Standing:
+                TextureRegion currentFrame = StandingAnimation.getKeyFrame(time, true);
+
+                g.draw(currentFrame, Coords.x*64, Coords.y*64, (64), (64));
+                break;
+
+            case Falling:
+                //Do nothing
+                break;
+
+            case Walking:
+
+                break;
+
+            case Running:
+
+                break;
+
+
+        }
     }
 
 }
