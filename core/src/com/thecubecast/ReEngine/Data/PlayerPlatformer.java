@@ -23,6 +23,9 @@ public class PlayerPlatformer {
     private int Size;
     public float mSpeed = 4;
     public float jumpSpeed = 70;
+    
+    float width = 0.9f;
+    float height = 1.9f;
     Rectangle RectPla;
     public float angle = 0;
 
@@ -48,6 +51,7 @@ public class PlayerPlatformer {
         left, right, up, down
     }
 
+    public boolean Facing = false; //true is left
     public enum AnimationState {
         Standing, Walking, Running, Jumping, Falling
     }
@@ -111,6 +115,11 @@ public class PlayerPlatformer {
         }
 
         //Calculate the AnimState
+        if(Math.abs(Velocity.x) > 0) {
+            AnimState = AnimationState.Walking;
+        } else {
+            AnimState = AnimationState.Standing;
+        }
 
     }
 
@@ -147,10 +156,16 @@ public class PlayerPlatformer {
         //Velocity.x += (moveDir.x * speed) * delta;
         //Velocity.y += (moveDir.y * speed) * delta;
 
+
+        if (direction == Direction.left) {
+            Facing = true;
+        } else if (direction == Direction.right) {
+            Facing = false;
+        }
     }
 
     private boolean checkCollision(float posx, float posy) {
-        RectPla = new Rectangle(posx, posy, 0.99f, 0.99f);
+        RectPla = new Rectangle(posx, posy, width, height);
         RectPla.setCenter(RectPla.x + RectPla.getWidth()/2, RectPla.y + RectPla.getHeight()/2);
         for(int i = 0; i < Collisions.size(); i++) {
             if (RectPla.overlaps(Collisions.get(i))) {
@@ -161,7 +176,7 @@ public class PlayerPlatformer {
     }
 
     public boolean ifColliding (Vector2 direction) {
-        RectPla = new Rectangle(Coords.x + direction.x, Coords.y + direction.y, 0.9f, 0.9f);
+        RectPla = new Rectangle(Coords.x + direction.x, Coords.y + direction.y, width, height);
         RectPla.setCenter(RectPla.x + RectPla.getWidth()/2, RectPla.y + RectPla.getHeight()/2);
         for(int i = 0; i < Collisions.size(); i++) {
             if (RectPla.overlaps(Collisions.get(i))) {
@@ -172,26 +187,27 @@ public class PlayerPlatformer {
     }
 
     public void draw(SpriteBatch g, float time) {
+        TextureRegion currentFrame;
         switch (AnimState) {
             case Standing:
-                TextureRegion currentFrame = StandingAnimation.getKeyFrame(time, true);
-
-                g.draw(currentFrame, Coords.x*64, Coords.y*64, (64), (64));
+                currentFrame = StandingAnimation.getKeyFrame(time, true);
+                g.draw(currentFrame, Facing ? Coords.x*(Size) + (Size) : Coords.x*Size, Coords.y*Size, Facing ? -(Size) : (Size), (Size*2));
                 break;
 
             case Falling:
                 //Do nothing
+                //g.draw(currentFrame, Facing ? Coords.x*(Size) + (Size) : Coords.x*Size, Coords.y*Size, Facing ? -(Size) : (Size), (Size*2));
                 break;
 
             case Walking:
-
+                currentFrame = WalkingAnimation.getKeyFrame(time * Math.abs(Velocity.x), true);
+                g.draw(currentFrame, Facing ? Coords.x*(Size) + (Size) : Coords.x*Size, Coords.y*Size, Facing ? -(Size) : (Size), (Size*2));
                 break;
 
             case Running:
-
+                currentFrame = RunningAnimation.getKeyFrame(time, true);
+                g.draw(currentFrame, Facing ? Coords.x*(Size) + (Size) : Coords.x*Size, Coords.y*Size, Facing ? -(Size) : (Size), (Size*2));
                 break;
-
-
         }
     }
 

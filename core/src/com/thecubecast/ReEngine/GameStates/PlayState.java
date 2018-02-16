@@ -88,7 +88,7 @@ public class PlayState extends GameState {
                 if (tiledBits.getBitTileObject().realTile.get(y)[x] == 1) {
 
                 } else if ((tiledBits.getBitTileObject().realTile.get(y)[x] == 3)) {
-                    Collisions.add(new Rectangle(x, y, 1, 1));
+                    Collisions.add(new Rectangle(x, y, 1, 0.99f));
                 }
             }
         }
