@@ -7,6 +7,7 @@ import java.awt.GraphicsEnvironment;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class Common {
 	
@@ -53,5 +54,14 @@ public class Common {
 		double angleRadians = Math.atan2(point.y-center.y,point.x-center.x);
 		float angleDegrees = (float) (angleRadians * MathUtils.radiansToDegrees)*-1;
 		return angleDegrees;
+	}
+
+	public static void updategsmValues(GameStateManager gsm, Vector3 pos) {
+		gsm.MouseX = (int) pos.x;
+		gsm.MouseY = (int) pos.y;
+		gsm.MouseClick[1] = (int) pos.x;
+		gsm.MouseClick[2] = (int) pos.y;
+		gsm.MouseDrag[1] = (int) pos.x;
+		gsm.MouseDrag[2] = (int) pos.y;
 	}
 }

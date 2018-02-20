@@ -12,17 +12,16 @@
     <orderEntry type="module" module-name="core_main" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-backend-lwjgl3:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.8" level="project" />
-    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-controllers-desktop:1.9.8" level="project" />
-    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-controllers-platform:natives-desktop:1.9.8" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-controllers-lwjgl3:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-box2d-platform:natives-desktop:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: kryonet:kryonet:2.21" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.6" level="project" />
     <orderEntry type="library" name="Gradle: com.esotericsoftware.kryo:kryo:2.24.0" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx:1.9.8" level="project" />
-    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-controllers:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-box2d:1.9.8" level="project" />
-    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-ai:1.8.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-ai:1.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.MinnDevelopment:Java-DiscordRPC:-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.2" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl:3.1.3" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl:natives-windows:3.1.3" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl:natives-linux:3.1.3" level="project" />
@@ -45,6 +44,7 @@
     <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-openal:natives-macos:3.1.3" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.jlayer:jlayer:1.0.1-gdx" level="project" />
     <orderEntry type="library" name="Gradle: org.jcraft:jorbis:0.0.17" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-controllers:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: com.esotericsoftware.reflectasm:reflectasm:shaded:1.07" level="project" />
     <orderEntry type="library" name="Gradle: com.esotericsoftware.minlog:minlog:1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.objenesis:objenesis:2.1" level="project" />

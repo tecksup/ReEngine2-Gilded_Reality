@@ -276,10 +276,10 @@ public class ReadWrite {
         		" </layer>\r\n" + 
         		" <layer height=\"" + height + "\" name=\"TILES\" width=\"" + width + "\">\r\n" + 
         		"<properties>\r\n" + 
-        		"   <property name=\"Cash\" type=\"int\" value=\"" + player.Cash + "\"/>\r\n" + 
-        		"   <property name=\"Fuel\" type=\"float\" value=\"" + player.Gas + "\"/>\r\n" + 
-        		"   <property name=\"SavedX\" type=\"float\" value=\"" + player.getLocation()[0] + "\"/>\r\n" + //DEFAULT WAS 30
-        		"   <property name=\"SavedY\" type=\"float\" value=\"" + player.getLocation()[1] + "\"/>\r\n" +   //DEFAULT IS height-12
+        		"   <property name=\"Cash\" type=\"int\" value=\""  + "\"/>\r\n" +
+        		"   <property name=\"Fuel\" type=\"float\" value=\"" +  "\"/>\r\n" +
+        		"   <property name=\"SavedX\" type=\"float\" value=\"" +  "\"/>\r\n" + //DEFAULT WAS 30
+        		"   <property name=\"SavedY\" type=\"float\" value=\"" + "\"/>\r\n" +   //DEFAULT IS height-12
         		"  </properties>" + 
         		"  <data encoding=\"csv\">");
         

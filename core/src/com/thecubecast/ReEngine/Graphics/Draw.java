@@ -491,7 +491,7 @@ public class Draw {
 		return SliderValuetemp;
 	}
 	
-	public static ShapeRenderer debugRenderer = new ShapeRenderer();
+	public ShapeRenderer debugRenderer = new ShapeRenderer();
 
     public void DrawDebugLine(Vector2 start, Vector2 end, int lineWidth, Color color, Matrix4 projectionMatrix)
     {

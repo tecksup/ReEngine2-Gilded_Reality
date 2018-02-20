@@ -6,6 +6,7 @@
 
 package com.thecubecast.ReEngine.Data;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.thecubecast.ReEngine.GameStates.*;
 import com.thecubecast.ReEngine.Graphics.Draw;
@@ -14,12 +15,16 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 
+import java.awt.*;
+
 public class GameStateManager {
+
+    public controlerManager ctm;
 
 	public boolean Debug = false;
 
     public enum State {
-        INTRO, MENU, PLAY, LOADING, OPTIONS, TEST, SHADER, MULTIPLAYER
+        INTRO, MENU, PLAY, LOADING, OPTIONS, TEST, SHADER, MULTIPLAYER, PLATFORMER
     }
 
     public State newcurrentState;
@@ -30,8 +35,9 @@ public class GameStateManager {
 	
 	public String Username;
 	public String IpAdress = "localhost";
-	
+
 	public float CurrentTime;
+	public float DeltaTime;
 	
 	//Public render function object
 	public Draw Render;
@@ -58,6 +64,8 @@ public class GameStateManager {
 	public int Height;
 	
 	public GameStateManager() {
+
+        ctm = new controlerManager();
 
 		DiscordManager = new Discord("405784101245943810");
 
@@ -104,9 +112,6 @@ public class GameStateManager {
                 gameState.init();
                 break;
             case TEST:
-                Common.print("Loaded state Test");
-                gameState = new TestState(this);
-                gameState.init();
                 break;
             case SHADER:
                 Common.print("Loaded state ShaderTest");
@@ -118,6 +123,11 @@ public class GameStateManager {
                 gameState = new MultiplayerTestState(this);
                 gameState.init();
                 break;
+			case PLATFORMER:
+				Common.print("Loaded state PlatformerTestState");
+				gameState = new PlatformerTestState(this);
+				gameState.init();
+				break;
         }
 		
 	}
@@ -147,14 +157,21 @@ public class GameStateManager {
 		Audio.update();
 
 		DiscordManager.UpdatePresence();
+		ctm.update();
 	}
 	
 	public void draw(SpriteBatch bbg, int W, int H, float Time) {
 		Width = W;
 		Height = H;
 		CurrentTime = Time;
+		DeltaTime = Math.min(Gdx.graphics.getDeltaTime(), 1f / 60f);
 		if(gameState != null) {
 			gameState.draw(bbg, H, W, Time);
+			if(Debug) {
+				bbg.begin();
+				Render.GUIDrawText(bbg, 0, 100, Color.YELLOW, "" + Gdx.graphics.getFramesPerSecond());
+				bbg.end();
+			}
 		}
 	}
 	

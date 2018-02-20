@@ -34,7 +34,7 @@ public class ServerTmxMapLoader extends TmxMapLoader
         FileHandle tmxFile = resolve(fileName);
         try {
             root = xml.parse(tmxFile);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -100,9 +100,9 @@ public class ServerTmxMapLoader extends TmxMapLoader
             XmlReader.Element element = root.getChild(i);
             String name = element.getName();
             if (name.equals("layer")) {
-                loadTileLayer(map, element);
+                loadTileLayer(map, map.getLayers(), element);
             } else if (name.equals("objectgroup")) {
-                loadObjectGroup(map, element);
+                loadObjectGroup(map, map.getLayers(), element);
             }
         }
         return map;
@@ -149,7 +149,7 @@ public class ServerTmxMapLoader extends TmxMapLoader
                     }
                 } catch (SerializationException e) {
                     throw new GdxRuntimeException("Error parsing external tileset.");
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {

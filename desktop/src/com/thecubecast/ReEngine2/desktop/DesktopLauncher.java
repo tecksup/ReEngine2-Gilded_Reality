@@ -6,6 +6,7 @@ import java.awt.GraphicsEnvironment;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Window;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowListener;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.mainclass;
@@ -21,6 +22,11 @@ public class DesktopLauncher {
 		final Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration ();
 
 		config.setWindowListener(new Lwjgl3WindowListener() {
+
+			@Override
+			public void created(Lwjgl3Window window) {
+
+			}
 
 			@Override
 			public void iconified(boolean isIconified) {
@@ -79,6 +85,7 @@ public class DesktopLauncher {
 		}
 		config.setWindowIcon("icon.png");
 		config.setTitle("ReEngine");
+		config.useVsync(true);
 		new Lwjgl3Application(new mainclass(), config);
 	}
 	

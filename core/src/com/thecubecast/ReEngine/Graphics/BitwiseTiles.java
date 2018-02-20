@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 public class BitwiseTiles {
 
     TiledMap tiledMap;
-    private bitTileObject bitTileObject;
+    public List<bitTileObject> bitTileObjectLayers = new ArrayList<>();
 
     //List<short[]> xcoord = new ArrayList<short[]>();
 
@@ -32,19 +32,15 @@ public class BitwiseTiles {
 
 
     List<TextureRegion[]> bitTiles = new ArrayList<TextureRegion[]>();
-    TextureRegion[] bitTilesgrass;
-    TextureRegion[] bitTilesdirt;
-    TextureRegion[] bitTilesstone;
 
     public BitwiseTiles(TiledMap map) {
-        bitTileObject = new bitTileObject();
+
+        //calculate the map bitwise operations
+        calculate(map);
 
         //The Size of the images
         int Rows = 4;
         int Cols = 4;
-
-        //calculate the map bitwise operations
-        calculate(map);
 
         Path imagePath = Paths.get("Sprites/bitWise");
 
@@ -63,12 +59,31 @@ public class BitwiseTiles {
                     TexSheet.getWidth() / Cols,
                     TexSheet.getHeight() / Rows);
 
-            int index = 0;
+           /* int index = 0;
             for (int l = 0; l < Rows; l++) {
                 for (int j = 0; j < Cols; j++) {
                     temp[index++] = tmp[l][j];
                 }
             }
+            */
+
+            temp[6] = tmp[0][0];
+            temp[14] = tmp[0][1];
+            temp[12] = tmp[0][2];
+            temp[4] = tmp[0][3];
+            temp[7] = tmp[1][0];
+            temp[15] = tmp[1][1];
+            temp[13] = tmp[1][2];
+            temp[5] = tmp[1][3];
+            temp[3] = tmp[2][0];
+            temp[11] = tmp[2][1];
+            temp[9] = tmp[2][2];
+            temp[1] = tmp[2][3];
+            temp[2] = tmp[3][0];
+            temp[10] = tmp[3][1];
+            temp[8] = tmp[3][2];
+            temp[0] = tmp[3][3];
+
             bitTiles.add(temp);
         }
 
@@ -76,59 +91,112 @@ public class BitwiseTiles {
 
     public void calculate(TiledMap map) { // Will update the bitwise table
         tiledMap = map;
-        TiledMapTileLayer TileLayer = (TiledMapTileLayer)tiledMap.getLayers().get(0);
 
-        //Stone is 1
-        //Sand is 2
-        //Dirt is 3
-        //Stone will only merge with dirt, not sand, therefore only 1 bitwise tile to check
+        Common.print("map Layers: " + tiledMap.getLayers().getCount());
 
-        for (int y = 0; y < TileLayer.getHeight(); y++) {
-            short[] temp2 = new short[TileLayer.getHeight()];
-            short[] tempReal = new short[TileLayer.getHeight()];
-            for(int x = 0; x < TileLayer.getWidth(); x++) {
-                int TileCheck = TileLayer.getCell(x, y).getTile().getId();
+        for (int layer = 0; layer < tiledMap.getLayers().getCount(); layer++) {
 
-                if (true) {
-                    short id = 0;
-                    if (TileLayer.getCell(x, y+1) == null) {}
-                    else if (TileCheck == TileLayer.getCell(x, y+1).getTile().getId()) {
-                        id += 1;
+            TiledMapTileLayer TileLayer = (TiledMapTileLayer)tiledMap.getLayers().get(layer);
+            bitTileObject tempbitTile = new bitTileObject();
+
+            //Stone is 1
+            //Sand is 2
+            //Dirt is 3
+            //Stone will only merge with dirt, not sand, therefore only 1 bitwise tile to check
+
+            //Common.print("map Width: " + TileLayer.getWidth());
+            //Common.print("map Height: " + TileLayer.getHeight());
+
+            for (int y = 0; y < TileLayer.getHeight(); y++) {
+                short[] temp2 = new short[TileLayer.getHeight()];
+                short[] tempReal = new short[TileLayer.getHeight()];
+                for (int x = 0; x < TileLayer.getWidth(); x++) {
+                    if (TileLayer.getCell(x, y) == null) {
+                        tempReal[x] += -1;
+                        temp2[x] = -1;
+                        continue;
                     }
 
-                    if (TileLayer.getCell(x+1, y) == null) {}
-                    else if (TileCheck == TileLayer.getCell(x+1, y).getTile().getId()) {
-                        id += 2;
-                    }
+                    int TileCheck = TileLayer.getCell(x, y).getTile().getId();
 
-                    if (TileLayer.getCell(x, y-1) == null) {}
-                    else if (TileCheck == TileLayer.getCell(x, y-1).getTile().getId()) {
-                        id += 4;
-                    }
+                    if (true) {
+                        short id = 0;
+                        if (TileLayer.getCell(x, y + 1) == null) {
+                        } else if (TileCheck == TileLayer.getCell(x, y + 1).getTile().getId()) {
+                            id += 1;
+                        }
 
-                    if (TileLayer.getCell(x-1, y) == null) {}
-                    else if (TileCheck == TileLayer.getCell(x-1, y).getTile().getId()) {
-                        id += 8;
-                    }
+                        if (TileLayer.getCell(x + 1, y) == null) {
+                        } else if (TileCheck == TileLayer.getCell(x + 1, y).getTile().getId()) {
+                            id += 2;
+                        }
 
-                    tempReal[x] += TileLayer.getCell(x, y).getTile().getId();
-                    temp2[x] = id;
-                    String s2 = String.format("%8s", Integer.toBinaryString(id & 0xFF)).replace(' ', '0');
-                    Common.print("id is " + s2 + " or " + id + " at (" + x + "," + y + ") from tile " + TileLayer.getCell(x, y).getTile().getId());
+                        if (TileLayer.getCell(x, y - 1) == null) {
+                        } else if (TileCheck == TileLayer.getCell(x, y - 1).getTile().getId()) {
+                            id += 4;
+                        }
+
+                        if (TileLayer.getCell(x - 1, y) == null) {
+                        } else if (TileCheck == TileLayer.getCell(x - 1, y).getTile().getId()) {
+                            id += 8;
+                        }
+
+                        tempReal[x] += TileLayer.getCell(x, y).getTile().getId();
+                        temp2[x] = id;
+                        String s2 = String.format("%8s", Integer.toBinaryString(id & 0xFF)).replace(' ', '0');
+                        Common.print("id is " + s2 + " or " + id + " at (" + x + "," + y + ") from tile " + TileLayer.getCell(x, y).getTile().getId());
+                    }
                 }
+                tempbitTile.height = TileLayer.getHeight();
+                tempbitTile.width = TileLayer.getWidth();
+                tempbitTile.BitTiles.add(temp2);
+                tempbitTile.realTile.add(tempReal);
             }
-            Common.print("map Width: " + TileLayer.getWidth());
-            Common.print("map Height: " + TileLayer.getHeight());
-            bitTileObject.height = TileLayer.getHeight();
-            bitTileObject.width = TileLayer.getWidth();
-            bitTileObject.BitTiles.add(temp2);
-            bitTileObject.realTile.add(tempReal);
+
+            bitTileObjectLayers.add(tempbitTile);
         }
     }
 
     public void draw(SpriteBatch batch, int tileSize, float time) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
-        for (int y = 0; y < bitTileObject.realTile.size(); y++) {
-            for(int x = 0; x < bitTileObject.realTile.get(y).length; x++) {
+        for (int layer = 0; layer < bitTileObjectLayers.size(); layer++) {
+            for (int y = 0; y < bitTileObjectLayers.get(layer).realTile.size(); y++) {
+                for(int x = 0; x < bitTileObjectLayers.get(layer).realTile.get(y).length; x++) {
+
+                    //bitTileObject.BitTiles.get(y)[x] that is the bitTile
+                    //bitTileObject.realTile.get(y)[x] is the tile type
+
+                    //Common.print("Real Tile is " + bitTileObject.realTile.get(y)[x]);
+                    //Common.print("Bit Tile is " + bitTileObject.BitTiles.get(y)[x]);
+
+                    if (bitTileObjectLayers.get(layer).BitTiles.get(y)[x] == -1) {
+                        continue;
+                    }
+
+                    int RealTile = bitTileObjectLayers.get(layer).realTile.get(y)[x];
+                    int BitDirectionright = bitTileObjectLayers.get(layer).BitTiles.get(y)[x] & 0b1111;
+                    int BitDirectionleft = bitTileObjectLayers.get(layer).BitTiles.get(y)[x] >> 4;
+
+                    if (BitDirectionleft > 0)
+                        batch.draw(bitTiles.get(RealTile-1)[BitDirectionleft+16], x*tileSize, y*tileSize);
+                    else // THIS RUNS BY DEFAULT
+                        if (RealTile == 4) { // So we can animate special tiles
+
+                        } else {
+
+                        }
+                    batch.draw(bitTiles.get(RealTile-1)[BitDirectionright], x*tileSize, y*tileSize);
+                    //batch.draw(bitTiles.get(RealTile-1)[bitTileObject.BitTiles.get(y)[x]], x*tileSize,	y*tileSize,	0, 0, bitTiles.get(RealTile-1)[0].getRegionWidth(), bitTiles.get(RealTile-1)[0].getRegionHeight(), 1, 1,0);
+
+
+
+                }
+            }
+        }
+    }
+
+    public void drawLayer(SpriteBatch batch, int tileSize, float time, int layer) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
+        for (int y = 0; y < bitTileObjectLayers.get(layer).realTile.size(); y++) {
+            for(int x = 0; x < bitTileObjectLayers.get(layer).realTile.get(y).length; x++) {
 
                 //bitTileObject.BitTiles.get(y)[x] that is the bitTile
                 //bitTileObject.realTile.get(y)[x] is the tile type
@@ -136,9 +204,13 @@ public class BitwiseTiles {
                 //Common.print("Real Tile is " + bitTileObject.realTile.get(y)[x]);
                 //Common.print("Bit Tile is " + bitTileObject.BitTiles.get(y)[x]);
 
-                int RealTile = bitTileObject.realTile.get(y)[x];
-                int BitDirectionright = bitTileObject.BitTiles.get(y)[x] & 0b1111;
-                int BitDirectionleft = bitTileObject.BitTiles.get(y)[x] >> 4;
+                if (bitTileObjectLayers.get(layer).BitTiles.get(y)[x] == -1) {
+                    continue;
+                }
+
+                int RealTile = bitTileObjectLayers.get(layer).realTile.get(y)[x];
+                int BitDirectionright = bitTileObjectLayers.get(layer).BitTiles.get(y)[x] & 0b1111;
+                int BitDirectionleft = bitTileObjectLayers.get(layer).BitTiles.get(y)[x] >> 4;
 
                 if (BitDirectionleft > 0)
                     batch.draw(bitTiles.get(RealTile-1)[BitDirectionleft+16], x*tileSize, y*tileSize);
@@ -148,7 +220,7 @@ public class BitwiseTiles {
                     } else {
 
                     }
-                    batch.draw(bitTiles.get(RealTile-1)[BitDirectionright], x*tileSize, y*tileSize);
+                batch.draw(bitTiles.get(RealTile-1)[BitDirectionright], x*tileSize, y*tileSize);
                 //batch.draw(bitTiles.get(RealTile-1)[bitTileObject.BitTiles.get(y)[x]], x*tileSize,	y*tileSize,	0, 0, bitTiles.get(RealTile-1)[0].getRegionWidth(), bitTiles.get(RealTile-1)[0].getRegionHeight(), 1, 1,0);
 
 
@@ -157,7 +229,7 @@ public class BitwiseTiles {
         }
     }
 
-    public bitTileObject getBitTileObject() {
-        return bitTileObject;
+    public bitTileObject getBitTileObject(int layer) {
+        return bitTileObjectLayers.get(layer);
     }
 }

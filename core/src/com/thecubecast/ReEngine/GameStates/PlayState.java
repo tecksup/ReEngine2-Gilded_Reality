@@ -25,18 +25,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.thecubecast.ReEngine.Data.Achievement;
-import com.thecubecast.ReEngine.Data.Common;
-import com.thecubecast.ReEngine.Data.GameStateManager;
-import com.thecubecast.ReEngine.Data.PlayerPlatformer;
+import com.thecubecast.ReEngine.Data.*;
 import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
+import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.thecubecast.ReEngine.Data.Common.updategsmValues;
+
 public class PlayState extends GameState {
 
-    PlayerPlatformer Player;
+    Player player;
 
     private Skin skin;
     private Stage stage;
@@ -54,7 +54,8 @@ public class PlayState extends GameState {
 
     OrthographicCamera camera;
     Rectangle cameraBounds;
-    ShaderProgram shaderProgram;
+    ScreenShakeCameraController shaker;
+
     SpriteBatch guiBatch;
 
     ParticleEffect pe;
@@ -73,8 +74,9 @@ public class PlayState extends GameState {
     }
 
     public void init() {
-        Player = new PlayerPlatformer(64, new Vector2(0, -9), gsm);
-        gsm.DiscordManager.setPresenceDetails("Multiplayer Demo - Level 1");
+
+        player = new Player(64, gsm);
+        gsm.DiscordManager.setPresenceDetails("topdown Demo - Level 1");
         gsm.DiscordManager.setPresenceState("In Game");
         gsm.DiscordManager.getPresence().largeImageText = "Level 1";
         gsm.DiscordManager.getPresence().startTimestamp = System.currentTimeMillis() / 1000;;
@@ -83,12 +85,16 @@ public class PlayState extends GameState {
         tiledMap = new TmxMapLoader().load("Saves/BITWISE/map.tmx");
         tiledBits = new BitwiseTiles(tiledMap);
 
-        for (int y = 0; y < tiledBits.getBitTileObject().realTile.size(); y++) {
-            for(int x = 0; x < tiledBits.getBitTileObject().realTile.get(y).length; x++) {
-                if (tiledBits.getBitTileObject().realTile.get(y)[x] == 1) {
+        for (int y = 0; y < tiledBits.getBitTileObject(1).realTile.size(); y++) {
+            for(int x = 0; x < tiledBits.getBitTileObject(0).realTile.get(y).length; x++) {
+                if (tiledBits.getBitTileObject(1).realTile.get(y)[x] == 1) {
 
-                } else if ((tiledBits.getBitTileObject().realTile.get(y)[x] == 3)) {
-                    Collisions.add(new Rectangle(x, y, 1, 0.99f));
+                } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 4)) { //Rock
+                    Collisions.add(new Rectangle(x, y, 1, 0.5f));
+                }
+
+                else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 3)) { //Bush (stupid grass block)
+                    Collisions.add(new Rectangle(x, y, 1, 1));
                 }
             }
         }
@@ -108,18 +114,15 @@ public class PlayState extends GameState {
         camera = new OrthographicCamera();
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        camera.position.set((Player.Coords.x*65), (Player.Coords.y*65), camera.position.z);
+        camera.position.set((player.Coords.x*65), (player.Coords.y*65), camera.position.z);
         position = camera.position;
+
+        shaker = new ScreenShakeCameraController(camera);
 
         MenuInit();
 
         //SETUP SCENE2D INPUT
         Gdx.input.setInputProcessor(stage);
-
-        //Setup the Shaders
-        String vertexShader = Gdx.files.internal("testShader/vertex.glsl").readString();
-        String fragmentShader = Gdx.files.internal("testShader/fragment.glsl").readString();
-        shaderProgram = new ShaderProgram(vertexShader,fragmentShader);
 
         //SETUP THE PARTICLES
         pe = new ParticleEffect();
@@ -130,13 +133,14 @@ public class PlayState extends GameState {
     }
 
     public void update() {
+        shaker.update(gsm.DeltaTime);
         handleInput();
 
         long time = System.nanoTime();
         deltaTime = (int) ((time - last_time) / 1000000);
         last_time = time;
 
-        Player.update(Gdx.graphics.getDeltaTime(), Collisions);
+        player.update(gsm.DeltaTime, Collisions);
 
         camera.update();
 
@@ -153,30 +157,16 @@ public class PlayState extends GameState {
         RenderCam();
 
         g.begin();
-        g.setProjectionMatrix(camera.combined);
+        g.setProjectionMatrix(shaker.getCombinedMatrix());
+        //g.setProjectionMatrix(camera.combined);
 
-        tiledBits.draw(g, 64, Time);
+        tiledBits.drawLayer(g, 64, Time,0);
 
-        //gsm.Render.DrawAny(g, tile, "Tiles", Common.roundDown((player.getLocation()[0]+1*64)),  Common.roundDown((player.getLocation()[1]*64)));
-        //gsm.Render.GUIDrawText(g, Common.roundDown((player.getLocation()[0]+1*64)),  Common.roundDown((player.getLocation()[1]*64)-40), "" + tile);
-        //g.draw(gsm.Render.Images[03], 0, 0, width, height);
+        player.draw(g, Time);
 
-        /*
-        if (network.GetUsers().size() != 0) {
-            for(int l=0; l< network.GetUsers().size(); l++){
-                gsm.Render.GUIDrawText(g, Common.roundDown((network.GetUsers().get(l).x*64)), Common.roundDown((network.GetUsers().get(l).y*64)), Color.BLACK, network.GetUsers().get(l).username);
-                g.draw(gsm.Render.GUI[24], network.GetUsers().get(l).x*64,	network.GetUsers().get(l).y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, network.GetUsers().get(l).angle, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
-            }
+        tiledBits.drawLayer(g, 64, Time,1);
 
-        }
-        */
-
-        //g.draw(gsm.Render.Tiles[80], Player.Coords.x*64,	Player.Coords.y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, Player.angle, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
-        //g.draw(gsm.Render.Tiles[80], Player.Coords.x*64,	Player.Coords.y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, 0, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
-
-        Player.draw(g, Time);
-
-        pe.update(Gdx.graphics.getDeltaTime());
+        pe.update(gsm.DeltaTime);
         //g.setShader(shaderProgram);
         pe.draw(g);
         //g.setShader(null);
@@ -226,21 +216,18 @@ public class PlayState extends GameState {
 
         int size = 64;
 
-        Rectangle player = new Rectangle(Player.Coords.x, Player.Coords.y, 1, 1);
-        player.setCenter(player.x + player.getWidth()/2, player.y + player.getHeight()/2);
+        Rectangle playerrect = new Rectangle(player.Coords.x, player.Coords.y, 1, 1);
+        playerrect.setCenter(playerrect.x + playerrect.getWidth()/2, playerrect.y + playerrect.getHeight()/2);
 
         if (gsm.Debug) {
             gsm.Render.debugRenderer.setProjectionMatrix(camera.combined);
             gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
             gsm.Render.debugRenderer.setColor(Color.GREEN);
-            gsm.Render.debugRenderer.rect(player.x*64, player.y*64, player.width*64, player.height*64);
+            gsm.Render.debugRenderer.rect(playerrect.x*64, playerrect.y*64, playerrect.width*64, playerrect.height*64);
             gsm.Render.debugRenderer.setColor(Color.YELLOW);
             gsm.Render.debugRenderer.rect(cameraBounds.x, cameraBounds.y, (cameraBounds.width), (cameraBounds.height));
             gsm.Render.debugRenderer.setColor(Color.RED);
             Collisions.forEach( number -> gsm.Render.debugRenderer.rect(number.x *64, number.y *64, (number.width)*64, (number.height)*64));
-            for(int i = 0; i < Collisions.size(); i++) {
-                //gsm.Render.debugRenderer.rect(Collisions.get(i).x *64, Collisions.get(i).y *64, (Collisions.get(i).width)*64, (Collisions.get(i).height)*64);
-            }
 
             gsm.Render.debugRenderer.end();
 
@@ -263,12 +250,12 @@ public class PlayState extends GameState {
         cameraBounds = new Rectangle(camera.position.x - camera.viewportWidth/2 ,camera.position.y - camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight);
 
         if (tempx >= 0) {
-            if(tempx + cameraBounds.getWidth() <= tiledBits.getBitTileObject().width*64*4) {
+            if(tempx + cameraBounds.getWidth() <= tiledBits.getBitTileObject(0).width*64*4) {
                 position.x += (playerx*64 - position.x) * lerp * deltaTime;
             }
         }
         if (tempy >= 0) {
-            if (tempy + cameraBounds.getHeight() <= tiledBits.getBitTileObject().height*64*4) {
+            if (tempy + cameraBounds.getHeight() <= tiledBits.getBitTileObject(0).height*64*4) {
                 position.y += (playery*64 - position.y) * lerp * deltaTime;
             }
         }
@@ -296,62 +283,112 @@ public class PlayState extends GameState {
 
         Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
         camera.unproject(pos);
-
-        gsm.MouseX = (int) pos.x;
-        gsm.MouseY = (int) pos.y;
-        gsm.MouseClick[1] = (int) pos.x;
-        gsm.MouseClick[2] = (int) pos.y;
-        gsm.MouseDrag[1] = (int) pos.x;
-        gsm.MouseDrag[2] = (int) pos.y;
-
-        Vector2 Location = new Vector2(Player.Coords.x, Player.Coords.y);
+        updategsmValues(gsm, pos);
 
         Vector2 center = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         Vector2 MousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        player.angle = Common.GetAngle(center, MousePos);
 
-        float angle = Common.GetAngle(center, MousePos);
 
-        Vector2 move = new Vector2(0,0);
+        Player.Direction[] temp = new Player.Direction[4];
+        boolean moving = false;
+
+        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f) {
+            Common.print("right");
+            temp[3] = Player.Direction.East;
+            moving = true;
+            player.MovePlayerVelocity(Player.Direction.East,5, gsm.DeltaTime);
+        } else if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) < -0.2f) {
+            Common.print("left");
+            temp[2] = Player.Direction.West;
+            moving = true;
+            player.MovePlayerVelocity(Player.Direction.West,5, gsm.DeltaTime);
+        }
+
+        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) > 0.2f) {
+            Common.print("down");
+            temp[1] = Player.Direction.South;
+            moving = true;
+            player.MovePlayerVelocity(Player.Direction.South,5, gsm.DeltaTime);
+        } else if (gsm.ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) < -0.2f) {
+            Common.print("up");
+            temp[0] = Player.Direction.North;
+            moving = true;
+            player.MovePlayerVelocity(Player.Direction.North,5, gsm.DeltaTime);
+        }
+
+        gsm.ctm.testInput();
+
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A)){
+            shaker.addDamage(.2f);
+        }
+
+        if (gsm.ctm.isButtonDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
+            //gsm.ctm.newController("xbox");
+        }
 
         if (Gdx.input.isKeyPressed(Keys.W)) { //KeyHit
-            //Player.MovePlayerVelocity(new Vector2(0, 10), 5, Gdx.graphics.getDeltaTime());
-            if (gsm.Debug) {
-                Player.Coords.y += 2;
-            } else {
-                //if (Player.ifColliding(new Vector2(0, -0.5f)))
-                    //Player.MovePlayerVelocity(PlayerPlatformer.Direction.up, Gdx.graphics.getDeltaTime());
-            }
+            temp[0] = Player.Direction.North;
+            moving = true;
+            player.MovePlayerVelocity(Player.Direction.North,5, gsm.DeltaTime);
         }
+
         if (Gdx.input.isKeyPressed(Keys.S)) { //KeyHit
-            //Player.MovePlayerVelocity(new Vector2(0, -1), 1, Gdx.graphics.getDeltaTime());
+            temp[1] = Player.Direction.South;
+            moving = true;
+            player.MovePlayerVelocity(Player.Direction.South,5, gsm.DeltaTime);
         }
 
         if (Gdx.input.isKeyPressed(Keys.A)) { //KeyHit
-            Player.MovePlayerVelocity(PlayerPlatformer.Direction.left, Gdx.graphics.getDeltaTime());
+            temp[2] = Player.Direction.West;
+            moving = true;
+            player.MovePlayerVelocity(Player.Direction.West,5, gsm.DeltaTime);
         }
         if (Gdx.input.isKeyPressed(Keys.D)) { //KeyHit
-            Player.MovePlayerVelocity(PlayerPlatformer.Direction.right, Gdx.graphics.getDeltaTime());
+            temp[3] = Player.Direction.East;
+            moving = true;
+            player.MovePlayerVelocity(Player.Direction.East,5, gsm.DeltaTime);
         }
 
-        if (Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.W)) { //KeyHit
-            Player.MovePlayerVelocity(PlayerPlatformer.Direction.up, Gdx.graphics.getDeltaTime());
-            //if (Player.ifColliding(new Vector2(0, -0.5f)))
-            //    Player.MovePlayerVelocity(PlayerPlatformer.Direction.up, Gdx.graphics.getDeltaTime());
+        //We send the player the correct cardinal direction
+        Player.Direction finalDirect = player.playerDirection;;
+
+        //Do the calculations
+        if (temp[0] != null && temp[1] != null) {
+            temp[0] = null;
+            temp[1] = null;
+        }
+        if (temp[2] != null && temp[3] != null) {
+            temp[2] = null;
+            temp[3] = null;
         }
 
-        if (Gdx.input.isKeyJustPressed(Keys.NUM_9)) {
-            String vertexShader = Gdx.files.internal("testShader/vertex.glsl").readString();
-            String fragmentShader = Gdx.files.internal("testShader/fragment.glsl").readString();
-            shaderProgram = new ShaderProgram(vertexShader,fragmentShader);
+        if (temp[0] != null) { //NORTH
+            if (temp[2] != null) { // WEST
+                finalDirect = Player.Direction.NorthWest;
+            }
+            if (temp[3] != null) { //EAST
+                finalDirect = Player.Direction.NorthEast;
+            }
+        } else if (temp[1] != null) { //SOUTH
+            if (temp[2] != null) { // WEST
+                finalDirect = Player.Direction.SouthWest;
+            }
+            if (temp[3] != null) { //EAST
+                finalDirect = Player.Direction.SouthEast;
+            }
+        } else {
+            finalDirect = player.playerDirection;
         }
 
-        //move(new Vector2(move.x, move.y), Location);
+        player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
 
-        //Player.Coords.x = Location.x;
-        //Player.Coords.y = Location.y;
-        Player.angle = angle;
+        //if (moving) {
+        //    player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
+        //}
 
-        FollowCam(camera, Player.Coords.x, Player.Coords.y, 0.01f);
+
+        FollowCam(camera, player.Coords.x, player.Coords.y, 0.01f);
     }
 
     public void reSize(SpriteBatch g, int H, int W) {
@@ -364,6 +401,7 @@ public class PlayState extends GameState {
         Matrix4 matrix = new Matrix4();
         matrix.setToOrtho2D(0, 0, W, H);
         guiBatch.setProjectionMatrix(matrix);
+        shaker.reSize(camera);
         //ShaderResize(W, H);
         //cameraGui.setToOrtho(false);
     }
@@ -404,7 +442,7 @@ public class PlayState extends GameState {
     }
 
     public void MenuDraw(SpriteBatch bbg, int width, int height, float Time) {
-        stage.act(Gdx.graphics.getDeltaTime());
+        stage.act(gsm.DeltaTime);
         stage.getRoot().draw(bbg, 1);
     }
 
