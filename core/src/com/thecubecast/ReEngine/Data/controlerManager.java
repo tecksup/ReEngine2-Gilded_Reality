@@ -12,6 +12,7 @@ import sun.security.ssl.Debug;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +50,19 @@ public class controlerManager implements ControllerListener {
     
     public controlerManager() {
         Gson gson = new Gson();
+        Controllers.addListener(this);
 
         //Search for config files in controllers folder
         File Directory = new File("Controllers");
         String[] extensions = new String[] { "json" };
+
+        if (!Files.isDirectory(Directory.toPath())) {
+            try {
+                Files.createDirectory(Directory.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         List<File> files = (List<File>) FileUtils.listFiles(Directory, extensions, true);
         for (File file : files) {
@@ -67,16 +77,11 @@ public class controlerManager implements ControllerListener {
             Types.add(typetemp);
         }
 
-        Controllers.addListener(this);
-
-        if(Controllers.getControllers().size == 0) {}
-        else {
-            for(int test2 = 0; test2 < Controllers.getControllers().size; test2++) {
-                String Output = "controller " + test2 + " connected is " + Controllers.getControllers().get(test2).getName();
-                Debug.println("CTM", Output);
-                eachController temp = new eachController(Controllers.getControllers().get(test2));
-                controllers.add(temp);
-            }
+        for(int test2 = 0; test2 < Controllers.getControllers().size; test2++) {
+            String Output = Controllers.getControllers().get(test2).getName() + " has connected!!";
+            Debug.println("CTM", Output);
+            eachController temp = new eachController(Controllers.getControllers().get(test2));
+            controllers.add(temp);
         }
 
 
@@ -91,7 +96,7 @@ public class controlerManager implements ControllerListener {
     }
 
     private Controller getController(int player) {
-        if (player < Controllers.getControllers().size) {
+        if (player < controllers.size()) {
             return Controllers.getControllers().get(player);
         } else {
             return Controllers.getControllers().first();
@@ -139,7 +144,7 @@ public class controlerManager implements ControllerListener {
 
     public void testInput() {
         for(int test = 0; test < 20; test++) {
-            for(int test2 = 0; test2 < Controllers.getControllers().size; test2++) {
+            for(int test2 = 0; test2 < controllers.size(); test2++) {
                 if (Controllers.getControllers().get(test2).getButton(test)) {
                     String Output = Controllers.getControllers().get(test2).getName() + " button " + test + " is down";
                     Debug.println("CTM", Output);
@@ -147,8 +152,8 @@ public class controlerManager implements ControllerListener {
             }
         }
 
-        for(int test = 0; test < 4; test++) {
-            for(int test2 = 0; test2 < Controllers.getControllers().size; test2++) {
+        for(int test = 0; test < 10; test++) {
+            for(int test2 = 0; test2 < controllers.size(); test2++) {
                 if (Math.abs(Controllers.getControllers().get(test2).getAxis(test)) > 0.2) {
                     String Output = Controllers.getControllers().get(test2).getName() + " axis " + test + " is " + Controllers.getControllers().get(test2).getAxis(test);
                     Debug.println("CTM", Output);
@@ -156,7 +161,7 @@ public class controlerManager implements ControllerListener {
             }
         }
         for(int test = 0; test < 10; test++) {
-            for(int test2 = 0; test2 < Controllers.getControllers().size; test2++) {
+            for(int test2 = 0; test2 < controllers.size(); test2++) {
                 if (Controllers.getControllers().get(test2).getPov(test) != PovDirection.center) {
                     String Output = Controllers.getControllers().get(test2).getName() + " Pov " + test + " is " + Controllers.getControllers().get(test2).getPov(test);
                     Debug.println("CTM", Output);
@@ -166,7 +171,7 @@ public class controlerManager implements ControllerListener {
     }
 
     public boolean isButtonDown(int player, buttons butt) {
-        if (player < Controllers.getControllers().size) {
+        if (player < controllers.size()) {
             if (Controllers.getControllers().get(player).getButton(getButtonToId(butt, player))) {
                 return true;
             } else {
@@ -178,7 +183,7 @@ public class controlerManager implements ControllerListener {
     }
 
     public boolean isButtonJustDown(int player, buttons butt) {
-        if (player < Controllers.getControllers().size) {
+        if (player < controllers.size()) {
             return controllers.get(player).justPressedbuttons[getButtonToId(butt,player)];
         } else {
             return false;
@@ -187,15 +192,32 @@ public class controlerManager implements ControllerListener {
 
 
     public float getAxis(int player, axisies axises) {
-        if (player < Controllers.getControllers().size) {
-            return Controllers.getControllers().get(player).getAxis(getAxisToId(axises, player));
-        } else {
-            return 0;
+        if (player < controllers.size()) {
+            for(int controllerTypes = 0; controllerTypes < Types.size(); controllerTypes++) {
+                if (Types.get(controllerTypes).Name.equals(controllers.get(player).controller.getName())) {
+                    if (axises == axisies.AXIS_LEFT_Y) {
+                        if (Types.get(controllerTypes).INVERT_LEFT_AXIS) {
+                            return Controllers.getControllers().get(player).getAxis(getAxisToId(axises, player)) * -1;
+                        } else {
+                            return Controllers.getControllers().get(player).getAxis(getAxisToId(axises, player));
+                        }
+                    } else if (axises == axisies.AXIS_RIGHT_Y) {
+                        if (Types.get(controllerTypes).INVERT_RIGHT_AXIS) {
+                            return Controllers.getControllers().get(player).getAxis(getAxisToId(axises, player)) * -1;
+                        }  else {
+                            return Controllers.getControllers().get(player).getAxis(getAxisToId(axises, player));
+                        }
+                    } else {
+                        return Controllers.getControllers().get(player).getAxis(getAxisToId(axises, player));
+                    }
+                }
+            }
         }
+        return 0;
     }
 
     public PovDirection getPov(int player, POVs povies) {
-        if (player < Controllers.getControllers().size) {
+        if (player < controllers.size()) {
             return Controllers.getControllers().get(player).getPov(getPOVToId(povies, player));
         } else {
             return PovDirection.center;
@@ -203,7 +225,7 @@ public class controlerManager implements ControllerListener {
     }
 
     private int getPOVToId(POVs POVies, int player) {
-        String type = Controllers.getControllers().get(player).getName();
+        String type = controllers.get(player).controller.getName();
 
         for(int controllerTypes = 0; controllerTypes < Types.size(); controllerTypes++) {
             if (Types.get(controllerTypes).Name.equals(type)) {
@@ -218,7 +240,7 @@ public class controlerManager implements ControllerListener {
     }
 
     private int getAxisToId(axisies axises, int player) {
-        String type = Controllers.getControllers().get(player).getName();
+        String type = controllers.get(player).controller.getName();
 
         for(int controllerTypes = 0; controllerTypes < Types.size(); controllerTypes++) {
             if (Types.get(controllerTypes).Name.equals(type)) {
@@ -244,7 +266,7 @@ public class controlerManager implements ControllerListener {
 
     private int getButtonToId(buttons butt, int player) {
 
-        String type = Controllers.getControllers().get(player).getName();
+        String type = controllers.get(player).controller.getName();
 
         for(int controllerTypes = 0; controllerTypes < Types.size(); controllerTypes++) {
             if (Types.get(controllerTypes).Name.equals(type)) {
@@ -289,8 +311,8 @@ public class controlerManager implements ControllerListener {
         String Output = controller.getName() + " has disconnected!!";
         Debug.println("CTM", Output);
         for(int i = 0; i < controllers.size(); i++) {
-            if(controllers.get(i).controller.hashCode() == controller.hashCode()) {
-                controllers.remove(controller);
+            if(controllers.get(i).controller.equals(controller)) {
+                controllers.remove(i);
             }
         }
     }

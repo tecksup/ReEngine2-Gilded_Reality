@@ -17,20 +17,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Window;
+import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
+import com.thecubecast.ReEngine.Data.controlerManager;
+import com.thecubecast.ReEngine.Graphics.Scene2D.TkTextButton;
 
 
 public class MainMenuState extends GameState {
@@ -44,7 +49,7 @@ public class MainMenuState extends GameState {
 	//The Menu states
 	private int OldState;
 	private int currentState;
-	
+
 	public MainMenuState(GameStateManager gsm) {
 		super(gsm);
 	}
@@ -56,7 +61,6 @@ public class MainMenuState extends GameState {
 		MenuInit();
 		
 		cameraGui = new OrthographicCamera();
-		cameraGui.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		
 		//gsm.Audio.playMusic("8-bit-Digger", true);
 		
@@ -76,14 +80,15 @@ public class MainMenuState extends GameState {
 		cameraGui.update();
 	}
 	
-	public void draw(SpriteBatch bbg, int width, int height, float Time) {
-		bbg.begin();
+	public void draw(SpriteBatch bbg, int height, int width, float Time) {
+		cameraGui.setToOrtho(false, width, height);
 		bbg.setProjectionMatrix(cameraGui.combined);
+		bbg.begin();
 		
 		//gsm.Render.DrawBackground(bbg, width, height);
 		bbg.draw(gsm.Render.Images[03], 0, 0, width, height);
 		
-		MenuDraw(bbg, width, height, Time);
+		MenuDraw(bbg);
 		
 		bbg.end();
 	}
@@ -111,13 +116,16 @@ public class MainMenuState extends GameState {
 			
 			//Moves the Chosen button RIGHT
 		}
-		
+
+		if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START)) {
+			gsm.setState(GameStateManager.State.Dialog);
+		}
+
 	}
 	
 	public void reSize(SpriteBatch g, int H, int W) {
 		//stage.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
 		cameraGui.setToOrtho(false);
-		stage = new Stage(new FitViewport(W, H)); Gdx.input.setInputProcessor(stage);
 		MenuInit();
 	}
 	
@@ -136,51 +144,59 @@ public class MainMenuState extends GameState {
 	}
 
 	public void setupSkin() {
-		 skin = new Skin(Gdx.files.internal("Skins/flat-earth/skin/flat-earth-ui.json"));
+		 skin = new Skin(Gdx.files.internal("Skins/test1/skin.json"));
 	}
 	
 	public void MenuInit() {
 
 		setupSkin();
-		stage = new Stage();
+        stage = new Stage(new StretchViewport(gsm.Width, gsm.Height));
 		Gdx.input.setInputProcessor(stage);
 		
 		table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		
-		final Label label1 = new Label("Username", skin);
-		label1.setColor(0, 0, 0, 1);
-		final TextField text1 = new TextField("", skin);
-		text1.setText(Gdx.app.getPreferences("properties").getString("Username"));
-		table.add(label1);
-		table.add(text1).padLeft(12);
-		table.row();
-		final Label label3 = new Label("Password", skin);
-		label3.setColor(0, 0, 0, 1);
-		final TextField text3 = new TextField("", skin);
-		text3.setName("Password");
-		text3.setPasswordMode(true);
-		text3.setPasswordCharacter("*".toCharArray()[0]);
-		table.add(label3);
-		table.add(text3).padLeft(12);
-		table.row();
-		final Label label2 = new Label("IP", skin);
-		label2.setColor(0, 0, 0, 1);
-		final TextField text2 = new TextField("", skin);
-		table.add(label2);
-		table.add(text2).padLeft(12);
-		table.row();
-		
-		
-		final TextButton button1 = new TextButton("Start", skin);
-		table.add(button1).pad(12);
+		final TkTextButton button1 = new TkTextButton("Start", skin);
+		table.add(button1).pad(2);
 		table.row();
 
-		final TextButton Discord = new TextButton("Discord", skin);
-		table.add(Discord).pad(12);
+		final TkTextButton button4 = new TkTextButton("Dialog", skin);
+		table.add(button4).pad(2);
 		table.row();
+
+		final TkTextButton Discord = new TkTextButton("Discord", skin);
+		table.add(Discord).pad(2);
+		table.row();
+
+		final TkTextButton button3 = new TkTextButton("Quit", skin);
+		table.add(button3).pad(2);
+		table.row();
+
+		button1.addListener(new ClickListener(){
+            @Override 
+            public void clicked(InputEvent event, float x, float y){
+            	//gsm.Audio.stopMusic("8-bit-Digger");
+				//GetLogin("", "");
+				Gdx.app.getPreferences("properties").putString("Username", "");
+				Gdx.app.getPreferences("properties").flush();
+            	gsm.setState(GameStateManager.State.Blank);
+                button1.setText("Loading");
+            }
+        });
+
+		button4.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y){
+				//gsm.Audio.stopMusic("8-bit-Digger");
+				//GetLogin("", "");
+				Gdx.app.getPreferences("properties").putString("Username", "");
+				Gdx.app.getPreferences("properties").flush();
+				gsm.setState(GameStateManager.State.Dialog);
+				button1.setText("Loading");
+			}
+		});
+
 
 		Discord.addListener(new ClickListener(){
 			@Override
@@ -194,24 +210,6 @@ public class MainMenuState extends GameState {
 			}
 		});
 
-		final TextButton button3 = new TextButton("Quit", skin);
-		table.add(button3);
-		table.row();
-
-		button1.addListener(new ClickListener(){
-            @Override 
-            public void clicked(InputEvent event, float x, float y){
-            	//gsm.Audio.stopMusic("8-bit-Digger");
-				//GetLogin("", "");
-            	gsm.Username = text1.getText();
-				Gdx.app.getPreferences("properties").putString("Username", text1.getText());
-				Gdx.app.getPreferences("properties").flush();
-            	gsm.IpAdress = text2.getText();
-            	gsm.setState(GameStateManager.State.PLAY);
-                button1.setText("Loading");
-            }
-        });
-
 		button3.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y){
@@ -221,29 +219,13 @@ public class MainMenuState extends GameState {
 				//Lwjgl3Window window = ((Lwjgl3Graphics)Gdx.graphics).getWindow();
 				//window.iconifyWindow(); // iconify the window
 
-				//Common.ProperShutdown();
+				Common.ProperShutdown();
 			}
 		});
 
-		text1.addListener(new InputListener() {
-			public boolean keyUp(InputEvent event, int keycode) {
-	                Common.print("typed started at" + keycode);
-	                if (keycode == 66) {// Enter
-	                	gsm.Username = text1.getText();
-						Gdx.app.getPreferences("properties").putString("Username", text1.getText());
-						Gdx.app.getPreferences("properties").flush();
-	                	gsm.IpAdress = text2.getText();
-						gsm.setState(GameStateManager.State.PLAY);
-	                    button1.setText("Loading");
-	                }
-	                //if (keycode == 66) // Tab
-	                	//Do nothing as of right now
-					return false;
-	        }
-		});
 	}
 	
-	public void MenuDraw(SpriteBatch bbg, int width, int height, float Time) {
+	public void MenuDraw(SpriteBatch bbg) {
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.getRoot().draw(bbg, 1);
 	}

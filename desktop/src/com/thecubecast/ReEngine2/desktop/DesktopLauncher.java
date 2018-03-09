@@ -17,7 +17,6 @@ public class DesktopLauncher {
 		//set variables from the settings file
 		boolean Display_Fullscreen = false;
 		boolean Display_WindowedFull = false;
-		int[] Windowed_Size = {900,620};
 		
 		final Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration ();
 
@@ -80,7 +79,9 @@ public class DesktopLauncher {
 				Common.print("Windowed-fullscreen");
 			} else { //Windowed
 				Common.print("Windowed");
-				config.setMaximized(true);
+				config.setResizable(false);
+				config.setWindowedMode(1280, 720);
+				//config.setMaximized(true);
 			}
 		}
 		config.setWindowIcon("icon.png");

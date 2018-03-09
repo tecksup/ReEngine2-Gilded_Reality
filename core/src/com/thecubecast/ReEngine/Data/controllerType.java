@@ -15,6 +15,9 @@ public class controllerType {
     public int BUTTON_RB;
     public int BUTTON_R3;
 
+    public boolean INVERT_LEFT_AXIS = false;
+    public boolean INVERT_RIGHT_AXIS = false;
+
     public int AXIS_LEFT_X; //-1 is left | +1 is right
     public int AXIS_LEFT_Y; //-1 is up | +1 is down
     public int AXIS_LEFT_TRIGGER; //value 0 to 1f

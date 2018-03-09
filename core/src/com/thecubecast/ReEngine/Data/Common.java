@@ -49,6 +49,13 @@ public class Common {
 		
 		return output;
 	}
+
+	public static int roundUp(float x) {
+
+		int output = (int) Math.ceil(x);
+
+		return output;
+	}
 	
 	public static float GetAngle(Vector2 center, Vector2 point) {
 		double angleRadians = Math.atan2(point.y-center.y,point.x-center.x);

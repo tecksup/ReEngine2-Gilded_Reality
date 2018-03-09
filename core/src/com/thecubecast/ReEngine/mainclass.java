@@ -7,12 +7,13 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.Matrix4;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
+import sun.applet.Main;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,24 +21,34 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
+import static com.badlogic.gdx.graphics.GL20.GL_NEAREST;
+
 public class mainclass extends ApplicationAdapter implements InputProcessor{
 	
 	//The Drawing Variable
-	int W;
-	int H;
-	SpriteBatch batch;
+	private int W;
+	private int H;
+	public static int FBOW;
+    public static int FBOH;
+
+	private int SCALE = 2;
+
+	private SpriteBatch batch;
+	private FrameBuffer fb;
+	OrthographicCamera MainCam;
 	
 	//Mouse Position in the window
-	public int MouseX;
-	public int MouseY;
-	int[] MouseDrag = new int[] {0, 0, 0};
-	int[] MouseClick = new int[] {0, 0, 0};
+	private int MouseX;
+	private int MouseY;
+	private int[] MouseDrag = new int[] {0, 0, 0};
+	private int[] MouseClick = new int[] {0, 0, 0};
 	
 	// game state manager
-	private GameStateManager gsm;
+	public GameStateManager gsm;
 
 	// A variable for tracking elapsed time for the animation
-	float stateTime;
+	private float stateTime;
 	
 	@Override
 	public void create () { // INIT FUNCTION
@@ -52,8 +63,13 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		//Just setting up the variables
 		W = Gdx.graphics.getWidth();
 		H = Gdx.graphics.getHeight();
+		FBOW = W/4;
+		FBOH = H/4;
 
 		//This is essentially the graphics object we draw too
+		MainCam = new OrthographicCamera();
+		MainCam.setToOrtho(false,W,H);
+		fb = new FrameBuffer(Pixmap.Format.RGBA8888, FBOW, FBOH, false);
 		batch = new SpriteBatch();
 		
 		
@@ -66,7 +82,7 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	public void render () { // UPDATE Runs every frame. 60FPS
 
 		//Gdx.gl.glClearColor( 1, 1, 1, 1 );
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
 		
 		//Code goes here
 		
@@ -75,11 +91,21 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	
 		
 		stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
-			
+
 		//batch.begin();
+		fb.bind();
+		fb.begin();
+		Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
 		Draw(batch); //DRAW
+		fb.end();
+
+		fb.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
 		//batch.end();
-		
+		batch.setProjectionMatrix(MainCam.combined);
+		batch.begin();
+		batch.draw(fb.getColorBufferTexture(),0, H, W, -H);
+		batch.end();
 		
 		if(MouseClick[0] == 1) {
 			MouseClick[0] = 0;
@@ -95,28 +121,37 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		if (Gdx.input.isKeyJustPressed(Keys.GRAVE)) { //KeyHit
 			Common.ProperShutdown();
 		}
+
+        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Keys.D)) { //KeyHit
+            gsm.Debug = !gsm.Debug;
+        }
 	}
 	
 	public void Update() {
 		
 		//Figure out how to do this before you start exporting things to external files
 		gsm.update(MouseX, MouseY, MouseDrag, MouseClick);
+		MainCam.update();
 	}
 	
 	public void Draw(SpriteBatch bbg) {
 		//Figure out how to do this before you start exporting things to external files
-		gsm.draw(bbg, H, W, stateTime);
+		gsm.draw(bbg, FBOW, FBOH, stateTime);
 	}
 	
 	@Override
 	public void resize(int width, int height) {
 		W = width;
 		H = height;
+		FBOW = W/4;
+		FBOH = H/4;
+		MainCam.setToOrtho(false,W,H);
+		//fb = new FrameBuffer(Pixmap.Format.RGBA8888, FBOW, FBOH, false);
 		//callback.setHeight(height);
 		//callback.setWidth(width);
 		Common.print("Ran Resize!");
 		Common.print("" + width + " and H: " + height);
-		gsm.reSize(batch, height, width);
+		gsm.reSize(batch, FBOH, FBOW);
 	}
 	
 	

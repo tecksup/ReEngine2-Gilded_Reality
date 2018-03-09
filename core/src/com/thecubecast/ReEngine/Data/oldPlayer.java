@@ -6,13 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class oldPlayer {
 
 	private List<Rectangle> Collisions = new ArrayList<>();
 
@@ -58,7 +59,7 @@ public class Player {
 		Standing, Walking, Running, Jumping, Falling
 	}
 
-	public Player(int size, GameStateManager gsm) {
+	public oldPlayer(int size, GameStateManager gsm) {
 
         penguinAnimation0 = new Animation<TextureRegion>(0.1f, gsm.Render.loadAnim(penguin0, "Sprites/8direct/south.png", 4, 1));
         penguinAnimation1 = new Animation<TextureRegion>(0.1f, gsm.Render.loadAnim(penguin1, "Sprites/8direct/southEast.png", 4, 1));
@@ -84,20 +85,6 @@ public class Player {
 		Collisions = Colls;
 
 		Vector2 pos = new Vector2(Velocity.x*delta, Velocity.y*delta);
-
-		/*
-		if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-
-		} else {
-			Velocity.x += Velocity.x*-1 * 0.1f;
-		}
-
-		if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.S)) {
-
-		} else {
-			Velocity.y += Velocity.y*-1 * 0.1f;
-		}
-		*/
 
         Velocity.x += Velocity.x*-1 * 0.1f;
         Velocity.y += Velocity.y*-1 * 0.1f;
@@ -214,6 +201,42 @@ public class Player {
 			}
 		}
 		return false;
+	}
+
+	public Rectangle getHitbox() {
+		RectPla = new Rectangle(Coords.x, Coords.y, width, height);
+		RectPla.setCenter(RectPla.x + RectPla.getWidth()/2, RectPla.y + RectPla.getHeight()/2);
+		return RectPla;
+	}
+
+	public Rectangle getIntereactBox() {
+		switch (playerDirection) {
+			case South:
+				RectPla = new Rectangle(Coords.x, Coords.y-height, width, height);
+				break;
+			case SouthEast:
+				RectPla = new Rectangle(Coords.x, Coords.y, width, height);
+				break;
+			case East:
+				RectPla = new Rectangle(Coords.x, Coords.y, width, height);
+				break;
+			case NorthEast:
+				RectPla = new Rectangle(Coords.x, Coords.y, width, height);
+				break;
+			case North:
+				RectPla = new Rectangle(Coords.x, Coords.y, width, height);
+				break;
+			case NorthWest:
+				RectPla = new Rectangle(Coords.x, Coords.y, width, height);
+				break;
+			case West:
+				RectPla = new Rectangle(Coords.x, Coords.y, width, height);
+				break;
+			case SouthWest:
+				RectPla = new Rectangle(Coords.x, Coords.y, width, height);
+				break;
+		}
+		return RectPla;
 	}
 
 	public void draw(SpriteBatch g, float time) {

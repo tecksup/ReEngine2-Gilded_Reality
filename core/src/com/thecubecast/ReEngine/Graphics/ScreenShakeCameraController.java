@@ -77,7 +77,7 @@ public class ScreenShakeCameraController {
         float offsetY = maxYOffset * shake * (float)noise.getNoise(20, accumTime * yOffsetSpeed);
         float angle = maxAngleDegrees * shake * (float)noise.getNoise(30, accumTime * rotationSpeed);
 
-        viewCamera.position.add(offsetX, offsetY, 0);
+        viewCamera.position.add((int) offsetX, (int) offsetY, 0);
         viewCamera.rotate(angle);
         viewCamera.update();
 
@@ -125,8 +125,8 @@ public class ScreenShakeCameraController {
         this.worldCamera = newCam;
         viewCamera = new OrthographicCamera(worldCamera.viewportWidth, worldCamera.viewportHeight);
 
-        maxXOffset = worldCamera.viewportWidth * .1f;
-        maxYOffset = worldCamera.viewportHeight * .15f;
-        maxAngleDegrees = worldCamera.viewportWidth * .001f;
+        maxXOffset = worldCamera.viewportWidth * .2f;
+        maxYOffset = worldCamera.viewportHeight * .25f;
+        maxAngleDegrees = worldCamera.viewportWidth * .003f;
     }
 }

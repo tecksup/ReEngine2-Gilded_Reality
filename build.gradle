@@ -25,7 +25,7 @@ allprojects {
         roboVMVersion = '2.3.1'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
-        aiVersion = '1.8.0'
+        aiVersion = '1.8.1'
     }
 
     repositories {
@@ -64,9 +64,9 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "com.github.MinnDevelopment:Java-DiscordRPC:-SNAPSHOT"
         compile 'com.google.code.gson:gson:2.8.2'
+        compile 'com.github.Ktar5:stateless4j:-SNAPSHOT'
         
     }
 }

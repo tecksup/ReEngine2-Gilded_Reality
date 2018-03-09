@@ -3,21 +3,16 @@
 package com.thecubecast.ReEngine.GameStates;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -36,7 +31,7 @@ import static com.thecubecast.ReEngine.Data.Common.updategsmValues;
 
 public class PlayState extends GameState {
 
-    Player player;
+    oldPlayer player;
 
     private Skin skin;
     private Stage stage;
@@ -75,7 +70,7 @@ public class PlayState extends GameState {
 
     public void init() {
 
-        player = new Player(64, gsm);
+        player = new oldPlayer(16, gsm);
         gsm.DiscordManager.setPresenceDetails("topdown Demo - Level 1");
         gsm.DiscordManager.setPresenceState("In Game");
         gsm.DiscordManager.getPresence().largeImageText = "Level 1";
@@ -89,6 +84,8 @@ public class PlayState extends GameState {
             for(int x = 0; x < tiledBits.getBitTileObject(0).realTile.get(y).length; x++) {
                 if (tiledBits.getBitTileObject(1).realTile.get(y)[x] == 1) {
 
+                } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 5)) { //fence
+                    Collisions.add(new Rectangle(x+.25f, y, .4f, 0.25f));
                 } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 4)) { //Rock
                     Collisions.add(new Rectangle(x, y, 1, 0.5f));
                 }
@@ -112,9 +109,8 @@ public class PlayState extends GameState {
         //ShaderInit(guiBatch);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        camera.position.set((player.Coords.x*65), (player.Coords.y*65), camera.position.z);
+        camera.position.set((player.Coords.x), (player.Coords.y), camera.position.z);
         position = camera.position;
 
         shaker = new ScreenShakeCameraController(camera);
@@ -127,7 +123,7 @@ public class PlayState extends GameState {
         //SETUP THE PARTICLES
         pe = new ParticleEffect();
         pe.load(Gdx.files.internal("particles/fire.p"),Gdx.files.internal(""));
-        pe.getEmitters().first().setPosition(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        pe.getEmitters().first().setPosition(gsm.Width,gsm.Height);
         pe.start();
 
     }
@@ -152,19 +148,22 @@ public class PlayState extends GameState {
 
     }
 
-    public void draw(SpriteBatch g, int width, int height, float Time) {
+    public void draw(SpriteBatch g, int height, int width, float Time) {
         Gdx.gl.glClearColor(13/255f, 32/255f, 48/255f, 1);
         RenderCam();
-
+        position = camera.position;
+        camera.setToOrtho(false, width, height);
+        camera.position.set(position);
+        g.setProjectionMatrix(camera.combined);
+        //g.setProjectionMatrix(shaker.getCombinedMatrix());
         g.begin();
-        g.setProjectionMatrix(shaker.getCombinedMatrix());
         //g.setProjectionMatrix(camera.combined);
 
-        tiledBits.drawLayer(g, 64, Time,0);
+        tiledBits.drawLayer(g, 16, Time,0, player.Coords.y, false);
 
         player.draw(g, Time);
 
-        tiledBits.drawLayer(g, 64, Time,1);
+        tiledBits.drawLayer(g, 16, Time,1, player.Coords.y, false);
 
         pe.update(gsm.DeltaTime);
         //g.setShader(shaderProgram);
@@ -176,12 +175,15 @@ public class PlayState extends GameState {
 
         g.end();
 
+
+
         //Overlay Layer
+        camera.setToOrtho(false, width, height);
+        guiBatch.setProjectionMatrix(camera.combined);
         guiBatch.begin();
         //guiBatch.setProjectionMatrix(cameraGui.combined);
 
         gsm.Render.GUIDeco(guiBatch, 0, height-80, "Multiplayer test");
-        //gsm.Render.HUDNotification(guiBatch, width/2, height-100, 300 ,"Hey does this really wrap itself it would be so cool if it did so now i have to write a realllllllly long string to fill it up and make it wrap", gsm.ticks);
 
         if (Achievements.size() != 0) {
             for(int l=0; l< Achievements.size(); l++){
@@ -214,20 +216,20 @@ public class PlayState extends GameState {
         //gsm.Render.DrawDebugLine(new Vector2(network.GetClient().x, network.GetClient().y), new Vector2(gsm.MouseX, gsm.MouseY), 1, Color.RED, camera.combined);
         //gsm.Render.DrawDebugPoint(center, 2, Color.RED, camera.combined);
 
-        int size = 64;
+        int size = 16;
 
         Rectangle playerrect = new Rectangle(player.Coords.x, player.Coords.y, 1, 1);
         playerrect.setCenter(playerrect.x + playerrect.getWidth()/2, playerrect.y + playerrect.getHeight()/2);
 
         if (gsm.Debug) {
-            gsm.Render.debugRenderer.setProjectionMatrix(camera.combined);
+            gsm.Render.debugRenderer.setProjectionMatrix(shaker.getCombinedMatrix());
             gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
             gsm.Render.debugRenderer.setColor(Color.GREEN);
-            gsm.Render.debugRenderer.rect(playerrect.x*64, playerrect.y*64, playerrect.width*64, playerrect.height*64);
+            gsm.Render.debugRenderer.rect(playerrect.x*16, playerrect.y*16, playerrect.width*16, playerrect.height*16);
             gsm.Render.debugRenderer.setColor(Color.YELLOW);
-            gsm.Render.debugRenderer.rect(cameraBounds.x, cameraBounds.y, (cameraBounds.width), (cameraBounds.height));
+            //gsm.Render.debugRenderer.rect(cameraBounds.x, cameraBounds.y, (cameraBounds.width), (cameraBounds.height));
             gsm.Render.debugRenderer.setColor(Color.RED);
-            Collisions.forEach( number -> gsm.Render.debugRenderer.rect(number.x *64, number.y *64, (number.width)*64, (number.height)*64));
+            Collisions.forEach( number -> gsm.Render.debugRenderer.rect(number.x *16, number.y *16, (number.width)*16, (number.height)*16));
 
             gsm.Render.debugRenderer.end();
 
@@ -244,38 +246,38 @@ public class PlayState extends GameState {
         int mapBoundX = 10000;
         int mapBoundY = 10000;
 
-        float tempx = position.x + (playerx*64 - position.x) * lerp * deltaTime;
-        float tempy = position.y + (playery*64 - position.y) * lerp * deltaTime;
+        float tempx = position.x + (playerx*16 - position.x) * lerp * deltaTime;
+        float tempy = position.y + (playery*16 - position.y) * lerp * deltaTime;
 
         cameraBounds = new Rectangle(camera.position.x - camera.viewportWidth/2 ,camera.position.y - camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight);
-
+/*
         if (tempx >= 0) {
-            if(tempx + cameraBounds.getWidth() <= tiledBits.getBitTileObject(0).width*64*4) {
-                position.x += (playerx*64 - position.x) * lerp * deltaTime;
+            if(tempx + cameraBounds.getWidth() <= tiledBits.getBitTileObject(0).width*16) {
+                position.x += (playerx*16 - position.x) * lerp * deltaTime;
             }
         }
         if (tempy >= 0) {
-            if (tempy + cameraBounds.getHeight() <= tiledBits.getBitTileObject(0).height*64*4) {
-                position.y += (playery*64 - position.y) * lerp * deltaTime;
+            if (tempy + cameraBounds.getHeight() <= tiledBits.getBitTileObject(0).height*16) {
+                position.y += (playery*16 - position.y) * lerp * deltaTime;
             }
         }
-
+*/
         //    float PosibleX = position.x + (playerx - position.x) * lerp * deltaTime;
-        //    if (PosibleX - (Gdx.graphics.getWidth()/2) >= 0 && PosibleX - (Gdx.graphics.getWidth()/2) <= mapBoundX) {
+        //    if (PosibleX - (gsm.Width/2) >= 0 && PosibleX - (gsm.Width/2) <= mapBoundX) {
         //        position.x += (playerx - position.x) * lerp * deltaTime;
         //    }
 
         //    float PosibleY = position.y + (playery - position.y) * lerp * deltaTime;
-        //    if (PosibleY - (Gdx.graphics.getHeight()/2) >= 0 && PosibleY - (Gdx.graphics.getHeight()/2) <= mapBoundY) {
+        //    if (PosibleY - (gsm.Height/2) >= 0 && PosibleY - (gsm.Height/2) <= mapBoundY) {
         //        position.y += (playery - position.y) * lerp * deltaTime;
-        //    } else if (PosibleY - (Gdx.graphics.getHeight()/2) >= mapBoundY) {
+        //    } else if (PosibleY - (gsm.Height/2) >= mapBoundY) {
         //        position.y += (playery+160 - position.y) * lerp * deltaTime;
         //    }
 
-        //position.x += ((player.getLocation()[0]*64)+40 - position.x) * lerp * deltaTime;
-        //position.y += ((player.getLocation()[1]*64)+40 - position.y) * lerp * deltaTime;
+        position.x += (playerx*16 - position.x) * lerp * deltaTime;
+        position.y += (playery*16 - position.y) * lerp * deltaTime;
 
-        cam.position.set(position.x, position.y, cam.position.z);
+        //cam.position.set(position.x, position.y, cam.position.z);
         cam.update();
     }
 
@@ -285,73 +287,51 @@ public class PlayState extends GameState {
         camera.unproject(pos);
         updategsmValues(gsm, pos);
 
-        Vector2 center = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        Vector2 center = new Vector2(gsm.Width/2, gsm.Height/2);
         Vector2 MousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         player.angle = Common.GetAngle(center, MousePos);
 
 
-        Player.Direction[] temp = new Player.Direction[4];
+        oldPlayer.Direction[] temp = new oldPlayer.Direction[4];
         boolean moving = false;
 
-        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f) {
-            Common.print("right");
-            temp[3] = Player.Direction.East;
+        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f || Gdx.input.isKeyPressed(Keys.D)) {
+            temp[3] = oldPlayer.Direction.East;
             moving = true;
-            player.MovePlayerVelocity(Player.Direction.East,5, gsm.DeltaTime);
-        } else if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) < -0.2f) {
-            Common.print("left");
-            temp[2] = Player.Direction.West;
+            player.MovePlayerVelocity(oldPlayer.Direction.East,5, gsm.DeltaTime);
+        } else if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) < -0.2f || Gdx.input.isKeyPressed(Keys.A)) {
+            temp[2] = oldPlayer.Direction.West;
             moving = true;
-            player.MovePlayerVelocity(Player.Direction.West,5, gsm.DeltaTime);
+            player.MovePlayerVelocity(oldPlayer.Direction.West,5, gsm.DeltaTime);
         }
 
-        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) > 0.2f) {
-            Common.print("down");
-            temp[1] = Player.Direction.South;
+        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyPressed(Keys.S)) {
+            temp[1] = oldPlayer.Direction.South;
             moving = true;
-            player.MovePlayerVelocity(Player.Direction.South,5, gsm.DeltaTime);
-        } else if (gsm.ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) < -0.2f) {
-            Common.print("up");
-            temp[0] = Player.Direction.North;
+            player.MovePlayerVelocity(oldPlayer.Direction.South,5, gsm.DeltaTime);
+        } else if (gsm.ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyPressed(Keys.W)) {
+            temp[0] = oldPlayer.Direction.North;
             moving = true;
-            player.MovePlayerVelocity(Player.Direction.North,5, gsm.DeltaTime);
+            player.MovePlayerVelocity(oldPlayer.Direction.North,5, gsm.DeltaTime);
         }
 
-        gsm.ctm.testInput();
+        //gsm.ctm.testInput();
+
+        if (gsm.ctm.isButtonJustDown(1, controlerManager.buttons.BUTTON_START)){
+            Common.print("Player 2 joined the game!!");
+        }
 
         if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A)){
             shaker.addDamage(.2f);
         }
 
-        if (gsm.ctm.isButtonDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
-            //gsm.ctm.newController("xbox");
-        }
-
-        if (Gdx.input.isKeyPressed(Keys.W)) { //KeyHit
-            temp[0] = Player.Direction.North;
-            moving = true;
-            player.MovePlayerVelocity(Player.Direction.North,5, gsm.DeltaTime);
-        }
-
-        if (Gdx.input.isKeyPressed(Keys.S)) { //KeyHit
-            temp[1] = Player.Direction.South;
-            moving = true;
-            player.MovePlayerVelocity(Player.Direction.South,5, gsm.DeltaTime);
-        }
-
-        if (Gdx.input.isKeyPressed(Keys.A)) { //KeyHit
-            temp[2] = Player.Direction.West;
-            moving = true;
-            player.MovePlayerVelocity(Player.Direction.West,5, gsm.DeltaTime);
-        }
-        if (Gdx.input.isKeyPressed(Keys.D)) { //KeyHit
-            temp[3] = Player.Direction.East;
-            moving = true;
-            player.MovePlayerVelocity(Player.Direction.East,5, gsm.DeltaTime);
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
+            Common.print("Escape!!");
+            //gsm.ctm.newController("template");
         }
 
         //We send the player the correct cardinal direction
-        Player.Direction finalDirect = player.playerDirection;;
+        oldPlayer.Direction finalDirect = player.playerDirection;;
 
         //Do the calculations
         if (temp[0] != null && temp[1] != null) {
@@ -365,23 +345,26 @@ public class PlayState extends GameState {
 
         if (temp[0] != null) { //NORTH
             if (temp[2] != null) { // WEST
-                finalDirect = Player.Direction.NorthWest;
+                finalDirect = oldPlayer.Direction.NorthWest;
             }
             if (temp[3] != null) { //EAST
-                finalDirect = Player.Direction.NorthEast;
+                finalDirect = oldPlayer.Direction.NorthEast;
             }
         } else if (temp[1] != null) { //SOUTH
             if (temp[2] != null) { // WEST
-                finalDirect = Player.Direction.SouthWest;
+                finalDirect = oldPlayer.Direction.SouthWest;
             }
             if (temp[3] != null) { //EAST
-                finalDirect = Player.Direction.SouthEast;
+                finalDirect = oldPlayer.Direction.SouthEast;
             }
         } else {
             finalDirect = player.playerDirection;
         }
 
-        player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
+        if (moving) {
+            player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
+        }
+        //player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
 
         //if (moving) {
         //    player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
@@ -395,7 +378,7 @@ public class PlayState extends GameState {
         float posX = camera.position.x;
         float posY = camera.position.y;
         float posZ = camera.position.z;
-        camera.setToOrtho(false);
+        camera.setToOrtho(false, W, H);
         camera.position.set(posX, posY, posZ);
 
         Matrix4 matrix = new Matrix4();

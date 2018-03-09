@@ -243,7 +243,7 @@ public class ReadWrite {
 		return false;
 	}
 	
-	public boolean saveMap(TiledMap tiledMap, String Save, Player player) {
+	public boolean saveMap(TiledMap tiledMap, String Save, oldPlayer player) {
 		
 		int width = tiledMap.getProperties().get("width", Integer.class);
 		int height = tiledMap.getProperties().get("height", Integer.class);

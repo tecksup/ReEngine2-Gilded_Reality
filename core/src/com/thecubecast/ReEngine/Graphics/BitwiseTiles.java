@@ -31,7 +31,12 @@ public class BitwiseTiles {
     }
 
 
-    List<TextureRegion[]> bitTiles = new ArrayList<TextureRegion[]>();
+    public class tileTexture {
+        public List<TextureRegion[]> variants = new ArrayList<TextureRegion[]>();
+
+    }
+
+    List<tileTexture> bitTiles = new ArrayList<tileTexture>();
 
     public BitwiseTiles(TiledMap map) {
 
@@ -84,10 +89,80 @@ public class BitwiseTiles {
             temp[8] = tmp[3][2];
             temp[0] = tmp[3][3];
 
-            bitTiles.add(temp);
+            tileTexture tiletemp = new tileTexture();
+            tiletemp.variants.add(temp);
+            bitTiles.add(tiletemp);
         }
 
     }
+
+    /*
+    public void BitwiseTilesVariants(TiledMap map) {
+
+        //calculate the map bitwise operations
+        calculate(map);
+
+        Path imagePath = Paths.get("Sprites/bitWise");
+
+        try {
+            Files.list(imagePath).forEach(path -> setupTileTexture(path));
+        } catch (IOException e) {
+
+        }
+
+    }
+
+    public void setupTileTexture(Path file) {
+
+        int Rows = 4;
+        int Cols = 4;
+
+        TextureRegion[] temp = new TextureRegion[Cols * Rows];
+        Texture TexSheet = new Texture(Gdx.files.internal(file.toString()));
+
+        TextureRegion[][] tmp = TextureRegion.split(TexSheet,
+                TexSheet.getWidth() / Cols,
+                TexSheet.getHeight() / Rows);
+
+            int index = 0;
+            for (int l = 0; l < Rows; l++) {
+                for (int j = 0; j < Cols; j++) {
+                    temp[index++] = tmp[l][j];
+                }
+            }
+
+
+        temp[6] = tmp[0][0];
+        temp[14] = tmp[0][1];
+        temp[12] = tmp[0][2];
+        temp[4] = tmp[0][3];
+        temp[7] = tmp[1][0];
+        temp[15] = tmp[1][1];
+        temp[13] = tmp[1][2];
+        temp[5] = tmp[1][3];
+        temp[3] = tmp[2][0];
+        temp[11] = tmp[2][1];
+        temp[9] = tmp[2][2];
+        temp[1] = tmp[2][3];
+        temp[2] = tmp[3][0];
+        temp[10] = tmp[3][1];
+        temp[8] = tmp[3][2];
+        temp[0] = tmp[3][3];
+
+        String[] stringArray = file.toString().split("/");
+        Common.print("" + stringArray);
+        String[] stringArray2 = stringArray[stringArray.length].split("_");
+        Common.print("" + stringArray2);
+        int Tilenumber = Integer.parseInt(stringArray2[0]);
+        Common.print("" + Tilenumber);
+
+
+
+        tileTexture tiletemp = new tileTexture();
+        tiletemp.variants.add(temp);
+        bitTiles.add(tiletemp);
+    }
+*/
 
     public void calculate(TiledMap map) { // Will update the bitwise table
         tiledMap = map;
@@ -143,8 +218,8 @@ public class BitwiseTiles {
 
                         tempReal[x] += TileLayer.getCell(x, y).getTile().getId();
                         temp2[x] = id;
-                        String s2 = String.format("%8s", Integer.toBinaryString(id & 0xFF)).replace(' ', '0');
-                        Common.print("id is " + s2 + " or " + id + " at (" + x + "," + y + ") from tile " + TileLayer.getCell(x, y).getTile().getId());
+                        //String s2 = String.format("%8s", Integer.toBinaryString(id & 0xFF)).replace(' ', '0');
+                        //Common.print("id is " + s2 + " or " + id + " at (" + x + "," + y + ") from tile " + TileLayer.getCell(x, y).getTile().getId());
                     }
                 }
                 tempbitTile.height = TileLayer.getHeight();
@@ -157,7 +232,7 @@ public class BitwiseTiles {
         }
     }
 
-    public void draw(SpriteBatch batch, int tileSize, float time) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
+    public void draw(SpriteBatch batch, int tileSize, float playerY, float time) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
         for (int layer = 0; layer < bitTileObjectLayers.size(); layer++) {
             for (int y = 0; y < bitTileObjectLayers.get(layer).realTile.size(); y++) {
                 for(int x = 0; x < bitTileObjectLayers.get(layer).realTile.get(y).length; x++) {
@@ -176,15 +251,17 @@ public class BitwiseTiles {
                     int BitDirectionright = bitTileObjectLayers.get(layer).BitTiles.get(y)[x] & 0b1111;
                     int BitDirectionleft = bitTileObjectLayers.get(layer).BitTiles.get(y)[x] >> 4;
 
+                    /*
                     if (BitDirectionleft > 0)
-                        batch.draw(bitTiles.get(RealTile-1)[BitDirectionleft+16], x*tileSize, y*tileSize);
+                        batch.draw(bitTiles.get(RealTile-1)[BitDirectionleft+16], (int) x*tileSize, (int) y*tileSize);
                     else // THIS RUNS BY DEFAULT
                         if (RealTile == 4) { // So we can animate special tiles
 
                         } else {
 
                         }
-                    batch.draw(bitTiles.get(RealTile-1)[BitDirectionright], x*tileSize, y*tileSize);
+                    */
+                    batch.draw(bitTiles.get(RealTile-1).variants.get(0)[BitDirectionright], x*tileSize, y*tileSize);
                     //batch.draw(bitTiles.get(RealTile-1)[bitTileObject.BitTiles.get(y)[x]], x*tileSize,	y*tileSize,	0, 0, bitTiles.get(RealTile-1)[0].getRegionWidth(), bitTiles.get(RealTile-1)[0].getRegionHeight(), 1, 1,0);
 
 
@@ -194,7 +271,7 @@ public class BitwiseTiles {
         }
     }
 
-    public void drawLayer(SpriteBatch batch, int tileSize, float time, int layer) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
+    public void drawLayer(SpriteBatch batch, int tileSize, float time, int layer, float Playery, boolean first) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
         for (int y = 0; y < bitTileObjectLayers.get(layer).realTile.size(); y++) {
             for(int x = 0; x < bitTileObjectLayers.get(layer).realTile.get(y).length; x++) {
 
@@ -213,18 +290,23 @@ public class BitwiseTiles {
                 int BitDirectionleft = bitTileObjectLayers.get(layer).BitTiles.get(y)[x] >> 4;
 
                 if (BitDirectionleft > 0)
-                    batch.draw(bitTiles.get(RealTile-1)[BitDirectionleft+16], x*tileSize, y*tileSize);
-                else // THIS RUNS BY DEFAULT
+                    batch.draw(bitTiles.get(RealTile-1).variants.get(0)[BitDirectionleft+16], x*tileSize, y*tileSize);
+                else { // THIS RUNS BY DEFAULT
                     if (RealTile == 4) { // So we can animate special tiles
 
                     } else {
-
+                        batch.draw(bitTiles.get(RealTile-1).variants.get(0)[BitDirectionright], x*tileSize, y*tileSize);
                     }
-                batch.draw(bitTiles.get(RealTile-1)[BitDirectionright], x*tileSize, y*tileSize);
-                //batch.draw(bitTiles.get(RealTile-1)[bitTileObject.BitTiles.get(y)[x]], x*tileSize,	y*tileSize,	0, 0, bitTiles.get(RealTile-1)[0].getRegionWidth(), bitTiles.get(RealTile-1)[0].getRegionHeight(), 1, 1,0);
+                }
 
+                if (first) {
+                    if(Playery > x*tileSize) {
+                        //batch.draw(bitTiles.get(RealTile-1)[BitDirectionright], x*tileSize, y*tileSize);
+                        //batch.draw(bitTiles.get(RealTile-1)[bitTileObject.BitTiles.get(y)[x]], x*tileSize,	y*tileSize,	0, 0, bitTiles.get(RealTile-1)[0].getRegionWidth(), bitTiles.get(RealTile-1)[0].getRegionHeight(), 1, 1,0);
+                    }
+                } else {
 
-
+                }
             }
         }
     }

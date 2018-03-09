@@ -155,7 +155,7 @@ public class PlatformerTestState extends GameState {
         g.begin();
         g.setProjectionMatrix(camera.combined);
 
-        tiledBits.draw(g, 64, Time);
+        //tiledBits.draw(g, 64, Time);
 
         //gsm.Render.DrawAny(g, tile, "Tiles", Common.roundDown((player.getLocation()[0]+1*64)),  Common.roundDown((player.getLocation()[1]*64)));
         //gsm.Render.GUIDrawText(g, Common.roundDown((player.getLocation()[0]+1*64)),  Common.roundDown((player.getLocation()[1]*64)-40), "" + tile);

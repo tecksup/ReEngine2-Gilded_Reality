@@ -17,6 +17,8 @@ import com.badlogic.gdx.math.Matrix4;
 
 import java.awt.*;
 
+import static com.thecubecast.ReEngine.Data.GameStateManager.State.Blank;
+
 public class GameStateManager {
 
     public controlerManager ctm;
@@ -24,14 +26,14 @@ public class GameStateManager {
 	public boolean Debug = false;
 
     public enum State {
-        INTRO, MENU, PLAY, LOADING, OPTIONS, TEST, SHADER, MULTIPLAYER, PLATFORMER
+        INTRO, MENU, PLAY, LOADING, OPTIONS, TEST, SHADER, MULTIPLAYER, PLATFORMER, Blank, Dialog
     }
 
     public State newcurrentState;
     private State newpreviousState;
 
 
-    public GameState gameState;
+    private GameState gameState;
 	
 	public String Username;
 	public String IpAdress = "localhost";
@@ -47,7 +49,7 @@ public class GameStateManager {
 	public ReadWrite Rwr;
 
 	//Public Audio handler
-	public SoundManager Audio;
+	public static SoundManager AudioM;
 
 	public Discord DiscordManager;
 
@@ -70,13 +72,14 @@ public class GameStateManager {
 		DiscordManager = new Discord("405784101245943810");
 
 		Render = new Draw();
-		Audio = new SoundManager();
+		AudioM = new SoundManager();
 		Rwr = new ReadWrite();
 		
 		Rwr.init();
-		Audio.init();
+		AudioM.init();
 		Render.Init();
 
+		//setState(Blank);
 		LoadState("STARTUP"); //THIS IS THE STATE WERE WE START WHEN THE GAME IS RUN
 		
 	}
@@ -111,7 +114,11 @@ public class GameStateManager {
                 gameState = new PlayState(this);
                 gameState.init();
                 break;
-            case TEST:
+			case LOADING:
+				break;
+			case OPTIONS:
+				break;
+			case TEST:
                 break;
             case SHADER:
                 Common.print("Loaded state ShaderTest");
@@ -128,6 +135,16 @@ public class GameStateManager {
 				gameState = new PlatformerTestState(this);
 				gameState.init();
 				break;
+			case Blank:
+				Common.print("Loaded state blank");
+				gameState = new blankTestState(this);
+				gameState.init();
+				break;
+            case Dialog:
+                Common.print("Loaded state Dialog");
+                gameState = new DialogState(this);
+                gameState.init();
+                break;
         }
 		
 	}
@@ -153,8 +170,8 @@ public class GameStateManager {
 			gameState.update();
 		}
 		//MouseClick[0] = 0;
-		
-		Audio.update();
+
+		AudioM.update();
 
 		DiscordManager.UpdatePresence();
 		ctm.update();
@@ -167,11 +184,6 @@ public class GameStateManager {
 		DeltaTime = Math.min(Gdx.graphics.getDeltaTime(), 1f / 60f);
 		if(gameState != null) {
 			gameState.draw(bbg, H, W, Time);
-			if(Debug) {
-				bbg.begin();
-				Render.GUIDrawText(bbg, 0, 100, Color.YELLOW, "" + Gdx.graphics.getFramesPerSecond());
-				bbg.end();
-			}
 		}
 	}
 	
@@ -182,6 +194,8 @@ public class GameStateManager {
 		Matrix4 matrix = new Matrix4();
 		matrix.setToOrtho2D(0, 0, W, H);
 		bbg.setProjectionMatrix(matrix);
+		Height = H;
+		Width = W;
 	}
 
 	public void dispose() {

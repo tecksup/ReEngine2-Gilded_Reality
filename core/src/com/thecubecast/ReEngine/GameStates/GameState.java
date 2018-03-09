@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 
 public abstract class GameState {
-	
+
+	OrthographicCamera camera;
+
 	protected GameStateManager gsm;
 	
 	public GameState(GameStateManager gsm) {
@@ -18,7 +20,7 @@ public abstract class GameState {
 	
 	public abstract void init();
 	public abstract void update();
-	public abstract void draw(SpriteBatch g, int width, int height, float Time);
+	public abstract void draw(SpriteBatch g, int height, int width, float Time);
 	
 	public void RenderCam() {}
 
