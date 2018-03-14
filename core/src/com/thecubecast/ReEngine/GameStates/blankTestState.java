@@ -181,6 +181,11 @@ public class blankTestState extends GameState {
             //gsm.ctm.newController("template");
         }
 
+        if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
+            gsm.setState(GameStateManager.State.MENU);
+            //gsm.ctm.newController("template");
+        }
+
         //We send the player the correct cardinal direction
         oldPlayer.Direction finalDirect = player.playerDirection;;
 

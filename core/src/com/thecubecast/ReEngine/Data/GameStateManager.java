@@ -119,6 +119,8 @@ public class GameStateManager {
 			case OPTIONS:
 				break;
 			case TEST:
+				gameState = new tempState(this);
+				gameState.init();
                 break;
             case SHADER:
                 Common.print("Loaded state ShaderTest");

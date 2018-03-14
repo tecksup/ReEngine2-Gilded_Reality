@@ -47,7 +47,7 @@
     <orderEntry type="library" name="Gradle: org.jcraft:jorbis:0.0.17" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-controllers:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: net.java.dev.jna:jna:4.4.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.MinnDevelopment:discord-rpc-release:v2.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.MinnDevelopment:discord-rpc-release:v3.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="core_main" />

@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
@@ -31,22 +28,17 @@ public class Draw {
 	public Animation<TextureRegion> LoadingAnimation; // Must declare frame type (TextureRegion)
 	Texture LoadingSheet;
 	
-	public Animation<TextureRegion> StarsAnimation; // Must declare frame type (TextureRegion)
-	Texture StarsSheet;
-	
 	//Always set to 1 above the number of spites in file
 	public Texture[] Tiles;
 	public Texture[] GUI;
 	public Texture[] Images;
 	
 	BitmapFont font = new BitmapFont();
-	
+
 	public void Init() {
 		
 		// Initialize the Animation with the frame interval and array of frames
 		LoadingAnimation = new Animation<TextureRegion>(0.1f, loadAnim(LoadingSheet, "cube_loading_sprite.png", 4, 1));
-		StarsAnimation = new Animation<TextureRegion>(0.1f, loadAnim(StarsSheet, "Stars.png", 3, 1));
-		
 	}
 	
 	public void Load() {
@@ -341,7 +333,7 @@ public class Draw {
 		buffer.draw(GUI[02], PosX + (Tiles[59].getWidth()*2), PosY);
 		if (Anim) {
 			if (iconID == 4 || iconID == 5 || iconID == 6) {
-				DrawAnimatedTile(buffer, StarsAnimation, PosX + (Tiles[59].getWidth()*2) + (Tiles[59].getWidth()/2), PosY + (Tiles[59].getWidth()/2)-(Tiles[59].getWidth()/8), Time);
+				//DrawAnimatedTile(buffer, StarsAnimation, PosX + (Tiles[59].getWidth()*2) + (Tiles[59].getWidth()/2), PosY + (Tiles[59].getWidth()/2)-(Tiles[59].getWidth()/8), Time);
 			} else {
 				Common.print("Not Configured To Animate");
 			}

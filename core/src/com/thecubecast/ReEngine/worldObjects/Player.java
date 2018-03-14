@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -108,6 +109,17 @@ public class Player extends WorldObject {
             AnimState = AnimationState.Standing;
         }
 
+    }
+
+    public Polygon getAttackBox() {
+        Polygon attack = new Polygon(new float[] {
+                getIntereactBox().x -1, getIntereactBox().y -1,
+                getIntereactBox().x -1, getIntereactBox().y + getIntereactBox().height -1,
+                getIntereactBox().x + (getIntereactBox().width) -1, getIntereactBox().y + getIntereactBox().height -1,
+                getIntereactBox().x + (getIntereactBox().width) -1 , getIntereactBox().y -1
+        });
+
+        return attack;
     }
 
     public Rectangle getIntereactBox() {
@@ -241,5 +253,27 @@ public class Player extends WorldObject {
         //Debug.println("WorldObject", "Velocity " + getVelocity());
         playerDirection = direction;
 
+    }
+
+    public Vector2 VecDirction() {
+        switch (playerDirection) {
+            case South:
+                return new Vector2(0, -1);
+            case SouthEast:
+                return new Vector2(1, -1);
+            case East:
+                return new Vector2(1, 0);
+            case NorthEast:
+                return new Vector2(1, 1);
+            case North:
+                return new Vector2(0, 1);
+            case NorthWest:
+                return new Vector2(-1, 1);
+            case West:
+                return new Vector2(-1, 0);
+            case SouthWest:
+                return new Vector2(-1, -1);
+        }
+        return null;
     }
 }

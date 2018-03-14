@@ -7,174 +7,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb25fbef-5489-47ea-a71f-ccba7b5476c9" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/DialogState.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkLabel.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObjectComp.java" />
       <change beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" />
       <change beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" />
       <change beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
       <change beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" />
       <change beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_MinnDevelopment_Java_DiscordRPC__SNAPSHOT.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_MinnDevelopment_Java_DiscordRPC__SNAPSHOT.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_MinnDevelopment_discord_rpc_release_v2_1_1.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/core/core_main.iml" afterPath="$PROJECT_DIR$/.idea/modules/core/core_main.iml" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/core/core_test.iml" afterPath="$PROJECT_DIR$/.idea/modules/core/core_test.iml" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/desktop/desktop_main.iml" afterPath="$PROJECT_DIR$/.idea/modules/desktop/desktop_main.iml" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/desktop/desktop_test.iml" afterPath="$PROJECT_DIR$/.idea/modules/desktop/desktop_test.iml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Compact_CubeLogo.png" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Fonts/Munro.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Fonts/MunroNarrow.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Fonts/MunroSmall.ttf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Images/image_00.png" afterPath="$PROJECT_DIR$/core/assets/Images/image_00.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Saves/BITWISE/map.tmx" afterPath="$PROJECT_DIR$/core/assets/Saves/BITWISE/map.tmx" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_00.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_00.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_01.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_01.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_02.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_02.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_03.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_03.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_04.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_04.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_05.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_05.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_06.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_06.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_07.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_07.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_08.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_08.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_09.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_09.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_10.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_10.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_11.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_11.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_12.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_12.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_13.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_13.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_14.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_14.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_15.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_15.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_16.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_16.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_17.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_17.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_18.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_18.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_19.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_19.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_20.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_20.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_21.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_21.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_22.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_22.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_23.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_23.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_24.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/GUI/GUI_24.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/bitWise/1.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/bitWise/1.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/bitWise/2.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/bitWise/2.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/bitWise/3.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/bitWise/3.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/bitWise/4.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/bitWise/4.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_00.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_00.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_01.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_01.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_02.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_02.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_03.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_03.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_04.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_04.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_05.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_05.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_06.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_06.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_07.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_07.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_08.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_08.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_09.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_09.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_10.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_10.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_11.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_11.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_12.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_12.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_13.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_13.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_14.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_14.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_15.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_15.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_16.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_16.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_17.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_17.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_18.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_18.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_19.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_19.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_20.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_20.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_21.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_21.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_22.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_22.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_23.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_23.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_24.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_24.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_25.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_25.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_26.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_26.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_27.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_27.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_28.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_28.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_29.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_29.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_30.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_30.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_31.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_31.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_32.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_32.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_33.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_33.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_34.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_34.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_35.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_35.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_36.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_36.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_37.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_37.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_38.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_38.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_39.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_39.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_40.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_40.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_41.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_41.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_42.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_42.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_43.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_43.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_44.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_44.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_45.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_45.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_46.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_46.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_47.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_47.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_48.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_48.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_49.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_49.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_50.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_50.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_51.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_51.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_52.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_52.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_53.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_53.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_54.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_54.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_55.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_55.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_56.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_56.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_57.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_57.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_58.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_58.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_59.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_59.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_60.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_60.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_61.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_61.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_62.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_62.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_63.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_63.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_64.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_64.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_65.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_65.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_66.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_66.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_67.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_67.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_68.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_68.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_69.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_69.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_70.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_70.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_71.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_71.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_72.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_72.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_73.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_73.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_74.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_74.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_75.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_75.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_76.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_76.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_77.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_77.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_78.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_78.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_79.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/oldTiles/megaminer_79.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/proto/proto_0.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/proto/proto_0.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/proto/proto_1.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/proto/proto_1.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/proto/proto_2.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/proto/proto_2.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/proto/proto_3.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/proto/proto_3.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/Sprites/proto/proto_4.png" afterPath="$PROJECT_DIR$/core/assets/Sprites/proto/proto_4.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/WorldGen/tileset/packed.atlas" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/core/assets/WorldGen/tileset/packed.png" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/core/assets/WorldGen/untitled.tsx" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/core/assets/cube_loading_sprite.png" afterPath="$PROJECT_DIR$/core/assets/cube_loading_sprite.png" />
-      <change beforePath="$PROJECT_DIR$/core/assets/image_01.png.pyxel" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/core/assets/image_02.png.pyxel" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/core/assets/image_03.png.pyxel" afterPath="" />
       <change beforePath="$PROJECT_DIR$/core/core.iml" afterPath="$PROJECT_DIR$/core/core.iml" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Player.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/oldPlayer.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ReadWrite.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ReadWrite.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/controlerManager.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/controlerManager.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/controllerType.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/controllerType.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/fsmPlayer.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/fsmPlayer.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/GameState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/GameState.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/IntroState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/IntroState.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/LoadingState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/LoadingState.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/DialogState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/DialogState.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MultiplayerTestState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MultiplayerTestState.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlatformerTestState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlatformerTestState.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/blankTestState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/blankTestState.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/BitwiseTiles.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/BitwiseTiles.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/ScreenShakeCameraController.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/ScreenShakeCameraController.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java" />
       <change beforePath="$PROJECT_DIR$/desktop/desktop.iml" afterPath="$PROJECT_DIR$/desktop/desktop.iml" />
-      <change beforePath="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/DesktopLauncher.java" afterPath="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/DesktopLauncher.java" />
-      <change beforePath="$PROJECT_DIR$/images/bitwise/2.pyxel" afterPath="$PROJECT_DIR$/images/bitwise/2.pyxel" />
-      <change beforePath="$PROJECT_DIR$/images/bitwise/3.pyxel" afterPath="$PROJECT_DIR$/images/bitwise/3.pyxel" />
-      <change beforePath="$PROJECT_DIR$/images/bitwise/4.pyxel" afterPath="$PROJECT_DIR$/images/bitwise/4.pyxel" />
-      <change beforePath="$PROJECT_DIR$/images/megaminer.png" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
@@ -253,72 +111,90 @@
       <file leaf-file-name="blankTestState.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/blankTestState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="99" column="26" lean-forward="false" selection-start-line="99" selection-start-column="26" selection-end-line="99" selection-end-column="26" />
+            <state relative-caret-position="2037">
+              <caret line="126" column="0" lean-forward="false" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
               <folding>
-                <element signature="e#8465#8466#0" expanded="true" />
-                <element signature="e#8541#8542#0" expanded="true" />
+                <element signature="e#8677#8678#0" expanded="true" />
+                <element signature="e#8753#8754#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DialogState.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DialogState.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/DialogState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-105">
-              <caret line="136" column="108" lean-forward="true" selection-start-line="136" selection-start-column="108" selection-end-line="136" selection-end-column="108" />
+            <state relative-caret-position="105">
+              <caret line="379" column="36" lean-forward="false" selection-start-line="379" selection-start-column="36" selection-end-line="379" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4124#4125#0" expanded="true" />
-                <element signature="e#4191#4192#0" expanded="true" />
-                <element signature="e#11916#11917#0" expanded="true" />
-                <element signature="e#11992#11993#0" expanded="true" />
+                <element signature="e#15742#15743#0" expanded="true" />
+                <element signature="e#15818#15819#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WorldObject.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="WorldObjectComp.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObjectComp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="8" column="64" lean-forward="false" selection-start-line="8" selection-start-column="64" selection-end-line="8" selection-end-column="64" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WorldObject.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="71" column="52" lean-forward="false" selection-start-line="71" selection-start-column="52" selection-end-line="71" selection-end-column="52" />
+            <state relative-caret-position="84">
+              <caret line="69" column="5" lean-forward="true" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2519#2520#0" expanded="true" />
-                <element signature="e#2550#2551#0" expanded="true" />
-                <element signature="e#2599#2600#0" expanded="true" />
-                <element signature="e#2639#2640#0" expanded="true" />
-                <element signature="e#2688#2689#0" expanded="true" />
-                <element signature="e#2737#2738#0" expanded="true" />
-                <element signature="e#2777#2778#0" expanded="true" />
-                <element signature="e#2812#2813#0" expanded="true" />
-                <element signature="e#2852#2853#0" expanded="true" />
-                <element signature="e#2887#2888#0" expanded="true" />
-                <element signature="e#2923#2924#0" expanded="true" />
-                <element signature="e#2954#2955#0" expanded="true" />
-                <element signature="e#3003#3004#0" expanded="true" />
-                <element signature="e#3043#3044#0" expanded="true" />
-                <element signature="e#3091#3092#0" expanded="true" />
-                <element signature="e#3140#3141#0" expanded="true" />
-                <element signature="e#3180#3181#0" expanded="true" />
-                <element signature="e#3215#3216#0" expanded="true" />
-                <element signature="e#3255#3256#0" expanded="true" />
-                <element signature="e#3290#3291#0" expanded="true" />
-                <element signature="e#3320#3321#0" expanded="true" />
-                <element signature="e#3348#3349#0" expanded="true" />
-                <element signature="e#3388#3389#0" expanded="true" />
-                <element signature="e#3417#3418#0" expanded="true" />
-                <element signature="e#3449#3450#0" expanded="true" />
-                <element signature="e#3476#3477#0" expanded="true" />
-                <element signature="e#3517#3518#0" expanded="true" />
+                <element signature="e#3326#3327#0" expanded="true" />
+                <element signature="e#3357#3358#0" expanded="true" />
+                <element signature="e#3406#3407#0" expanded="true" />
+                <element signature="e#3446#3447#0" expanded="true" />
+                <element signature="e#3495#3496#0" expanded="true" />
                 <element signature="e#3544#3545#0" expanded="true" />
-                <element signature="e#3581#3582#0" expanded="true" />
-                <element signature="e#3614#3615#0" expanded="true" />
-                <element signature="e#3667#3668#0" expanded="true" />
-                <element signature="e#3706#3707#0" expanded="true" />
+                <element signature="e#3584#3585#0" expanded="true" />
+                <element signature="e#3619#3620#0" expanded="true" />
+                <element signature="e#3659#3660#0" expanded="true" />
+                <element signature="e#3694#3695#0" expanded="true" />
+                <element signature="e#3730#3731#0" expanded="true" />
+                <element signature="e#3761#3762#0" expanded="true" />
+                <element signature="e#3810#3811#0" expanded="true" />
+                <element signature="e#3850#3851#0" expanded="true" />
+                <element signature="e#3898#3899#0" expanded="true" />
+                <element signature="e#3947#3948#0" expanded="true" />
+                <element signature="e#3987#3988#0" expanded="true" />
+                <element signature="e#4022#4023#0" expanded="true" />
+                <element signature="e#4062#4063#0" expanded="true" />
+                <element signature="e#4097#4098#0" expanded="true" />
+                <element signature="e#4127#4128#0" expanded="true" />
+                <element signature="e#4155#4156#0" expanded="true" />
+                <element signature="e#4195#4196#0" expanded="true" />
+                <element signature="e#4224#4225#0" expanded="true" />
+                <element signature="e#4256#4257#0" expanded="true" />
+                <element signature="e#4283#4284#0" expanded="true" />
+                <element signature="e#4324#4325#0" expanded="true" />
+                <element signature="e#4351#4352#0" expanded="true" />
+                <element signature="e#4388#4389#0" expanded="true" />
+                <element signature="e#4421#4422#0" expanded="true" />
+                <element signature="e#4474#4475#0" expanded="true" />
+                <element signature="e#4513#4514#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameStateManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2226">
+              <caret line="121" column="42" lean-forward="false" selection-start-line="121" selection-start-column="42" selection-end-line="121" selection-end-column="42" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -326,8 +202,8 @@
       <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="75" column="47" lean-forward="false" selection-start-line="75" selection-start-column="47" selection-end-line="75" selection-end-column="47" />
+            <state relative-caret-position="5418">
+              <caret line="274" column="43" lean-forward="false" selection-start-line="274" selection-start-column="43" selection-end-line="274" selection-end-column="43" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -335,11 +211,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Common.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java">
+      <file leaf-file-name="MainMenuState.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="966">
-              <caret line="54" column="37" lean-forward="false" selection-start-line="54" selection-start-column="37" selection-end-line="54" selection-end-column="37" />
+            <state relative-caret-position="3045">
+              <caret line="182" column="56" lean-forward="false" selection-start-line="182" selection-start-column="56" selection-end-line="182" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -348,63 +224,14 @@
       <file leaf-file-name="NPC.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="70" column="42" lean-forward="true" selection-start-line="70" selection-start-column="42" selection-end-line="70" selection-end-column="42" />
+            <state relative-caret-position="471">
+              <caret line="138" column="39" lean-forward="false" selection-start-line="138" selection-start-column="39" selection-end-line="138" selection-end-column="39" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3464#3465#0" expanded="true" />
-                <element signature="e#3494#3495#0" expanded="true" />
-                <element signature="e#3787#3788#0" expanded="true" />
-                <element signature="e#3816#3817#0" expanded="true" />
-                <element signature="e#3859#3860#0" expanded="true" />
-                <element signature="e#3895#3896#0" expanded="true" />
-                <element signature="e#3926#3927#0" expanded="true" />
-                <element signature="e#3953#3954#0" expanded="true" />
-                <element signature="e#3993#3994#0" expanded="true" />
-                <element signature="e#4025#4026#0" expanded="true" />
-                <element signature="e#4068#4069#0" expanded="true" />
-                <element signature="e#4099#4100#0" expanded="true" />
-                <element signature="e#4155#4156#0" expanded="true" />
-                <element signature="e#4195#4196#0" expanded="true" />
-                <element signature="e#4233#4234#0" expanded="true" />
-                <element signature="e#4262#4263#0" expanded="true" />
-                <element signature="e#4311#4312#0" expanded="true" />
-                <element signature="e#4347#4348#0" expanded="true" />
-                <element signature="e#4507#4508#0" expanded="true" />
-                <element signature="e#4542#4543#0" expanded="true" />
-                <element signature="e#4599#4600#0" expanded="true" />
-                <element signature="e#4647#4648#0" expanded="true" />
+                <element signature="e#5541#5542#0" expanded="true" />
+                <element signature="e#5583#5584#0" expanded="true" />
+                <element signature="e#5652#5653#0" expanded="true" />
+                <element signature="e#5714#5715#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="oldPlayer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/oldPlayer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3633">
-              <caret line="184" column="59" lean-forward="false" selection-start-line="184" selection-start-column="59" selection-end-line="184" selection-end-column="59" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameStateManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="534">
-              <caret line="143" column="37" lean-forward="false" selection-start-line="143" selection-start-column="37" selection-end-line="143" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainMenuState.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="162" column="0" lean-forward="false" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -421,8 +248,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>public int</find>
-      <find>;</find>
       <find>common</find>
       <find>Common</find>
       <find>Controllers.getControllers().size</find>
@@ -445,12 +270,14 @@
       <find>g.</find>
       <find>Coords</find>
       <find>(int)</find>
-      <find>(int)</find>
       <find>1</find>
       <find>* (getHitbox().getWidth()</find>
       <find>* (getHitbox().getWidth())</find>
       <find>* getHitbox().getWidth()</find>
       <find>* getHitbox().getHeight()</find>
+      <find>stage.setDebugAll</find>
+      <find>stage</find>
+      <find>debug</find>
     </findStrings>
     <replaceStrings>
       <replace>*64</replace>
@@ -484,6 +311,7 @@
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
       <list>
+        <option value="tecksup &lt;eklofandy@gmail.com&gt;" />
         <option value="tecksup" />
       </list>
     </option>
@@ -1067,7 +895,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="9095764618502" />
+        <entry key="$PROJECT_DIR$" value="9097418165376" />
         <entry key="$PROJECT_DIR$/build.gradle" value="3078574463" />
         <entry key="$PROJECT_DIR$/core/build.gradle" value="2247302725" />
         <entry key="$PROJECT_DIR$/desktop/build.gradle" value="2843930806" />
@@ -1227,9 +1055,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/core/build.gradle" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Discord.java" />
-        <option value="$PROJECT_DIR$/core/src/kryoNetwork/User.java" />
         <option value="$PROJECT_DIR$/desktop/src/com/thecubecast/reengine2/desktop/DesktopLauncher.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/TestState2.java" />
         <option value="$PROJECT_DIR$/settings.gradle" />
@@ -1248,10 +1073,8 @@
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/controlerManager.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MultiplayerTestState.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlatformerTestState.java" />
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/fsmPlayer.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/GameState.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/LoadingState.java" />
         <option value="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/DesktopLauncher.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/Button.java" />
@@ -1261,26 +1084,34 @@
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/IntroState.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/worldObjects/WorldObject.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/ScreenShakeCameraController.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Player.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/oldPlayer.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/collision.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/tempState.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Dialog.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/DialogOptions.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/Dialog.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkTextButton.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkLabel.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/blankTestState.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/DialogState.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObjectComp.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/DialogState.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="704" />
-    <option name="y" value="107" />
-    <option name="width" value="976" />
+    <option name="x" value="-8" />
+    <option name="width" value="761" />
     <option name="height" value="1038" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -1323,13 +1154,6 @@
               <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="Data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="GameStates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -1344,21 +1168,14 @@
               <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="Scene2D" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="worldObjects" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1412,6 +1229,25 @@
       <module name="desktop_main" />
       <envs />
     </configuration>
+    <configuration name="ParticleEditor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.badlogic.gdx.tools.particleeditor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="com.badlogic.gdx.tools.particleeditor.ParticleEditor" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="desktop_test" />
+      <envs />
+    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" />
@@ -1457,24 +1293,6 @@
         <option name="taskNames">
           <list>
             <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    </configuration>
-    <configuration name="ReEngine2 [dist]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="dist" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -1561,18 +1379,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Application.DesktopLauncher" />
-      <item index="1" class="java.lang.String" itemvalue="Gradle.ReEngine2 [build]" />
-      <item index="2" class="java.lang.String" itemvalue="Gradle.ReEngine2 [dist]" />
-      <item index="3" class="java.lang.String" itemvalue="Gradle.ReEngine2 [idea]" />
-      <item index="4" class="java.lang.String" itemvalue="Application.test" />
+      <item index="1" class="java.lang.String" itemvalue="Application.test" />
+      <item index="2" class="java.lang.String" itemvalue="Application.ParticleEditor" />
+      <item index="3" class="java.lang.String" itemvalue="Gradle.ReEngine2 [build]" />
+      <item index="4" class="java.lang.String" itemvalue="Gradle.ReEngine2 [idea]" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Application.DesktopLauncher" />
-        <item index="1" class="java.lang.String" itemvalue="Gradle.ReEngine2 [build]" />
+        <item index="1" class="java.lang.String" itemvalue="Application.ParticleEditor" />
         <item index="2" class="java.lang.String" itemvalue="Gradle.ReEngine2 [idea]" />
-        <item index="3" class="java.lang.String" itemvalue="Application.test" />
-        <item index="4" class="java.lang.String" itemvalue="Gradle.ReEngine2 [dist]" />
+        <item index="3" class="java.lang.String" itemvalue="Gradle.ReEngine2 [build]" />
+        <item index="4" class="java.lang.String" itemvalue="Application.test" />
       </list>
     </recent_temporary>
   </component>
@@ -1604,7 +1422,14 @@
       <option name="project" value="LOCAL" />
       <updated>1519149087911</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added full controller support!!!&#10;Added World Object&#10;Added NPC&#10;Added player as extension of World Object">
+      <created>1520629326266</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1520629326266</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1615,13 +1440,13 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32711306" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30076838" sideWeight="0.50625" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30076838" sideWeight="0.5083333" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30076838" sideWeight="0.49375" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30076838" sideWeight="0.49166667" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="768" y="58" width="383" height="913" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5491252" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="768" y="58" width="383" height="913" />
       <window_info id="Learn" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1658,7 +1483,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30076838" sideWeight="0.49375" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="768" y="58" width="383" height="913" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="768" y="58" width="383" height="913" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930845" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Learn" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1675,7 +1500,8 @@
     <MESSAGE value="Working on animation" />
     <MESSAGE value="Working on animation&#10;Updated LibGDX" />
     <MESSAGE value="Added full controller support!!!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added full controller support!!!" />
+    <MESSAGE value="Added full controller support!!!&#10;Added World Object&#10;Added NPC&#10;Added player as extension of World Object" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added full controller support!!!&#10;Added World Object&#10;Added NPC&#10;Added player as extension of World Object" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1687,77 +1513,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.6/7d903ecd6b0df2ec334814b8e70618e4c93fd37c/gdx-1.9.6-sources.jar!/com/badlogic/gdx/maps/tiled/TiledMapRenderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="22" column="17" lean-forward="false" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.6/7d903ecd6b0df2ec334814b8e70618e4c93fd37c/gdx-1.9.6-sources.jar!/com/badlogic/gdx/maps/MapRenderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-105">
-          <caret line="21" column="41" lean-forward="true" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.6/7d903ecd6b0df2ec334814b8e70618e4c93fd37c/gdx-1.9.6-sources.jar!/com/badlogic/gdx/maps/tiled/renderers/OrthoCachedTiledMapRenderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1428">
-          <caret line="122" column="38" lean-forward="false" selection-start-line="122" selection-start-column="38" selection-end-line="122" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/kryoNetwork/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" column="27" lean-forward="false" selection-start-line="6" selection-start-column="4" selection-end-line="9" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gradle.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="17" lean-forward="false" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/ShaderTestState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-168">
-          <caret line="13" column="53" lean-forward="false" selection-start-line="13" selection-start-column="53" selection-end-line="13" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/ServerLauncher2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" column="15" lean-forward="false" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/desktop/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="19" column="29" lean-forward="true" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/PlayerPlatformer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -1875,13 +1630,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="55" column="24" lean-forward="false" selection-start-line="55" selection-start-column="24" selection-end-line="55" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/fsmPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -1894,18 +1642,6 @@
         <state relative-caret-position="1680">
           <caret line="89" column="0" lean-forward="false" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkTextButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="11" column="25" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#622#832#0" expanded="false" />
-            <element signature="e#831#832#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1940,22 +1676,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="240" column="9" lean-forward="false" selection-start-line="228" selection-start-column="8" selection-end-line="240" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2142">
-          <caret line="124" column="34" lean-forward="false" selection-start-line="124" selection-start-column="34" selection-end-line="124" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/IntroState.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="310">
@@ -1980,14 +1700,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4452">
-          <caret line="233" column="40" lean-forward="false" selection-start-line="231" selection-start-column="8" selection-end-line="233" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/oldPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3633">
@@ -1996,152 +1708,244 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="966">
-          <caret line="54" column="37" lean-forward="false" selection-start-line="54" selection-start-column="37" selection-end-line="54" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="75" column="47" lean-forward="false" selection-start-line="75" selection-start-column="47" selection-end-line="75" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="70" column="42" lean-forward="true" selection-start-line="70" selection-start-column="42" selection-end-line="70" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3464#3465#0" expanded="true" />
-            <element signature="e#3494#3495#0" expanded="true" />
-            <element signature="e#3787#3788#0" expanded="true" />
-            <element signature="e#3816#3817#0" expanded="true" />
-            <element signature="e#3859#3860#0" expanded="true" />
-            <element signature="e#3895#3896#0" expanded="true" />
-            <element signature="e#3926#3927#0" expanded="true" />
-            <element signature="e#3953#3954#0" expanded="true" />
-            <element signature="e#3993#3994#0" expanded="true" />
-            <element signature="e#4025#4026#0" expanded="true" />
-            <element signature="e#4068#4069#0" expanded="true" />
-            <element signature="e#4099#4100#0" expanded="true" />
-            <element signature="e#4155#4156#0" expanded="true" />
-            <element signature="e#4195#4196#0" expanded="true" />
-            <element signature="e#4233#4234#0" expanded="true" />
-            <element signature="e#4262#4263#0" expanded="true" />
-            <element signature="e#4311#4312#0" expanded="true" />
-            <element signature="e#4347#4348#0" expanded="true" />
-            <element signature="e#4507#4508#0" expanded="true" />
-            <element signature="e#4542#4543#0" expanded="true" />
-            <element signature="e#4599#4600#0" expanded="true" />
-            <element signature="e#4647#4648#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/collision.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="21">
           <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/Stage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="133" column="26" lean-forward="false" selection-start-line="133" selection-start-column="17" selection-end-line="133" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/math/Rectangle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="23" column="48" lean-forward="false" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/tempState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="97" column="43" lean-forward="false" selection-start-line="97" selection-start-column="43" selection-end-line="97" selection-end-column="43" />
           <folding>
-            <element signature="e#280#281#0" expanded="true" />
-            <element signature="e#307#308#0" expanded="true" />
-            <element signature="e#350#351#0" expanded="true" />
-            <element signature="e#382#383#0" expanded="true" />
-            <element signature="e#410#411#0" expanded="true" />
-            <element signature="e#437#438#0" expanded="true" />
-            <element signature="e#474#475#0" expanded="true" />
-            <element signature="e#501#502#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#1997#1998#0" expanded="false" />
+            <element signature="e#2023#2024#0" expanded="false" />
+            <element signature="e#2257#2258#0" expanded="false" />
+            <element signature="e#2333#2334#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/DialogOptions.java" />
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/ui/Widget.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1701">
+          <caret line="119" column="62" lean-forward="true" selection-start-line="119" selection-start-column="62" selection-end-line="119" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/ui/Label.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="93">
+          <caret line="34" column="29" lean-forward="false" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="73" column="5" lean-forward="false" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkLabel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="23" column="15" lean-forward="false" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#320#321#0" expanded="false" />
+            <element signature="e#353#354#0" expanded="false" />
+            <element signature="e#423#424#0" expanded="false" />
+            <element signature="e#467#468#0" expanded="false" />
+            <element signature="e#549#550#0" expanded="false" />
+            <element signature="e#599#600#0" expanded="false" />
+            <element signature="e#669#670#0" expanded="false" />
+            <element signature="e#715#716#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkTextButton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="26" column="5" lean-forward="false" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-tools/1.9.8/6c7486ec4bf38d3a632455638356f6e85c97f437/gdx-tools-1.9.8-sources.jar!/com/badlogic/gdx/tools/particleeditor/ParticleEditor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="52" column="13" lean-forward="false" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="45" column="32" lean-forward="false" selection-start-line="45" selection-start-column="32" selection-end-line="45" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1633">
+          <caret line="124" column="34" lean-forward="false" selection-start-line="124" selection-start-column="34" selection-end-line="124" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="124" column="10" lean-forward="false" selection-start-line="124" selection-start-column="10" selection-end-line="124" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/Dialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="12" column="20" lean-forward="false" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="35" column="39" lean-forward="false" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/blankTestState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="99" column="26" lean-forward="false" selection-start-line="99" selection-start-column="26" selection-end-line="99" selection-end-column="26" />
+        <state relative-caret-position="2037">
+          <caret line="126" column="0" lean-forward="false" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
           <folding>
-            <element signature="e#8465#8466#0" expanded="true" />
-            <element signature="e#8541#8542#0" expanded="true" />
+            <element signature="e#8677#8678#0" expanded="true" />
+            <element signature="e#8753#8754#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="534">
-          <caret line="143" column="37" lean-forward="false" selection-start-line="143" selection-start-column="37" selection-end-line="143" selection-end-column="37" />
+        <state relative-caret-position="2226">
+          <caret line="121" column="42" lean-forward="false" selection-start-line="121" selection-start-column="42" selection-end-line="121" selection-end-column="42" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5418">
+          <caret line="274" column="43" lean-forward="false" selection-start-line="274" selection-start-column="43" selection-end-line="274" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="162" column="0" lean-forward="false" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+        <state relative-caret-position="3045">
+          <caret line="182" column="56" lean-forward="false" selection-start-line="182" selection-start-column="56" selection-end-line="182" selection-end-column="56" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="71" column="52" lean-forward="false" selection-start-line="71" selection-start-column="52" selection-end-line="71" selection-end-column="52" />
+        <state relative-caret-position="471">
+          <caret line="138" column="39" lean-forward="false" selection-start-line="138" selection-start-column="39" selection-end-line="138" selection-end-column="39" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2519#2520#0" expanded="true" />
-            <element signature="e#2550#2551#0" expanded="true" />
-            <element signature="e#2599#2600#0" expanded="true" />
-            <element signature="e#2639#2640#0" expanded="true" />
-            <element signature="e#2688#2689#0" expanded="true" />
-            <element signature="e#2737#2738#0" expanded="true" />
-            <element signature="e#2777#2778#0" expanded="true" />
-            <element signature="e#2812#2813#0" expanded="true" />
-            <element signature="e#2852#2853#0" expanded="true" />
-            <element signature="e#2887#2888#0" expanded="true" />
-            <element signature="e#2923#2924#0" expanded="true" />
-            <element signature="e#2954#2955#0" expanded="true" />
-            <element signature="e#3003#3004#0" expanded="true" />
-            <element signature="e#3043#3044#0" expanded="true" />
-            <element signature="e#3091#3092#0" expanded="true" />
-            <element signature="e#3140#3141#0" expanded="true" />
-            <element signature="e#3180#3181#0" expanded="true" />
-            <element signature="e#3215#3216#0" expanded="true" />
-            <element signature="e#3255#3256#0" expanded="true" />
-            <element signature="e#3290#3291#0" expanded="true" />
-            <element signature="e#3320#3321#0" expanded="true" />
-            <element signature="e#3348#3349#0" expanded="true" />
-            <element signature="e#3388#3389#0" expanded="true" />
-            <element signature="e#3417#3418#0" expanded="true" />
-            <element signature="e#3449#3450#0" expanded="true" />
-            <element signature="e#3476#3477#0" expanded="true" />
-            <element signature="e#3517#3518#0" expanded="true" />
-            <element signature="e#3544#3545#0" expanded="true" />
-            <element signature="e#3581#3582#0" expanded="true" />
-            <element signature="e#3614#3615#0" expanded="true" />
-            <element signature="e#3667#3668#0" expanded="true" />
-            <element signature="e#3706#3707#0" expanded="true" />
+            <element signature="e#5541#5542#0" expanded="true" />
+            <element signature="e#5583#5584#0" expanded="true" />
+            <element signature="e#5652#5653#0" expanded="true" />
+            <element signature="e#5714#5715#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/DialogState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-105">
-          <caret line="136" column="108" lean-forward="true" selection-start-line="136" selection-start-column="108" selection-end-line="136" selection-end-column="108" />
+        <state relative-caret-position="105">
+          <caret line="379" column="36" lean-forward="false" selection-start-line="379" selection-start-column="36" selection-end-line="379" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4124#4125#0" expanded="true" />
-            <element signature="e#4191#4192#0" expanded="true" />
-            <element signature="e#11916#11917#0" expanded="true" />
-            <element signature="e#11992#11993#0" expanded="true" />
+            <element signature="e#15742#15743#0" expanded="true" />
+            <element signature="e#15818#15819#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObjectComp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="8" column="64" lean-forward="false" selection-start-line="8" selection-start-column="64" selection-end-line="8" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="69" column="5" lean-forward="true" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3326#3327#0" expanded="true" />
+            <element signature="e#3357#3358#0" expanded="true" />
+            <element signature="e#3406#3407#0" expanded="true" />
+            <element signature="e#3446#3447#0" expanded="true" />
+            <element signature="e#3495#3496#0" expanded="true" />
+            <element signature="e#3544#3545#0" expanded="true" />
+            <element signature="e#3584#3585#0" expanded="true" />
+            <element signature="e#3619#3620#0" expanded="true" />
+            <element signature="e#3659#3660#0" expanded="true" />
+            <element signature="e#3694#3695#0" expanded="true" />
+            <element signature="e#3730#3731#0" expanded="true" />
+            <element signature="e#3761#3762#0" expanded="true" />
+            <element signature="e#3810#3811#0" expanded="true" />
+            <element signature="e#3850#3851#0" expanded="true" />
+            <element signature="e#3898#3899#0" expanded="true" />
+            <element signature="e#3947#3948#0" expanded="true" />
+            <element signature="e#3987#3988#0" expanded="true" />
+            <element signature="e#4022#4023#0" expanded="true" />
+            <element signature="e#4062#4063#0" expanded="true" />
+            <element signature="e#4097#4098#0" expanded="true" />
+            <element signature="e#4127#4128#0" expanded="true" />
+            <element signature="e#4155#4156#0" expanded="true" />
+            <element signature="e#4195#4196#0" expanded="true" />
+            <element signature="e#4224#4225#0" expanded="true" />
+            <element signature="e#4256#4257#0" expanded="true" />
+            <element signature="e#4283#4284#0" expanded="true" />
+            <element signature="e#4324#4325#0" expanded="true" />
+            <element signature="e#4351#4352#0" expanded="true" />
+            <element signature="e#4388#4389#0" expanded="true" />
+            <element signature="e#4421#4422#0" expanded="true" />
+            <element signature="e#4474#4475#0" expanded="true" />
+            <element signature="e#4513#4514#0" expanded="true" />
           </folding>
         </state>
       </provider>

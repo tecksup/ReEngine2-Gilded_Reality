@@ -1,9 +1,7 @@
 package com.thecubecast.ReEngine.worldObjects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.*;
 import com.thecubecast.ReEngine.Data.collision;
 
 import java.util.ArrayList;
@@ -66,6 +64,20 @@ public abstract class WorldObject {
         return RectPla;
     }
 
+    public Polygon getHitboxPoly() {
+        Polygon RectPla = new Polygon(new float[] {getPosition().x, getPosition().y, getPosition().x, getPosition().y + getSize().y, getPosition().x + getSize().x, getPosition().y + getSize().y, getPosition().x + getSize().x, getPosition().y});
+        return RectPla;
+    }
+
+    public boolean checkCollisionPoly(float xOffset, float yOffset, List<collision> Colls) {
+        for(int i = 0; i < Colls.size(); i++) {
+            if (polyoverlap(getHitboxPoly() , Colls.get(i).getRect())) {
+                return true; // Dont move
+            }
+        }
+        return false;
+    }
+
     public boolean checkCollision(float xOffset, float yOffset, List<collision> Colls) {
         Rectangle RectPla = new Rectangle(getHitbox().x + xOffset, getHitbox().y + yOffset, getHitbox().width, getHitbox().height);
         for(int i = 0; i < Colls.size(); i++) {
@@ -82,6 +94,12 @@ public abstract class WorldObject {
         } else {
             return false;
         }
+    }
+
+    public static boolean polyoverlap(Polygon p, Rectangle r) {
+        Polygon rPoly = new Polygon(new float[]{ 0, 0, r.width, 0, r.width, r.height, 0, r.height});
+        rPoly.setPosition(r.x, r.y);
+        return Intersector.overlapConvexPolygons(rPoly, p);
     }
 
     public abstract void init(int Width, int Height);

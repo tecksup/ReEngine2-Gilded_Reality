@@ -180,7 +180,7 @@ public class MainMenuState extends GameState {
 				//GetLogin("", "");
 				Gdx.app.getPreferences("properties").putString("Username", "");
 				Gdx.app.getPreferences("properties").flush();
-            	gsm.setState(GameStateManager.State.Blank);
+            	gsm.setState(GameStateManager.State.PLAY);
                 button1.setText("Loading");
             }
         });

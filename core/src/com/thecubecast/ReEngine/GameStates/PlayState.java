@@ -122,7 +122,7 @@ public class PlayState extends GameState {
 
         //SETUP THE PARTICLES
         pe = new ParticleEffect();
-        pe.load(Gdx.files.internal("particles/fire.p"),Gdx.files.internal(""));
+        pe.load(Gdx.files.internal("particles/fire.p"),Gdx.files.internal("particles"));
         pe.getEmitters().first().setPosition(gsm.Width,gsm.Height);
         pe.start();
 

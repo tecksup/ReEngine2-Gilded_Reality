@@ -1,7 +1,6 @@
 package com.thecubecast.ReEngine.worldObjects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.collision;
@@ -12,7 +11,9 @@ import static com.thecubecast.ReEngine.mainclass.FBOH;
 import static com.thecubecast.ReEngine.mainclass.FBOW;
 
 public abstract class NPC extends WorldObject {
-    
+
+    private float knockbackResistance;
+
     private float health;
     private boolean invulnerable = false;
     private String name;
@@ -20,16 +21,18 @@ public abstract class NPC extends WorldObject {
     private intractability interact;
     private entityState EState = entityState.alive;
 
-    public NPC(String name, int x, int y, Vector3 size, float health) {
+    public NPC(String name, int x, int y, Vector3 size, float knockbackResistance, float health) {
         super(x, y, size,type.Dynamic);
+        this.knockbackResistance = knockbackResistance;
         this.health = health;
         this.name = name;
         this.interact = intractability.Silent;
         init(FBOW, FBOH);
     }
 
-    public NPC(String name, int x, int y, Vector3 size, float health, boolean invincible) {
+    public NPC(String name, int x, int y, Vector3 size, float knockbackResistance, float health, boolean invincible) {
         super(x, y, size,type.Dynamic);
+        this.knockbackResistance = knockbackResistance;
         this.health = health;
         this.name = name;
         this.interact = intractability.Silent;
@@ -37,16 +40,19 @@ public abstract class NPC extends WorldObject {
         init(FBOW, FBOH);
     }
 
-    public NPC(String name, int x, int y, Vector3 size, float health, intractability interact) {
+    public NPC(String name, int x, int y, Vector3 size, float knockbackResistance, float health, intractability interact) {
         super(x, y, size,type.Dynamic);
+        this.knockbackResistance = knockbackResistance;
         this.health = health;
         this.name = name;
         this.interact = interact;
         init(FBOW, FBOH);
     }
 
-    public NPC(String name, int x, int y, Vector3 size, float health, intractability interact, boolean invincible) {
-        super(x, y, size,type.Dynamic);;
+    public NPC(String name, int x, int y, Vector3 size, float knockbackResistance, float health, intractability interact, boolean invincible) {
+        super(x, y, size,type.Dynamic);
+        this.knockbackResistance = knockbackResistance;
+        ;
         this.health = health;
         this.name = name;
         this.interact = interact;
@@ -103,6 +109,10 @@ public abstract class NPC extends WorldObject {
 
     }
 
+    public void drawHighlight(SpriteBatch batch, float Time) {
+
+    }
+
     public abstract void interact();
 
     public void heal(int heal) {
@@ -112,6 +122,21 @@ public abstract class NPC extends WorldObject {
     public void damage(int damage) {
         if(!invulnerable) {
             health -= damage;
+        }
+
+        if (health < 0) {
+            Die();
+        }
+    }
+
+    public void damage(int damage, Vector2 knockback) {
+        if(!invulnerable) {
+            health -= damage;
+            knockback.x -= knockback.x * knockbackResistance;
+            knockback.y -= knockback.y * knockbackResistance;
+            knockback.x += getVelocity().x;
+            knockback.y += getVelocity().y;
+            super.setVelocity(knockback);
         }
 
         if (health < 0) {
@@ -170,5 +195,13 @@ public abstract class NPC extends WorldObject {
 
     public void setInvulnerable(boolean invulnerable) {
         this.invulnerable = invulnerable;
+    }
+
+    public float getKnockbackResistance() {
+        return knockbackResistance;
+    }
+
+    public void setKnockbackResistance(float knockbackResistance) {
+        this.knockbackResistance = knockbackResistance;
     }
 }
