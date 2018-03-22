@@ -181,7 +181,7 @@ public abstract class NPC extends WorldObject {
         this.EState = EState;
     }
 
-    private enum intractability {
+    public enum intractability {
         Talk, Silent,
     }
 

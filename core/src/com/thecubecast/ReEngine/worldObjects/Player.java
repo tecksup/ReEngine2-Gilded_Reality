@@ -20,6 +20,8 @@ import static com.thecubecast.ReEngine.Graphics.Draw.loadAnim;
 
 public class Player extends WorldObject {
 
+    public float AttackTime;
+
     public float mSpeed = 4*16;
     public float jumpSpeed = 70;
 
@@ -67,6 +69,12 @@ public class Player extends WorldObject {
     @Override
     public void update(float delta, List<collision> Colls) {
 
+        //Debug.println("Player", "" + delta);
+        if (AttackTime - delta > 0 )
+            AttackTime -= delta;
+
+       // Debug.println("Player", "" + AttackTime);
+
         if (getState().equals(type.Dynamic)) {
             super.setVelocityX((getVelocity().x + getVelocity().x*-1 * 0.1f));
             super.setVelocityY((getVelocity().y + getVelocity().y*-1 * 0.1f));
@@ -109,6 +117,17 @@ public class Player extends WorldObject {
             AnimState = AnimationState.Standing;
         }
 
+    }
+
+    @Override
+    public boolean checkCollision(float xOffset, float yOffset, List<collision> Colls) {
+        Rectangle RectPla = new Rectangle(getHitbox().x+2 + xOffset, getHitbox().y + yOffset, getHitbox().width-4, getHitbox().height-10);
+        for(int i = 0; i < Colls.size(); i++) {
+            if (RectPla.overlaps(Colls.get(i).getRect())) {
+                return true; // Dont move
+            }
+        }
+        return false;
     }
 
     public Polygon getAttackBox() {
@@ -275,5 +294,13 @@ public class Player extends WorldObject {
                 return new Vector2(-1, -1);
         }
         return null;
+    }
+
+    public Direction getPlayerDirection() {
+        return playerDirection;
+    }
+
+    public void setPlayerDirection(Direction playerDirection) {
+        this.playerDirection = playerDirection;
     }
 }

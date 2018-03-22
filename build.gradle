@@ -9,7 +9,7 @@ buildscript {
     }
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
-        
+
 
     }
 }
@@ -67,6 +67,7 @@ project(":core") {
         compile "com.github.MinnDevelopment:Java-DiscordRPC:-SNAPSHOT"
         compile 'com.google.code.gson:gson:2.8.2'
         compile 'com.github.Ktar5:stateless4j:-SNAPSHOT'
+        compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
         
     }
 }

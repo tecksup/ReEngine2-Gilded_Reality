@@ -171,6 +171,12 @@ public class BitwiseTiles {
 
         for (int layer = 0; layer < tiledMap.getLayers().getCount(); layer++) {
 
+            if(tiledMap.getLayers().get(layer) instanceof TiledMapTileLayer) {
+
+            } else {
+                continue;
+            }
+
             TiledMapTileLayer TileLayer = (TiledMapTileLayer)tiledMap.getLayers().get(layer);
             bitTileObject tempbitTile = new bitTileObject();
 

@@ -27,11 +27,10 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.thecubecast.ReEngine.Data.*;
 import com.thecubecast.ReEngine.Graphics.Scene2D.Dialog;
 import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
-import com.thecubecast.ReEngine.worldObjects.NPC;
-import com.thecubecast.ReEngine.worldObjects.Player;
-import com.thecubecast.ReEngine.worldObjects.WorldObject;
+import com.thecubecast.ReEngine.worldObjects.*;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
-import com.thecubecast.ReEngine.worldObjects.WorldObjectComp;
+import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
+import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +67,8 @@ public class DialogState extends GameState {
     TiledMap tiledMap;
     BitwiseTiles tiledBits;
 
+    FlatTiledGraph MapGraph;
+
     public DialogState(GameStateManager gsm) {
         super(gsm);
     }
@@ -84,8 +85,16 @@ public class DialogState extends GameState {
         gsm.DiscordManager.getPresence().startTimestamp = System.currentTimeMillis() / 1000;;
 
         //SETUP TILEDMAP
-        tiledMap = new TmxMapLoader().load("Saves/BITWISE/EmptyRoom/map.tmx");
+        tiledMap = new TmxMapLoader().load("Saves/BITWISE/School/map.tmx");
         tiledBits = new BitwiseTiles(tiledMap);
+        if(tiledMap.getLayers().get("Rooms") != null) {
+            tiledMap.getLayers().get("Rooms").getObjects();
+        }
+
+        MapGraph = new FlatTiledGraph(tiledBits);
+        MapGraph.init(tiledBits);
+
+
 
         for (int y = 0; y < tiledBits.getBitTileObject(1).realTile.size(); y++) {
             for(int x = 0; x < tiledBits.getBitTileObject(1).realTile.get(y).length; x++) {
@@ -93,6 +102,14 @@ public class DialogState extends GameState {
 
                 } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 6)) { //Bush (stupid grass block)
                     Rectangle tempRect = new Rectangle(x*16, y*16, 16, 16);
+                    Collisions.add(new collision(tempRect, tempRect.hashCode()));
+                } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 8)) { //Bush (stupid grass block)
+                    Rectangle tempRect;
+                    if(tiledBits.getBitTileObject(1).BitTiles.get(y)[x] == 8) {
+                        tempRect = new Rectangle(x*16, y*16+8, 16, 8);
+                    } else {
+                        tempRect = new Rectangle(x*16, y*16, 16, 16);
+                    }
                     Collisions.add(new collision(tempRect, tempRect.hashCode()));
                 }
             }
@@ -175,15 +192,16 @@ public class DialogState extends GameState {
         Rectangle hankbox = new Rectangle((int) hank.getHitbox().x, (int) hank.getHitbox().y,(int) hank.getHitbox().width,(int) hank.getHitbox().height);
         //Collisions.add(new collision(hankbox, hank.hashCode()));
 
-        WorldObject Random = new WorldObject(18*16, 20*16, new Vector3(32, 32, 4)) {
+        Student Random = new Student("Student",18*16, 20*16, new Vector3(16, 16, 4), 1, 100, NPC.intractability.Talk, MapGraph) {
             @Override
             public void init(int Width, int Height) {
-
+                super.init(Width, Height);
+                super.setDestination(new Vector2(26*16,33*16));
             }
 
             @Override
             public void update(float delta, List<collision> Colls) {
-
+                super.update(delta, Colls);
             }
 
             @Override
@@ -191,6 +209,7 @@ public class DialogState extends GameState {
 
             }
         };
+        Random.init(0,0);
         Entities.add(Random);
         Entities.add(hank);
     }
@@ -255,7 +274,46 @@ public class DialogState extends GameState {
             gsm.Render.debugRenderer.setColor(Color.YELLOW);
             gsm.Render.debugRenderer.rect(player.getIntereactBox().x, player.getIntereactBox().y, player.getIntereactBox().width, player.getIntereactBox().height);
             gsm.Render.debugRenderer.setColor(Color.RED);
-            Collisions.forEach(number -> gsm.Render.debugRenderer.rect(number.getRect().x, number.getRect().y, (number.getRect().width), (number.getRect().height)));
+            //Collisions.forEach(number -> gsm.Render.debugRenderer.rect(number.getRect().x, number.getRect().y, (number.getRect().width), (number.getRect().height)));
+
+            for (int y = 0; y < tiledBits.bitTileObjectLayers.get(0).realTile.size(); y++) {
+                for (int x = 0; x < tiledBits.bitTileObjectLayers.get(0).realTile.size(); x++) {
+                    switch (MapGraph.getNode(x, y).type) {
+                        case FlatTiledNode.GROUND:
+                            gsm.Render.debugRenderer.setColor(Color.GREEN);
+                            //gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
+                            break;
+                        case FlatTiledNode.COLLIDABLE:
+                            gsm.Render.debugRenderer.setColor(Color.RED);
+                            gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
+                            break;
+                        default:
+                            //gsm.Render.debugRenderer.setColor(Color.WHITE);
+                            //gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
+                            break;
+                    }
+                }
+            }
+
+            gsm.Render.debugRenderer.setColor(Color.FIREBRICK);
+            for (int i = 0; i < Entities.size(); i++) {
+                if(Entities.get(i) instanceof Student) {
+                    Student temp = (Student) Entities.get(i);
+                    int nodeCount = temp.getPath().getCount();
+                    for (int j = 0; j < nodeCount; j++) {
+                        FlatTiledNode node = temp.getPath().nodes.get(j);
+                        gsm.Render.debugRenderer.rect(node.x * 16 + 4, node.y * 16 + 4, 4, 4);
+                    }
+                }
+            }
+
+            gsm.Render.debugRenderer.setColor(Color.FOREST);
+            for (int i = 0; i < Entities.size(); i++) {
+                if(Entities.get(i) instanceof Student) {
+                    Student temp = (Student) Entities.get(i);
+                    gsm.Render.debugRenderer.rect(temp.getDestination().x+2, temp.getDestination().y+2, 12, 12);
+                }
+            }
 
             gsm.Render.debugRenderer.end();
 
@@ -267,37 +325,30 @@ public class DialogState extends GameState {
 
         Player.Direction[] temp = new Player.Direction[4];
         boolean moving = false;
+        Vector2 speedPercent = new Vector2(1, 1);
 
         if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f || Gdx.input.isKeyPressed(Keys.D)) {
             temp[3] = Player.Direction.East;
             moving = true;
-            if (DialogOpen) {
-                //Dont move
-            } else
-                player.MovePlayerVelocity(Player.Direction.East,5, gsm.DeltaTime);
+            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f)
+                speedPercent.x = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X);
         } else if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) < -0.2f || Gdx.input.isKeyPressed(Keys.A)) {
             temp[2] = Player.Direction.West;
             moving = true;
-            if (DialogOpen) {
-                //Dont move
-            } else
-                player.MovePlayerVelocity(Player.Direction.West,5, gsm.DeltaTime);
+            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > -0.2f)
+                speedPercent.x = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X);
         }
 
         if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyPressed(Keys.S)) {
             temp[1] = Player.Direction.South;
             moving = true;
-            if (DialogOpen) {
-                //Dont move
-            } else
-                player.MovePlayerVelocity(Player.Direction.South,5, gsm.DeltaTime);
+            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > -0.2f)
+                speedPercent.y = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y);
         } else if (gsm.ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyPressed(Keys.W)) {
             temp[0] = Player.Direction.North;
             moving = true;
-            if (DialogOpen) {
-                //Dont move
-            } else
-                player.MovePlayerVelocity(Player.Direction.North,5, gsm.DeltaTime);
+            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f)
+                speedPercent.y = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y);
         }
 
         if (gsm.ctm.isButtonJustDown(1, controlerManager.buttons.BUTTON_START)){
@@ -325,24 +376,23 @@ public class DialogState extends GameState {
         if (temp[0] != null) { //NORTH
             if (temp[2] != null) { // WEST
                 finalDirect = Player.Direction.NorthWest;
-            }
-            if (temp[3] != null) { //EAST
+            } else if (temp[3] != null) { //EAST
                 finalDirect = Player.Direction.NorthEast;
+            } else {
+                finalDirect = Player.Direction.North;
             }
         } else if (temp[1] != null) { //SOUTH
             if (temp[2] != null) { // WEST
                 finalDirect = Player.Direction.SouthWest;
-            }
-            if (temp[3] != null) { //EAST
+            } else if (temp[3] != null) { //EAST
                 finalDirect = Player.Direction.SouthEast;
+            } else {
+                finalDirect = Player.Direction.South;
             }
-        }
-
-        if (moving) {
-            if (DialogOpen) {
-                //Dont move
-            } else
-                player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
+        } else if (temp[2] != null) { //WEST
+            finalDirect = Player.Direction.West;
+        } else if (temp[3] != null) { //EAST
+            finalDirect = Player.Direction.East;
         }
 
         if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Keys.R)){
@@ -371,24 +421,30 @@ public class DialogState extends GameState {
             }
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_X)){
-            Common.print("Attacked");
-            AddParticleEffect("Health", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
-            for(int i = 0; i < Entities.size(); i++) {
-                if(polyoverlap(player.getAttackBox(), Entities.get(i).getHitbox())){
-                    if(Entities.get(i) instanceof NPC) {
-                        NPC Entitemp = (NPC) Entities.get(i);
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_X)){ // ATTACK
+            if(player.AttackTime < .1f) {
 
-                        float HitVelocity = 40;
+                AddParticleEffect("Health", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
+                for(int i = 0; i < Entities.size(); i++) {
+                    if(polyoverlap(player.getAttackBox(), Entities.get(i).getHitbox())){
+                        if(Entities.get(i) instanceof NPC) {
+                            NPC Entitemp = (NPC) Entities.get(i);
 
-                        Vector2 hitDirection = new Vector2(player.VecDirction().x*HitVelocity, player.VecDirction().y*HitVelocity);
-                        Entitemp.damage(10, hitDirection);
+                            float HitVelocity = 40;
+
+                            Vector2 hitDirection = new Vector2(player.VecDirction().x*HitVelocity, player.VecDirction().y*HitVelocity);
+                            Entitemp.damage(10, hitDirection);
+                        }
                     }
                 }
+
+                player.AttackTime += 0.5f;
+            } else {
+                moving = false;
             }
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_L3)){
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_L3)){ // THE HEALING BUTTON RIGHT NOW
             Common.print("Healed");
             for(int i = 0; i < Entities.size(); i++) {
                 if(polyoverlap(player.getAttackBox(), Entities.get(i).getHitbox())){
@@ -400,6 +456,15 @@ public class DialogState extends GameState {
                 }
             }
         }
+
+        if (moving) {
+            if (DialogOpen) {
+                //Dont move
+            } else
+                //player.setPlayerDirection(finalDirect);
+                player.MovePlayerVelocity(finalDirect,(int) (10), gsm.DeltaTime);
+        }
+
     }
 
     public void setupSkin() {
