@@ -159,11 +159,11 @@ public class PlayState extends GameState {
         g.begin();
         //g.setProjectionMatrix(camera.combined);
 
-        tiledBits.drawLayer(g, 16, Time,0, player.Coords.y, false);
+        tiledBits.drawLayer(g, 16, Time,0, player.Coords.y, null);
 
         player.draw(g, Time);
 
-        tiledBits.drawLayer(g, 16, Time,1, player.Coords.y, false);
+        tiledBits.drawLayer(g, 16, Time,1, player.Coords.y, null);
 
         pe.update(gsm.DeltaTime);
         //g.setShader(shaderProgram);

@@ -105,6 +105,7 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		batch.setProjectionMatrix(MainCam.combined);
 		batch.begin();
 		batch.draw(fb.getColorBufferTexture(),0, H, W, -H);
+			gsm.Render.GUIDrawText(batch, 0,H , Gdx.graphics.getFramesPerSecond() + "");
 		batch.end();
 		
 		if(MouseClick[0] == 1) {

@@ -172,7 +172,7 @@ public class MultiplayerTestState extends GameState {
 
         if (network.GetUsers().size() != 0) {
             for(int l=0; l< network.GetUsers().size(); l++){
-                gsm.Render.GUIDrawText(g, Common.roundDown((network.GetUsers().get(l).x*64)), Common.roundDown((network.GetUsers().get(l).y*64)), Color.BLACK, network.GetUsers().get(l).username);
+                gsm.Render.GUIDrawText(g, Common.roundDown((network.GetUsers().get(l).x*64)), Common.roundDown((network.GetUsers().get(l).y*64)), network.GetUsers().get(l).username);
                 g.draw(gsm.Render.GUI[24], network.GetUsers().get(l).x*64,	network.GetUsers().get(l).y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, network.GetUsers().get(l).angle, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
             }
 
@@ -217,7 +217,7 @@ public class MultiplayerTestState extends GameState {
 
         MenuDraw(guiBatch, width, height, Time);
 
-        gsm.Render.GUIDrawText(guiBatch, 50, 50, null, "" + network.GetClient());
+        gsm.Render.GUIDrawText(guiBatch, 50, 50, "" + network.GetClient());
 
         //ShaderDraw(guiBatch, gsm.MouseX, gsm.MouseY, gsm.Width, gsm.Height);
 

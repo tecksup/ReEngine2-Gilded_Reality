@@ -115,13 +115,13 @@ public class blankTestState extends GameState {
         Gdx.gl.glClearColor(255f, 255f, 255f, 1);
 
 
-        tiledBits.drawLayer(g, 16, Time,0, 0, false);
-        tiledBits.drawLayer(g, 16, Time,1, 0, false);
+        tiledBits.drawLayer(g, 16, Time,0, 0, null);
+        tiledBits.drawLayer(g, 16, Time,1, 0, null);
         player.draw(g, Time);
         for(int i = 0; i < Entities.size(); i++) {
             Entities.get(i).draw(g, Time);
         }
-        tiledBits.drawLayer(g, 16, Time,2, 0, false);
+        tiledBits.drawLayer(g, 16, Time,2, 0, null);
 
         g.end();
 

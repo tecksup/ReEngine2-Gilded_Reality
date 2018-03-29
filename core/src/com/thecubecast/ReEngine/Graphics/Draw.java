@@ -59,7 +59,6 @@ public class Draw {
 		for(int i=0; i < Tiles.length; ++i){
 			if (i >= 10) {
 				try {
-					Common.print("Loaded images /Sprites/"+ Integer.toString(i) +".png");
 					manager.load(SpritesPath + "/megaminer_"+ Integer.toString(i) +".png", Texture.class);
 					Tiles[i] = manager.get(SpritesPath + "/megaminer_"+ Integer.toString(i) +".png", Texture.class);
 				}
@@ -131,7 +130,7 @@ public class Draw {
 		for(int i=0; i < Tiles.length; ++i){
 			if (i >= 10) {
 				try {
-					Common.print("Loaded images /Sprites/"+ Integer.toString(i) +".png");
+					//Common.print("Loaded images /Sprites/"+ Integer.toString(i) +".png");
 					Tiles[i] = manager.get("Sprites/oldTiles/megaminer_"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
@@ -139,7 +138,7 @@ public class Draw {
 				}
 			} else {
 				try {
-					Common.print("Loaded images /Sprites/0"+ Integer.toString(i) +".png");
+					//Common.print("Loaded images /Sprites/0"+ Integer.toString(i) +".png");
 					Tiles[i] = manager.get("Sprites/oldTiles/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
@@ -150,7 +149,7 @@ public class Draw {
 		for(int i=0; i < Images.length; ++i){
 			if (i >= 10) {
 				try {
-					Common.print("Loaded images /Images/"+ Integer.toString(i) +".png");
+					//Common.print("Loaded images /Images/"+ Integer.toString(i) +".png");
 					Images[i] = manager.get("Images/image_"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
@@ -158,7 +157,7 @@ public class Draw {
 				}
 			} else {
 				try {
-					Common.print("Loaded images /Images/0"+ Integer.toString(i) +".png");
+					//Common.print("Loaded images /Images/0"+ Integer.toString(i) +".png");
 					Images[i] = manager.get("Images/image_0"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
@@ -169,7 +168,7 @@ public class Draw {
 		for(int i=0; i < GUI.length; ++i){
 			if (i >= 10) {
 				try {
-					Common.print("Loaded GUI images Sprites/GUI/GUI_"+ Integer.toString(i) +".png");
+					//Common.print("Loaded GUI images Sprites/GUI/GUI_"+ Integer.toString(i) +".png");
 					GUI[i] = manager.get("Sprites/GUI/GUI_"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
@@ -177,7 +176,7 @@ public class Draw {
 				}
 			} else {
 				try {
-					Common.print("Loaded GUI images Sprites/GUI/GUI_0"+ Integer.toString(i) +".png");
+					//Common.print("Loaded GUI images Sprites/GUI/GUI_0"+ Integer.toString(i) +".png");
 					GUI[i] = manager.get("Sprites/GUI/GUI_0"+ Integer.toString(i) +".png", Texture.class);
 				}
 				catch(Exception e) {
@@ -251,69 +250,8 @@ public class Draw {
 		}
 	}
 	
-	public void DrawBackground(SpriteBatch buffer, int x, int y) {
-		//Function is responsible for drawing the backgrounds, behind the tiles
-		buffer.draw(Tiles[07], 0, 0, x, y);
-	}
-	
-	public void DrawChunkDebugLines(SpriteBatch buffer, int x, int y , int TileSize, int cameraX, int cameraY) {
-		//buffer.drawLine(0-cameraX, 0-cameraY, (TileSize*16)-cameraX, 0-cameraY);
-		//buffer.drawLine(0-cameraX, 0- cameraY, 0-cameraX, (TileSize*16)-cameraY);
-		//buffer.drawLine((TileSize*16)-cameraX, 0-cameraY, (TileSize*16)-cameraX, ((TileSize*16))-cameraY);
-		//buffer.drawLine(0-cameraX, ((TileSize*16))-cameraY, (TileSize*16)-cameraX, ((TileSize*16))-cameraY);
-	}
-	
-	//Renders the tiles across the world
-	public void DrawTiles(SpriteBatch buffer, int OffsetX, int OffsetY, int TileSize, int WorldSize) {
-	//Function is for drawing the main tiles
-		
-		
-		
-		for(int i=0; i < 60; ++i){  //draws the top layer of grass
-			buffer.draw(Tiles[01], i*40 - OffsetX, 20 - OffsetY, TileSize, TileSize);
-		}
-		for(int i=0; i < 260; ++i){  //draws the dirt
-			if (i < 60) {
-				buffer.draw(Tiles[00], i*40 - OffsetX, 60 - OffsetY, TileSize, TileSize);
-			}
-			else if (i >= 60 && i < 120){
-				buffer.draw(Tiles[00], (i - 60)*40 - OffsetX, 100 - OffsetY, TileSize, TileSize);
-			}
-			else if (i >= 120 && i < 200){ 
-				buffer.draw(Tiles[00], (i - 120)*40 - OffsetX, 140 - OffsetY, TileSize, TileSize);
-			}
-			else if (i >= 200 && i < 260){ 
-				buffer.draw(Tiles[00], (i - 200)*40 - OffsetX, 180 - OffsetY, TileSize, TileSize);
-			}
-		}
-	}
-	
-	//This will handle the animations as well
-	public void Player(SpriteBatch buffer, int PosX, int PosY, String direction) {
-		if (direction.equals("up")) { //UP
-			//Common.print("player moved up");
-			buffer.draw(Tiles[53], PosX, PosY);
-			//Common.print("player drawn at x:" + PosX + " and y:" + PosY + " at sizes " + Sizex + " " + Sizey + " .");
-		}
-		if (direction.equals("left")) {
-			//Common.print("player moved left");
-			buffer.draw(Tiles[55], PosX, PosY);
-		}
-		if (direction.equals("down")) {
-			//Common.print("player moved down");
-			buffer.draw(Tiles[54], PosX, PosY);
-		}
-		if (direction.equals("right")) {
-			//Common.print("player moved right");
-			buffer.draw(Tiles[56], PosX, PosY);
-		}
-	}
-	
-	public void GUIDrawText(SpriteBatch buffer, int PosX, int PosY, Color colour, String Text) {
-		//Color temp = font.getColor();
-		//font.setColor(colour);
+	public void GUIDrawText(SpriteBatch buffer, int PosX, int PosY, String Text) {
 		font.draw(buffer, Text, PosX , PosY);
-		//font.setColor(temp);
 	}
 	
 	//The GUI or Menu would go here.

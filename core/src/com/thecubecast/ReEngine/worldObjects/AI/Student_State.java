@@ -5,74 +5,74 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.thecubecast.ReEngine.Data.Common;
 
-public enum Student_State implements State<Student_Overworld> {
+public enum Student_State implements State<Smart> {
 
     IDLE() {
         @Override
-        public void enter(Student_Overworld Student) { // INIT
+        public void enter(Smart Student) { // INIT
 
         }
 
         @Override
-        public void update(Student_Overworld Student) {
+        public void update(Smart Student) {
             //Check for changes, then update state
 
         }
 
         @Override
-        public void exit(Student_Overworld Student) {
+        public void exit(Smart Student) {
 
         }
 
         @Override
-        public boolean onMessage(Student_Overworld Student, Telegram telegram) {
+        public boolean onMessage(Smart Student, Telegram telegram) {
             return false;
         }
     },
 
     WANDER() {
         @Override
-        public void enter(Student_Overworld Student) { // INIT
+        public void enter(Smart Student) { // INIT
 
         }
 
         @Override
-        public void update(Student_Overworld Student) {
+        public void update(Smart Student) {
             //Check for changes, then update state
             //Student.WorldObject.setPosition(Student.WorldObject.getPosition().x + 1, Student.WorldObject.getPosition().y);
 
         }
 
         @Override
-        public void exit(Student_Overworld Student) {
+        public void exit(Smart Student) {
 
         }
 
         @Override
-        public boolean onMessage(Student_Overworld Student, Telegram telegram) {
+        public boolean onMessage(Smart Student, Telegram telegram) {
             return false;
         }
     },
 
     WALKING_TO_DESTINATION() {
         @Override
-        public void enter(Student_Overworld Student) { // INIT
+        public void enter(Smart Student) { // INIT
             Student.updatePath(true);
         }
 
         @Override
-        public void update(Student_Overworld Student) {
+        public void update(Smart Student) {
             //Check for changes, then update state
 
         }
 
         @Override
-        public void exit(Student_Overworld Student) { // Leave this state
+        public void exit(Smart Student) { // Leave this state
 
         }
 
         @Override
-        public boolean onMessage(Student_Overworld Student, Telegram telegram) {
+        public boolean onMessage(Smart Student, Telegram telegram) {
             return false;
         }
     }

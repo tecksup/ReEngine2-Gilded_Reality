@@ -19,12 +19,12 @@ import static com.badlogic.gdx.utils.TimeUtils.nanoTime;
 public class Student extends NPC {
 
     private Vector2 Destination;
-    private Student_Overworld AI;
+    private Smart AI;
 
     public Student(String name, int x, int y, Vector3 size, float knockbackResistance, float health, intractability interact, FlatTiledGraph worldMap) {
         super(name, x, y, size, knockbackResistance, health, interact);
 
-        AI = new Student_Overworld(this, worldMap);
+        AI = new Smart(this, worldMap);
 
     }
 

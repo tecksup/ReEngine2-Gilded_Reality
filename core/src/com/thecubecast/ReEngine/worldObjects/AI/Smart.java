@@ -17,7 +17,7 @@ import com.thecubecast.ReEngine.worldObjects.WorldObject;
 
 import static com.badlogic.gdx.utils.TimeUtils.nanoTime;
 
-public class Student_Overworld implements Telegraph {
+public class Smart implements Telegraph {
 
     private Vector2 Destination;
     Student WorldObject;
@@ -28,9 +28,9 @@ public class Student_Overworld implements Telegraph {
     IndexedAStarPathFinder<FlatTiledNode> pathFinder;
     TiledManhattanDistance<FlatTiledNode> heuristic;
 
-    private StateMachine<Student_Overworld, Student_State> stateMachine;
+    private StateMachine<Smart, Student_State> stateMachine;
 
-    public Student_Overworld(Student WorldObject, FlatTiledGraph worldMap) {
+    public Smart(Student WorldObject, FlatTiledGraph worldMap) {
 
         Destination = new Vector2(WorldObject.getPosition());
 
@@ -40,7 +40,8 @@ public class Student_Overworld implements Telegraph {
         heuristic = new TiledManhattanDistance<FlatTiledNode>();
         pathFinder = new IndexedAStarPathFinder<FlatTiledNode>(worldMap, true);
 
-        stateMachine = new DefaultStateMachine<Student_Overworld, Student_State>(this, Student_State.IDLE);
+        stateMachine = new DefaultStateMachine<Smart, Student_State>(this, Student_State.IDLE);
+        stateMachine.getCurrentState().enter(this);
 
         this.WorldObject = WorldObject;
 
@@ -94,7 +95,7 @@ public class Student_Overworld implements Telegraph {
 
 
     //GETTERS AND SETTERS
-    public StateMachine<Student_Overworld, Student_State> getStateMachine() {
+    public StateMachine<Smart, Student_State> getStateMachine() {
         return stateMachine;
     }
 

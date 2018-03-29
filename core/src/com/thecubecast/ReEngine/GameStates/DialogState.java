@@ -12,12 +12,13 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
+import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -43,7 +44,18 @@ public class DialogState extends GameState {
     Player player;
     NPC hank;
     private List<collision> Collisions = new ArrayList<>();
+    public static List<Area> Areas = new ArrayList<>();
     private List<WorldObject> Entities = new ArrayList<>();
+
+    public class Area {
+        public String Name;
+        public Rectangle Rect;
+
+        public Area(String Name, Rectangle Rect) {
+            this.Name = Name;
+            this.Rect = Rect;
+        }
+    }
 
     OrthographicCamera camera;
 
@@ -77,7 +89,7 @@ public class DialogState extends GameState {
 
         MenuInit();
 
-        player = new Player(20*16,20*16, new Vector3(16, 16, 16));
+        player = new Player(20*16,130*16, new Vector3(16, 16, 16));
         Entities.add(player);
         gsm.DiscordManager.setPresenceDetails("topdown Demo - Level 1");
         gsm.DiscordManager.setPresenceState("In Game");
@@ -88,7 +100,15 @@ public class DialogState extends GameState {
         tiledMap = new TmxMapLoader().load("Saves/BITWISE/School/map.tmx");
         tiledBits = new BitwiseTiles(tiledMap);
         if(tiledMap.getLayers().get("Rooms") != null) {
-            tiledMap.getLayers().get("Rooms").getObjects();
+            for(int rooms = 0; rooms < tiledMap.getLayers().get("Rooms").getObjects().getCount(); rooms++) {
+                if (tiledMap.getLayers().get("Rooms").getObjects().get(rooms) instanceof RectangleMapObject) {
+                    RectangleMapObject temp = (RectangleMapObject) tiledMap.getLayers().get("Rooms").getObjects().get(rooms);
+                    Areas.add(new Area(temp.getName(), temp.getRectangle()));
+                } else {
+                    MapObject temp = tiledMap.getLayers().get("Rooms").getObjects().get(rooms);
+                }
+
+            }
         }
 
         MapGraph = new FlatTiledGraph(tiledBits);
@@ -105,7 +125,7 @@ public class DialogState extends GameState {
                     Collisions.add(new collision(tempRect, tempRect.hashCode()));
                 } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 8)) { //Bush (stupid grass block)
                     Rectangle tempRect;
-                    if(tiledBits.getBitTileObject(1).BitTiles.get(y)[x] == 8) {
+                    if(tiledBits.getBitTileObject(1).BitTiles.get(y)[x] == 17) {
                         tempRect = new Rectangle(x*16, y*16+8, 16, 8);
                     } else {
                         tempRect = new Rectangle(x*16, y*16, 16, 16);
@@ -127,7 +147,7 @@ public class DialogState extends GameState {
         //JukeBox.load("/Music/bgmusic.wav", "LogoSound");
         //JukeBox.play("LogoSound");
 
-        hank = new NPC("Hank", 20*16, 23*16, new Vector3(32, 32, 4), .1f, 100) {
+        hank = new NPC("Hank", 20*16, 127*16, new Vector3(32, 32, 4), .1f, 100) {
             Texture sprite = new Texture(Gdx.files.internal("Sprites/8direct/south.png"));
 
             private Animation<TextureRegion> idle;
@@ -192,11 +212,11 @@ public class DialogState extends GameState {
         Rectangle hankbox = new Rectangle((int) hank.getHitbox().x, (int) hank.getHitbox().y,(int) hank.getHitbox().width,(int) hank.getHitbox().height);
         //Collisions.add(new collision(hankbox, hank.hashCode()));
 
-        Student Random = new Student("Student",18*16, 20*16, new Vector3(16, 16, 4), 1, 100, NPC.intractability.Talk, MapGraph) {
+        Student Random = new Student("Student",18*16, 130*16, new Vector3(16, 16, 4), 1, 100, NPC.intractability.Talk, MapGraph) {
             @Override
             public void init(int Width, int Height) {
                 super.init(Width, Height);
-                super.setDestination(new Vector2(26*16,33*16));
+                super.setDestination(new Vector2(26*16,117*16));
             }
 
             @Override
@@ -212,6 +232,8 @@ public class DialogState extends GameState {
         Random.init(0,0);
         Entities.add(Random);
         Entities.add(hank);
+
+        camera.position.set((int) (player.getPosition().x),(int) (player.getPosition().y), 0);
     }
 
     public void update() {
@@ -223,8 +245,65 @@ public class DialogState extends GameState {
         handleInput();
         player.update(gsm.DeltaTime, Collisions);
 
-        camera.position.set((int) (player.getPosition().x),(int) (player.getPosition().y), 0);
-        camera.update();
+        cameraUpdate(player, camera);
+
+    }
+
+    private void cameraUpdate(WorldObject mainFocus, OrthographicCamera cam) {
+        //Set inArea to true to override camera room Lock
+        boolean inArea = true;
+        for (int i = 0; i < Areas.size(); i++) {
+            Rectangle mostOverlaped;
+            if (mainFocus.getHitbox().overlaps(Areas.get(i).Rect)) { // Lock the camera into the AREA, still follow the player
+                Vector3 camPos = cam.position;
+                Rectangle camView = new Rectangle(cam.position.x - cam.viewportWidth/2, cam.position.y - cam.viewportHeight/2, cam.viewportWidth, cam.viewportHeight);
+
+                Rectangle overlaper = new Rectangle(0,0,1,1);
+                //This rectangle is the are between the room and camView
+                //Compare the difference in height, then divide by two to center the screen over the room rectangle
+                Intersector.intersectRectangles(Areas.get(i).Rect, camView, overlaper);
+
+                float newPosX = cam.position.x, newPosY = cam.position.y;
+
+                //Width
+                if (Areas.get(i).Rect.width < camView.width) { //if the area does not fit all the width in the screen at once
+
+                    float difference = Areas.get(i).Rect.width - camView.width;
+
+                    float tempDeltaX = mainFocus.getPosition().x;
+                    if (tempDeltaX < camView.x) { // If you try to go past the left border
+                        newPosX = camView.x;
+                    } else {
+                        newPosX = tempDeltaX;
+                    }
+
+                    if (tempDeltaX > camView.x + camView.width) { // If you try to go past the right border
+                        newPosX = camView.x + camView.width;
+                    } else {
+                        newPosX = tempDeltaX;
+                    }
+
+                    //newPosX = difference/2;
+
+                } else { //Follow the player left and right
+                    Rectangle fakeView = camView;
+                    fakeView.setX(mainFocus.getPosition().x);
+                    if (fakeView.x > Areas.get(i).Rect.x && fakeView.x < Areas.get(i).Rect.width) { // sets up the boundries of the camera
+                        newPosX = mainFocus.getPosition().x;
+                    }
+                }
+
+                cam.position.set((int) (newPosX),(int) (newPosY), 0);
+
+                break;
+            }
+        }
+
+        if (inArea) { //Follow the player if he is not in an AREA
+            cam.position.set((int) (mainFocus.getPosition().x),(int) (mainFocus.getPosition().y), 0);
+        }
+
+        cam.update();
     }
 
     public void draw(SpriteBatch g, int height, int width, float Time) {
@@ -235,8 +314,13 @@ public class DialogState extends GameState {
         g.begin();
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
-        tiledBits.drawLayer(g, 16, Time,0, 0, false);
-        tiledBits.drawLayer(g, 16, Time,1, 0, false);
+
+        Rectangle camView = new Rectangle(camera.position.x - camera.viewportWidth/2, camera.position.y - camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight);
+        tiledBits.drawLayer(g, 16, Time,0, player.getPosition().y, camView);
+        tiledBits.drawLayer(g, 16, Time,1, player.getPosition().y, camView);
+
+        //tiledBits.drawLayer(g, 16, Time,0, player.getPosition().y, new Rectangle(camView.x + 20, camView.y + 20, camView.width-40, camView.height-40));
+        //tiledBits.drawLayer(g, 16, Time,1, player.getPosition().y, new Rectangle(camView.x + 20, camView.y + 20, camView.width-40, camView.height-40));
 
         for(int i = 0; i < Entities.size(); i++) {
             if(Entities.get(i).ifColliding(player.getIntereactBox())){
@@ -262,6 +346,7 @@ public class DialogState extends GameState {
         MenuDraw(Gdx.graphics.getDeltaTime());
         guiBatch.end();
 
+
         if (gsm.Debug) {
             gsm.Render.debugRenderer.setProjectionMatrix(shaker.getCombinedMatrix());
             gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -273,24 +358,28 @@ public class DialogState extends GameState {
             gsm.Render.debugRenderer.polygon(player.getAttackBox().getVertices());
             gsm.Render.debugRenderer.setColor(Color.YELLOW);
             gsm.Render.debugRenderer.rect(player.getIntereactBox().x, player.getIntereactBox().y, player.getIntereactBox().width, player.getIntereactBox().height);
-            gsm.Render.debugRenderer.setColor(Color.RED);
-            //Collisions.forEach(number -> gsm.Render.debugRenderer.rect(number.getRect().x, number.getRect().y, (number.getRect().width), (number.getRect().height)));
 
-            for (int y = 0; y < tiledBits.bitTileObjectLayers.get(0).realTile.size(); y++) {
-                for (int x = 0; x < tiledBits.bitTileObjectLayers.get(0).realTile.size(); x++) {
-                    switch (MapGraph.getNode(x, y).type) {
-                        case FlatTiledNode.GROUND:
-                            gsm.Render.debugRenderer.setColor(Color.GREEN);
-                            //gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
-                            break;
-                        case FlatTiledNode.COLLIDABLE:
-                            gsm.Render.debugRenderer.setColor(Color.RED);
-                            gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
-                            break;
-                        default:
-                            //gsm.Render.debugRenderer.setColor(Color.WHITE);
-                            //gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
-                            break;
+            if (false) //ONLY SET TO TRUE IF YOU NEED TO VIEW AI GRAPH
+            {
+                gsm.Render.debugRenderer.setColor(Color.RED);
+                Collisions.forEach(number -> gsm.Render.debugRenderer.rect(number.getRect().x, number.getRect().y, (number.getRect().width), (number.getRect().height)));
+
+                for (int y = 0; y < tiledBits.bitTileObjectLayers.get(0).realTile.size(); y++) {
+                    for (int x = 0; x < tiledBits.bitTileObjectLayers.get(0).realTile.size(); x++) {
+                        switch (MapGraph.getNode(x, y).type) {
+                            case FlatTiledNode.GROUND:
+                                gsm.Render.debugRenderer.setColor(Color.GREEN);
+                                //gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
+                                break;
+                            case FlatTiledNode.COLLIDABLE:
+                                gsm.Render.debugRenderer.setColor(Color.SALMON);
+                                gsm.Render.debugRenderer.rect(x * 16 + 1, y * 16 + 1, 16-2, 16-2);
+                                break;
+                            default:
+                                //gsm.Render.debugRenderer.setColor(Color.WHITE);
+                                //gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
+                                break;
+                        }
                     }
                 }
             }
@@ -313,6 +402,11 @@ public class DialogState extends GameState {
                     Student temp = (Student) Entities.get(i);
                     gsm.Render.debugRenderer.rect(temp.getDestination().x+2, temp.getDestination().y+2, 12, 12);
                 }
+            }
+
+            for (int i = 0; i < Areas.size(); i++) {
+                gsm.Render.debugRenderer.setColor(Color.BLUE);
+                gsm.Render.debugRenderer.rect(Areas.get(i).Rect.x+1, Areas.get(i).Rect.y+1, Areas.get(i).Rect.width-2, Areas.get(i).Rect.height-2);
             }
 
             gsm.Render.debugRenderer.end();

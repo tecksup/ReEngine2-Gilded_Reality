@@ -44,9 +44,6 @@ public class GameStateManager {
 	//Public render function object
 	public Draw Render;
 	public int ticks = 0;
-	
-	//Public file handler
-	public ReadWrite Rwr;
 
 	//Public Audio handler
 	public static SoundManager AudioM;
@@ -73,9 +70,7 @@ public class GameStateManager {
 
 		Render = new Draw();
 		AudioM = new SoundManager();
-		Rwr = new ReadWrite();
-		
-		Rwr.init();
+
 		AudioM.init();
 		Render.Init();
 

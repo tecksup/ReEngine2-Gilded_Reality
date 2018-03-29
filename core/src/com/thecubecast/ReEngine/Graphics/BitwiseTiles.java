@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
 import com.thecubecast.ReEngine.Data.Common;
 
 import java.io.IOException;
@@ -277,7 +278,7 @@ public class BitwiseTiles {
         }
     }
 
-    public void drawLayer(SpriteBatch batch, int tileSize, float time, int layer, float Playery, boolean first) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
+    public void drawLayer(SpriteBatch batch, int tileSize, float time, int layer, float Playery, Rectangle CamView) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
         for (int y = 0; y < bitTileObjectLayers.get(layer).realTile.size(); y++) {
             for(int x = 0; x < bitTileObjectLayers.get(layer).realTile.get(y).length; x++) {
 
@@ -293,25 +294,13 @@ public class BitwiseTiles {
 
                 int RealTile = bitTileObjectLayers.get(layer).realTile.get(y)[x];
                 int BitDirectionright = bitTileObjectLayers.get(layer).BitTiles.get(y)[x] & 0b1111;
-                int BitDirectionleft = bitTileObjectLayers.get(layer).BitTiles.get(y)[x] >> 4;
 
-                if (BitDirectionleft > 0)
-                    batch.draw(bitTiles.get(RealTile-1).variants.get(0)[BitDirectionleft+16], x*tileSize, y*tileSize);
-                else { // THIS RUNS BY DEFAULT
-                    if (RealTile == 4) { // So we can animate special tiles
+                if (RealTile == 4) { // So we can animate special tiles
 
-                    } else {
+                } else {
+                    if(CamView.overlaps(new Rectangle(x*tileSize, y*tileSize, tileSize, tileSize))) {
                         batch.draw(bitTiles.get(RealTile-1).variants.get(0)[BitDirectionright], x*tileSize, y*tileSize);
                     }
-                }
-
-                if (first) {
-                    if(Playery > x*tileSize) {
-                        //batch.draw(bitTiles.get(RealTile-1)[BitDirectionright], x*tileSize, y*tileSize);
-                        //batch.draw(bitTiles.get(RealTile-1)[bitTileObject.BitTiles.get(y)[x]], x*tileSize,	y*tileSize,	0, 0, bitTiles.get(RealTile-1)[0].getRegionWidth(), bitTiles.get(RealTile-1)[0].getRegionHeight(), 1, 1,0);
-                    }
-                } else {
-
                 }
             }
         }
