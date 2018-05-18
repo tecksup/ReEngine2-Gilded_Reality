@@ -410,4 +410,9 @@ public class PlatformerTestState extends GameState {
 
     //Ends the Gui Shit
 
+    @Override
+    public void Shutdown() {
+
+    }
+
 }

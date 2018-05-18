@@ -11,6 +11,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.collision;
+import com.thecubecast.ReEngine.Graphics.PipelineTexture;
+import com.thecubecast.ReEngine.Graphics.PipelineTextureRegion;
+import com.thecubecast.ReEngine.Graphics.RePipeline;
 import sun.security.ssl.Debug;
 
 import java.util.ArrayList;
@@ -38,6 +41,8 @@ public class Player extends WorldObject {
     private Animation<TextureRegion> penguinAnimation7;
     Texture penguin0, penguin1, penguin2, penguin3, penguin4, penguin5, penguin6, penguin7;
 
+    PipelineTexture tempTex;
+
     public enum Direction {
         South, SouthEast, East, NorthEast, North, NorthWest, West, SouthWest
     }
@@ -49,6 +54,8 @@ public class Player extends WorldObject {
 
     public Player(int x, int y, Vector3 size) {
         super(x, y, size,type.Dynamic);
+
+        tempTex = new PipelineTexture("Sprites/proto/proto_0.png");
 
         penguinAnimation0 = new Animation<TextureRegion>(0.1f, loadAnim(penguin0, "Sprites/8direct/south.png", 4, 1));
         penguinAnimation1 = new Animation<TextureRegion>(0.1f, loadAnim(penguin1, "Sprites/8direct/southEast.png", 4, 1));
@@ -198,6 +205,55 @@ public class Player extends WorldObject {
         } else if (playerDirection == Direction.SouthWest) {
             TextureRegion tempFrame7 = penguinAnimation7.getKeyFrame(time, true);
             batch.draw(tempFrame7, Facing ? getPosition().x + (getHitbox().getWidth()) : getPosition().x, getPosition().y, Facing ? -(getHitbox().getHeight()) : (getHitbox().getHeight()), (getHitbox().getHeight()));
+
+        }
+
+        switch (AnimState) {
+            case Standing:
+
+                break;
+
+            case Falling:
+                //Do nothing
+                //batch.draw(tempFrame, Facing ? getPosition().x*(Size) + (Size) : getPosition().x*Size, getPosition().y*Size, Facing ? -(Size) : (Size), (Size*2));
+                break;
+
+            case Walking:
+
+                break;
+
+            case Running:
+
+                break;
+        }
+    }
+
+    @Override
+    public void draw(RePipeline batch, float Time) {
+        if (playerDirection == Direction.South) {
+            TextureRegion tempFrame0 = penguinAnimation0.getKeyFrame(Time, true);
+            batch.draw(new PipelineTextureRegion(tempFrame0), Facing ? getPosition().x + (getHitbox().getWidth()) : getPosition().x, getPosition().y, Facing ? (int) -(getHitbox().getHeight()) : (int) (getHitbox().getHeight()), (int) (getHitbox().getHeight()));
+        } else if (playerDirection == Direction.SouthEast) {
+            TextureRegion tempFrame1 = penguinAnimation1.getKeyFrame(Time, true);
+            batch.draw(new PipelineTextureRegion(tempFrame1), Facing ? getPosition().x + (getHitbox().getWidth()) : getPosition().x, getPosition().y, Facing ? (int) -(getHitbox().getHeight()) : (int) (getHitbox().getHeight()), (int) (getHitbox().getHeight()));
+        } else if (playerDirection == Direction.East) {
+            TextureRegion tempFrame2 = penguinAnimation2.getKeyFrame(Time, true);
+            batch.draw(new PipelineTextureRegion(tempFrame2), Facing ? getPosition().x + (getHitbox().getWidth()) : getPosition().x, getPosition().y, Facing ? (int) -(getHitbox().getHeight()) : (int) (getHitbox().getHeight()), (int) (getHitbox().getHeight()));
+        } else if (playerDirection == Direction.NorthEast) {
+            TextureRegion tempFrame3 = penguinAnimation3.getKeyFrame(Time, true);
+            batch.draw(new PipelineTextureRegion(tempFrame3), Facing ? getPosition().x + (getHitbox().getWidth()) : getPosition().x, getPosition().y, Facing ? (int) -(getHitbox().getHeight()) : (int) (getHitbox().getHeight()), (int) (getHitbox().getHeight()));
+        } else if (playerDirection == Direction.North) {
+            TextureRegion tempFrame4 = penguinAnimation4.getKeyFrame(Time, true);
+            batch.draw(new PipelineTextureRegion(tempFrame4), Facing ? getPosition().x + (getHitbox().getWidth()) : getPosition().x, getPosition().y, Facing ? (int) -(getHitbox().getHeight()) : (int) (getHitbox().getHeight()), (int) (getHitbox().getHeight()));
+        } else if (playerDirection == Direction.NorthWest) {
+            TextureRegion tempFrame5 = penguinAnimation5.getKeyFrame(Time, true);
+            batch.draw(new PipelineTextureRegion(tempFrame5), Facing ? getPosition().x + (getHitbox().getWidth()) : getPosition().x, getPosition().y, Facing ? (int) -(getHitbox().getHeight()) : (int) (getHitbox().getHeight()), (int) (getHitbox().getHeight()));
+        } else if (playerDirection == Direction.West) {
+            TextureRegion tempFrame6 = penguinAnimation6.getKeyFrame(Time, true);
+            batch.draw(new PipelineTextureRegion(tempFrame6), Facing ? getPosition().x + (getHitbox().getWidth()) : getPosition().x, getPosition().y, Facing ? (int) -(getHitbox().getHeight()) : (int) (getHitbox().getHeight()), (int) (getHitbox().getHeight()));
+        } else if (playerDirection == Direction.SouthWest) {
+            TextureRegion tempFrame7 = penguinAnimation7.getKeyFrame(Time, true);
+            batch.draw(new PipelineTextureRegion(tempFrame7), Facing ? getPosition().x + (getHitbox().getWidth()) : getPosition().x, getPosition().y, Facing ? (int) -(getHitbox().getHeight()) : (int) (getHitbox().getHeight()), (int) (getHitbox().getHeight()));
 
         }
 

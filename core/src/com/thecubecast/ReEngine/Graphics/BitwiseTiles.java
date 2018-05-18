@@ -8,7 +8,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.thecubecast.ReEngine.Data.Common;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,139 +33,72 @@ public class BitwiseTiles {
         public List<short[]> realTile = new ArrayList<short[]>();
     }
 
-
-    public class tileTexture {
-        public List<TextureRegion[]> variants = new ArrayList<TextureRegion[]>();
-
-    }
-
-    List<tileTexture> bitTiles = new ArrayList<tileTexture>();
+    List<PipelineTextureRegion[]> bitTiles = new ArrayList<>();
 
     public BitwiseTiles(TiledMap map) {
 
         //calculate the map bitwise operations
         calculate(map);
 
+        reLoadImages();
+
+        for (int x = 0; x < bitTiles.size(); x++) {
+            for (int y = 0; y < bitTiles.get(x).length; y++) {
+                if(bitTiles.get(x)[y].getDiffuse() == null)
+                    Common.print("x: " + x + " y: " + y + " diffuse is null");
+                if(bitTiles.get(x)[y].getNormal() == null)
+                    Common.print("x: " + x + " y: " + y + " normal is null");
+            }
+        }
+    }
+
+    public void reLoadImages() {
+        bitTiles.clear();
+
         //The Size of the images
         int Rows = 4;
         int Cols = 4;
 
-        Path imagePath = Paths.get("Sprites/bitWise");
+        File Directory = new File("Sprites/bitWise");
+        String[] extensions = new String[] { "png" };
+        List<File> files = (List<File>) FileUtils.listFiles(Directory, extensions, true);
+        long types = files.size();
 
-        long types = 0;
-        try {
-            types = Files.list(imagePath).count();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        for(int i = 1; i <= types; i++) {
-            TextureRegion[] temp = new TextureRegion[Cols * Rows];
+        for(int i = 0; i < types; i++) {
+            PipelineTextureRegion[] temp = new PipelineTextureRegion[Cols * Rows];
+            for(int x = 0; x < temp.length; x++){temp[x] = new PipelineTextureRegion();}
+            //TextureRegion[] temp = new TextureRegion[Cols * Rows];
             Texture TexSheet = new Texture(Gdx.files.internal("Sprites/bitWise/" + i + ".png"));
 
             TextureRegion[][] tmp = TextureRegion.split(TexSheet,
                     TexSheet.getWidth() / Cols,
                     TexSheet.getHeight() / Rows);
 
-           /* int index = 0;
-            for (int l = 0; l < Rows; l++) {
-                for (int j = 0; j < Cols; j++) {
-                    temp[index++] = tmp[l][j];
-                }
-            }
-            */
+            temp[6] = new PipelineTextureRegion(tmp[0][0]);
+            temp[14] = new PipelineTextureRegion(tmp[0][1]);
+            temp[12] = new PipelineTextureRegion(tmp[0][2]);
+            temp[4] = new PipelineTextureRegion(tmp[0][3]);
+            temp[7] = new PipelineTextureRegion(tmp[1][0]);
+            temp[15] = new PipelineTextureRegion(tmp[1][1]);
+            temp[13] = new PipelineTextureRegion(tmp[1][2]);
+            temp[5] = new PipelineTextureRegion(tmp[1][3]);
+            temp[3] = new PipelineTextureRegion(tmp[2][0]);
+            temp[11] = new PipelineTextureRegion(tmp[2][1]);
+            temp[9] = new PipelineTextureRegion(tmp[2][2]);
+            temp[1] = new PipelineTextureRegion(tmp[2][3]);
+            temp[2] = new PipelineTextureRegion(tmp[3][0]);
+            temp[10] = new PipelineTextureRegion(tmp[3][1]);
+            temp[8] = new PipelineTextureRegion(tmp[3][2]);
+            temp[0] = new PipelineTextureRegion(tmp[3][3]);
 
-            temp[6] = tmp[0][0];
-            temp[14] = tmp[0][1];
-            temp[12] = tmp[0][2];
-            temp[4] = tmp[0][3];
-            temp[7] = tmp[1][0];
-            temp[15] = tmp[1][1];
-            temp[13] = tmp[1][2];
-            temp[5] = tmp[1][3];
-            temp[3] = tmp[2][0];
-            temp[11] = tmp[2][1];
-            temp[9] = tmp[2][2];
-            temp[1] = tmp[2][3];
-            temp[2] = tmp[3][0];
-            temp[10] = tmp[3][1];
-            temp[8] = tmp[3][2];
-            temp[0] = tmp[3][3];
-
-            tileTexture tiletemp = new tileTexture();
-            tiletemp.variants.add(temp);
-            bitTiles.add(tiletemp);
-        }
-
-    }
-
-    /*
-    public void BitwiseTilesVariants(TiledMap map) {
-
-        //calculate the map bitwise operations
-        calculate(map);
-
-        Path imagePath = Paths.get("Sprites/bitWise");
-
-        try {
-            Files.list(imagePath).forEach(path -> setupTileTexture(path));
-        } catch (IOException e) {
-
-        }
-
-    }
-
-    public void setupTileTexture(Path file) {
-
-        int Rows = 4;
-        int Cols = 4;
-
-        TextureRegion[] temp = new TextureRegion[Cols * Rows];
-        Texture TexSheet = new Texture(Gdx.files.internal(file.toString()));
-
-        TextureRegion[][] tmp = TextureRegion.split(TexSheet,
-                TexSheet.getWidth() / Cols,
-                TexSheet.getHeight() / Rows);
-
-            int index = 0;
-            for (int l = 0; l < Rows; l++) {
-                for (int j = 0; j < Cols; j++) {
-                    temp[index++] = tmp[l][j];
-                }
+            for (int x = 0; x < temp.length; x++) {
+                TextureRegion tmp2 = new TextureRegion(new Texture(Gdx.files.internal("Sprites/Empty_Normal.png")));
+                temp[x].setNormal(tmp2);
             }
 
-
-        temp[6] = tmp[0][0];
-        temp[14] = tmp[0][1];
-        temp[12] = tmp[0][2];
-        temp[4] = tmp[0][3];
-        temp[7] = tmp[1][0];
-        temp[15] = tmp[1][1];
-        temp[13] = tmp[1][2];
-        temp[5] = tmp[1][3];
-        temp[3] = tmp[2][0];
-        temp[11] = tmp[2][1];
-        temp[9] = tmp[2][2];
-        temp[1] = tmp[2][3];
-        temp[2] = tmp[3][0];
-        temp[10] = tmp[3][1];
-        temp[8] = tmp[3][2];
-        temp[0] = tmp[3][3];
-
-        String[] stringArray = file.toString().split("/");
-        Common.print("" + stringArray);
-        String[] stringArray2 = stringArray[stringArray.length].split("_");
-        Common.print("" + stringArray2);
-        int Tilenumber = Integer.parseInt(stringArray2[0]);
-        Common.print("" + Tilenumber);
-
-
-
-        tileTexture tiletemp = new tileTexture();
-        tiletemp.variants.add(temp);
-        bitTiles.add(tiletemp);
+            bitTiles.add(temp);
+        }
     }
-*/
 
     public void calculate(TiledMap map) { // Will update the bitwise table
         tiledMap = map;
@@ -268,7 +203,7 @@ public class BitwiseTiles {
 
                         }
                     */
-                    batch.draw(bitTiles.get(RealTile-1).variants.get(0)[BitDirectionright], x*tileSize, y*tileSize);
+                    batch.draw(bitTiles.get(RealTile-1)[BitDirectionright].getDiffuse(), x*tileSize, y*tileSize);
                     //batch.draw(bitTiles.get(RealTile-1)[bitTileObject.BitTiles.get(y)[x]], x*tileSize,	y*tileSize,	0, 0, bitTiles.get(RealTile-1)[0].getRegionWidth(), bitTiles.get(RealTile-1)[0].getRegionHeight(), 1, 1,0);
 
 
@@ -276,6 +211,10 @@ public class BitwiseTiles {
                 }
             }
         }
+    }
+
+    public List<PipelineTextureRegion[]> getBitTiles() {
+        return bitTiles;
     }
 
     public void drawLayer(SpriteBatch batch, int tileSize, float time, int layer, float Playery, Rectangle CamView) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
@@ -299,7 +238,35 @@ public class BitwiseTiles {
 
                 } else {
                     if(CamView.overlaps(new Rectangle(x*tileSize, y*tileSize, tileSize, tileSize))) {
-                        batch.draw(bitTiles.get(RealTile-1).variants.get(0)[BitDirectionright], x*tileSize, y*tileSize);
+                        batch.draw(bitTiles.get(RealTile-1)[BitDirectionright].getDiffuse(), x*tileSize, y*tileSize);
+                    }
+                }
+            }
+        }
+    }
+
+    public void drawLayer(RePipeline batch, int tileSize, float time, int layer, float Playery, Rectangle CamView) {//Draws the tile starting from 0, so if its tile 2 draw bitTile 1
+        for (int y = 0; y < bitTileObjectLayers.get(layer).realTile.size(); y++) {
+            for(int x = 0; x < bitTileObjectLayers.get(layer).realTile.get(y).length; x++) {
+
+                //bitTileObject.BitTiles.get(y)[x] that is the bitTile
+                //bitTileObject.realTile.get(y)[x] is the tile type
+
+                if (bitTileObjectLayers.get(layer).BitTiles.get(y)[x] == -1) {
+                    continue;
+                }
+
+                int RealTile = bitTileObjectLayers.get(layer).realTile.get(y)[x];
+                int BitDirectionright = bitTileObjectLayers.get(layer).BitTiles.get(y)[x] & 0b1111;
+
+                if (RealTile == 4) { // So we can animate special tiles
+
+                } else {
+                    if(CamView.overlaps(new Rectangle(x*tileSize, y*tileSize, tileSize, tileSize))) {
+                        if (layer == 0)
+                            batch.draw(bitTiles.get(RealTile - 1)[BitDirectionright], x * tileSize, y * tileSize, 1);
+                        else
+                            batch.draw(bitTiles.get(RealTile - 1)[BitDirectionright], x * tileSize, y * tileSize);
                     }
                 }
             }

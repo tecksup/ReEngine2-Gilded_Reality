@@ -8,6 +8,7 @@ package com.thecubecast.ReEngine.Data;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.thecubecast.ReEngine.GameStates.*;
 import com.thecubecast.ReEngine.Graphics.Draw;
 import com.badlogic.gdx.Gdx;
@@ -16,14 +17,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import static com.thecubecast.ReEngine.Data.GameStateManager.State.Blank;
+import static com.thecubecast.ReEngine.Data.GameStateManager.State.SHADER;
 
 public class GameStateManager {
-
-    public controlerManager ctm;
-
 	public boolean Debug = false;
+	public float[] fpsLog = new float[999999];
+	public int fpsIndex = 0;
 
     public enum State {
         INTRO, MENU, PLAY, LOADING, OPTIONS, TEST, SHADER, MULTIPLAYER, PLATFORMER, Blank, Dialog
@@ -32,11 +34,7 @@ public class GameStateManager {
     public State newcurrentState;
     private State newpreviousState;
 
-
     private GameState gameState;
-	
-	public String Username;
-	public String IpAdress = "localhost";
 
 	public float CurrentTime;
 	public float DeltaTime;
@@ -47,6 +45,8 @@ public class GameStateManager {
 
 	//Public Audio handler
 	public static SoundManager AudioM;
+
+	public static controlerManager ctm;
 
 	public Discord DiscordManager;
 
@@ -61,6 +61,7 @@ public class GameStateManager {
 	//screen
 	public int Width;
 	public int Height;
+	public int Scale = 4;
 	
 	public GameStateManager() {
 
@@ -74,7 +75,7 @@ public class GameStateManager {
 		AudioM.init();
 		Render.Init();
 
-		//setState(Blank);
+		//setState(SHADER);
 		LoadState("STARTUP"); //THIS IS THE STATE WERE WE START WHEN THE GAME IS RUN
 		
 	}
@@ -119,7 +120,7 @@ public class GameStateManager {
                 break;
             case SHADER:
                 Common.print("Loaded state ShaderTest");
-                gameState = new ShaderTestState(this);
+                gameState = new ShaderPipelineTestState(this);
                 gameState.init();
                 break;
             case MULTIPLAYER:
@@ -145,9 +146,15 @@ public class GameStateManager {
         }
 		
 	}
-	
+
+	/**
+	 * unloads the current state
+	 * calls dispose on the current gamestate first
+	 **/
 	public void unloadState() {
 		//Common.print("Unloaded state " + i);
+		if(gameState != null)
+			gameState.dispose();
 		gameState = null;
 	}
 	
@@ -163,7 +170,6 @@ public class GameStateManager {
 		MouseDrag = Draging;
 		MouseClick = MousCl;
 		if(gameState != null) {
-			
 			gameState.update();
 		}
 		//MouseClick[0] = 0;
@@ -180,8 +186,22 @@ public class GameStateManager {
 		CurrentTime = Time;
 		DeltaTime = Math.min(Gdx.graphics.getDeltaTime(), 1f / 60f);
 		if(gameState != null) {
+			//Notice how the height and width are swapped, woops
 			gameState.draw(bbg, H, W, Time);
 		}
+
+        //Gdx.graphics.setVSync(!Debug);
+
+		if(Debug) {
+            //Common.print("Render Calls: " + bbg.totalRenderCalls);
+            //bbg.totalRenderCalls = 0;
+        }
+
+        /*
+		fpsLog[fpsIndex] = Gdx.graphics.getFramesPerSecond();
+		fpsIndex++;
+		System.out.println(fpsLog[fpsIndex-1]);
+		*/
 	}
 	
 	public void reSize(SpriteBatch bbg, int H, int W) {
@@ -197,5 +217,11 @@ public class GameStateManager {
 
 	public void dispose() {
 		DiscordManager.dispose();
+		gameState.dispose();
 	}
+
+	public void Shutdown() {
+        gameState.dispose();
+	    gameState.Shutdown();
+    }
 }

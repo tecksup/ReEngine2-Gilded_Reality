@@ -12,6 +12,19 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Common {
 	
+	public static void ProperShutdown(GameStateManager gsm) {
+		Common.print("Proper Shutdown Commenced!");
+		Common.print("Running all pre-shutdown protocalls...");
+		//Then run all the code u want to do before it ends
+		//Cleanup(); SaveAll();
+
+		gsm.Shutdown();
+
+		//Now Finish It!
+		Common.print("Terminating Program!");
+		Gdx.app.exit();
+	}
+
 	public static void ProperShutdown() {
 		Common.print("Proper Shutdown Commenced!");
 		Common.print("Running all pre-shutdown protocalls...");

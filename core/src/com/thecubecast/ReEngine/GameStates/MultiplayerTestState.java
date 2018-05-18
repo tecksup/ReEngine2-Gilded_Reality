@@ -80,7 +80,7 @@ public class MultiplayerTestState extends GameState {
 
         //SETUP NETWORK CONNECTION
         try {
-            network = new KryoClient(gsm.Username, gsm.IpAdress, 54555, 54777);
+            network = new KryoClient("username", "IP", 54555, 54777);
             while(!network.established) {
                 Common.sleep(5);
             }
@@ -173,7 +173,7 @@ public class MultiplayerTestState extends GameState {
         if (network.GetUsers().size() != 0) {
             for(int l=0; l< network.GetUsers().size(); l++){
                 gsm.Render.GUIDrawText(g, Common.roundDown((network.GetUsers().get(l).x*64)), Common.roundDown((network.GetUsers().get(l).y*64)), network.GetUsers().get(l).username);
-                g.draw(gsm.Render.GUI[24], network.GetUsers().get(l).x*64,	network.GetUsers().get(l).y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, network.GetUsers().get(l).angle, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
+                //g.draw(gsm.Render.GUI[24], network.GetUsers().get(l).x*64,	network.GetUsers().get(l).y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, network.GetUsers().get(l).angle, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
             }
 
         }
@@ -226,7 +226,7 @@ public class MultiplayerTestState extends GameState {
         //gsm.Render.DrawDebugLine(new Vector2(network.GetClient().x, network.GetClient().y), new Vector2(gsm.MouseX, gsm.MouseY), 1, Color.RED, camera.combined);
         //gsm.Render.DrawDebugPoint(center, 2, Color.RED, camera.combined);
 
-        int size = gsm.Render.GUI[00].getWidth();
+        int size = 16; // gsm.Render.GUI[00].getWidth()
         Rectangle player = new Rectangle(network.GetClient().x, network.GetClient().y, size, size);
         player.setCenter(network.GetClient().x + size/2, network.GetClient().y + size/2);
 
@@ -506,4 +506,9 @@ public class MultiplayerTestState extends GameState {
         shader.dispose();
     }
     */
+
+    @Override
+    public void Shutdown() {
+
+    }
 }

@@ -17,7 +17,10 @@ package com.thecubecast.ReEngine.worldObjects.AI.Pathfinding;
  ******************************************************************************/
 
 import com.badlogic.gdx.ai.pfa.Connection;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.Array;
+import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
 
 /** A random generated graph representing a flat tiled map.
@@ -32,12 +35,40 @@ public class FlatTiledGraph implements TiledGraph<FlatTiledNode> {
     public boolean diagonal;
     public FlatTiledNode startNode;
 
+    public FlatTiledGraph (TiledMap map) {
+        sizeX = map.getProperties().get("width", Integer.class);
+        sizeY = map.getProperties().get("height", Integer.class);
+        this.nodes = new Array<FlatTiledNode>(sizeX * sizeY);
+        this.diagonal = false;
+        this.startNode = null;
+    }
+
     public FlatTiledGraph (BitwiseTiles bitTiles) {
         sizeX = bitTiles.getBitTileObject(1).realTile.size();
         sizeY = bitTiles.getBitTileObject(1).realTile.get(0).length;
         this.nodes = new Array<FlatTiledNode>(sizeX * sizeY);
         this.diagonal = false;
         this.startNode = null;
+    }
+
+    public void init (TiledMap map) {
+        TiledMapTileLayer CollisionLayer = (TiledMapTileLayer) map.getLayers().get("Collision");
+        for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {
+                nodes.add(new FlatTiledNode(x, y, CollisionLayer.getCell( x, y).getTile().getId(), 8));
+            }
+        }
+
+        // Each node has up to 4 neighbors, therefore no diagonal movement is possible
+        for (int x = 0; x < sizeX; x++) {
+            int colOffset = x * sizeY;
+            for (int y = 0; y < sizeY; y++) {
+                if (x > 0) addConnection(nodes.get(colOffset + y), -1, 0);
+                if (y > 0) addConnection(nodes.get(colOffset + y), 0, -1);
+                if (x < sizeX - 1) addConnection(nodes.get(colOffset + y), 1, 0);
+                if (y < sizeY - 1) addConnection(nodes.get(colOffset + y), 0, 1);
+            }
+        }
     }
 
     public void init (BitwiseTiles bitTiles) {

@@ -3,6 +3,7 @@ package com.thecubecast.ReEngine.worldObjects;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.*;
 import com.thecubecast.ReEngine.Data.collision;
+import com.thecubecast.ReEngine.Graphics.RePipeline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,19 @@ public abstract class WorldObject {
 
     private type State;
 
+    public float FocusStrength = 0;
+
     public enum type {
         Static, Dynamic
     }
 
     private boolean Collidable = false;
 
+    /**
+     * Creates a blank WorldObject at (0,0)
+     * Has a default size of 16 pixels
+     * Is Static
+     **/
     public WorldObject () {
         this.position = new Vector2(0,0);
         this.velocity = new Vector2(0,0);
@@ -30,6 +38,12 @@ public abstract class WorldObject {
         this.State = type.Static;
     }
 
+    /**
+     * Creates a blank WorldObject
+     * @param x the x pos
+     * @param y the y pos
+     * @param size the size of the hitbox, x and y, ignore z
+     **/
     public WorldObject (int x, int y, Vector3 size) {
         this.position = new Vector2(x,y);
         this.velocity = new Vector2(0,0);
@@ -39,6 +53,13 @@ public abstract class WorldObject {
         this.State = type.Static;
     }
 
+    /**
+     * Creates a blank WorldObject
+     * @param x the x pos
+     * @param y the y pos
+     * @param size the size of the hitbox, x and y, ignore z
+     * @param State is whether or not it gets it's movement updated based on it's velocity
+     **/
     public WorldObject (int x, int y, Vector3 size, type State) {
         this.position = new Vector2(x,y);
         this.velocity = new Vector2(0,0);
@@ -48,6 +69,15 @@ public abstract class WorldObject {
         this.State = State;
     }
 
+    /**
+     * Creates a blank WorldObject
+     * @param x the x pos
+     * @param y the y pos
+     * @param size the size of the hitbox, x and y, ignore z
+     * @param State is whether or not it gets it's movement updated based on it's velocity
+     * @param collision if it is true, then it keeps track of it's hashid so that it can update the rectangle for collision
+     *                  during its update method
+     **/
     public WorldObject (int x, int y, Vector3 size, type State, boolean collision) {
         this.position = new Vector2(x,y);
         this.velocity = new Vector2(0,0);
@@ -105,6 +135,7 @@ public abstract class WorldObject {
     public abstract void init(int Width, int Height);
     public abstract void update(float delta, List<collision> Colls);
     public abstract void draw(SpriteBatch batch, float Time);
+    public abstract void draw(RePipeline batch, float Time);
 
     public Vector2 getPosition() {
         return position;
@@ -163,5 +194,9 @@ public abstract class WorldObject {
 
     public void setCollidable(boolean collidable) {
         Collidable = collidable;
+    }
+
+    public void dispose() {
+
     }
 }

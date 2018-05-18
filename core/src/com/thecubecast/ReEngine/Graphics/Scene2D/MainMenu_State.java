@@ -1,9 +1,11 @@
 package com.thecubecast.ReEngine.Graphics.Scene2D;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -11,15 +13,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
+import com.thecubecast.ReEngine.Data.controlerManager;
+import com.thecubecast.ReEngine.worldObjects.Player;
 import sun.applet.Main;
 
 import javax.swing.text.html.parser.Entity;
 import java.net.URI;
 
 import static com.thecubecast.ReEngine.Data.GameStateManager.AudioM;
+import static com.thecubecast.ReEngine.Data.GameStateManager.ctm;
 
 public enum MainMenu_State implements State<MenuFSM> {
 
@@ -34,12 +40,16 @@ public enum MainMenu_State implements State<MenuFSM> {
            table.setFillParent(true);
            entity.stage.addActor(table);
 
-           final TkTextButton button1 = new TkTextButton("Start", entity.skin);
+           final TkTextButton button1 = new TkTextButton("Blank", entity.skin);
            table.add(button1).pad(2);
            table.row();
 
-           final TkTextButton button4 = new TkTextButton("Dialog", entity.skin);
+           final TkTextButton button4 = new TkTextButton("Test", entity.skin);
            table.add(button4).pad(2);
+           table.row();
+
+           final TkTextButton Shader = new TkTextButton("Shader", entity.skin);
+           table.add(Shader).pad(2);
            table.row();
 
            final TkTextButton Discord = new TkTextButton("Discord", entity.skin);
@@ -61,7 +71,7 @@ public enum MainMenu_State implements State<MenuFSM> {
                    //GetLogin("", "");
                    Gdx.app.getPreferences("properties").putString("Username", "");
                    Gdx.app.getPreferences("properties").flush();
-                   entity.gsm.setState(GameStateManager.State.PLAY);
+                   entity.gsm.setState(GameStateManager.State.Blank);
                    button1.setText("Loading");
                }
            });
@@ -73,8 +83,16 @@ public enum MainMenu_State implements State<MenuFSM> {
                    //GetLogin("", "");
                    Gdx.app.getPreferences("properties").putString("Username", "");
                    Gdx.app.getPreferences("properties").flush();
-                   entity.gsm.setState(GameStateManager.State.Dialog);
+                   entity.gsm.setState(GameStateManager.State.TEST);
                    button1.setText("Loading");
+               }
+           });
+
+           Shader.addListener(new ClickListener(){
+               @Override
+               public void clicked(InputEvent event, float x, float y){
+                   //gsm.Audio.stopMusic("8-bit-Digger");
+                   entity.gsm.setState(GameStateManager.State.SHADER);
                }
            });
 
@@ -83,7 +101,7 @@ public enum MainMenu_State implements State<MenuFSM> {
                @Override
                public void clicked(InputEvent event, float x, float y){
                    try {
-                       java.awt.Desktop.getDesktop().browse(new URI("https://discord.gg/xaktmEZ"));
+                       java.awt.Desktop.getDesktop().browse(new URI("https://discord.gg/7wfpsbf"));
                        Common.print("Opened Discord Link!");
                    } catch (Exception e) {
                        e.printStackTrace();
@@ -112,10 +130,12 @@ public enum MainMenu_State implements State<MenuFSM> {
            });
        }
 
-       @Override
-       public void update(MenuFSM entity) {
-           entity.stage.act(Gdx.graphics.getDeltaTime());
-       }
+      @Override
+        public void update(MenuFSM entity) { 
+            ControllerCheck(table);
+
+            entity.stage.act(Gdx.graphics.getDeltaTime()); 
+        }
 
        @Override
        public void exit(MenuFSM entity) {
@@ -138,9 +158,53 @@ public enum MainMenu_State implements State<MenuFSM> {
         }
 
         @Override
-        public void update(MenuFSM entity) {
-            entity.stage.act(Gdx.graphics.getDeltaTime());
-        }
+       public void update(MenuFSM entity) {
+           if(ctm.controllers.size() > 0) {
+               for(int i = 0; i < table.getCells().size; i++) {
+                   if(table.getCells().get(i).getActor() instanceof TkTextButton) {
+                      int nextSelection = i;
+                      if(((TkTextButton) table.getCells().get(i).getActor()).Selected) {
+                          //Gdx.app.log("menu", "i is " + i);
+                          if (ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+                              ((TkTextButton) table.getCells().get(i).getActor()).Selected = false;
+                              nextSelection += 1;
+
+                          } else if (ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+                              ((TkTextButton) table.getCells().get(i).getActor()).Selected = false;
+                              nextSelection -= 1;
+                          }
+
+                          if (nextSelection < 0)
+                              nextSelection = table.getCells().size;
+                          if (nextSelection >= table.getCells().size)
+                              nextSelection = 0;
+
+                          if(table.getCells().get(nextSelection).getActor() instanceof TkTextButton) {
+                              ((TkTextButton) table.getCells().get(nextSelection).getActor()).Selected = true;
+                          }
+
+                          if(ctm.isButtonJustDown(0,controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+                              Array<EventListener> listeners = table.getCells().get(i).getActor().getListeners();
+                              for(int b=0;b<listeners.size;b++)
+                              {
+                                  if(listeners.get(b) instanceof ClickListener){
+                                      ((ClickListener)listeners.get(b)).clicked(null, 0, 0);
+                                  }
+                              }
+                          }
+
+                          break;
+                      }
+                      else if(i == table.getCells().size-1) {
+                          ((TkTextButton) table.getCells().get(i).getActor()).Selected = true;
+                      }
+                   }
+               }
+
+           }
+
+           entity.stage.act(Gdx.graphics.getDeltaTime());
+       }
 
         @Override
         public void exit(MenuFSM entity) {
@@ -211,9 +275,11 @@ public enum MainMenu_State implements State<MenuFSM> {
             });
         }
 
-        @Override
-        public void update(MenuFSM entity) {
-            entity.stage.act(Gdx.graphics.getDeltaTime());
+       @Override
+        public void update(MenuFSM entity) { 
+            ControllerCheck(table);
+
+            entity.stage.act(Gdx.graphics.getDeltaTime()); 
         }
 
         @Override
@@ -293,9 +359,11 @@ public enum MainMenu_State implements State<MenuFSM> {
             });
         }
 
-        @Override
-        public void update(MenuFSM entity) {
-            entity.stage.act(Gdx.graphics.getDeltaTime());
+       @Override
+        public void update(MenuFSM entity) { 
+            ControllerCheck(table);
+
+            entity.stage.act(Gdx.graphics.getDeltaTime()); 
         }
 
         @Override
@@ -330,9 +398,11 @@ public enum MainMenu_State implements State<MenuFSM> {
             });
         }
 
-        @Override
-        public void update(MenuFSM entity) {
-            entity.stage.act(Gdx.graphics.getDeltaTime());
+       @Override
+        public void update(MenuFSM entity) { 
+            ControllerCheck(table);
+
+            entity.stage.act(Gdx.graphics.getDeltaTime()); 
         }
 
         @Override
@@ -366,10 +436,12 @@ public enum MainMenu_State implements State<MenuFSM> {
                 }
             });
         }
-
+        
         @Override
-        public void update(MenuFSM entity) {
-            entity.stage.act(Gdx.graphics.getDeltaTime());
+        public void update(MenuFSM entity) { 
+            ControllerCheck(table);
+
+            entity.stage.act(Gdx.graphics.getDeltaTime()); 
         }
 
         @Override
@@ -381,9 +453,58 @@ public enum MainMenu_State implements State<MenuFSM> {
         public boolean onMessage(MenuFSM entity, Telegram telegram) {
             return false;
         }
+    };
+
+
+    public void ControllerCheck(Table table) {
+        if(ctm.controllers.size() > 0) {
+            for(int i = 0; i < table.getCells().size; i++) {
+                if(table.getCells().get(i).getActor() instanceof TkTextButton) {
+                    int nextSelection = i;
+                    if(((TkTextButton) table.getCells().get(i).getActor()).Selected) {
+                        //Gdx.app.log("menu", "i is " + i);
+                        if (ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+                            ((TkTextButton) table.getCells().get(i).getActor()).Selected = false;
+                            nextSelection += 1;
+
+                        } else if (ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+                            ((TkTextButton) table.getCells().get(i).getActor()).Selected = false;
+                            nextSelection -= 1;
+                        }
+
+                        if (nextSelection < 0)
+                            nextSelection = table.getCells().size-1;
+                        if (nextSelection >= table.getCells().size)
+                            nextSelection = 0;
+
+                        if(table.getCells().get(nextSelection).getActor() instanceof TkTextButton) {
+                            ((TkTextButton) table.getCells().get(nextSelection).getActor()).Selected = true;
+                        }
+
+                        if(ctm.isButtonJustDown(0,controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+                            Gdx.app.debug("", "");
+                            Array<EventListener> listeners = table.getCells().get(i).getActor().getListeners();
+                            for(int b=0;b<listeners.size;b++)
+                            {
+                                if(listeners.get(b) instanceof ClickListener){
+                                    ((ClickListener)listeners.get(b)).clicked(null, 0, 0);
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+                    else if(i == table.getCells().size-1) {
+                        if(table.getCells().get(0).getActor() instanceof TkTextButton)
+                            ((TkTextButton) table.getCells().get(0).getActor()).Selected = true;
+                        else
+                            ((TkTextButton) table.getCells().get(i).getActor()).Selected = true;
+                    }
+                }
+            }
+
+        }
     }
-
-
 
 
 }

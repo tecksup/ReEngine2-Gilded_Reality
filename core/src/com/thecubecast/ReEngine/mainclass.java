@@ -10,15 +10,20 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Matrix4;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import sun.applet.Main;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.stream.Stream;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
@@ -35,7 +40,7 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	private int SCALE = 2;
 
 	private SpriteBatch batch;
-	private FrameBuffer fb;
+	public static FrameBuffer MasterFBO;
 	OrthographicCamera MainCam;
 	
 	//Mouse Position in the window
@@ -59,23 +64,20 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		stateTime = 0f;
 		
 		Gdx.input.setInputProcessor(this);
-		
+
+		gsm = new GameStateManager();
+
 		//Just setting up the variables
 		W = Gdx.graphics.getWidth();
 		H = Gdx.graphics.getHeight();
-		FBOW = W/4;
-		FBOH = H/4;
+		FBOW = W/gsm.Scale;
+		FBOH = H/gsm.Scale;
 
 		//This is essentially the graphics object we draw too
 		MainCam = new OrthographicCamera();
 		MainCam.setToOrtho(false,W,H);
-		fb = new FrameBuffer(Pixmap.Format.RGBA8888, FBOW, FBOH, false);
+		MasterFBO = new FrameBuffer(Pixmap.Format.RGBA8888, FBOW, FBOH, false);
 		batch = new SpriteBatch();
-		
-		
-		
-		//Figure out how to do this before you start exporting things to external files
-		gsm = new GameStateManager();
 	}
 	
 	@Override
@@ -93,19 +95,20 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
 
 		//batch.begin();
-		fb.bind();
-		fb.begin();
+		MasterFBO.bind();
+		MasterFBO.begin();
 		Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
 		Draw(batch); //DRAW
-		fb.end();
+		MasterFBO.end();
+		MasterFBO.unbind();
 
-		fb.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+		MasterFBO.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
 		//batch.end();
 		batch.setProjectionMatrix(MainCam.combined);
 		batch.begin();
-		batch.draw(fb.getColorBufferTexture(),0, H, W, -H);
-			gsm.Render.GUIDrawText(batch, 0,H , Gdx.graphics.getFramesPerSecond() + "");
+		batch.draw(MasterFBO.getColorBufferTexture(),0, H, W, -H);
+			gsm.Render.GUIDrawText(batch, 0,H , Gdx.graphics.getFramesPerSecond() + "", Color.YELLOW);
 		batch.end();
 		
 		if(MouseClick[0] == 1) {
@@ -120,12 +123,24 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		}
 		
 		if (Gdx.input.isKeyJustPressed(Keys.GRAVE)) { //KeyHit
-			Common.ProperShutdown();
+			Common.ProperShutdown(gsm);
 		}
 
         if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Keys.D)) { //KeyHit
             gsm.Debug = !gsm.Debug;
         }
+
+		/*if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Keys.P)) { //KeyHit
+			Path path = Paths.get("FpsLog.debug");
+			ArrayList<String> lines = new ArrayList<String>();
+			for(int i = 0; i < gsm.fpsLog.length; i++) {
+				lines.add(gsm.fpsLog[i]+",");
+			}
+			try {
+				Files.deleteIfExists(path);
+				Files.write(path, lines, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
+			} catch (IOException e) {e.printStackTrace();}
+		}*/
 	}
 	
 	public void Update() {
@@ -144,10 +159,10 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	public void resize(int width, int height) {
 		W = width;
 		H = height;
-		FBOW = W/4;
-		FBOH = H/4;
+		FBOW = W/gsm.Scale;
+		FBOH = H/gsm.Scale;
 		MainCam.setToOrtho(false,W,H);
-		//fb = new FrameBuffer(Pixmap.Format.RGBA8888, FBOW, FBOH, false);
+		//MasterFBO = new FrameBuffer(Pixmap.Format.RGBA8888, MasterFBOOW, MasterFBOOH, false);
 		//callback.setHeight(height);
 		//callback.setWidth(width);
 		Common.print("Ran Resize!");
@@ -160,8 +175,6 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	public void dispose () { //SHUTDOWN FUNCTION
 		batch.dispose();
 		gsm.dispose();
-		//Common.ProperShutdown();
-		//Cleanup(); SaveAll();
 	}
 
 	public boolean keyDown(int keycode) {return false;}

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.collision;
+import com.thecubecast.ReEngine.Graphics.RePipeline;
 
 import java.util.List;
 
@@ -110,6 +111,14 @@ public abstract class NPC extends WorldObject {
     }
 
     public void drawHighlight(SpriteBatch batch, float Time) {
+        draw(batch, Time);
+    }
+
+    public void drawHighlight(RePipeline batch, float Time) {
+        draw(batch, Time);
+    }
+
+    public void drawGui(SpriteBatch batch, float Time) {
 
     }
 

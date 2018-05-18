@@ -11,32 +11,35 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.thecubecast.ReEngine.Data.*;
-import com.thecubecast.ReEngine.Graphics.Scene2D.Dialog;
+import com.thecubecast.ReEngine.Data.Common;
+import com.thecubecast.ReEngine.Data.GameStateManager;
+import com.thecubecast.ReEngine.Data.collision;
+import com.thecubecast.ReEngine.Data.controlerManager;
 import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
-import com.thecubecast.ReEngine.worldObjects.*;
+import com.thecubecast.ReEngine.Graphics.RePipeline;
+import com.thecubecast.ReEngine.Graphics.Scene2D.Dialog;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledNode;
+import com.thecubecast.ReEngine.worldObjects.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
 import static com.thecubecast.ReEngine.Graphics.Draw.loadAnim;
+import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
 import static com.thecubecast.ReEngine.worldObjects.WorldObject.polyoverlap;
 
 public class DialogState extends GameState {
@@ -89,9 +92,9 @@ public class DialogState extends GameState {
 
         MenuInit();
 
-        player = new Player(20*16,130*16, new Vector3(16, 16, 16));
+        player = new Player(21*16,21*16, new Vector3(16, 16, 16));
         Entities.add(player);
-        gsm.DiscordManager.setPresenceDetails("topdown Demo - Level 1");
+        gsm.DiscordManager.setPresenceDetails("Gilded Reality - level 1");
         gsm.DiscordManager.setPresenceState("In Game");
         gsm.DiscordManager.getPresence().largeImageText = "Level 1";
         gsm.DiscordManager.getPresence().startTimestamp = System.currentTimeMillis() / 1000;;
@@ -106,6 +109,82 @@ public class DialogState extends GameState {
                     Areas.add(new Area(temp.getName(), temp.getRectangle()));
                 } else {
                     MapObject temp = tiledMap.getLayers().get("Rooms").getObjects().get(rooms);
+                }
+
+            }
+        }
+
+        if(tiledMap.getLayers().get("Objects") != null) {
+            for(int rooms = 0; rooms < tiledMap.getLayers().get("Objects").getObjects().getCount(); rooms++) {
+                if (tiledMap.getLayers().get("Objects").getObjects().get(rooms) instanceof RectangleMapObject) {
+                    RectangleMapObject tempObj = (RectangleMapObject) tiledMap.getLayers().get("Objects").getObjects().get(rooms);
+                    if (tempObj.getName().equals("Desk")) {
+                        WorldObject Desk = new WorldObject((int) tempObj.getRectangle().x, (int) tempObj.getRectangle().y, new Vector3(tempObj.getRectangle().width, tempObj.getRectangle().height, 0)) {
+                            Texture DeskSprite = new Texture(Gdx.files.internal("Sprites/Tiles/Desk.png"));
+                            Texture ChairSprite = new Texture(Gdx.files.internal("Sprites/Tiles/Chair.png"));
+
+                            @Override
+                            public void init(int Width, int Height) {
+
+                            }
+
+                            @Override
+                            public void update(float delta, List<collision> Colls) {
+
+                            }
+
+                            @Override
+                            public void draw(SpriteBatch batch, float Time) {
+                                batch.draw(ChairSprite, getPosition().x+5, getPosition().y-15);
+                                batch.draw(DeskSprite, getPosition().x, getPosition().y-16);
+                            }
+
+                            @Override
+                            public void draw(RePipeline batch, float Time) {
+
+                            }
+                        };
+
+                        Entities.add(Desk);
+                        Collisions.add(new collision(new Rectangle(Desk.getHitbox().x, Desk.getHitbox().y-5, Desk.getHitbox().width, Desk.getHitbox().height), Desk.hashCode()));
+
+                    } else if (tempObj.getName().equals("Lockers")) {
+                        WorldObject Desk = new WorldObject((int) tempObj.getRectangle().x, (int) tempObj.getRectangle().y, new Vector3(tempObj.getRectangle().width, tempObj.getRectangle().height, 0)) {
+
+                            @Override
+                            public void init(int Width, int Height) {
+
+                            }
+
+                            @Override
+                            public void update(float delta, List<collision> Colls) {
+
+                            }
+
+                            @Override
+                            public void draw(SpriteBatch batch, float Time) {
+                                batch.draw(tiledBits.getBitTiles().get(10)[1].getDiffuse(),getPosition().x ,getPosition().y);
+                                batch.draw(tiledBits.getBitTiles().get(10)[4].getDiffuse(),getPosition().x ,getPosition().y+16);
+                                batch.draw(tiledBits.getBitTiles().get(10)[1].getDiffuse(),getPosition().x ,getPosition().y+32);
+                                batch.draw(tiledBits.getBitTiles().get(10)[5].getDiffuse(),getPosition().x ,getPosition().y+48);
+                                batch.draw(tiledBits.getBitTiles().get(10)[5].getDiffuse(),getPosition().x ,getPosition().y+64);
+                                batch.draw(tiledBits.getBitTiles().get(10)[5].getDiffuse(),getPosition().x ,getPosition().y+80);
+                                batch.draw(tiledBits.getBitTiles().get(10)[5].getDiffuse(),getPosition().x ,getPosition().y+96);
+                                batch.draw(tiledBits.getBitTiles().get(10)[5].getDiffuse(),getPosition().x ,getPosition().y+112);
+                                batch.draw(tiledBits.getBitTiles().get(10)[4].getDiffuse(),getPosition().x ,getPosition().y+128);
+                            }
+
+                            @Override
+                            public void draw(RePipeline batch, float Time) {
+
+                            }
+                        };
+
+                        Entities.add(Desk);
+                        Collisions.add(new collision(new Rectangle(Desk.getHitbox().x, Desk.getHitbox().y-5, Desk.getHitbox().width, Desk.getHitbox().height), Desk.hashCode()));
+
+
+                    }
                 }
 
             }
@@ -147,19 +226,36 @@ public class DialogState extends GameState {
         //JukeBox.load("/Music/bgmusic.wav", "LogoSound");
         //JukeBox.play("LogoSound");
 
-        hank = new NPC("Hank", 20*16, 127*16, new Vector3(32, 32, 4), .1f, 100) {
+        hank = new NPC("Hank", 21*16, 15*16, new Vector3(32, 32, 4), .1f, 100) {
             Texture sprite = new Texture(Gdx.files.internal("Sprites/8direct/south.png"));
 
             private Animation<TextureRegion> idle;
             Label NameLabel;
             Group stage;
             ProgressBar HealthBar;
+
             @Override
             public void draw(SpriteBatch batch, float Time) {
                 TextureRegion currentFrame = idle.getKeyFrame(Time, true);
 
                 batch.draw(currentFrame, getPosition().x-8, getPosition().y-4);
                 stage.draw(batch, 1);
+            }
+
+            @Override
+            public void draw(RePipeline batch, float Time) {
+
+            }
+
+            @Override
+            public void drawHighlight(SpriteBatch batch, float Time) {
+                TextureRegion currentFrame = idle.getKeyFrame(Time, true);
+
+                setOutlineShaderColor(Color.YELLOW, 0.8f);
+
+                batch.setShader(OutlineShader);
+                batch.draw(currentFrame, getPosition().x-8, getPosition().y-4);
+                batch.setShader(null);
             }
 
             @Override
@@ -209,14 +305,12 @@ public class DialogState extends GameState {
         };
         hank.init(gsm.Width, gsm.Height);
         hank.setVelocity(0, -1);
-        Rectangle hankbox = new Rectangle((int) hank.getHitbox().x, (int) hank.getHitbox().y,(int) hank.getHitbox().width,(int) hank.getHitbox().height);
-        //Collisions.add(new collision(hankbox, hank.hashCode()));
 
-        Student Random = new Student("Student",18*16, 130*16, new Vector3(16, 16, 4), 1, 100, NPC.intractability.Talk, MapGraph) {
+        Student Random = new Student("Student",18*16, 100*16, new Vector3(16, 16, 4), 1, 100, NPC.intractability.Talk, MapGraph) {
             @Override
             public void init(int Width, int Height) {
                 super.init(Width, Height);
-                super.setDestination(new Vector2(26*16,117*16));
+                super.setDestination(new Vector2(26*16,97*16));
             }
 
             @Override
@@ -230,7 +324,90 @@ public class DialogState extends GameState {
             }
         };
         Random.init(0,0);
+
+        WorldObject H_closet = new HiddenArea(13*16, 12*16, new Vector3(6*16, 7*16, 0), WorldObject.type.Static, true) {
+
+            @Override
+            public void init(int Width, int Height) {
+                setFadeSpeed(0.1f, 0.1f);
+            }
+
+            @Override
+            public void update(float delta, List<collision> Colls) {
+                if(isDiscovered()) {
+                    fadeOut();
+                } else {
+                    fadeIn();
+                }
+            }
+
+            @Override
+            public void draw(SpriteBatch batch, float Time) {
+                Color temp = batch.getColor();
+                batch.setColor(temp.r, temp.g, temp.b, getOpacity());
+                batch.draw(tiledBits.getBitTiles().get(7)[7].getDiffuse() ,getPosition().x ,getPosition().y);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+16 ,getPosition().y);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+32 ,getPosition().y);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+48 ,getPosition().y);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+64 ,getPosition().y);
+                batch.draw(tiledBits.getBitTiles().get(7)[13].getDiffuse(),getPosition().x+80 ,getPosition().y);
+
+                batch.draw(tiledBits.getBitTiles().get(7)[7].getDiffuse(),getPosition().x ,getPosition().y+16);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+16 ,getPosition().y+16);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+32 ,getPosition().y+16);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+48 ,getPosition().y+16);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+64 ,getPosition().y+16);
+                batch.draw(tiledBits.getBitTiles().get(7)[13].getDiffuse(),getPosition().x+80 ,getPosition().y+16);
+
+                batch.draw(tiledBits.getBitTiles().get(7)[7].getDiffuse(),getPosition().x ,getPosition().y+32);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+16 ,getPosition().y+32);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+32 ,getPosition().y+32);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+48 ,getPosition().y+32);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+64 ,getPosition().y+32);
+                batch.draw(tiledBits.getBitTiles().get(7)[13].getDiffuse(),getPosition().x+80 ,getPosition().y+32);
+
+                batch.draw(tiledBits.getBitTiles().get(7)[7].getDiffuse(),getPosition().x ,getPosition().y+48);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+16 ,getPosition().y+48);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+32 ,getPosition().y+48);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+48 ,getPosition().y+48);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+64 ,getPosition().y+48);
+                batch.draw(tiledBits.getBitTiles().get(7)[13].getDiffuse(),getPosition().x+80 ,getPosition().y+48);
+
+                batch.draw(tiledBits.getBitTiles().get(7)[7].getDiffuse(),getPosition().x ,getPosition().y+64);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+16 ,getPosition().y+64);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+32 ,getPosition().y+64);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+48 ,getPosition().y+64);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+64 ,getPosition().y+64);
+                batch.draw(tiledBits.getBitTiles().get(7)[13].getDiffuse(),getPosition().x+80 ,getPosition().y+64);
+
+                batch.draw(tiledBits.getBitTiles().get(7)[7].getDiffuse(),getPosition().x ,getPosition().y+80);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+16 ,getPosition().y+80);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+32 ,getPosition().y+80);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+48 ,getPosition().y+80);
+                batch.draw(tiledBits.getBitTiles().get(7)[15].getDiffuse(),getPosition().x+64 ,getPosition().y+80);
+                batch.draw(tiledBits.getBitTiles().get(7)[13].getDiffuse(),getPosition().x+80 ,getPosition().y+80);
+
+                batch.draw(tiledBits.getBitTiles().get(7)[6].getDiffuse(),getPosition().x ,getPosition().y+96);
+                batch.draw(tiledBits.getBitTiles().get(7)[14].getDiffuse(),getPosition().x+16 ,getPosition().y+96);
+                batch.draw(tiledBits.getBitTiles().get(7)[14].getDiffuse(),getPosition().x+32 ,getPosition().y+96);
+                batch.draw(tiledBits.getBitTiles().get(7)[14].getDiffuse(),getPosition().x+48 ,getPosition().y+96);
+                batch.draw(tiledBits.getBitTiles().get(7)[14].getDiffuse(),getPosition().x+64 ,getPosition().y+96);
+                batch.draw(tiledBits.getBitTiles().get(7)[14].getDiffuse(),getPosition().x+80 ,getPosition().y+96);
+                batch.setColor(temp);
+            }
+
+            @Override
+            public void draw(RePipeline batch, float Time) {
+
+            }
+        };
+
+        H_closet.init(0,0);
+        Rectangle H_closetbox = new Rectangle((int) hank.getHitbox().x, (int) hank.getHitbox().y,(int) hank.getHitbox().width,(int) hank.getHitbox().height);
+        Collisions.add(new collision(H_closetbox, H_closet.hashCode()));
+
         Entities.add(Random);
+        Entities.add(H_closet);
         Entities.add(hank);
 
         camera.position.set((int) (player.getPosition().x),(int) (player.getPosition().y), 0);
@@ -240,6 +417,29 @@ public class DialogState extends GameState {
         UpdateParticles();
         for(int i = 0; i < Entities.size(); i++) {
             Entities.get(i).update(Gdx.graphics.getDeltaTime(), Collisions);
+
+            if(Entities.get(i) instanceof HiddenArea) {
+                if(Entities.get(i).ifColliding(player.getHitbox()))
+                {
+                    HiddenArea Entitemp = (HiddenArea) Entities.get(i);
+                    Entitemp.reveal();
+                    if (!Entitemp.isNeverDiscovered()) {
+                        AddParticleEffect("sparkle", player.getPosition());
+                        Entitemp.setNeverDiscovered(true);
+                    }
+                } else {
+                    HiddenArea Entitemp = (HiddenArea) Entities.get(i);
+                    Entitemp.hide();
+                }
+            }
+        }
+
+        for (int i = 0; i < Areas.size(); i++) {
+            if (player.getHitbox().overlaps(Areas.get(i).Rect)) {
+                //if(Areas.get(i).Name.equals("Hallway")) {
+                //Common.print("In Hallway");
+                //'}
+            }
         }
 
         handleInput();
@@ -318,6 +518,7 @@ public class DialogState extends GameState {
         Rectangle camView = new Rectangle(camera.position.x - camera.viewportWidth/2, camera.position.y - camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight);
         tiledBits.drawLayer(g, 16, Time,0, player.getPosition().y, camView);
         tiledBits.drawLayer(g, 16, Time,1, player.getPosition().y, camView);
+        tiledBits.drawLayer(g, 16, Time,2, player.getPosition().y, camView);
 
         //tiledBits.drawLayer(g, 16, Time,0, player.getPosition().y, new Rectangle(camView.x + 20, camView.y + 20, camView.width-40, camView.height-40));
         //tiledBits.drawLayer(g, 16, Time,1, player.getPosition().y, new Rectangle(camView.x + 20, camView.y + 20, camView.width-40, camView.height-40));
@@ -326,10 +527,11 @@ public class DialogState extends GameState {
             if(Entities.get(i).ifColliding(player.getIntereactBox())){
                 if(Entities.get(i) instanceof NPC) {
                     NPC Entitemp = (NPC) Entities.get(i);
-                    Color temp = g.getColor();
-                    g.setColor(Color.YELLOW);
+                    Entitemp.draw(g, Time);
                     Entitemp.drawHighlight(g, Time);
-                    g.setColor(temp);
+                } else {
+                    WorldObjectComp temp = new WorldObjectComp();
+                    Entities.sort(temp);
                     Entities.get(i).draw(g, Time);
                 }
             } else {
@@ -338,7 +540,19 @@ public class DialogState extends GameState {
                 Entities.get(i).draw(g, Time);
             }
         }
+
         DrawParticleEffects(g);
+
+        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) { //KeyHit
+            gsm.Cursor = 2;
+
+            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            camera.unproject(pos);
+            gsm.Render.GUIDrawText(g, Common.roundDown(pos.x)-5, Common.roundDown(pos.y)-5, "X: " + ((int)pos.x/16) + " Y: " + ((int)pos.y/16));
+        } else {
+            gsm.Cursor = 0;
+        }
+
         g.end();
 
         guiBatch.setProjectionMatrix(Guicamera.combined);
@@ -346,10 +560,10 @@ public class DialogState extends GameState {
         MenuDraw(Gdx.graphics.getDeltaTime());
         guiBatch.end();
 
+        gsm.Render.debugRenderer.setProjectionMatrix(shaker.getCombinedMatrix());
+        gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
 
         if (gsm.Debug) {
-            gsm.Render.debugRenderer.setProjectionMatrix(shaker.getCombinedMatrix());
-            gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
             gsm.Render.debugRenderer.setColor(Color.GREEN);
             for (int i = 0; i < Entities.size(); i++) {
                 gsm.Render.debugRenderer.polygon(Entities.get(i).getHitboxPoly().getVertices());
@@ -409,9 +623,16 @@ public class DialogState extends GameState {
                 gsm.Render.debugRenderer.rect(Areas.get(i).Rect.x+1, Areas.get(i).Rect.y+1, Areas.get(i).Rect.width-2, Areas.get(i).Rect.height-2);
             }
 
-            gsm.Render.debugRenderer.end();
-
         }
+
+        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) { //KeyHit
+            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            camera.unproject(pos);
+            gsm.Render.debugRenderer.setColor(Color.WHITE);
+            gsm.Render.debugRenderer.rect(((int)pos.x/16)*16, ((int)pos.y/16)*16, 16, 16);
+        }
+
+        gsm.Render.debugRenderer.end();
 
     }
 
@@ -451,6 +672,12 @@ public class DialogState extends GameState {
 
         if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
             Common.print("Escape!!");
+            //gsm.ctm.newController("template");
+        }
+
+        if (Gdx.input.isKeyJustPressed(Keys.NUM_8)){
+            Common.print("Reloaded Bitwise Images!!");
+            tiledBits.reLoadImages();
             //gsm.ctm.newController("template");
         }
 
@@ -518,7 +745,7 @@ public class DialogState extends GameState {
         if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_X)){ // ATTACK
             if(player.AttackTime < .1f) {
 
-                AddParticleEffect("Health", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
+                AddParticleEffect("sparkle", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
                 for(int i = 0; i < Entities.size(); i++) {
                     if(polyoverlap(player.getAttackBox(), Entities.get(i).getHitbox())){
                         if(Entities.get(i) instanceof NPC) {
@@ -665,5 +892,9 @@ public class DialogState extends GameState {
         shaker.reSize(camera);
     }
 
+    @Override
+    public void Shutdown() {
+
+    }
 
 }

@@ -5,6 +5,7 @@ package com.thecubecast.ReEngine.GameStates;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -27,6 +28,7 @@ public class IntroState extends GameState {
 	static final int WORLD_WIDTH = 100;
 	static final int WORLD_HEIGHT = 100;
 
+	Texture Splash;
 	
 	private final int FADE_IN = 20;
 	private final int LENGTH = 40;
@@ -37,6 +39,8 @@ public class IntroState extends GameState {
 	}
 	
 	public void init() {
+
+		Splash = new Texture(Gdx.files.internal("Images/image_00.png"));
 
 		camera = new OrthographicCamera();
 
@@ -74,9 +78,8 @@ public class IntroState extends GameState {
 		g.setProjectionMatrix(camera.combined);
 		g.begin();
 		Gdx.gl.glClearColor(255f, 255f, 255f, 1);
-		
-		
-		gsm.Render.DrawSplash(g, 00, width/2, height/2, 0.5f, 0.5f, true);
+
+		g.draw(Splash, width/2 - ((Splash.getWidth() * 0.5f)/2), height/2 - ((Splash.getHeight() * 0.5f)/2), Splash.getWidth() * 0.5f, Splash.getHeight() * 0.5f);
 		g.end();
 	}
 	
@@ -89,5 +92,10 @@ public class IntroState extends GameState {
 		}
 
 	}
-	
+
+	@Override
+	public void Shutdown() {
+
+	}
+
 }

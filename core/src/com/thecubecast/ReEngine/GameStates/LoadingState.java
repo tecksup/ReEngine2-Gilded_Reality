@@ -36,6 +36,8 @@ public class LoadingState extends GameState {
 	
 	public void init() {
 
+		Gdx.graphics.setVSync(false);
+
 		camera = new OrthographicCamera();
 
 		//Common.print("Loading " + Load);
@@ -74,6 +76,7 @@ public class LoadingState extends GameState {
 		if (Load.equals("STARTUP")) {
 			if(gsm.Render.manager.getProgress() == 1) {
 				gsm.Render.LoadVariables();
+				Gdx.graphics.setVSync(true);
 				gsm.setState(GameStateManager.State .INTRO);
 			}
 		}
@@ -104,5 +107,10 @@ public class LoadingState extends GameState {
 	
 	public void reSize(SpriteBatch g,int wi, int he) {
 		MenuInit();
+	}
+
+	@Override
+	public void Shutdown() {
+
 	}
 }

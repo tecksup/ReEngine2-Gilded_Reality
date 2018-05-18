@@ -2,9 +2,11 @@ package com.thecubecast.ReEngine.Graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
@@ -27,16 +29,25 @@ public class Draw {
 	//Animation Variables
 	public Animation<TextureRegion> LoadingAnimation; // Must declare frame type (TextureRegion)
 	Texture LoadingSheet;
+
+	public PipelineTexture[] Images;
+
+	public static ShaderProgram OutlineShader;
 	
-	//Always set to 1 above the number of spites in file
-	public Texture[] Tiles;
-	public Texture[] GUI;
-	public Texture[] Images;
-	
-	BitmapFont font = new BitmapFont();
+	BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/Pixel.fnt"), new TextureRegion(new Texture(Gdx.files.internal("Fonts/Pixel.png"))));
+
+	public void LoadShaders() {
+		String vertexShader = Gdx.files.internal("Shaders/Outline/vertex.glsl").readString();
+		String fragmentShader = Gdx.files.internal("Shaders/Outline/fragment.glsl").readString();
+		OutlineShader = new ShaderProgram(vertexShader,fragmentShader);
+
+
+	}
 
 	public void Init() {
-		
+		font.getData().markupEnabled = true;
+		LoadShaders();
+
 		// Initialize the Animation with the frame interval and array of frames
 		LoadingAnimation = new Animation<TextureRegion>(0.1f, loadAnim(LoadingSheet, "cube_loading_sprite.png", 4, 1));
 	}
@@ -44,88 +55,10 @@ public class Draw {
 	public void Load() {
 		//The loops bellow grab the tiles and add them to the variable
 
-		Path SpritesPath = Paths.get("Sprites/oldTiles");
-		Path GuiPath = Paths.get("Sprites/GUI");
-		Path ImagePath = Paths.get("Images");
-
-		try {
-			Tiles = new Texture[(int) Files.list(SpritesPath).count()];
-			GUI = new Texture[(int) Files.list(GuiPath).count()];
-			Images = new Texture[(int) Files.list(ImagePath).count()];
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		for(int i=0; i < Tiles.length; ++i){
-			if (i >= 10) {
-				try {
-					manager.load(SpritesPath + "/megaminer_"+ Integer.toString(i) +".png", Texture.class);
-					Tiles[i] = manager.get(SpritesPath + "/megaminer_"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			} else {
-				try {
-
-					manager.load(SpritesPath + "/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
-					Tiles[i] = manager.get(SpritesPath + "/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			}
-        }
-		for(int i=0; i < Images.length; ++i){
-			if (i >= 10) {
-				try {
-					manager.load(ImagePath + "/image_"+ Integer.toString(i) +".png", Texture.class);
-					Images[i] = manager.get(ImagePath + "/image_"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			} else {
-				try {
-					manager.load(ImagePath + "/image_0"+ Integer.toString(i) +".png", Texture.class);
-					Images[i] = manager.get(ImagePath + "/image_0"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			}
-        }
-		for(int i=0; i < GUI.length; ++i){
-			if (i >= 10) {
-				try {
-					manager.load(GuiPath + "/GUI_"+ Integer.toString(i) +".png", Texture.class);
-					GUI[i] = manager.get(GuiPath + "/GUI_"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			} else {
-				try {
-					manager.load(GuiPath + "/GUI_0"+ Integer.toString(i) +".png", Texture.class);
-					GUI[i] = manager.get(GuiPath + "/GUI_0"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			}
-        }
-
-		try {
-			GraphicsEnvironment ge = 
-			         GraphicsEnvironment.getLocalGraphicsEnvironment();
-			     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Munro.ttf")));
-		}
-		catch(Exception e) {
-			//e.printStackTrace();
-		}
 	}
 
 	public void LoadVariables() {
+		/*
 		//The loops bellow grab the tiles and add them to the variable
 		for(int i=0; i < Tiles.length; ++i){
 			if (i >= 10) {
@@ -183,15 +116,7 @@ public class Draw {
 					//e.printStackTrace();
 				}
 			}
-		}
-
-		try {
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Mecha.ttf")));
-		}
-		catch(Exception e) {
-			//e.printStackTrace();
-		}
+		}*/
 	}
 
 	public static TextureRegion[] loadAnim(Texture TexSheet, String FileLocation, int Cols, int Rows) {
@@ -226,19 +151,20 @@ public class Draw {
 	}
 	
 	public void DrawSplash(SpriteBatch buffer, int ID, int x, int y, float x2, float y2, boolean centered) { // The x2 and y2 is Percentage of 100
-			int SizeX = Images[ID].getWidth();
-			int SizeY = Images[ID].getHeight();
-		
+		/*
+			int SizeX = Images[ID].getDiffuse().getWidth();
+			int SizeY = Images[ID].getDiffuse().getHeight();
+
 			if (centered) {
-				buffer.draw(Images[ID], x-((SizeX * x2)/2), y-((SizeY * y2)/2), SizeX * x2, SizeY * y2);	
+				buffer.draw(Images[ID].getDiffuse(), x-((SizeX * x2)/2), y-((SizeY * y2)/2), SizeX * x2, SizeY * y2);
 			}
 			else {
-				buffer.draw(Images[ID], x, y, SizeX * x2, SizeY * y2);	
-			}
-			
+				buffer.draw(Images[ID].getDiffuse(), x, y, SizeX * x2, SizeY * y2);
+			}*/
 	}
 	
 	public void DrawAny(SpriteBatch buffer, int ID, String Type, int x, int y) {
+		/*
 		if(Type.equals("Tiles")) {
 			buffer.draw(Tiles[ID], x, y);
 		}
@@ -248,14 +174,23 @@ public class Draw {
 		if(Type.equals("Gui")) {
 			buffer.draw(GUI[ID], x, y);	
 		}
+		*/
 	}
 	
 	public void GUIDrawText(SpriteBatch buffer, int PosX, int PosY, String Text) {
 		font.draw(buffer, Text, PosX , PosY);
 	}
-	
+
+	public void GUIDrawText(SpriteBatch buffer, int PosX, int PosY, String Text, Color color) {
+		font.setColor(color);
+		font.draw(buffer, Text, PosX , PosY);
+		font.setColor(Color.WHITE);
+	}
+
+
 	//The GUI or Menu would go here.
 	public void GUIDeco(SpriteBatch buffer, int PosX, int PosY, String Text) {
+		/*
 		buffer.draw(GUI[00], PosX, PosY);
 		buffer.draw(GUI[01], PosX + GUI[00].getWidth(), PosY);
 		buffer.draw(GUI[01], PosX + (GUI[00].getWidth()*2), PosY);
@@ -263,9 +198,11 @@ public class Draw {
 		buffer.draw(GUI[01], PosX + (GUI[00].getWidth()*4), PosY);
 		buffer.draw(GUI[02], PosX + (GUI[00].getWidth()*5), PosY);
 		font.draw(buffer, "testing GUI - " + Text, PosX + GUI[00].getWidth(), PosY + (GUI[00].getHeight()/2));
+		*/
 	}
 	
 	public void HUDAchievement(SpriteBatch buffer, int PosX, int PosY, String text, int iconID, float Opacity, boolean Anim, float Time) {
+		/*
 		buffer.draw(GUI[00], PosX, PosY);
 		buffer.draw(GUI[01], PosX + Tiles[59].getWidth(), PosY);
 		buffer.draw(GUI[02], PosX + (Tiles[59].getWidth()*2), PosY);
@@ -280,8 +217,21 @@ public class Draw {
 		}
 		//buffer.draw(Tiles[iconID], PosX, PosY);
 		font.draw(buffer, text, PosX + 20, PosY + (Tiles[59].getHeight()/2)+5);
+		*/
 	}
-	
+
+	public static void setOutlineShaderColor(Color outlineColor) {
+		OutlineShader.begin();
+		OutlineShader.setUniform1fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, outlineColor.a }, 0, 4);
+		OutlineShader.end();
+	}
+
+	public static void setOutlineShaderColor(Color outlineColor, float Alpha) {
+		OutlineShader.begin();
+		OutlineShader.setUniform1fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, Alpha }, 0, 4);
+		OutlineShader.end();
+	}
+
 	public ShapeRenderer debugRenderer = new ShapeRenderer();
 
     public void DrawDebugLine(Vector2 start, Vector2 end, int lineWidth, Color color, Matrix4 projectionMatrix)
@@ -294,7 +244,7 @@ public class Draw {
         debugRenderer.end();
         Gdx.gl.glLineWidth(1);
     }
-    
+
     public void DrawDebugPoint(Vector2 start, int lineWidth, Color color, Matrix4 projectionMatrix)
     {
         Gdx.gl.glLineWidth(lineWidth);

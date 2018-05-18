@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.collision;
+import com.thecubecast.ReEngine.Graphics.RePipeline;
 import com.thecubecast.ReEngine.worldObjects.AI.*;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledNode;
@@ -42,6 +43,11 @@ public class Student extends NPC {
     }
 
     @Override
+    public void draw(RePipeline batch, float Time) {
+
+    }
+
+    @Override
     public void interact() {
         if(!AI.getStateMachine().getCurrentState().equals(Student_State.WALKING_TO_DESTINATION))
             AI.getStateMachine().changeState(Student_State.WALKING_TO_DESTINATION);
@@ -59,10 +65,15 @@ public class Student extends NPC {
 
     public void setDestination(Vector2 destination) {
         Destination = destination;
+        AI.setDestination(Destination);
+        AI.update();
     }
 
     public TiledSmoothableGraphPath<FlatTiledNode> getPath() {
         return AI.getPath();
     }
 
+    public Smart getAI() {
+        return AI;
+    }
 }
