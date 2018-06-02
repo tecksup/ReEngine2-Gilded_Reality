@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.thecubecast.ReEngine.GameStates.*;
+import com.thecubecast.ReEngine.GameStates.Levels.CarScene;
 import com.thecubecast.ReEngine.Graphics.Draw;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -23,12 +24,10 @@ import static com.thecubecast.ReEngine.Data.GameStateManager.State.Blank;
 import static com.thecubecast.ReEngine.Data.GameStateManager.State.SHADER;
 
 public class GameStateManager {
-	public boolean Debug = false;
-	public float[] fpsLog = new float[999999];
-	public int fpsIndex = 0;
+	public static boolean Debug = false;
 
     public enum State {
-        INTRO, MENU, PLAY, LOADING, OPTIONS, TEST, SHADER, MULTIPLAYER, PLATFORMER, Blank, Dialog
+        INTRO, MENU, PLAY, LOADING, OPTIONS, TEST, SHADER, MULTIPLAYER, PLATFORMER, Blank, Dialog, StoryMode
     }
 
     public State newcurrentState;
@@ -48,6 +47,8 @@ public class GameStateManager {
 
 	public static controlerManager ctm;
 
+	static public EventSystem EventsSys;
+
 	public Discord DiscordManager;
 
 	//MousePos
@@ -65,6 +66,7 @@ public class GameStateManager {
 	
 	public GameStateManager() {
 
+		EventsSys = new EventSystem();
         ctm = new controlerManager();
 
 		DiscordManager = new Discord("405784101245943810");
@@ -143,6 +145,11 @@ public class GameStateManager {
                 gameState = new DialogState(this);
                 gameState.init();
                 break;
+			case StoryMode:
+				Common.print("Loaded state Dialog");
+				gameState = new Story(this);
+				gameState.init();
+				break;
         }
 		
 	}

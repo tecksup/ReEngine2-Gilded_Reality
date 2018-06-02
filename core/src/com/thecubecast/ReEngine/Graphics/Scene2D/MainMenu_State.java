@@ -40,6 +40,10 @@ public enum MainMenu_State implements State<MenuFSM> {
            table.setFillParent(true);
            entity.stage.addActor(table);
 
+           final TkTextButton Story = new TkTextButton("Story", entity.skin);
+           table.add(Story).pad(2);
+           table.row();
+
            final TkTextButton button1 = new TkTextButton("Blank", entity.skin);
            table.add(button1).pad(2);
            table.row();
@@ -63,6 +67,18 @@ public enum MainMenu_State implements State<MenuFSM> {
            final TkTextButton button3 = new TkTextButton("Quit", entity.skin);
            table.add(button3).pad(2);
            table.row();
+
+           Story.addListener(new ClickListener(){
+               @Override
+               public void clicked(InputEvent event, float x, float y){
+                   //gsm.Audio.stopMusic("8-bit-Digger");
+                   //GetLogin("", "");
+                   Gdx.app.getPreferences("properties").putString("Username", "");
+                   Gdx.app.getPreferences("properties").flush();
+                   entity.gsm.setState(GameStateManager.State.StoryMode);
+                   button1.setText("Loading");
+               }
+           });
 
            button1.addListener(new ClickListener(){
                @Override

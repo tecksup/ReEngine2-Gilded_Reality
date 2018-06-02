@@ -39,10 +39,16 @@ public class SoundManager {
 	
 	public void update() {
 	    for(int i = 0; i < HandledMusic.size(); i++) {
-	        HandledMusic.get(i).setVolume(MusicVolume*MasterVolume);
-        }
+			HandledMusic.get(i).setVolume(MusicVolume*MasterVolume);
+		}
 	}
-	
+
+	public void playS(String soundName) {
+		Sound temp = Gdx.audio.newSound(Gdx.files.internal("Music/Sound/" + soundName));
+		HandledSound.add(temp);
+		SoundIds.put(soundName, temp.play(1));
+	}
+
 	public void play(String soundName) {
 		if(soundName.equals("Click")) {
 			long temp = Click.play(SoundVolume*MasterVolume);

@@ -1,19 +1,14 @@
-// GameState that shows logo.
-
-package com.thecubecast.ReEngine.GameStates;
+package com.thecubecast.ReEngine.GameStates.Levels;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -22,44 +17,41 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.thecubecast.ReEngine.Data.*;
-import com.thecubecast.ReEngine.Graphics.*;
+import com.thecubecast.ReEngine.GameStates.GameState;
+import com.thecubecast.ReEngine.GameStates.blankTestState;
+import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
+import com.thecubecast.ReEngine.Graphics.RePipeTextureRegionDrawable;
+import com.thecubecast.ReEngine.Graphics.RePipeline;
 import com.thecubecast.ReEngine.Graphics.Scene2D.Dialog;
 import com.thecubecast.ReEngine.Graphics.Scene2D.TkLabel;
+import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
+import com.thecubecast.ReEngine.worldObjects.*;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledNode;
-import com.thecubecast.ReEngine.worldObjects.*;
-import com.thecubecast.ReEngine.worldObjects.AI.Student_State;
 import com.thecubecast.ReEngine.worldObjects.EntityPrefabs.Hank;
 import com.thecubecast.ReEngine.worldObjects.EntityPrefabs.Male_Student;
-import org.lwjgl.opengl.GL11;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
-import static com.thecubecast.ReEngine.Graphics.Draw.loadAnim;
-import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
 import static com.thecubecast.ReEngine.mainclass.MasterFBO;
 import static com.thecubecast.ReEngine.worldObjects.WorldObject.polyoverlap;
 
-public class blankTestState extends GameState {
-
-    public boolean oneDeb = false;
-    public boolean twoDeb = false;
+public class CarScene extends GameState {
 
     Player player;
-    private List<collision> Collisions = new ArrayList<>();
-    public static List<Area> Areas = new ArrayList<>();
     private List<WorldObject> Entities = new ArrayList<>();
 
     OrthographicCamera camera;
@@ -84,240 +76,22 @@ public class blankTestState extends GameState {
     Image dialogBoxFace;
     TkLabel dialogBoxText;
 
-    TiledMap tiledMap;
-    TiledMapRenderer tiledMapRenderer;
-    BitwiseTiles tiledBits;
-
-    FlatTiledGraph MapGraph;
-
-    public blankTestState(GameStateManager gsm) {
+    public CarScene(GameStateManager gsm) {
         super(gsm);
     }
 
     public void init() {
 
-        Repipe = new RePipeline() {
-            @Override
-            public void drawTiledMapDiffuse() {
-                tiledMapRenderer.setView(camera);
-                tiledMapRenderer.render();
-            }
-
-            @Override
-            public void drawTiledMapNormals() {
-
-            }
-        };
+        Repipe = new RePipeline();
 
         MenuInit();
 
         player = new Player(13*16,1*16, new Vector3(16, 16, 16));
         Entities.add(player);
-        gsm.DiscordManager.setPresenceDetails("Gilded Reality - level 1");
+        gsm.DiscordManager.setPresenceDetails("Gilded Reality - Heading to Camp");
         gsm.DiscordManager.setPresenceState("In Game");
         gsm.DiscordManager.getPresence().largeImageText = "Level 1";
         gsm.DiscordManager.getPresence().startTimestamp = System.currentTimeMillis() / 1000;
-
-        //SETUP TILEDMAP
-        tiledMap = new TmxMapLoader().load("Saves/BITWISE/School/test.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        tiledBits = new BitwiseTiles(tiledMap);
-
-        MapGraph = new FlatTiledGraph(tiledMap);
-        MapGraph.init(tiledMap);
-
-        if(tiledMap.getLayers().get("Rooms") != null) {
-            for(int rooms = 0; rooms < tiledMap.getLayers().get("Rooms").getObjects().getCount(); rooms++) {
-                if (tiledMap.getLayers().get("Rooms").getObjects().get(rooms) instanceof RectangleMapObject) {
-                    RectangleMapObject temp = (RectangleMapObject) tiledMap.getLayers().get("Rooms").getObjects().get(rooms);
-                    Areas.add(new Area(temp.getName(), temp.getRectangle()));
-                } else {
-                    MapObject temp = tiledMap.getLayers().get("Rooms").getObjects().get(rooms);
-                }
-
-            }
-        }
-
-        if(tiledMap.getLayers().get("Objects") != null) {
-            for(int objectCount = 0; objectCount < tiledMap.getLayers().get("Objects").getObjects().getCount(); objectCount++) {
-                if (tiledMap.getLayers().get("Objects").getObjects().get(objectCount) instanceof RectangleMapObject) {
-                    RectangleMapObject tempObj = (RectangleMapObject) tiledMap.getLayers().get("Objects").getObjects().get(objectCount);
-                    if (tempObj.getName().equals("Gaurd")) {
-                        Male_Student temp = new Male_Student("Student", (int) tempObj.getRectangle().x, (int) tempObj.getRectangle().y, MapGraph);
-                        temp.setDestination(new Vector2(45*16,22*16));;
-                        //temp.interact();
-
-
-                        Entities.add(temp);
-
-                    }
-                }
-
-            }
-        }
-
-        if(tiledMap.getLayers().get("Props") != null) {
-            for(int objectCount = 0; objectCount < tiledMap.getLayers().get("Props").getObjects().getCount(); objectCount++) {
-                if (tiledMap.getLayers().get("Props").getObjects().get(objectCount) instanceof TiledMapTileMapObject) {
-                    TiledMapTileMapObject tempObj = (TiledMapTileMapObject) tiledMap.getLayers().get("Props").getObjects().get(objectCount);
-                    WorldObject temp = new WorldObject((int) tempObj.getX(), (int) tempObj.getY(), new Vector3(tempObj.getTextureRegion().getRegionWidth(), tempObj.getTextureRegion().getRegionHeight(), 0)) {
-                        @Override
-                        public void init(int Width, int Height) {
-
-                        }
-
-                        @Override
-                        public void update(float delta, List<collision> Colls) {
-
-                        }
-
-                        @Override
-                        public void draw(SpriteBatch batch, float Time) {
-                            batch.draw(tempObj.getTile().getTextureRegion(), getPosition().x ,getPosition().y);
-
-                        }
-
-                        @Override
-                        public void draw(RePipeline batch, float Time) {
-                            RePipeTextureRegionDrawable temp = new RePipeTextureRegionDrawable() {
-                                @Override
-                                public void DrawDiffuse(SpriteBatch batch) {
-                                    draw(batch, 0);
-                                }
-
-                                @Override
-                                public void DrawNormal(SpriteBatch batch) {
-
-                                }
-                            };
-                            temp.x = getPosition().x;
-                            temp.y = getPosition().y;
-
-                            batch.Layers.get(0).SpriteList.add(temp);
-                        }
-                    };
-
-                    Entities.add(temp);
-
-                }
-
-            }
-        }
-
-        if(tiledMap.getLayers().get("PropsBG") != null) {
-            for(int objectCount = 0; objectCount < tiledMap.getLayers().get("PropsBG").getObjects().getCount(); objectCount++) {
-                if (tiledMap.getLayers().get("PropsBG").getObjects().get(objectCount) instanceof TiledMapTileMapObject) {
-                    TiledMapTileMapObject tempObj = (TiledMapTileMapObject) tiledMap.getLayers().get("PropsBG").getObjects().get(objectCount);
-                    WorldObject temp = new WorldObject((int) tempObj.getX(), (int) tempObj.getY(), new Vector3(tempObj.getTextureRegion().getRegionWidth(), tempObj.getTextureRegion().getRegionHeight(), 0)) {
-                        @Override
-                        public void init(int Width, int Height) {
-
-                        }
-
-                        @Override
-                        public void update(float delta, List<collision> Colls) {
-
-                        }
-
-                        @Override
-                        public void draw(SpriteBatch batch, float Time) {
-                            batch.draw(tempObj.getTile().getTextureRegion(), getPosition().x ,getPosition().y);
-
-                        }
-
-                        @Override
-                        public void draw(RePipeline batch, float Time) {
-                            RePipeTextureRegionDrawable temp = new RePipeTextureRegionDrawable() {
-                                @Override
-                                public void DrawDiffuse(SpriteBatch batch) {
-                                    draw(batch, 0);
-                                }
-
-                                @Override
-                                public void DrawNormal(SpriteBatch batch) {
-
-                                }
-                            };
-                            temp.x = getPosition().x;
-                            temp.y = getPosition().y;
-
-                            batch.Layers.get(batch.addLayer(-1)).SpriteList.add(temp);
-                        }
-                    };
-
-                    Entities.add(temp);
-
-                }
-
-            }
-        }
-
-        if(tiledMap.getLayers().get("PropsBG_BG") != null) {
-            for(int objectCount = 0; objectCount < tiledMap.getLayers().get("PropsBG_BG").getObjects().getCount(); objectCount++) {
-                if (tiledMap.getLayers().get("PropsBG_BG").getObjects().get(objectCount) instanceof TiledMapTileMapObject) {
-                    TiledMapTileMapObject tempObj = (TiledMapTileMapObject) tiledMap.getLayers().get("PropsBG_BG").getObjects().get(objectCount);
-                    WorldObject temp = new WorldObject((int) tempObj.getX(), (int) tempObj.getY(), new Vector3(tempObj.getTextureRegion().getRegionWidth(), tempObj.getTextureRegion().getRegionHeight(), 0)) {
-                        @Override
-                        public void init(int Width, int Height) {
-
-                        }
-
-                        @Override
-                        public void update(float delta, List<collision> Colls) {
-
-                        }
-
-                        @Override
-                        public void draw(SpriteBatch batch, float Time) {
-                            batch.draw(tempObj.getTile().getTextureRegion(), getPosition().x ,getPosition().y);
-
-                        }
-
-                        @Override
-                        public void draw(RePipeline batch, float Time) {
-                            RePipeTextureRegionDrawable temp = new RePipeTextureRegionDrawable() {
-                                @Override
-                                public void DrawDiffuse(SpriteBatch batch) {
-                                    draw(batch, 0);
-                                }
-
-                                @Override
-                                public void DrawNormal(SpriteBatch batch) {
-
-                                }
-                            };
-                            temp.x = getPosition().x;
-                            temp.y = getPosition().y;
-
-                            batch.Layers.get(batch.addLayer(-2)).SpriteList.add(temp);
-                        }
-                    };
-
-                    Entities.add(temp);
-
-                }
-
-            }
-        }
-
-        for (int y = 0; y < tiledBits.getBitTileObject(1).realTile.size(); y++) {
-            for(int x = 0; x < tiledBits.getBitTileObject(1).realTile.get(y).length; x++) {
-                if (tiledBits.getBitTileObject(1).realTile.get(y)[x] == 1) {
-
-                } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 6)) {
-                    Rectangle tempRect = new Rectangle(x*16, y*16+4, 16, 16-8);
-                    Collisions.add(new collision(tempRect, tempRect.hashCode()));
-                } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 8)) {
-                    Rectangle tempRect;
-                    if(tiledBits.getBitTileObject(1).BitTiles.get(y)[x] == 17) {
-                        tempRect = new Rectangle(x*16, y*16+4, 16, 4);
-                    } else {
-                        tempRect = new Rectangle(x*16, y*16, 16, 10);
-                    }
-                    Collisions.add(new collision(tempRect, tempRect.hashCode()));
-                }
-            }
-        }
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, gsm.Width, gsm.Height);
@@ -360,7 +134,7 @@ public class blankTestState extends GameState {
     public void update() {
         UpdateParticles();
         for (int i = 0; i < Entities.size(); i++) {
-            Entities.get(i).update(Gdx.graphics.getDeltaTime(), Collisions);
+            Entities.get(i).update(Gdx.graphics.getDeltaTime(), null);
 
             if(Entities.get(i) instanceof HiddenArea) {
                 if(Entities.get(i).ifColliding(player.getHitbox()))
@@ -378,16 +152,8 @@ public class blankTestState extends GameState {
             }
         }
 
-        for (int i = 0; i < Areas.size(); i++) {
-            if (player.getHitbox().overlaps(Areas.get(i).Rect)) {
-                //if(Areas.get(i).Name.equals("Hallway")) {
-                //Common.print("In Hallway");
-                //'}
-            }
-        }
-
         handleInput();
-        player.update(gsm.DeltaTime, Collisions);
+        player.update(gsm.DeltaTime, null);
 
         cameraUpdate(player, camera);
 
@@ -464,18 +230,7 @@ public class blankTestState extends GameState {
 
         g.begin();
 
-        if (Gdx.input.isKeyJustPressed(Keys.J))
-            oneDeb = !oneDeb;
-        if (Gdx.input.isKeyJustPressed(Keys.K))
-            twoDeb = !twoDeb;
-
         g.draw(Repipe.getFboT(),camera.position.x - camera.viewportWidth/2, camera.position.y - camera.viewportHeight/2 + height, width, -height);
-
-        if(oneDeb)
-            g.draw(Repipe.getFboLightingT(),camera.position.x - camera.viewportWidth/2, camera.position.y - camera.viewportHeight/2 + height, width, -height);
-        if(twoDeb)
-            g.draw(Repipe.getFboNormalsT(),camera.position.x - camera.viewportWidth/2, camera.position.y - camera.viewportHeight/2 + height, width, -height);
-
 
         g.setProjectionMatrix(shaker.getCombinedMatrix());
         DrawParticleEffects(g);
@@ -489,7 +244,7 @@ public class blankTestState extends GameState {
             }
         }
 
-        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) { //KeyHit
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
             gsm.Cursor = 2;
 
             Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
@@ -521,31 +276,6 @@ public class blankTestState extends GameState {
             gsm.Render.debugRenderer.setColor(Color.YELLOW);
             gsm.Render.debugRenderer.rect(player.getIntereactBox().x, player.getIntereactBox().y, player.getIntereactBox().width, player.getIntereactBox().height);
 
-            if (false) //ONLY SET TO TRUE IF YOU NEED TO VIEW AI GRAPH
-            {
-                gsm.Render.debugRenderer.setColor(Color.RED);
-                Collisions.forEach(number -> gsm.Render.debugRenderer.rect(number.getRect().x, number.getRect().y, (number.getRect().width), (number.getRect().height)));
-
-                for (int y = 0; y < tiledBits.bitTileObjectLayers.get(0).realTile.size(); y++) {
-                    for (int x = 0; x < tiledBits.bitTileObjectLayers.get(0).realTile.size(); x++) {
-                        switch (MapGraph.getNode(x, y).type) {
-                            case FlatTiledNode.GROUND:
-                                gsm.Render.debugRenderer.setColor(Color.GREEN);
-                                //gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
-                                break;
-                            case FlatTiledNode.COLLIDABLE:
-                                gsm.Render.debugRenderer.setColor(Color.SALMON);
-                                gsm.Render.debugRenderer.rect(x * 16 + 1, y * 16 + 1, 16-2, 16-2);
-                                break;
-                            default:
-                                //gsm.Render.debugRenderer.setColor(Color.WHITE);
-                                //gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
-                                break;
-                        }
-                    }
-                }
-            }
-
             gsm.Render.debugRenderer.setColor(Color.FIREBRICK);
             for (int i = 0; i < Entities.size(); i++) {
                 if(Entities.get(i) instanceof Student) {
@@ -566,14 +296,9 @@ public class blankTestState extends GameState {
                 }
             }
 
-            for (int i = 0; i < Areas.size(); i++) {
-                gsm.Render.debugRenderer.setColor(Color.BLUE);
-                gsm.Render.debugRenderer.rect(Areas.get(i).Rect.x+1, Areas.get(i).Rect.y+1, Areas.get(i).Rect.width-2, Areas.get(i).Rect.height-2);
-            }
-
         }
 
-        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) { //KeyHit
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
             Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
             camera.unproject(pos);
             gsm.Render.debugRenderer.setColor(Color.WHITE);
@@ -590,24 +315,24 @@ public class blankTestState extends GameState {
         boolean moving = false;
         Vector2 speedPercent = new Vector2(1, 1);
 
-        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f || Gdx.input.isKeyPressed(Keys.D)) {
+        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f || Gdx.input.isKeyPressed(Input.Keys.D)) {
             temp[3] = Player.Direction.East;
             moving = true;
             if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f)
                 speedPercent.x = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X);
-        } else if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) < -0.2f || Gdx.input.isKeyPressed(Keys.A)) {
+        } else if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) < -0.2f || Gdx.input.isKeyPressed(Input.Keys.A)) {
             temp[2] = Player.Direction.West;
             moving = true;
             if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > -0.2f)
                 speedPercent.x = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X);
         }
 
-        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyPressed(Keys.S)) {
+        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyPressed(Input.Keys.S)) {
             temp[1] = Player.Direction.South;
             moving = true;
             if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > -0.2f)
                 speedPercent.y = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y);
-        } else if (gsm.ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyPressed(Keys.W)) {
+        } else if (gsm.ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyPressed(Input.Keys.W)) {
             temp[0] = Player.Direction.North;
             moving = true;
             if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f)
@@ -618,18 +343,12 @@ public class blankTestState extends GameState {
             Common.print("Player 2 joined the game!!");
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
             Common.print("Escape!!");
             //gsm.ctm.newController("template");
         }
 
-        if (Gdx.input.isKeyJustPressed(Keys.NUM_8)){
-            Common.print("Reloaded Bitwise Images!!");
-            tiledBits.reLoadImages();
-            //gsm.ctm.newController("template");
-        }
-
-        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Keys.T)){
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.T)){
             Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
             camera.unproject(pos);
             player.setPosition((int)pos.x, (int)pos.y);
@@ -670,7 +389,7 @@ public class blankTestState extends GameState {
             finalDirect = Player.Direction.East;
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Keys.R)){
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Input.Keys.R)){
             if (DialogOpen) {
                 if(DialogTics > DialogCache.get(0).getCooldown()) {
                     if (DialogCache.size() > 0) {
@@ -698,7 +417,7 @@ public class blankTestState extends GameState {
             }
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_X) || Gdx.input.isKeyJustPressed(Keys.C) ){ // ATTACK
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_X) || Gdx.input.isKeyJustPressed(Input.Keys.C) ){ // ATTACK
             if(player.AttackTime < .1f) {
 
                 AddParticleEffect("sparkle", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
@@ -893,5 +612,4 @@ public class blankTestState extends GameState {
             Entities.remove(0);
         }
     }
-
 }

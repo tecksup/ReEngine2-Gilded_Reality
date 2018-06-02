@@ -128,6 +128,9 @@ public class Player extends WorldObject {
 
     @Override
     public boolean checkCollision(float xOffset, float yOffset, List<collision> Colls) {
+        if (Colls == null) {
+            return false;
+        }
         Rectangle RectPla = new Rectangle(getHitbox().x+2 + xOffset, getHitbox().y + yOffset, getHitbox().width-4, getHitbox().height-10);
         for(int i = 0; i < Colls.size(); i++) {
             if (RectPla.overlaps(Colls.get(i).getRect())) {

@@ -1,11 +1,14 @@
 package com.thecubecast.ReEngine.Graphics.Scene2D;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.thecubecast.ReEngine.Data.Common;
+
+import static com.thecubecast.ReEngine.Data.GameStateManager.AudioM;
 
 public class TkLabel extends Label{
 
@@ -76,8 +79,9 @@ public class TkLabel extends Label{
             String Output = "";
 
             for(int i = 0; i < Original.length(); i++) {
-                if(i < TextIndex)
+                if(i < TextIndex) {
                     Output += Original.charAt(i);
+                }
                 else
                     break;
             }

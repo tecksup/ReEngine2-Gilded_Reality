@@ -104,6 +104,9 @@ public class Hank extends NPC {
 
     @Override
     public void update(float delta, List<collision> Colls) {
+        if (Colls == null) {
+            return;
+        }
         for(int i = 0; i < Colls.size(); i++) {
             if (Colls.get(i).getHash() == this.hashCode()) {
                 //Rectangle hankbox = new Rectangle();
