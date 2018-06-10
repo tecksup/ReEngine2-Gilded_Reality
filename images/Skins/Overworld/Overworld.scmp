@@ -240,6 +240,57 @@ atlasData: {
 			minHeight: 0
 			customized: false
 		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/Table_dialog_icons.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: Table_dialog_icons
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/A_icon.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: A_icon
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/A_icon_alt.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: A_icon_alt
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
 	]
 }
 jsonData: {

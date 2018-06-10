@@ -544,13 +544,13 @@ public class DialogState extends GameState {
         DrawParticleEffects(g);
 
         if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) { //KeyHit
-            gsm.Cursor = 2;
+            gsm.Cursor = GameStateManager.CursorType.Question;
 
             Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
             camera.unproject(pos);
             gsm.Render.GUIDrawText(g, Common.roundDown(pos.x)-5, Common.roundDown(pos.y)-5, "X: " + ((int)pos.x/16) + " Y: " + ((int)pos.y/16));
         } else {
-            gsm.Cursor = 0;
+            gsm.Cursor = GameStateManager.CursorType.Normal;
         }
 
         g.end();

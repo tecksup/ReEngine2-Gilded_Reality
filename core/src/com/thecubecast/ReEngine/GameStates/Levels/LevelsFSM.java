@@ -8,8 +8,11 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -25,6 +28,7 @@ import com.thecubecast.ReEngine.Data.controlerManager;
 import com.thecubecast.ReEngine.Graphics.Scene2D.Dialog;
 import com.thecubecast.ReEngine.Graphics.Scene2D.TkLabel;
 import com.thecubecast.ReEngine.worldObjects.NPC;
+import com.thecubecast.ReEngine.worldObjects.WorldObject;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -42,13 +46,14 @@ public class LevelsFSM implements Telegraph {
     int DialogTics = 0;
     private List<Dialog> DialogCache = new ArrayList<>();
     TkLabel dialogBoxTitle;
+    Image dialogBoxIcon;
     Image dialogBoxFace;
     TkLabel dialogBoxText;
 
     protected StateMachine<LevelsFSM, Level_States> stateMachine;
     protected GameStateManager gsm;
 
-    public LevelsFSM(OrthographicCamera cam, GameStateManager gsm) {
+    public LevelsFSM(GameStateManager gsm) {
 
         MenuInit(gsm.Width, gsm.Height);
 
@@ -68,35 +73,45 @@ public class LevelsFSM implements Telegraph {
 
     public void HandleInput() {
         if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Input.Keys.R)){
-            if (DialogOpen) {
-                if(DialogTics > DialogCache.get(0).getCooldown()) {
-                    if (DialogCache.size() > 0) {
-                        DialogCache.get(0).exit();
-                        DialogCache.remove(0);
-                        UpdateDialogBox();
-                        if(DialogCache.size() == 0) {
-                            DialogOpen = false;
-                        }
-                    } else {
-                        DialogOpen = false;
-                    }
-                } else {
-                    dialogBoxText.endScroll();
-                }
-                AudioM.playS("gain-stone.wav");
-            }
+            DialogNext();
         }
 
         stateMachine.getCurrentState().HandleInput(this);
     }
 
-    public void reSize(OrthographicCamera cam) {
-        stateMachine.changeState(stateMachine.getCurrentState());
+    public void reSize() {
+        stateMachine.getCurrentState().reSize();
     }
 
     @Override
     public boolean handleMessage(Telegram msg) {
         return false;
+    }
+
+    public void cameraUpdate(WorldObject mainFocus, OrthographicCamera cam, List<WorldObject> Entities) {
+
+        Vector2 FocalPoint = new Vector2(mainFocus.getPosition().x, mainFocus.getPosition().y);
+        float totalFocusPoints = 1;
+
+        for (int i = 0; i < Entities.size(); i++) {
+            if (Entities.get(i).FocusStrength != 0) {
+                if(mainFocus.getPosition().dst(Entities.get(i).getPosition()) <= 200) {
+                    float tempX = Entities.get(i).getPosition().x;
+                    float tempY = Entities.get(i).getPosition().y;
+
+                    double dist = mainFocus.getPosition().dst(Entities.get(i).getPosition());
+
+                    double influence = -((dist-200)/200)*1;
+
+                    FocalPoint.x += (tempX * (Entities.get(i).FocusStrength*influence));
+                    FocalPoint.y += (tempY * (Entities.get(i).FocusStrength*influence));
+                    totalFocusPoints += Entities.get(i).FocusStrength*influence;
+                }
+            }
+        }
+        cam.position.set((int) (FocalPoint.x/totalFocusPoints),(int) (FocalPoint.y/totalFocusPoints), 0);
+
+        cam.update();
     }
 
     public void setupSkin() {
@@ -124,13 +139,35 @@ public class LevelsFSM implements Telegraph {
         dialogBox.add(dialogBoxTitleT).left().expandX().padLeft(3).padTop(-2).row();
         dialogBox.add(dialogBoxTextT).expandX().left().padLeft(3);
 
+        dialogBoxTextT.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                DialogNext();
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                //dialogBoxIcon.setDrawable(skin, "A_icon_alt");
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                //dialogBoxIcon.setDrawable(skin, "A_icon");
+            }
+        });
+
         dialogBoxTitle = new TkLabel("", skin);
         dialogBoxTitle.setAlignment(Align.left);
         dialogBoxFace = new Image(new Texture(Gdx.files.internal("Sprites/face.png")));
+        //dialogBoxIcon = new Image(skin, "A_icon");
         dialogBoxFace.setSize(20,20);
         dialogBoxText= new TkLabel("", skin);
         dialogBoxText.setAlignment(Align.left);
         dialogBoxText.setScrolling(true);
+        dialogBoxText.setWrap(true);
+
+        //Guistage.addActor(dialogBoxIcon);
+        //dialogBoxIcon.setPosition(width-3 - dialogBoxIcon.getWidth(), 3);
 
         dialogBoxTitleT.add(dialogBoxTitle).left().fillX();
         dialogBoxTextT.add(dialogBoxFace).expandX().left().padRight(5);
@@ -191,6 +228,25 @@ public class LevelsFSM implements Telegraph {
         Guistage.act();
     }
 
+    public void DialogNext() {
+        if (DialogOpen) {
+            if(DialogTics > DialogCache.get(0).getCooldown()) {
+                if (DialogCache.size() > 0) {
+                    DialogCache.remove(0).exit();
+                    //REPLACE THIS LINE WITH DIALOG CLOSE SOUND
+                    UpdateDialogBox();
+                    if(DialogCache.size() == 0) {
+                        DialogOpen = false;
+                    }
+                } else {
+                    DialogOpen = false;
+                }
+            } else {
+                dialogBoxText.endScroll();
+            }
+        }
+    }
+
     public void MenuDraw(float Delta) {
         if(DialogTics < 1000)
             DialogTics++;
@@ -198,6 +254,7 @@ public class LevelsFSM implements Telegraph {
 
         //UpdateDialogBox();
         table.setVisible(DialogOpen);
+        //dialogBoxIcon.setVisible(DialogOpen);
 
         Guistage.draw();
     }

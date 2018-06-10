@@ -15,7 +15,6 @@ public class Story extends GameState {
 
     boolean StoryDebug;
 
-    OrthographicCamera cameraGui;
     LevelsFSM Level;
 
     public Story(GameStateManager gsm) {
@@ -24,19 +23,15 @@ public class Story extends GameState {
 
     public void init() {
 
-        cameraGui = new OrthographicCamera();
-
-        Level = new LevelsFSM(cameraGui, gsm);
+        Level = new LevelsFSM(gsm);
 
     }
 
     public void update() {
 
         Level.Update();
-
         handleInput();
 
-        cameraGui.update();
     }
 
     public void draw(SpriteBatch bbg, int height, int width, float Time) {
@@ -44,13 +39,8 @@ public class Story extends GameState {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        cameraGui.setToOrtho(false, width, height);
-        bbg.setProjectionMatrix(cameraGui.combined);
-        bbg.begin();
-
         Level.Draw(bbg, height, width, Time);
 
-        bbg.end();
     }
 
     public void handleInput() {
@@ -58,10 +48,7 @@ public class Story extends GameState {
     }
 
     public void reSize(SpriteBatch g, int H, int W) {
-        //stage.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
-        cameraGui.setToOrtho(false);
-        Level.reSize(cameraGui);
-        //Menus.reSize(H, W, cameraGui);
+        Level.reSize();
     }
 
     @Override

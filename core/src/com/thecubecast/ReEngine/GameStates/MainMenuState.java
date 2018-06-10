@@ -44,7 +44,7 @@ public class MainMenuState extends GameState {
 
 		Menus = new MenuFSM(gsm.Width, gsm.Height, cameraGui, gsm);
 
-		BGMusicID = AudioM.playMusic("forgetting.mp3", true);
+		//BGMusicID = AudioM.playMusic("forgetting.mp3", true);
 	}
 	
 	public void update() {
@@ -145,7 +145,7 @@ public class MainMenuState extends GameState {
 
 	@Override
 	public void dispose() {
-		AudioM.stopMusic(BGMusicID);
+		//AudioM.stopMusic(BGMusicID);
 	}
 	
 }

@@ -6,22 +6,12 @@
 
 package com.thecubecast.ReEngine.Data;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.thecubecast.ReEngine.GameStates.*;
-import com.thecubecast.ReEngine.GameStates.Levels.CarScene;
 import com.thecubecast.ReEngine.Graphics.Draw;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
-
-import java.awt.*;
-import java.util.ArrayList;
-
-import static com.thecubecast.ReEngine.Data.GameStateManager.State.Blank;
-import static com.thecubecast.ReEngine.Data.GameStateManager.State.SHADER;
 
 public class GameStateManager {
 	public static boolean Debug = false;
@@ -56,8 +46,14 @@ public class GameStateManager {
 	public int MouseY;
 	public int[] MouseDrag;
 	public int[] MouseClick;
-	public int OldCursor = 0;
-	public int Cursor = 0;
+
+	//The cursor image
+	public enum CursorType {
+		Normal, Old, Question
+	}
+
+	public CursorType OldCursor = CursorType.Normal;
+	public CursorType Cursor = CursorType.Normal;
 	
 	//screen
 	public int Width;
@@ -169,7 +165,19 @@ public class GameStateManager {
 		ticks++;
 		if (Cursor != OldCursor) {
 			OldCursor = Cursor;
-			com.badlogic.gdx.graphics.Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("cursor" + Cursor + ".png")), 0, 0);
+			int CursorID = 0;
+			switch (Cursor) {
+				case Normal:
+					CursorID = 0;
+					break;
+				case Old:
+					CursorID = 1;
+					break;
+				case Question:
+					CursorID = 2;
+					break;
+			}
+			com.badlogic.gdx.graphics.Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("cursor" + CursorID + ".png")), 0, 0);
     		Gdx.graphics.setCursor(customCursor);
 		}
 		MouseX = MousX;

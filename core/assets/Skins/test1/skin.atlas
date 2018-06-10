@@ -24,24 +24,47 @@ Pixel
   orig: 512, 512
   offset: 0, 0
   index: -1
+A_icon
+  rotate: false
+  xy: 515, 559
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+A_icon_alt
+  rotate: false
+  xy: 581, 577
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
 MenuFocused
   rotate: false
-  xy: 581, 576
+  xy: 157, 128
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 Table_dialog
   rotate: false
-  xy: 515, 555
+  xy: 91, 107
   size: 13, 13
   split: 5, 5, 5, 5
   orig: 13, 13
   offset: 0, 0
   index: -1
+Table_dialog_icons
+  rotate: false
+  xy: 1, 50
+  size: 88, 88
+  split: 5, 10, 5, 5
+  pad: 5, 10, 5, 10
+  orig: 88, 88
+  offset: 0, 0
+  index: -1
 button_
   rotate: false
-  xy: 1, 104
+  xy: 91, 122
   size: 64, 16
   split: 5, 5, 3, 3
   orig: 64, 16
@@ -49,7 +72,7 @@ button_
   index: -1
 button_d
   rotate: false
-  xy: 1, 122
+  xy: 515, 636
   size: 64, 16
   split: 5, 5, 3, 3
   orig: 64, 16
@@ -57,7 +80,7 @@ button_d
   index: -1
 button_h
   rotate: false
-  xy: 515, 636
+  xy: 1, 32
   size: 64, 16
   split: 5, 5, 3, 3
   orig: 64, 16
@@ -65,7 +88,7 @@ button_h
   index: -1
 health_
   rotate: false
-  xy: 67, 124
+  xy: 1, 16
   size: 3, 4
   split: 1, 1, 1, 1
   orig: 3, 4
@@ -73,7 +96,7 @@ health_
   index: -1
 health_knob
   rotate: false
-  xy: 85, 134
+  xy: 19, 26
   size: 3, 4
   split: 1, 1, 1, 1
   orig: 3, 4
@@ -89,7 +112,7 @@ health_knob_dis
   index: -1
 knob
   rotate: false
-  xy: 67, 130
+  xy: 1, 22
   size: 16, 8
   split: 1, 1, 2, 2
   orig: 16, 8
@@ -97,7 +120,7 @@ knob
   index: -1
 progress
   rotate: false
-  xy: 1, 94
+  xy: 67, 40
   size: 16, 8
   split: 2, 2, 1, 1
   pad: 1, 1, 1, 1
