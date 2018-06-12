@@ -19,6 +19,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.*;
+import com.thecubecast.ReEngine.Data.OGMO.OelGridLayer;
+import com.thecubecast.ReEngine.Data.OGMO.OelMap;
+import com.thecubecast.ReEngine.Data.OGMO.OelMapRenderer;
 import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
 import com.thecubecast.ReEngine.Graphics.Scene2D.Dialog;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
@@ -120,9 +123,8 @@ public enum Level_States implements State<LevelsFSM>, Scene {
         private List<WorldObject> Entities = new ArrayList<>();
 
         //Map Variables
-        TiledMap tiledMap;
-        TiledMapRenderer tiledMapRenderer;
-        BitwiseTiles tiledBits;
+        OelMap testMap = new OelMap("Saves/OGMO/test.oel");
+        OelMapRenderer testRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
 
         //AI
         FlatTiledGraph MapGraph;
@@ -140,16 +142,22 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             //Particles
             Particles = new ParticleHandeler();
 
-            //SETUP TILEDMAP
-            tiledMap = new TmxMapLoader().load("Saves/BITWISE/School/test.tmx");
-            tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-            tiledBits = new BitwiseTiles(tiledMap);
+            for (int i = 0; i < testMap.getLayers().size(); i++) {
+                if (testMap.getLayers().get(i).getName().equals("Collision")) {
+                    OelGridLayer temp = (OelGridLayer) testMap.getLayers().get(i);
+                    for (int x = 0; x < testMap.getWidth()/16; x++) {
+                        for (int y = 0; y < testMap.getHeight()/16; y++) {
+                            if (temp.getCell(x, y) == 1) {
+                                Rectangle tempRect = new Rectangle(x * 16, y * 16, 16, 16);
+                                Collisions.add(new collision(tempRect, tempRect.hashCode()));
+                            }
+                        }
+                    }
+                }
+            }
 
-            //Test OGMO level
-            Map ogmo = new Map();
-
-            MapGraph = new FlatTiledGraph(tiledMap);
-            MapGraph.init(tiledMap);
+            MapGraph = new FlatTiledGraph(testMap);
+            MapGraph.init(testMap);
 
             player = new Player(13*16,1*16, new Vector3(16, 16, 16));
             Entities.add(player);
@@ -176,10 +184,11 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             Rectangle drawView = new Rectangle(Worldcam.position.x - Worldcam.viewportWidth/2 - Worldcam.viewportWidth/4, Worldcam.position.y - Worldcam.viewportHeight/2  - Worldcam.viewportHeight/4, Worldcam.viewportWidth + Worldcam.viewportWidth/4, Worldcam.viewportHeight + Worldcam.viewportHeight/4);
 
-            tiledMapRenderer.setView(Worldcam);
-            tiledMapRenderer.render();
+            testRenderer.setView(Worldcam);
 
             g.begin();
+
+            testRenderer.renderLayer(g, testMap, 1);
 
             WorldObjectComp entitySort = new WorldObjectComp();
             Entities.sort(entitySort);
@@ -237,25 +246,6 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                 {
                     entity.gsm.Render.debugRenderer.setColor(Color.RED);
                     Collisions.forEach(number -> entity.gsm.Render.debugRenderer.rect(number.getRect().x, number.getRect().y, (number.getRect().width), (number.getRect().height)));
-
-                    for (int y = 0; y < tiledBits.bitTileObjectLayers.get(0).realTile.size(); y++) {
-                        for (int x = 0; x < tiledBits.bitTileObjectLayers.get(0).realTile.size(); x++) {
-                            switch (MapGraph.getNode(x, y).type) {
-                                case FlatTiledNode.GROUND:
-                                    entity.gsm.Render.debugRenderer.setColor(Color.GREEN);
-                                    //entity.gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
-                                    break;
-                                case FlatTiledNode.COLLIDABLE:
-                                    entity.gsm.Render.debugRenderer.setColor(Color.SALMON);
-                                    entity.gsm.Render.debugRenderer.rect(x * 16 + 1, y * 16 + 1, 16-2, 16-2);
-                                    break;
-                                default:
-                                    //entity.gsm.Render.debugRenderer.setColor(Color.WHITE);
-                                    //entity.gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
-                                    break;
-                            }
-                        }
-                    }
                 }
 
                 entity.gsm.Render.debugRenderer.setColor(Color.FIREBRICK);
@@ -336,8 +326,12 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)){
                 Common.print("Reloaded Bitwise Images!!");
-                tiledBits.reLoadImages();
+                testRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
                 //entity.gsm.ctm.newController("template");
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.B)){
+                shaker.addDamage(0.4f);
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.T)){

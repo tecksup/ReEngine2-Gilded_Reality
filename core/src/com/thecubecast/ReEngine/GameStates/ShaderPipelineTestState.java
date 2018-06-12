@@ -19,6 +19,7 @@ import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.OGMO.OelGridLayer;
 import com.thecubecast.ReEngine.Data.OGMO.OelMap;
+import com.thecubecast.ReEngine.Data.OGMO.OelMapRenderer;
 import com.thecubecast.ReEngine.Data.collision;
 import com.thecubecast.ReEngine.Data.controlerManager;
 import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
@@ -43,6 +44,7 @@ public class ShaderPipelineTestState extends GameState {
     OrthographicCamera camera;
 
     OelMap testMap = new OelMap("Saves/OGMO/test.oel");
+    OelMapRenderer testRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
 
     public ShaderPipelineTestState(GameStateManager gsm) {
         super(gsm);
@@ -79,6 +81,9 @@ public class ShaderPipelineTestState extends GameState {
         Gdx.gl.glClearColor(0/255f, 0/255f, 45/255f, 1);
         g.begin();
 
+        testRenderer.setView(camera);
+        testRenderer.renderLayer(g, testMap, 1);
+
         for(int i = 0; i < Entities.size(); i++) {
             WorldObjectComp temp = new WorldObjectComp();
             Entities.sort(temp);
@@ -86,27 +91,6 @@ public class ShaderPipelineTestState extends GameState {
         }
 
         g.end();
-
-        gsm.Render.debugRenderer.setProjectionMatrix(camera.combined);
-        gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-        for (int y = testMap.getHeight()/16; y > 0; y--) {
-            for (int x = 0; x < testMap.getWidth()/16; x++) {
-                if (testMap.getLayers().get(0) instanceof OelGridLayer) {
-                    OelGridLayer temp = ((OelGridLayer) testMap.getLayers().get(0));
-
-                    if (temp.getCell(x, y) == 0) {
-                        gsm.Render.debugRenderer.setColor(Color.DARK_GRAY);
-                    } else {
-                        gsm.Render.debugRenderer.setColor(Color.BLUE);
-                    }
-                    gsm.Render.debugRenderer.rect(x * 16, y * 16, 16, 16);
-                }
-            }
-        }
-
-
-        gsm.Render.debugRenderer.end();
 
 
     }

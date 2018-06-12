@@ -27,7 +27,7 @@
   <LevelValueDefinitions />
   <LayerDefinitions>
     <LayerDefinition xsi:type="EntityLayerDefinition">
-      <Name>Rooms</Name>
+      <Name>Triggers</Name>
       <Grid>
         <Width>16</Width>
         <Height>16</Height>
@@ -109,8 +109,8 @@
       <TileSep>0</TileSep>
     </Tileset>
     <Tileset>
-      <Name>NewTileset1</Name>
-      <FilePath>..\..\Sprites\Editor\1.png</FilePath>
+      <Name>basic</Name>
+      <FilePath>..\..\Sprites\basictiles.png</FilePath>
       <TileSize>
         <Width>16</Width>
         <Height>16</Height>
@@ -134,7 +134,7 @@
       <ValueDefinitions />
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>
-    <EntityDefinition Name="Room" Limit="-1" ResizableX="true" ResizableY="true" Rotatable="false" RotateIncrement="15">
+    <EntityDefinition Name="Trigger" Limit="-1" ResizableX="true" ResizableY="true" Rotatable="false" RotateIncrement="15">
       <Size>
         <Width>16</Width>
         <Height>16</Height>
@@ -147,7 +147,7 @@
         <RectColor A="255" R="128" G="255" B="0" />
       </ImageDefinition>
       <ValueDefinitions>
-        <ValueDefinition xsi:type="StringValueDefinition" Name="Name" Default="Name" MaxChars="-1" MultiLine="false" />
+        <ValueDefinition xsi:type="StringValueDefinition" Name="Event" Default="Null" MaxChars="-1" MultiLine="true" />
       </ValueDefinitions>
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>

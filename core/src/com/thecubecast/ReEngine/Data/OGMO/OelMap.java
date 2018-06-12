@@ -9,6 +9,8 @@ import java.util.List;
 
 public class OelMap {
 
+    private String MapLocation;
+
     private List<OelLayer> Layers = new ArrayList<>();
 
     private int width;
@@ -17,6 +19,7 @@ public class OelMap {
     private XmlReader reader = new XmlReader();
 
     public OelMap(String MapLocation) {
+        this.MapLocation = MapLocation;
         XmlReader.Element root = reader.parse(Gdx.files.internal(MapLocation));
 
         width = Integer.parseInt(root.getAttribute("width"));
@@ -29,14 +32,14 @@ public class OelMap {
                 if (root.getChild(i).getAttribute("exportMode").equals("CSV")) {
 
                     OelTilesLayer temp = new OelTilesLayer(width, height, root.getChild(i).getName(), root.getChild(i).getAttribute("tileset"), root.getChild(i).getText());
-                    System.out.println(temp.toString());
+                    //System.out.println(temp.toString());
                     Layers.add(temp);
 
 
                 } else if (root.getChild(i).getAttribute("exportMode").equals("Bitstring")) {
 
                     OelGridLayer temp = new OelGridLayer(width, height, root.getChild(i).getName(), root.getChild(i).getText());
-                    System.out.println(temp.toString());
+                    //System.out.println(temp.toString());
                     Layers.add(temp);
 
                 }

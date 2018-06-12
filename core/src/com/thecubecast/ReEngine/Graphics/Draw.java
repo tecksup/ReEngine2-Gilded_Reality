@@ -33,14 +33,18 @@ public class Draw {
 	public PipelineTexture[] Images;
 
 	public static ShaderProgram OutlineShader;
+	public static ShaderProgram FillColorShader;
 	
 	BitmapFont font = new BitmapFont(Gdx.files.internal("Fonts/Pixel.fnt"), new TextureRegion(new Texture(Gdx.files.internal("Fonts/Pixel.png"))));
 
 	public void LoadShaders() {
-		String vertexShader = Gdx.files.internal("Shaders/Outline/vertex.glsl").readString();
-		String fragmentShader = Gdx.files.internal("Shaders/Outline/fragment.glsl").readString();
-		OutlineShader = new ShaderProgram(vertexShader,fragmentShader);
+		String OutlineShadervertexShader = Gdx.files.internal("Shaders/Outline/vertex.glsl").readString();
+		String OutlineShaderfragmentShader = Gdx.files.internal("Shaders/Outline/fragment.glsl").readString();
+		OutlineShader = new ShaderProgram(OutlineShadervertexShader,OutlineShaderfragmentShader);
 
+		String FillColorShadervertexShader = Gdx.files.internal("Shaders/Fill_Color/vertex.glsl").readString();
+		String FillColorShaderfragmentShader = Gdx.files.internal("Shaders/Fill_Color/fragment.glsl").readString();
+		FillColorShader = new ShaderProgram(FillColorShadervertexShader,FillColorShaderfragmentShader);
 
 	}
 
@@ -230,6 +234,18 @@ public class Draw {
 		OutlineShader.begin();
 		OutlineShader.setUniform1fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, Alpha }, 0, 4);
 		OutlineShader.end();
+	}
+
+	public static void setFillColorShaderColor(Color outlineColor) {
+		FillColorShader.begin();
+		FillColorShader.setUniform1fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, outlineColor.a }, 0, 4);
+		FillColorShader.end();
+	}
+
+	public static void setFillColorShaderColor(Color outlineColor, float Alpha) {
+		FillColorShader.begin();
+		FillColorShader.setUniform1fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, Alpha }, 0, 4);
+		FillColorShader.end();
 	}
 
 	public ShapeRenderer debugRenderer = new ShapeRenderer();
