@@ -44,7 +44,12 @@ public class OelMap {
 
                 }
             } else { //This else statement is for Entitiy Layers
+                OelEntitiesLayer temp = new OelEntitiesLayer(root.getChild(i).getName(), root.getChild(i));
+                temp.setHeight(height);
+                temp.setWidth(width);
 
+
+                Layers.add(temp);
             }
         }
 

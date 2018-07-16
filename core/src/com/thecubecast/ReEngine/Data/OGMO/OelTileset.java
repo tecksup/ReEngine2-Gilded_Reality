@@ -27,7 +27,7 @@ public class OelTileset {
         int rows = TilesetImage.getHeight()/TileSizeH;
 
         Tiles = new TextureRegion[rows * cols];
-        System.out.println(Name + " " + Tiles.length);
+        //System.out.println(Name + " " + Tiles.length);
 
         TextureRegion[][] tmp = TextureRegion.split(TilesetImage,
                 TileSizeW,

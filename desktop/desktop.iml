@@ -106,11 +106,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/tecksup/.gradle/caches/modules-2/files-2.1/com.github.MinnDevelopment/Java-DiscordRPC/-SNAPSHOT/d004b1d7b9ba5a5fbd05e7b63939b63a6f9fc6a3/Java-DiscordRPC--SNAPSHOT.jar!/"/>
+          <root url="jar://C:/Users/tecksup/.gradle/caches/modules-2/files-2.1/com.github.MinnDevelopment/Java-DiscordRPC/-SNAPSHOT/d61a26511c3ae9a458002e9ea0be4b654fbfd84a/Java-DiscordRPC--SNAPSHOT.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/tecksup/.gradle/caches/modules-2/files-2.1/com.github.MinnDevelopment/Java-DiscordRPC/-SNAPSHOT/a022a537ccf6a3fd148eb2e53ed5770a62117a0f/Java-DiscordRPC--SNAPSHOT-sources.jar!/"/>
+          <root url="jar://C:/Users/tecksup/.gradle/caches/modules-2/files-2.1/com.github.MinnDevelopment/Java-DiscordRPC/-SNAPSHOT/dbb5bc61822deb169eec4c8d6c3943e456c747ea/Java-DiscordRPC--SNAPSHOT-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -445,7 +445,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/tecksup/.gradle/caches/modules-2/files-2.1/com.github.MinnDevelopment/discord-rpc-release/v3.0.0/974c18e430f9a3401a52a61328c39ca40dd471c4/discord-rpc-release-v3.0.0.jar!/"/>
+          <root url="jar://C:/Users/tecksup/.gradle/caches/modules-2/files-2.1/club.minnced/discord-rpc-release/v3.3.0/f19810dbd428095b28f0e7776e6a6e53d2971363/discord-rpc-release-v3.3.0.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>

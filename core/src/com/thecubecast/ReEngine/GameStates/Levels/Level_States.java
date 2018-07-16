@@ -7,22 +7,13 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.Map;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.*;
-import com.thecubecast.ReEngine.Data.OGMO.OelGridLayer;
-import com.thecubecast.ReEngine.Data.OGMO.OelMap;
-import com.thecubecast.ReEngine.Data.OGMO.OelMapRenderer;
-import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
+import com.thecubecast.ReEngine.Data.OGMO.*;
 import com.thecubecast.ReEngine.Graphics.Scene2D.Dialog;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
 import com.thecubecast.ReEngine.worldObjects.*;
@@ -55,15 +46,15 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             Car = new Texture(Gdx.files.internal("Sprites/car.png"));
 
             //sets up the Dialog for the scene
-            entity.AddDialog("Hank", "Hey try clicking this dialog box to move on! ", 90, new Texture(Gdx.files.internal("Sprites/Gunter.png")));
-            entity.AddDialog("test2","Yeah, you could also press (R)", 90);
+            entity.AddDialog("Hank", "Hey try clicking this dialog box to move on! ", 15, new Texture(Gdx.files.internal("Sprites/Gunter.png")));
+            entity.AddDialog("test2","Yeah, you could also press (R)", 15);
             Dialog temp = new Dialog("Hank", new Texture(Gdx.files.internal("Sprites/Gunter.png")), "But who would want to do that!") {
                 @Override
                 public void exit() {
                     finishedScene = true;
                 }
             };
-            temp.setCooldown(30);
+            temp.setCooldown(15);
             entity.AddDialog(temp);
 
         }
@@ -112,9 +103,10 @@ public enum Level_States implements State<LevelsFSM>, Scene {
         //Camera
         OrthographicCamera Worldcam;
         ScreenShakeCameraController shaker;
+        WorldObject MainCameraFocusPoint;
 
         //Particles
-        ParticleHandeler Particles;
+        ParticleHandler Particles;
 
         //GameObjects
         Player player;
@@ -123,14 +115,32 @@ public enum Level_States implements State<LevelsFSM>, Scene {
         private List<WorldObject> Entities = new ArrayList<>();
 
         //Map Variables
-        OelMap testMap = new OelMap("Saves/OGMO/test.oel");
-        OelMapRenderer testRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
+        OelMap testMap;
+        OelMapRenderer testRenderer;
 
         //AI
         FlatTiledGraph MapGraph;
 
         @Override
         public void enter(LevelsFSM entity) {
+
+            player = new Player(13*16,1*16, new Vector3(16, 16, 16));
+
+            MainCameraFocusPoint = player;
+
+            Entities.add(player);
+
+            testMap = new OelMap("Saves/OGMO/test.oel");
+            testRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
+
+            for (int i = 0; i < testMap.getLayers().size(); i++) {
+                OelLayer layer = testMap.getLayers().get(i);
+                if(layer instanceof OelEntitiesLayer) {
+                    OelEntitiesLayer EntLayer = (OelEntitiesLayer) layer;
+                    EntLayer.loadEntities(testMap, player, Entities, Areas);
+                }
+            }
+
             //Discord Presence
             entity.gsm.DiscordManager.setPresenceState("Story: Introduction");
 
@@ -140,7 +150,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             shaker = new ScreenShakeCameraController(Worldcam);
 
             //Particles
-            Particles = new ParticleHandeler();
+            Particles = new ParticleHandler();
 
             for (int i = 0; i < testMap.getLayers().size(); i++) {
                 if (testMap.getLayers().get(i).getName().equals("Collision")) {
@@ -158,9 +168,6 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             MapGraph = new FlatTiledGraph(testMap);
             MapGraph.init(testMap);
-
-            player = new Player(13*16,1*16, new Vector3(16, 16, 16));
-            Entities.add(player);
         }
 
         @Override
@@ -168,13 +175,18 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             Particles.Update();
 
-            for (int i = 0; i < Entities.size(); i++) {
-                Entities.get(i).update(Gdx.graphics.getDeltaTime(), Collisions);
-            }
-
             player.update(entity.gsm.DeltaTime, Collisions);
 
-            entity.cameraUpdate(player, Worldcam, Entities);
+            for (int i = 0; i < Entities.size(); i++) {
+                Entities.get(i).update(Gdx.graphics.getDeltaTime(), Collisions);
+
+                if (Entities.get(i) instanceof Trigger) {
+                    Trigger temp = (Trigger) Entities.get(i);
+                    temp.Trigger(player,shaker,MainCameraFocusPoint,Particles,Entities);
+                }
+            }
+
+            entity.cameraUpdate(MainCameraFocusPoint, Worldcam, Entities);
         }
 
         public void draw(LevelsFSM entity, SpriteBatch g, int height, int width, float Time) {
@@ -188,7 +200,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             g.begin();
 
-            testRenderer.renderLayer(g, testMap, 1);
+            testRenderer.renderLayer(g, testMap, "Ground");
 
             WorldObjectComp entitySort = new WorldObjectComp();
             Entities.sort(entitySort);

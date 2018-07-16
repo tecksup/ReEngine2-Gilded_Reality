@@ -38,6 +38,17 @@
       </ScrollFactor>
     </LayerDefinition>
     <LayerDefinition xsi:type="EntityLayerDefinition">
+      <Name>Areas</Name>
+      <Grid>
+        <Width>16</Width>
+        <Height>16</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+    </LayerDefinition>
+    <LayerDefinition xsi:type="EntityLayerDefinition">
       <Name>Objects</Name>
       <Grid>
         <Width>1</Width>
@@ -148,6 +159,13 @@
       </ImageDefinition>
       <ValueDefinitions>
         <ValueDefinition xsi:type="StringValueDefinition" Name="Event" Default="Null" MaxChars="-1" MultiLine="true" />
+        <ValueDefinition xsi:type="EnumValueDefinition" Name="TriggerType">
+          <Elements>
+            <string>OnEntry</string>
+            <string>OnTrigger</string>
+            <string>OnExit</string>
+          </Elements>
+        </ValueDefinition>
       </ValueDefinitions>
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>

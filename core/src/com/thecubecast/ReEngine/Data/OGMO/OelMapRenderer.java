@@ -118,7 +118,76 @@ public class OelMapRenderer {
             }
 
         }
+    }
+
+    public void renderLayer(SpriteBatch batch, OelMap Map, String layername) {
+        Rectangle drawView;
+        if (cam != null) {
+            drawView = new Rectangle(cam.position.x - cam.viewportWidth, cam.position.y - cam.viewportHeight, cam.viewportWidth + cam.viewportWidth, cam.viewportHeight + cam.viewportHeight);
+        } else {
+            drawView = new Rectangle(0, 0, Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight()/4);
+        }
+
+        int layerIndex = 0;
+        for (int i = 0; i < Map.getLayers().size(); i++) {
+            if (Map.getLayers().get(i).getName().equals(layername)) {
+                layerIndex = i;
+                break;
+            }
+
+            else if (i == Map.getLayers().size()-1) {
+                System.out.println("Error in OemMapRendering \n Layer \"" + layername + "\" not found");
+                return;
+            }
+        }
+
+        for (int i = 0; i < Tilesets.size(); i++) {
+
+            if (Map.getLayers().get(layerIndex) instanceof OelGridLayer) { // Grid black or white
+
+                OelGridLayer GridLayer = ((OelGridLayer) Map.getLayers().get(layerIndex));
+
+                for (int y = Map.getHeight()/16; y > 0; y--) {
+                    for (int x = 0; x < Map.getWidth()/16; x++) {
+
+                        if (GridLayer.getCell(x, y) == 0) {
+                            if(drawView.overlaps(new Rectangle(x*16, y*16, 16, 16))) {
+                                //batch.draw(pixel, x * 16, y *16, 16, 16);
+                            }
+                        } else {
+                            if(drawView.overlaps(new Rectangle(x*16, y*16, 16, 16))) {
+                                batch.draw(pixel, x * 16, y * 16, 16, 16);
+                            }
+                        }
+                    }
+                }
+
+            } else if (Map.getLayers().get(layerIndex) instanceof OelTilesLayer) { // draws from the tileset
+
+                OelTilesLayer TileLayer = ((OelTilesLayer) Map.getLayers().get(layerIndex));
+
+                if (TileLayer.getTileset().equals(Tilesets.get(i).Name)) {
+
+                    for (int y = Map.getHeight()/16; y > 0; y--) {
+                        for (int x = 0; x < Map.getWidth()/16; x++) {
+                            if (TileLayer.getCell(x,y) != -1) {
+                                if(drawView.overlaps(new Rectangle(x*16, y*16, 16, 16))) {
+                                    batch.draw(Tilesets.get(i).Tiles[TileLayer.getCell(x, y)], x * 16, y * 16);
+                                }
+                            }
+                        }
+                    }
+
+                } else {
+                    //Break the loop, we don't know what colors to draw this
+                    continue;
+                }
+
+            }
+
+        }
 
 
     }
+
 }
