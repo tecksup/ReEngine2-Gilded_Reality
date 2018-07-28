@@ -1,5 +1,7 @@
 package com.thecubecast.ReEngine.Data.OGMO;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.XmlReader;
@@ -53,6 +55,8 @@ public class OelEntitiesLayer extends OelLayer {
                         TriggerObject = new Trigger(x, y, size, Events, Trigger.TriggerType.OnTrigger);
                     } else if (temptemp.equals("OnExit")) {
                         TriggerObject = new Trigger(x, y, size, Events, Trigger.TriggerType.OnExit);
+                    } else if (temptemp.equals("OnInteract")) {
+                        TriggerObject = new Trigger(x, y, size, Events, Trigger.TriggerType.OnInteract);
                     }
 
                     Entities.add(TriggerObject);
@@ -67,7 +71,89 @@ public class OelEntitiesLayer extends OelLayer {
             for (int i = 0; i < Layer.getChildCount(); i++) {
                 if (Layer.getChild(i).getName().equals("Player")) {
                     player.setPosition(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")));
+                } else if (Layer.getChild(i).getName().equals("CameraHint")) {
+                    WorldObject temp = new WorldObject() {
+                        @Override
+                        public void init(int Width, int Height) {
+
+                        }
+
+                        @Override
+                        public void update(float delta, List<collision> Colls) {
+
+                        }
+
+                        @Override
+                        public void draw(SpriteBatch batch, float Time) {
+
+                        }
+
+                        @Override
+                        public void draw(RePipeline batch, float Time) {
+
+                        }
+                    };
+
+                    temp.setPosition(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")));
+                    temp.FocusStrength = (float) Integer.parseInt(Layer.getChild(i).getAttribute("FocusStrength"))/10;
+
+                    Entities.add(temp);
+                } else if (Layer.getChild(i).getName().equals("Car")) {
+                    WorldObject temp = new WorldObject(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")) - 57, new Vector3(32, 57, 0)) {
+                        Texture Car = new Texture(Gdx.files.internal("Sprites/car.png"));
+                        @Override
+                        public void init(int Width, int Height) {
+
+                        }
+
+                        @Override
+                        public void update(float delta, List<collision> Colls) {
+
+                        }
+
+                        @Override
+                        public void draw(SpriteBatch batch, float Time) {
+                            batch.draw(Car, getPosition().x, getPosition().y);
+                        }
+
+                        @Override
+                        public void draw(RePipeline batch, float Time) {
+
+                        }
+                    };
+
+                    temp.setCollidable(true);
+                    Entities.add(temp);
+                } else if (Layer.getChild(i).getName().equals("Object")) {
+                    String tempImgLoc = Layer.getChild(i).getAttribute("SpriteLocation");
+                    WorldObject temp = new WorldObject(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")), new Vector3(16, 16, 0)) {
+                        Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
+                        @Override
+                        public void init(int Width, int Height) {
+
+                        }
+
+                        @Override
+                        public void update(float delta, List<collision> Colls) {
+
+                        }
+
+                        @Override
+                        public void draw(SpriteBatch batch, float Time) {
+                            batch.draw(Image, getPosition().x, getPosition().y);
+                        }
+
+                        @Override
+                        public void draw(RePipeline batch, float Time) {
+
+                        }
+                    };
+
+                    temp.setCollidable(Layer.getChild(i).getBoolean("Collidable"));
+                    Entities.add(temp);
                 }
+
+
 
             }
         }

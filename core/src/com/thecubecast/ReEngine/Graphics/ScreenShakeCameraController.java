@@ -95,6 +95,15 @@ public class ScreenShakeCameraController {
         trauma += damage;
     }
 
+    /**
+     * sets damage to the screen shake amount, values between .1 and .5 work best
+     * Max combined damage trauma is 1f
+     * @param damage between 0 and 1
+     */
+    public void setDamage(float damage) {
+        trauma = damage;
+    }
+
     private float getShakeAmount(){
         return trauma * trauma;
     }

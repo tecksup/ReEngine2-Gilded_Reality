@@ -1,6 +1,6 @@
 <level width="640" height="480">
   <Triggers>
-    <Trigger id="0" x="112" y="96" width="192" height="64" Event="addParticle(Health, 5, 27)&#xD;&#xA;Dialog(map, hello)" TriggerType="OnEntry" />
+    <Trigger id="0" x="112" y="96" width="192" height="64" Event="Particle(Health, 5, 27)&#xD;&#xA;Dialog(????, hello, 30, Sprites/Gunter.png)" TriggerType="OnEntry" />
   </Triggers>
   <Areas />
   <Objects>

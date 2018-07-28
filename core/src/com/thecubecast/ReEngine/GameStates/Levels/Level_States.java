@@ -46,15 +46,15 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             Car = new Texture(Gdx.files.internal("Sprites/car.png"));
 
             //sets up the Dialog for the scene
-            entity.AddDialog("Hank", "Hey try clicking this dialog box to move on! ", 15, new Texture(Gdx.files.internal("Sprites/Gunter.png")));
-            entity.AddDialog("test2","Yeah, you could also press (R)", 15);
+            entity.AddDialog("Hank", "Hey try clicking this dialog box to move on! ", 30, new Texture(Gdx.files.internal("Sprites/Gunter.png")));
+            entity.AddDialog("test2","Yeah, you could also press (R)", 30);
             Dialog temp = new Dialog("Hank", new Texture(Gdx.files.internal("Sprites/Gunter.png")), "But who would want to do that!") {
                 @Override
                 public void exit() {
                     finishedScene = true;
                 }
             };
-            temp.setCooldown(15);
+            temp.setCooldown(30);
             entity.AddDialog(temp);
 
         }
@@ -79,7 +79,9 @@ public enum Level_States implements State<LevelsFSM>, Scene {
         }
 
         public void HandleInput(LevelsFSM entity) {
-
+            if (entity.gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Input.Keys.R)){
+                entity.DialogNext();
+            }
         }
 
         @Override
@@ -102,6 +104,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
         //Camera
         OrthographicCamera Worldcam;
+        OrthographicCamera GuiCam;
         ScreenShakeCameraController shaker;
         WorldObject MainCameraFocusPoint;
 
@@ -115,8 +118,8 @@ public enum Level_States implements State<LevelsFSM>, Scene {
         private List<WorldObject> Entities = new ArrayList<>();
 
         //Map Variables
-        OelMap testMap;
-        OelMapRenderer testRenderer;
+        OelMap Map;
+        OelMapRenderer MapRenderer;
 
         //AI
         FlatTiledGraph MapGraph;
@@ -130,33 +133,35 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             Entities.add(player);
 
-            testMap = new OelMap("Saves/OGMO/test.oel");
-            testRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
+            Map = new OelMap("Saves/OGMO/collision.oel");
+            MapRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
 
-            for (int i = 0; i < testMap.getLayers().size(); i++) {
-                OelLayer layer = testMap.getLayers().get(i);
+            for (int i = 0; i < Map.getLayers().size(); i++) {
+                OelLayer layer = Map.getLayers().get(i);
                 if(layer instanceof OelEntitiesLayer) {
                     OelEntitiesLayer EntLayer = (OelEntitiesLayer) layer;
-                    EntLayer.loadEntities(testMap, player, Entities, Areas);
+                    EntLayer.loadEntities(Map, player, Entities, Areas);
                 }
             }
 
             //Discord Presence
-            entity.gsm.DiscordManager.setPresenceState("Story: Introduction");
+            entity.gsm.DiscordManager.setPresenceState("Lakeside: Exploring");
 
             //Camera setup
             Worldcam = new OrthographicCamera();
+            GuiCam = new OrthographicCamera();
             Worldcam.setToOrtho(false, entity.gsm.Width, entity.gsm.Height);
+            GuiCam.setToOrtho(false, entity.gsm.Width, entity.gsm.Height);
             shaker = new ScreenShakeCameraController(Worldcam);
 
             //Particles
             Particles = new ParticleHandler();
 
-            for (int i = 0; i < testMap.getLayers().size(); i++) {
-                if (testMap.getLayers().get(i).getName().equals("Collision")) {
-                    OelGridLayer temp = (OelGridLayer) testMap.getLayers().get(i);
-                    for (int x = 0; x < testMap.getWidth()/16; x++) {
-                        for (int y = 0; y < testMap.getHeight()/16; y++) {
+            for (int i = 0; i < Map.getLayers().size(); i++) {
+                if (Map.getLayers().get(i).getName().equals("Collision")) {
+                    OelGridLayer temp = (OelGridLayer) Map.getLayers().get(i);
+                    for (int x = 0; x < Map.getWidth()/16; x++) {
+                        for (int y = 0; y < Map.getHeight()/16; y++) {
                             if (temp.getCell(x, y) == 1) {
                                 Rectangle tempRect = new Rectangle(x * 16, y * 16, 16, 16);
                                 Collisions.add(new collision(tempRect, tempRect.hashCode()));
@@ -166,8 +171,8 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                 }
             }
 
-            MapGraph = new FlatTiledGraph(testMap);
-            MapGraph.init(testMap);
+            MapGraph = new FlatTiledGraph(Map);
+            MapGraph.init(Map);
         }
 
         @Override
@@ -182,11 +187,11 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
                 if (Entities.get(i) instanceof Trigger) {
                     Trigger temp = (Trigger) Entities.get(i);
-                    temp.Trigger(player,shaker,MainCameraFocusPoint,Particles,Entities);
+                    temp.Trigger(player,shaker,entity,MainCameraFocusPoint,Particles,Entities);
                 }
             }
 
-            entity.cameraUpdate(MainCameraFocusPoint, Worldcam, Entities);
+            entity.cameraUpdate(MainCameraFocusPoint, Worldcam, Entities,0,0, Map.getWidth(), Map.getHeight());
         }
 
         public void draw(LevelsFSM entity, SpriteBatch g, int height, int width, float Time) {
@@ -196,11 +201,11 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             Rectangle drawView = new Rectangle(Worldcam.position.x - Worldcam.viewportWidth/2 - Worldcam.viewportWidth/4, Worldcam.position.y - Worldcam.viewportHeight/2  - Worldcam.viewportHeight/4, Worldcam.viewportWidth + Worldcam.viewportWidth/4, Worldcam.viewportHeight + Worldcam.viewportHeight/4);
 
-            testRenderer.setView(Worldcam);
+            MapRenderer.setView(Worldcam);
 
             g.begin();
 
-            testRenderer.renderLayer(g, testMap, "Ground");
+            MapRenderer.renderLayer(g, Map, "Ground");
 
             WorldObjectComp entitySort = new WorldObjectComp();
             Entities.sort(entitySort);
@@ -223,6 +228,8 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                 }
             }
 
+            MapRenderer.renderLayer(g, Map, "Foreground");
+
             if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
                 entity.gsm.Cursor = GameStateManager.CursorType.Question;
 
@@ -236,10 +243,15 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             //Particles
             Particles.Draw(g);
 
+            g.end();
+
+
+            g.setProjectionMatrix(GuiCam.combined);
+            g.begin();
             //GUI must draw last
             entity.MenuDraw(g, Gdx.graphics.getDeltaTime());
-
             g.end();
+
 
             entity.gsm.Render.debugRenderer.setProjectionMatrix(Worldcam.combined);
             entity.gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -291,7 +303,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                 Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
                 Worldcam.unproject(pos);
                 entity.gsm.Render.debugRenderer.setColor(Color.WHITE);
-                entity.gsm.Render.debugRenderer.rect(((int)pos.x/16)*16, ((int)pos.y/16)*16, 16, 16);
+                entity.gsm.Render.debugRenderer.rect(((int)pos.x/16)*16+1, ((int)pos.y/16)*16+1, 15, 15);
             }
 
             entity.gsm.Render.debugRenderer.end();
@@ -337,8 +349,44 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)){
-                Common.print("Reloaded Bitwise Images!!");
-                testRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
+                Common.print("Reloaded Map!!");
+                Entities.clear();
+                player = new Player(13*16,1*16, new Vector3(16, 16, 16));
+
+                MainCameraFocusPoint = player;
+
+                Entities.add(player);
+
+                Map = new OelMap("Saves/OGMO/collision.oel");
+                MapRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
+
+                for (int i = 0; i < Map.getLayers().size(); i++) {
+                    OelLayer layer = Map.getLayers().get(i);
+                    if(layer instanceof OelEntitiesLayer) {
+                        OelEntitiesLayer EntLayer = (OelEntitiesLayer) layer;
+                        EntLayer.loadEntities(Map, player, Entities, Areas);
+                    }
+                }
+
+                Collisions.clear();
+
+                for (int i = 0; i < Map.getLayers().size(); i++) {
+                    if (Map.getLayers().get(i).getName().equals("Collision")) {
+                        OelGridLayer temp2 = (OelGridLayer) Map.getLayers().get(i);
+                        for (int x = 0; x < Map.getWidth()/16; x++) {
+                            for (int y = 0; y < Map.getHeight()/16; y++) {
+                                if (temp2.getCell(x, y) == 1) {
+                                    Rectangle tempRect = new Rectangle(x * 16, y * 16, 16, 16);
+                                    Collisions.add(new collision(tempRect, tempRect.hashCode()));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                MapGraph = new FlatTiledGraph(Map);
+                MapGraph.init(Map);
+
                 //entity.gsm.ctm.newController("template");
             }
 
@@ -389,13 +437,18 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             if (entity.gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Input.Keys.R)){
                 if (entity.DialogOpen) {
-
+                    entity.DialogNext();
                 } else {
                     for (int i = 0; i < Entities.size(); i++) {
                         if(Entities.get(i).ifColliding(player.getIntereactBox())){
                             if(Entities.get(i) instanceof NPC) {
                                 NPC Entitemp = (NPC) Entities.get(i);
                                 Entitemp.interact();
+                            }
+
+                            if(Entities.get(i) instanceof Trigger) {
+                                Trigger Ent = (Trigger) Entities.get(i);
+                                Ent.Interact(player,shaker,entity,MainCameraFocusPoint,Particles,Entities);
                             }
                         }
                     }

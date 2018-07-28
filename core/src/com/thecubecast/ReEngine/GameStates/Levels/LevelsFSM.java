@@ -59,12 +59,13 @@ public class LevelsFSM implements Telegraph {
 
         this.gsm = gsm;
 
-        stateMachine = new DefaultStateMachine<LevelsFSM, Level_States>(this, Level_States.CarScene);
+        stateMachine = new DefaultStateMachine<LevelsFSM, Level_States>(this, Level_States.World);
         stateMachine.getCurrentState().enter(this);
     }
 
     public void Draw(SpriteBatch g, int height, int width, float Time) {
         stateMachine.getCurrentState().draw(this, g,height,width,Time);
+
     }
 
     public void Update() {
@@ -72,11 +73,8 @@ public class LevelsFSM implements Telegraph {
     }
 
     public void HandleInput() {
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Input.Keys.R)){
-            DialogNext();
-        }
-
         stateMachine.getCurrentState().HandleInput(this);
+
     }
 
     public void reSize() {
@@ -88,7 +86,7 @@ public class LevelsFSM implements Telegraph {
         return false;
     }
 
-    public void cameraUpdate(WorldObject mainFocus, OrthographicCamera cam, List<WorldObject> Entities) {
+    public void cameraUpdate(WorldObject mainFocus, OrthographicCamera cam, List<WorldObject> Entities, int MinX, int MinY, int MaxX, int MaxY) {
 
         Vector2 FocalPoint = new Vector2(mainFocus.getPosition().x, mainFocus.getPosition().y);
         float totalFocusPoints = 1;
@@ -109,6 +107,19 @@ public class LevelsFSM implements Telegraph {
                 }
             }
         }
+
+        if (FocalPoint.x - cam.viewportWidth/2 <= MinX) {
+            FocalPoint.x = MinX + cam.viewportWidth/2;
+        } else if (FocalPoint.x + cam.viewportWidth/2 >= MaxX) {
+            FocalPoint.x = MaxX - cam.viewportWidth/2;
+        }
+
+        if (FocalPoint.y - cam.viewportHeight/2 <= MinY) {
+            FocalPoint.y = MinY + cam.viewportHeight/2;
+        } else if (FocalPoint.y + cam.viewportHeight/2 >= MaxY) {
+            FocalPoint.y = MaxY - cam.viewportHeight/2;
+        }
+
         cam.position.set((int) (FocalPoint.x/totalFocusPoints),(int) (FocalPoint.y/totalFocusPoints), 0);
 
         cam.update();

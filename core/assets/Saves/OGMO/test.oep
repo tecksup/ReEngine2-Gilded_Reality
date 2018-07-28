@@ -13,8 +13,8 @@
     <Height>400</Height>
   </LevelMinimumSize>
   <LevelMaximumSize>
-    <Width>1200</Width>
-    <Height>800</Height>
+    <Width>10000</Width>
+    <Height>10000</Height>
   </LevelMaximumSize>
   <Filename>D:\GitHub\ReEngine2\core\assets\Saves\OGMO\test.oep</Filename>
   <AngleMode>Degrees</AngleMode>
@@ -59,17 +59,6 @@
         <Y>1</Y>
       </ScrollFactor>
     </LayerDefinition>
-    <LayerDefinition xsi:type="EntityLayerDefinition">
-      <Name>Props</Name>
-      <Grid>
-        <Width>1</Width>
-        <Height>1</Height>
-      </Grid>
-      <ScrollFactor>
-        <X>1</X>
-        <Y>1</Y>
-      </ScrollFactor>
-    </LayerDefinition>
     <LayerDefinition xsi:type="GridLayerDefinition">
       <Name>Water</Name>
       <Grid>
@@ -85,6 +74,29 @@
     </LayerDefinition>
     <LayerDefinition xsi:type="TileLayerDefinition">
       <Name>Ground</Name>
+      <Grid>
+        <Width>16</Width>
+        <Height>16</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+      <ExportMode>CSV</ExportMode>
+    </LayerDefinition>
+    <LayerDefinition xsi:type="EntityLayerDefinition">
+      <Name>Props</Name>
+      <Grid>
+        <Width>1</Width>
+        <Height>1</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+    </LayerDefinition>
+    <LayerDefinition xsi:type="TileLayerDefinition">
+      <Name>Foreground</Name>
       <Grid>
         <Width>16</Width>
         <Height>16</Height>
@@ -128,8 +140,35 @@
       </TileSize>
       <TileSep>0</TileSep>
     </Tileset>
+    <Tileset>
+      <Name>other</Name>
+      <FilePath>..\..\Sprites\sheet.png</FilePath>
+      <TileSize>
+        <Width>16</Width>
+        <Height>16</Height>
+      </TileSize>
+      <TileSep>0</TileSep>
+    </Tileset>
   </Tilesets>
   <EntityDefinitions>
+    <EntityDefinition Name="Object" Limit="-1" ResizableX="true" ResizableY="true" Rotatable="false" RotateIncrement="15">
+      <Size>
+        <Width>16</Width>
+        <Height>16</Height>
+      </Size>
+      <Origin>
+        <X>0</X>
+        <Y>0</Y>
+      </Origin>
+      <ImageDefinition DrawMode="Image" ImagePath="..\..\Sprites\proto\proto_3.png" Tiled="false">
+        <RectColor A="255" R="255" G="0" B="0" />
+      </ImageDefinition>
+      <ValueDefinitions>
+        <ValueDefinition xsi:type="StringValueDefinition" Name="SpriteLocation" Default="Sprites/..." MaxChars="-1" MultiLine="false" />
+        <ValueDefinition xsi:type="BoolValueDefinition" Name="Collidable" Default="false" />
+      </ValueDefinitions>
+      <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
+    </EntityDefinition>
     <EntityDefinition Name="Player" Limit="1" ResizableX="false" ResizableY="false" Rotatable="true" RotateIncrement="45">
       <Size>
         <Width>16</Width>
@@ -164,12 +203,13 @@
             <string>OnEntry</string>
             <string>OnTrigger</string>
             <string>OnExit</string>
+            <string>OnInteract</string>
           </Elements>
         </ValueDefinition>
       </ValueDefinitions>
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>
-    <EntityDefinition Name="path" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
+    <EntityDefinition Name="CameraHint" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
       <Size>
         <Width>16</Width>
         <Height>16</Height>
@@ -178,7 +218,24 @@
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="..\..\Sprites\props\stones.png" Tiled="false">
+      <ImageDefinition DrawMode="Image" ImagePath="..\..\Sprites\camera.png" Tiled="false">
+        <RectColor A="255" R="255" G="0" B="0" />
+      </ImageDefinition>
+      <ValueDefinitions>
+        <ValueDefinition xsi:type="FloatValueDefinition" Name="FocusStrength" Default="0" Min="0" Max="100" Round="0.1" />
+      </ValueDefinitions>
+      <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
+    </EntityDefinition>
+    <EntityDefinition Name="Car" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="true" RotateIncrement="90">
+      <Size>
+        <Width>32</Width>
+        <Height>57</Height>
+      </Size>
+      <Origin>
+        <X>0</X>
+        <Y>0</Y>
+      </Origin>
+      <ImageDefinition DrawMode="Image" ImagePath="..\..\Sprites\car.png" Tiled="false">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />

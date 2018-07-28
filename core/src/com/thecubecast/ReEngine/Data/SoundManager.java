@@ -18,9 +18,6 @@ public class SoundManager {
 
 	//Define all sound objects
 	Sound Click;
-	Sound DrilIdle;
-	Sound DrilMove;
-	Sound CashGet;
 	
 	//Define all your music objects
     private List<Music> HandledMusic = new ArrayList<>();
@@ -31,9 +28,6 @@ public class SoundManager {
 	public void init() { //Create the folders that hold everything neatly
 		
 		Click = Gdx.audio.newSound(Gdx.files.internal("Music/Sound/menu-clik.wav"));
-		DrilIdle = Gdx.audio.newSound(Gdx.files.internal("Music/Sound/menu-clik.wav"));
-		DrilMove = Gdx.audio.newSound(Gdx.files.internal("Music/Sound/menu-clik.wav"));
-		CashGet = Gdx.audio.newSound(Gdx.files.internal("Music/Sound/gain-cash.wav"));
 
 	}
 	
@@ -52,10 +46,6 @@ public class SoundManager {
 	public void play(String soundName) {
 		if(soundName.equals("Click")) {
 			long temp = Click.play(SoundVolume*MasterVolume);
-			SoundIds.put(soundName, temp);
-		}
-		if(soundName.equals("CashGet")) {
-			long temp = CashGet.play(SoundVolume*MasterVolume);
 			SoundIds.put(soundName, temp);
 		}
 	}

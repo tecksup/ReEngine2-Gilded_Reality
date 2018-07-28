@@ -1,11 +1,14 @@
 package com.thecubecast.ReEngine.worldObjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.ParticleHandler;
 import com.thecubecast.ReEngine.Data.collision;
 import com.thecubecast.ReEngine.GameStates.Levels.Level_States;
+import com.thecubecast.ReEngine.GameStates.Levels.LevelsFSM;
 import com.thecubecast.ReEngine.Graphics.RePipeline;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
 
@@ -20,7 +23,8 @@ public class Trigger extends WorldObject {
     public enum TriggerType {
         OnEntry,
         OnTrigger,
-        OnExit
+        OnExit,
+        OnInteract
     }
 
     TriggerType ActivationType;
@@ -60,7 +64,7 @@ public class Trigger extends WorldObject {
                 continue;
             }
 
-            System.out.println(CommandName);
+            //System.out.println(CommandName);
 
             String params = "";
 
@@ -75,7 +79,7 @@ public class Trigger extends WorldObject {
 
             }
 
-            System.out.println(params);
+            //System.out.println(params);
 
 
             String[] paramsSplit = params.split(",");
@@ -106,7 +110,7 @@ public class Trigger extends WorldObject {
 
     }
 
-    public void Trigger(WorldObject player, ScreenShakeCameraController shaker, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
+    public void Trigger(WorldObject player, ScreenShakeCameraController shaker, LevelsFSM dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
 
         if (player.getHitbox().overlaps(this.getHitbox())) {
             TriggerActive = true;
@@ -116,25 +120,31 @@ public class Trigger extends WorldObject {
 
         if (TriggerActive != TriggerRun && !TriggerRun) { //OnEntry
             if (ActivationType == TriggerType.OnEntry) {
-                RunCommands(player,shaker,MainCameraFocusPoint,Particles,Entities);
+                RunCommands(player,shaker,dialog,MainCameraFocusPoint,Particles,Entities);
             }
             TriggerRun = TriggerActive;
         } else if (TriggerActive != TriggerRun && TriggerRun) { //OnExit
             if (ActivationType == TriggerType.OnExit) {
-                RunCommands(player,shaker,MainCameraFocusPoint,Particles,Entities);
+                RunCommands(player,shaker,dialog,MainCameraFocusPoint,Particles,Entities);
             }
             TriggerRun = TriggerActive;
         }
 
         if (ActivationType == TriggerType.OnTrigger) {
             if (TriggerActive) {
-                RunCommands(player,shaker,MainCameraFocusPoint,Particles,Entities);
+                RunCommands(player,shaker,dialog,MainCameraFocusPoint,Particles,Entities);
             }
         }
 
     }
 
-    public void RunCommands(WorldObject player, ScreenShakeCameraController shaker, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
+    public void Interact(WorldObject player, ScreenShakeCameraController shaker, LevelsFSM dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
+        if (ActivationType == TriggerType.OnInteract) {
+            RunCommands(player,shaker,dialog,MainCameraFocusPoint,Particles,Entities);
+        }
+    }
+
+    public void RunCommands(WorldObject player, ScreenShakeCameraController shaker, LevelsFSM dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
         for (int i = 0; i < Commands.length; i++) {
             //System.out.println("Command " + Commands[i][0]);
             if (Commands[i][0].equals("shaker.addDamage")) { //The screen shake
@@ -143,15 +153,27 @@ public class Trigger extends WorldObject {
                 } catch (Exception e) {
                     System.out.println("Exception " + e);
                 }
-            } else if (Commands[i][0].equals("addParticle")) {
+            } else if (Commands[i][0].equals("shaker.setDamage")) { //The screen shake
+                try {
+                    shaker.setDamage((float) Integer.parseInt(Commands[i][1])/10);
+                } catch (Exception e) {
+                    System.out.println("Exception " + e);
+                }
+            } else if (Commands[i][0].equals("Particle")) {
                 try {
                     Particles.AddParticleEffect(Commands[i][1], Integer.parseInt(Commands[i][2])*16, Integer.parseInt(Commands[i][3])*16);
                 } catch (Exception e) {
                     System.out.println("Exception " + e);
                 }
-            } else if (Commands[i][0].equals("")) {
+            } else if (Commands[i][0].equals("Dialog")) {
                 try {
-
+                    if (Commands[i].length == 3) {
+                        dialog.AddDialog(Commands[i][1], Commands[i][2]);
+                    } else if (Commands[i].length == 4) {
+                        dialog.AddDialog(Commands[i][1], Commands[i][2], Integer.parseInt(Commands[i][3]));
+                    } else if (Commands[i].length == 5) { //Has the image name, in the folder sprites
+                        dialog.AddDialog(Commands[i][1], Commands[i][2], Integer.parseInt(Commands[i][3]), new Texture(Gdx.files.internal(Commands[i][4])));
+                    }
                 } catch (Exception e) {
                     System.out.println("Exception " + e);
                 }

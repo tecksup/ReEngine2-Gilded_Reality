@@ -131,7 +131,7 @@ public class Player extends WorldObject {
         if (Colls == null) {
             return false;
         }
-        Rectangle RectPla = new Rectangle(getHitbox().x+2 + xOffset, getHitbox().y + yOffset, getHitbox().width-4, getHitbox().height-10);
+        Rectangle RectPla = new Rectangle(getHitbox().x+2 + xOffset, getHitbox().y + yOffset, getHitbox().width-4, getHitbox().height-4);
         for(int i = 0; i < Colls.size(); i++) {
             if (RectPla.overlaps(Colls.get(i).getRect())) {
                 return true; // Dont move

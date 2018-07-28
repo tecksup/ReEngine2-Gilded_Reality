@@ -61,8 +61,11 @@ public class OelMapRenderer {
         this.cam = cam;
     }
 
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, OelMap Map) {
         //batch.draw();
+        for (int i = 0; i < Map.getLayers().size(); i++) {
+            renderLayer(batch, Map, i);
+        }
     }
 
     public void renderLayer(SpriteBatch batch, OelMap Map, int layerIndex) {
@@ -79,7 +82,7 @@ public class OelMapRenderer {
 
                 OelGridLayer GridLayer = ((OelGridLayer) Map.getLayers().get(layerIndex));
 
-                for (int y = Map.getHeight()/16; y > 0; y--) {
+                for (int y = Map.getHeight()/16; y >= 0; y--) {
                     for (int x = 0; x < Map.getWidth()/16; x++) {
 
                         if (GridLayer.getCell(x, y) == 0) {
@@ -100,7 +103,7 @@ public class OelMapRenderer {
 
                 if (TileLayer.getTileset().equals(Tilesets.get(i).Name)) {
 
-                    for (int y = Map.getHeight()/16; y > 0; y--) {
+                    for (int y = Map.getHeight()/16; y >= 0; y--) {
                         for (int x = 0; x < Map.getWidth()/16; x++) {
                             if (TileLayer.getCell(x,y) != -1) {
                                 if(drawView.overlaps(new Rectangle(x*16, y*16, 16, 16))) {
@@ -147,7 +150,7 @@ public class OelMapRenderer {
 
                 OelGridLayer GridLayer = ((OelGridLayer) Map.getLayers().get(layerIndex));
 
-                for (int y = Map.getHeight()/16; y > 0; y--) {
+                for (int y = Map.getHeight()/16; y >= 0; y--) {
                     for (int x = 0; x < Map.getWidth()/16; x++) {
 
                         if (GridLayer.getCell(x, y) == 0) {
@@ -168,7 +171,7 @@ public class OelMapRenderer {
 
                 if (TileLayer.getTileset().equals(Tilesets.get(i).Name)) {
 
-                    for (int y = Map.getHeight()/16; y > 0; y--) {
+                    for (int y = Map.getHeight()/16; y >= 0; y--) {
                         for (int x = 0; x < Map.getWidth()/16; x++) {
                             if (TileLayer.getCell(x,y) != -1) {
                                 if(drawView.overlaps(new Rectangle(x*16, y*16, 16, 16))) {

@@ -46,8 +46,8 @@ public class FlatTiledGraph implements TiledGraph<FlatTiledNode> {
     }
 
     public FlatTiledGraph (OelMap map) {
-        sizeX = map.getWidth()/16;
-        sizeY = map.getHeight()/16;
+        sizeX = map.getWidth()/8;
+        sizeY = map.getHeight()/8;
         this.nodes = new Array<FlatTiledNode>(sizeX * sizeY);
         this.diagonal = false;
         this.startNode = null;

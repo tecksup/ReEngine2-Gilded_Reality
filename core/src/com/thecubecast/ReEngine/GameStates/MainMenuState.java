@@ -36,7 +36,7 @@ public class MainMenuState extends GameState {
 	
 	public void init() {
 
-		Background = new Texture(Gdx.files.internal("Images/image_03.png"));
+		Background = new Texture(Gdx.files.internal("Images/image_04.png"));
 
 		gsm.DiscordManager.setPresenceState("In Menus");
 		
