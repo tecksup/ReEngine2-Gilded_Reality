@@ -1,8 +1,5 @@
 package com.thecubecast.ReEngine;
 
-import club.minnced.discord.rpc.DiscordEventHandlers;
-import club.minnced.discord.rpc.DiscordRPC;
-import club.minnced.discord.rpc.DiscordRichPresence;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -10,24 +7,10 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
-import com.badlogic.gdx.math.Matrix4;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
-import sun.applet.Main;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.stream.Stream;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static com.badlogic.gdx.graphics.GL20.GL_NEAREST;
 
 public class mainclass extends ApplicationAdapter implements InputProcessor{
 	

@@ -76,22 +76,6 @@ public class MainMenuState extends GameState {
 		gsm.MouseClick[2] = (int) pos.y;
 		gsm.MouseDrag[1] = (int) pos.x;
 		gsm.MouseDrag[2] = (int) pos.y;
-		
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			//JukeBox.stop("MenuNavigate");
-			//Click.play((SoundVolume * MasterVolume),1,0);
-			//Check what button the user is on, runs its function
-		}
-		
-		if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-			//JukeBox.stop("MenuNavigate");
-			
-			//Moves the Chosen button RIGHT
-		}
-
-		if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START)) {
-			gsm.setState(GameStateManager.State.Dialog);
-		}
 
 	}
 	
@@ -99,43 +83,6 @@ public class MainMenuState extends GameState {
 		//stage.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
 		cameraGui.setToOrtho(false);
 		//Menus.reSize(H, W, cameraGui);
-	}
-	
-	
-	public String GetLogin(String email, String Password) throws Exception {
-		String url = "https://dev.thecubecast.com/game/login_game.php";
-		URL obj = new URL(url);
-		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-
-		//add request header
-		con.setRequestMethod("POST");
-		con.addRequestProperty("email", email);
-		con.addRequestProperty("password", Password);
-
-		con.setDoOutput(true);
-		OutputStream os = con.getOutputStream();
-		os.write(("email="+email).getBytes());
-		os.write(("password="+Password).getBytes());
-		os.flush();
-		os.close();
-
-		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
-
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-
-		//print result
-		System.out.println(response.toString());
-		return(response.toString());
 	}
 
 	@Override

@@ -3,428 +3,656 @@
 package com.thecubecast.ReEngine.GameStates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.thecubecast.ReEngine.Data.*;
-import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.thecubecast.ReEngine.Data.Factory;
+import com.thecubecast.ReEngine.Data.Floor;
+import com.thecubecast.ReEngine.Data.GameStateManager;
+import com.thecubecast.ReEngine.Data.ParticleHandler;
+import com.thecubecast.ReEngine.Graphics.Scene2D.TkTextButton;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.thecubecast.ReEngine.Data.Common.updategsmValues;
-
 public class PlayState extends GameState {
 
-    oldPlayer player;
+    //This is the edge of the livable world
+    //When it reaches zero you lose
+    float Radius = 576;
+    float RadiusDecay = 0.008f;
+
+    //Tutorial Bools
+    boolean BuiltFirstFactory = false;
+    boolean BuiltFirstFloor = false;
+
+    //The Array of Floors
+    private List<Floor> Floors = new ArrayList<>();
+
+    //The Array of Factories
+    private List<Factory> Factories = new ArrayList<>();
 
     private Skin skin;
     private Stage stage;
-    private Table table;
+    private Table FloorGUI;
+    private int FloorSelected;
+    private Table FactoryGUI;
+    private Label FactoryDescription;
+    private String FactoryPurchaseType = "";
+    private Table ChooseFactoryGUI;
+    private int ChoosingFactoryXPOS;
+    private Table ScreenGUI;
+    private Table AnalysisGUI;
+    private Label AnalysisGuiText;
+    Label ScreenGuiText;
 
-    private Vector3 position;
-    private long last_time;
-    private int deltaTime;
+    //Particles
+    ParticleHandler Particles;
 
-    private List<Rectangle> Collisions = new ArrayList<>();
-
-    TiledMap tiledMap;
-    BitwiseTiles tiledBits;
-    TiledMapRenderer tiledMapRenderer;
-
-    OrthographicCamera camera;
-    Rectangle cameraBounds;
+    OrthographicCamera Worldcam;
+    OrthographicCamera GuiCam;
     ScreenShakeCameraController shaker;
 
     SpriteBatch guiBatch;
 
-    ParticleEffect pe;
-    Body body;
+    Texture Ground = new Texture(Gdx.files.internal("Sprites/Grass_Bottom.png"));
+    Texture Base = new Texture(Gdx.files.internal("Sprites/Tower_Base.png"));
 
-    private List<Achievement> Achievements = new ArrayList<>();
+
+    Texture[] Resources;
+    static int[] ResourceQuantity;
+
+    //private List<Achievement> Achievements = new ArrayList<>();
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
     }
 
-    public void AddAchievement(String text, int IconID, float Time, float Durration, boolean Anim) {
-        Achievement temp = new Achievement(text, IconID, Time,  Durration, Anim);
-        Achievements.add(Achievements.size(), temp);
-        Common.print("Added Achievement: " + text);
-    }
-
     public void init() {
 
-        player = new oldPlayer(16, gsm);
-        gsm.DiscordManager.setPresenceDetails("topdown Demo - Level 1");
+        gsm.DiscordManager.setPresenceDetails("Claustrophobic");
         gsm.DiscordManager.setPresenceState("In Game");
         gsm.DiscordManager.getPresence().largeImageText = "Level 1";
-        gsm.DiscordManager.getPresence().startTimestamp = System.currentTimeMillis() / 1000;;
+        gsm.DiscordManager.getPresence().startTimestamp = System.currentTimeMillis() / 1000;
 
-        //SETUP TILEDMAP
-        tiledMap = new TmxMapLoader().load("Saves/BITWISE/map.tmx");
-        tiledBits = new BitwiseTiles(tiledMap);
-
-        for (int y = 0; y < tiledBits.getBitTileObject(1).realTile.size(); y++) {
-            for(int x = 0; x < tiledBits.getBitTileObject(0).realTile.get(y).length; x++) {
-                if (tiledBits.getBitTileObject(1).realTile.get(y)[x] == 1) {
-
-                } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 5)) { //fence
-                    Collisions.add(new Rectangle(x+.25f, y, .4f, 0.25f));
-                } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 4)) { //Rock
-                    Collisions.add(new Rectangle(x, y, 1, 0.5f));
-                }
-
-                else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 3)) { //Bush (stupid grass block)
-                    Collisions.add(new Rectangle(x, y, 1, 1));
-                }
-            }
+        Resources = new Texture[Factory.Types.values().length];
+        ResourceQuantity = new int[Resources.length];
+        for (int i = 0; i < Resources.length; i++) {
+            Resources[i] = new Texture(Gdx.files.internal("Sprites/Resource_" + Factory.Types.values()[i] + ".png"));
         }
 
-        //Collisions.add(new Rectangle(-10, 0, 20, 1));
-        //Collisions.add(new Rectangle(3, 1, 2, 1));
-        //Collisions.add(new Rectangle(6, 2, 2, 1));
+        ResourceQuantity[0] = 10;
 
-        //gsm.Audio.playMusic("Rain", true);
+        //Particles
+        Particles = new ParticleHandler();
 
+        //Camera setup
+        Worldcam = new OrthographicCamera();
+        GuiCam = new OrthographicCamera();
+        Worldcam.setToOrtho(false, gsm.Width, gsm.Height);
+        Worldcam.position.x = 0;
+        Worldcam.position.y = 86;
+        GuiCam.setToOrtho(false, gsm.Width, gsm.Height);
+        shaker = new ScreenShakeCameraController(Worldcam);
 
         //SETUP CAMERA SPRITEBATCH AND MENU
         guiBatch = new SpriteBatch();
-
-        //ShaderInit(guiBatch);
-
-        camera = new OrthographicCamera();
-
-        camera.position.set((player.Coords.x), (player.Coords.y), camera.position.z);
-        position = camera.position;
-
-        shaker = new ScreenShakeCameraController(camera);
 
         MenuInit();
 
         //SETUP SCENE2D INPUT
         Gdx.input.setInputProcessor(stage);
 
-        //SETUP THE PARTICLES
-        pe = new ParticleEffect();
-        pe.load(Gdx.files.internal("particles/fire.p"),Gdx.files.internal("particles"));
-        pe.getEmitters().first().setPosition(gsm.Width,gsm.Height);
-        pe.start();
+    }
+
+    //Controls the camera, so it can only go into the sky at the tower, but side to side only on the ground
+    public void CameraControler() {
+
+        //Lerp the camera towards the center of the tower, allowing it to move up and SNAP ON
+        if (Worldcam.position.x > -48 && Worldcam.position.x < 48) {
+            Worldcam.position.x = (float) (Worldcam.position.x + 0.02 * (0 - Worldcam.position.x));
+        }
+
+        if (Worldcam.position.x > -2 && Worldcam.position.x < 2) {
+            Worldcam.position.x = 0;
+        }
+
+        if (Worldcam.position.y == 86) {
+            if (Gdx.input.isKeyPressed(Keys.LEFT) && Gdx.input.isKeyPressed(Keys.RIGHT)) {
+                //Do nothing they are both pressed
+            } else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+                Worldcam.position.x -= 5;
+            } else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+                Worldcam.position.x += 5;
+            }
+        }
+
+        if (Worldcam.position.x == 0) {
+            if (Gdx.input.isKeyPressed(Keys.UP) && Gdx.input.isKeyPressed(Keys.DOWN)) {
+                //Do nothing they are both pressed
+            } else if (Gdx.input.isKeyPressed(Keys.UP)) {
+                if (Worldcam.position.y + 5 < 86 + Floors.size() * 32)
+                    Worldcam.position.y += 5;
+            } else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+                if (Worldcam.position.y - 5 > 86)
+                    Worldcam.position.y -= 5;
+                else
+                    Worldcam.position.y = 86;
+            }
+        }
+
+        Worldcam.update();
+    }
+
+    public boolean canBuildFactory(Factory.Types Product) {
+        List<Factory.Cost> tempReq = Product.getRequirements();
+
+        for (int i = 0; i < tempReq.size(); i++) {
+            if (ResourceQuantity[i] >= tempReq.get(i).getCost()) {
+
+            } else return false;
+        }
+        return true;
+    }
+
+    public boolean AddFactory(Factory.Types Product, int Xpos) {
+
+        List<Factory.Cost> tempReq = Product.getRequirements();
+
+        if(!canBuildFactory(Product)) {
+            return false;
+        }
+
+        for (int i = 0; i < tempReq.size(); i++) {
+            ResourceQuantity[i] -= tempReq.get(i).getCost();
+        }
+
+        Factory temp = new Factory(Product, Xpos);
+        Factories.add(temp);
+        return true;
+    }
+
+    public void UpgradeFloor(int FloorNumber) {
+        if (FloorNumber == 0) {
+            List<Factory.Cost> tempReq = Floors.get(FloorNumber).getBuildingType().Upgrade().getRequirements();
+            boolean canUpgrade = true;
+            for (int i = 0; i < tempReq.size(); i++) {
+                if (ResourceQuantity[i] >= tempReq.get(i).getCost()) {
+
+                }
+                else {
+                    canUpgrade = false;
+                }
+            }
+
+            if (canUpgrade) {
+                for (int i = 0; i < tempReq.size(); i++) {
+                    ResourceQuantity[i] -= tempReq.get(i).getCost();
+                    Floors.get(FloorNumber).setBuildingType(Floors.get(FloorNumber).getBuildingType().Upgrade());
+                }
+            }
+
+        } else if (Floors.get(FloorNumber).getBuildingType().Upgrade().getValue() <= Floors.get(FloorNumber-1).getBuildingType().getValue()) {
+            List<Factory.Cost> tempReq = Floors.get(FloorNumber).getBuildingType().Upgrade().getRequirements();
+            boolean canUpgrade = true;
+            for (int i = 0; i < tempReq.size(); i++) {
+                if (ResourceQuantity[i] >= tempReq.get(i).getCost()) {
+
+                }
+                else {
+                    canUpgrade = false;
+                }
+            }
+
+            if (canUpgrade) {
+                for (int i = 0; i < tempReq.size(); i++) {
+                    ResourceQuantity[i] -= tempReq.get(i).getCost();
+                    Floors.get(FloorNumber).setBuildingType(Floors.get(FloorNumber).getBuildingType().Upgrade());
+                }
+            }
+
+        }
+    }
+
+    public boolean canBuildFloor(Floor.Types Product) {
+        List<Factory.Cost> tempReq = Product.getRequirements();
+
+        for (int i = 0; i < tempReq.size(); i++) {
+            if (ResourceQuantity[i] < tempReq.get(i).getCost()) {
+                return false;
+            } else {
+                for (int j = 0; j < Floors.size(); j++) {
+                    Floors.get(j).getCapacity();
+
+                    int FloorsAbove = Floors.size() - j;
+
+                    Floors.get(j).setFloorsAbove(FloorsAbove);
+
+                    if (j+1 < Floors.size()) {
+                        //If the building types match then the top most type counts as the base
+                        if(Floors.get(j+1).getBuildingType().equals(Floors.get(j).getBuildingType())) {
+                            if (Floors.get(j+1).getCapacity() < Floors.get(j).getFloorsAbove()) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean AddFloor(Floor.Types Material) {
+
+        List<Factory.Cost> tempReq = Material.getRequirements();
+
+        if(!canBuildFloor(Material)) {
+            return false;
+        }
+
+        for (int i = 0; i < tempReq.size(); i++) {
+            ResourceQuantity[i] -= tempReq.get(i).getCost();
+        }
+
+        Floor temp = new Floor(Material);
+        Floors.add(temp);
+
+        return true;
+
 
     }
 
     public void update() {
-        shaker.update(gsm.DeltaTime);
-        handleInput();
 
-        long time = System.nanoTime();
-        deltaTime = (int) ((time - last_time) / 1000000);
-        last_time = time;
-
-        player.update(gsm.DeltaTime, Collisions);
-
-        camera.update();
-
-        for(int l=0; l< Achievements.size(); l++){
-            if (Achievements.get(l).getTime() >= Achievements.get(l).getDuration()) {
-                Achievements.remove(l);
+        if(Factories.size() == 0) {
+            if (System.nanoTime() % 5 == 0)
+                Particles.AddParticleEffect("Health", 46, 0);
+        } else {
+            if (!BuiltFirstFactory) {
+                ScreenGUI.setVisible(true);
+                ScreenGuiText.setText("Congrats on your first Factory!! \n Collect 50 Wood to build your first floor.\n Wait, or build more Factories to speed things up!");
+                BuiltFirstFactory = true;
+            }
+            if(Floors.size() == 0) {
+                if (System.nanoTime() % 5 == 0 && BuiltFirstFloor) {
+                    Particles.AddParticleEffect("Health", -15, 0);
+                    Particles.AddParticleEffect("Health", -15, 0);
+                }
+                if (!BuiltFirstFloor && ResourceQuantity[0] == 50) {
+                    ScreenGUI.setVisible(true);
+                    ScreenGuiText.setText("Click on the red particles to build your first floor. \n Upgrade the floor with the green arrow.\n " +
+                            "Each floor strength requires a certain quantity of materials.\n be sure to check everything out in the manual!!\n " +
+                            "Viewed from the book in the top right of the screen! \n Sorry didn't make it in time...");
+                    BuiltFirstFloor = true;
+                }
             }
         }
+
+        if(Radius <= 0) {
+            ScreenGUI.setVisible(true);
+            ScreenGuiText.setText("GAME OVER");
+        }
+
+        for (int i = 0; i < Factories.size(); i++) {
+            Factories.get(i).Update(ResourceQuantity);
+        }
+
+        Radius -= RadiusDecay;
+
+        Particles.Update();
+
+        CameraControler();
+        handleInput();
+
+        //ScreenGUI.setPosition(gsm.Width, gsm.Height);
+
+
 
     }
 
     public void draw(SpriteBatch g, int height, int width, float Time) {
-        Gdx.gl.glClearColor(13/255f, 32/255f, 48/255f, 1);
-        RenderCam();
-        position = camera.position;
-        camera.setToOrtho(false, width, height);
-        camera.position.set(position);
-        g.setProjectionMatrix(camera.combined);
-        //g.setProjectionMatrix(shaker.getCombinedMatrix());
+        Gdx.gl.glClearColor(0, 0.02f, 0.09f, 0);
+        shaker.update(gsm.DeltaTime);
+        g.setProjectionMatrix(shaker.getCombinedMatrix());
         g.begin();
-        //g.setProjectionMatrix(camera.combined);
 
-        tiledBits.drawLayer(g, 16, Time,0, player.Coords.y, null);
+        for (int i = -400; i < 400; i++) {
+            g.draw(Ground, i*8, -8);
+        }
+        g.draw(Base, -32, -4);
 
-        player.draw(g, Time);
-
-        tiledBits.drawLayer(g, 16, Time,1, player.Coords.y, null);
-
-        pe.update(gsm.DeltaTime);
-        //g.setShader(shaderProgram);
-        pe.draw(g);
-        //g.setShader(null);
-        pe.setPosition(gsm.MouseX, gsm.MouseY);
-        if (pe.isComplete())
-            pe.reset();
-
-        g.end();
-
-
-
-        //Overlay Layer
-        camera.setToOrtho(false, width, height);
-        guiBatch.setProjectionMatrix(camera.combined);
-        guiBatch.begin();
-        //guiBatch.setProjectionMatrix(cameraGui.combined);
-
-        gsm.Render.GUIDeco(guiBatch, 0, height-80, "Multiplayer test");
-
-        if (Achievements.size() != 0) {
-            for(int l=0; l< Achievements.size(); l++){
-                Achievements.get(l).setTime(Time);
-                gsm.Render.HUDAchievement(guiBatch, width-260, (70 * l), Achievements.get(l).getText(), Achievements.get(l).getIconID(), Achievements.get(l).getOpacity(), Achievements.get(l).getAnim(), Time);
-            }
-
+        //Floors
+        for (int i = 0; i < Floors.size(); i++) {
+            Floors.get(i).Draw(g, -30, i * 32);
         }
 
-        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) { //KeyHit
+        //Factories
+        for (int i = 0; i < Factories.size(); i++) {
+            //Renders The Factories
+            if (Factories.get(i).getxPosition() < 0) // Left Side
+                Factories.get(i).Draw(g, 32 * Factories.get(i).getxPosition() - 32, 0);
+            else
+                Factories.get(i).Draw(g, 32 * Factories.get(i).getxPosition(), 0);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
             gsm.Cursor = GameStateManager.CursorType.Question;
 
-            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
-            camera.unproject(pos);
-            gsm.Render.GUIDrawText(g, Common.roundDown(pos.x)-5, Common.roundDown(pos.y)-5, "X: " + ((int)pos.x/16) + " Y: " + ((int)pos.y/16));
+            Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            Worldcam.unproject(pos);
+            //This will let you see the type of building faster
+            //gsm.Render.GUIDrawText(g, Common.roundDown(pos.x) - 5, Common.roundDown(pos.y) - 5, "X: " + ((int) pos.x / 16) + " Y: " + ((int) pos.y / 16));
         } else {
             gsm.Cursor = GameStateManager.CursorType.Normal;
         }
 
-        MenuDraw(guiBatch, width, height, Time);
+        //Particles
+        Particles.Draw(g);
 
-        //gsm.Render.GUIDrawText(guiBatch, 50, 50, null, "" + network.GetClient());
+        MenuDraw(g);
 
-        //ShaderDraw(guiBatch, gsm.MouseX, gsm.MouseY, gsm.Width, gsm.Height);
-
-        guiBatch.end();
-
-        //gsm.Render.DrawDebugLine(new Vector2(network.GetClient().x, network.GetClient().y), new Vector2(gsm.MouseX, gsm.MouseY), 1, Color.RED, camera.combined);
-        //gsm.Render.DrawDebugPoint(center, 2, Color.RED, camera.combined);
-
-        int size = 16;
-
-        Rectangle playerrect = new Rectangle(player.Coords.x, player.Coords.y, 1, 1);
-        playerrect.setCenter(playerrect.x + playerrect.getWidth()/2, playerrect.y + playerrect.getHeight()/2);
-
-        if (gsm.Debug) {
-            gsm.Render.debugRenderer.setProjectionMatrix(shaker.getCombinedMatrix());
-            gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
-            gsm.Render.debugRenderer.setColor(Color.GREEN);
-            gsm.Render.debugRenderer.rect(playerrect.x*16, playerrect.y*16, playerrect.width*16, playerrect.height*16);
-            gsm.Render.debugRenderer.setColor(Color.YELLOW);
-            //gsm.Render.debugRenderer.rect(cameraBounds.x, cameraBounds.y, (cameraBounds.width), (cameraBounds.height));
-            gsm.Render.debugRenderer.setColor(Color.RED);
-            Collisions.forEach( number -> gsm.Render.debugRenderer.rect(number.x *16, number.y *16, (number.width)*16, (number.height)*16));
-
-            gsm.Render.debugRenderer.end();
-
+        g.setProjectionMatrix(GuiCam.combined);
+        for (int i = 0; i < Resources.length; i++) {
+            g.draw(Resources[i], 16 + (i*30), height-16);
+            gsm.Render.GUIDrawText(g, 26 + (i*30), height-6, "" + ResourceQuantity[i]);
         }
+
+        g.end();
+
+        gsm.Render.debugRenderer.setProjectionMatrix(Worldcam.combined);
+        gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
+
+        if (!ChooseFactoryGUI.isVisible()) {
+
+            //This function renders buttons on the floor your looking at
+            Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            Worldcam.unproject(pos);
+            FloorGUI.setVisible(false);
+            for (int i = 0; i < Floors.size(); i++) {
+                //-30,i*32,60,32
+                if (pos.x > -30 && pos.x < 30) {
+                    if (pos.y > i * 32 && pos.y < i * 32 + 32) {
+
+                        FloorSelected = i;
+
+                        FloorGUI.setVisible(true);
+                        FloorGUI.setPosition(105-Worldcam.position.x, i * 32 +80 - Worldcam.position.y);
+
+                    }
+                }
+            }
+            if (pos.x > -30 && pos.x < 30) { // The build a new floor button
+                if (pos.y > Floors.size() * 32 && pos.y < Floors.size() * 32 + 32) {
+                    gsm.Render.debugRenderer.setColor(Color.RED);
+                    gsm.Render.debugRenderer.rect(-30, Floors.size() * 32, 60, 2);
+                    //TODO change this to a one click deal
+                    if (Gdx.input.isTouched()) {
+                        AddFloor(Floor.Types.Wood);
+                    }
+                }
+            }
+
+            FactoryGUI.setVisible(false);
+            for (int i = 0; i < Factories.size(); i++) {
+                if (Factories.get(i).getxPosition() < 0) {// Left Side
+                    if (pos.x > 32 * Factories.get(i).getxPosition() - 32 && pos.x < 32 * Factories.get(i).getxPosition()) {
+                        if (pos.y > 0 && pos.y < 28) {
+                            ChoosingFactoryXPOS = Factories.get(i).getxPosition();
+
+                            FactoryGUI.setVisible(true);
+                            FactoryGUI.setPosition(Factories.get(i).getxPosition()*32 + 117-Worldcam.position.x, 32 +49 - Worldcam.position.y);
+                        }
+                    }
+                } else {
+                    if (pos.x > 32 * Factories.get(i).getxPosition() && pos.x < 32 * Factories.get(i).getxPosition() + 32) {
+                        if (pos.y > 0 && pos.y < 28) {
+                            ChoosingFactoryXPOS = Factories.get(i).getxPosition();
+
+                            FactoryGUI.setVisible(true);
+                            FactoryGUI.setPosition(Factories.get(i).getxPosition()*32 + 149-Worldcam.position.x, 32 +49 - Worldcam.position.y);
+                        }
+                    }
+                }
+            }
+
+            //Handles the new Factory button
+            if (pos.x < 0) {// Left Side
+                if (pos.y > 0 && pos.y < 28) {
+                    gsm.Render.debugRenderer.setColor(Color.RED);
+                    int Xpos = ((int) pos.x / 32);
+                    boolean Occupied = false;
+                    if (pos.x > -32 && pos.x < 32) {
+                    } else {
+                        for (int i = 0; i < Factories.size(); i++) {
+                            if (Factories.get(i).getxPosition() == Xpos) {
+                                Occupied = true;
+                                break;
+                            }
+                        }
+                        if (!Occupied)
+                            gsm.Render.debugRenderer.rect((Xpos - 1) * 32, 0, 32, 2);
+
+                        if (Gdx.input.isTouched()) {
+                            if (!Occupied) {
+                                ChooseFactoryGUI.setVisible(true);
+                                ChoosingFactoryXPOS = Xpos;
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (pos.y > 0 && pos.y < 28) {
+                    gsm.Render.debugRenderer.setColor(Color.RED);
+                    int Xpos = ((int) pos.x / 32);
+                    boolean Occupied = false;
+                    if (pos.x > -32 && pos.x < 32) {
+                    } else {
+                        for (int i = 0; i < Factories.size(); i++) {
+                            if (Factories.get(i).getxPosition() == Xpos) {
+                                Occupied = true;
+                                break;
+                            }
+                        }
+                        if (!Occupied)
+                            gsm.Render.debugRenderer.rect(Xpos * 32, 0, 32, 2);
+
+                        if (Gdx.input.isTouched()) {
+                            if (!Occupied) {
+                                ChooseFactoryGUI.setVisible(true);
+                                ChoosingFactoryXPOS = Xpos;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        gsm.Render.debugRenderer.setColor(Color.PINK);
+        gsm.Render.debugRenderer.line(-Radius,-10, -Radius, 10000);
+        gsm.Render.debugRenderer.line(Radius,-10, Radius, 10000);
+
+        gsm.Render.debugRenderer.end();
+
     }
 
     public void RenderCam() {
-        camera.update();
-        //tiledMapRenderer.setView(camera);
-        //tiledMapRenderer.render();
-    }
-
-    public void FollowCam(OrthographicCamera cam, float playerx, float playery, float lerp) {
-        int mapBoundX = 10000;
-        int mapBoundY = 10000;
-
-        float tempx = position.x + (playerx*16 - position.x) * lerp * deltaTime;
-        float tempy = position.y + (playery*16 - position.y) * lerp * deltaTime;
-
-        cameraBounds = new Rectangle(camera.position.x - camera.viewportWidth/2 ,camera.position.y - camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight);
-/*
-        if (tempx >= 0) {
-            if(tempx + cameraBounds.getWidth() <= tiledBits.getBitTileObject(0).width*16) {
-                position.x += (playerx*16 - position.x) * lerp * deltaTime;
-            }
-        }
-        if (tempy >= 0) {
-            if (tempy + cameraBounds.getHeight() <= tiledBits.getBitTileObject(0).height*16) {
-                position.y += (playery*16 - position.y) * lerp * deltaTime;
-            }
-        }
-*/
-        //    float PosibleX = position.x + (playerx - position.x) * lerp * deltaTime;
-        //    if (PosibleX - (gsm.Width/2) >= 0 && PosibleX - (gsm.Width/2) <= mapBoundX) {
-        //        position.x += (playerx - position.x) * lerp * deltaTime;
-        //    }
-
-        //    float PosibleY = position.y + (playery - position.y) * lerp * deltaTime;
-        //    if (PosibleY - (gsm.Height/2) >= 0 && PosibleY - (gsm.Height/2) <= mapBoundY) {
-        //        position.y += (playery - position.y) * lerp * deltaTime;
-        //    } else if (PosibleY - (gsm.Height/2) >= mapBoundY) {
-        //        position.y += (playery+160 - position.y) * lerp * deltaTime;
-        //    }
-
-        position.x += (playerx*16 - position.x) * lerp * deltaTime;
-        position.y += (playery*16 - position.y) * lerp * deltaTime;
-
-        //cam.position.set(position.x, position.y, cam.position.z);
-        cam.update();
+        Worldcam.update();
     }
 
     private void handleInput() {
-
         Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
-        camera.unproject(pos);
-        updategsmValues(gsm, pos);
+        GuiCam.unproject(pos);
 
-        Vector2 center = new Vector2(gsm.Width/2, gsm.Height/2);
-        Vector2 MousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        player.angle = Common.GetAngle(center, MousePos);
-
-
-        oldPlayer.Direction[] temp = new oldPlayer.Direction[4];
-        boolean moving = false;
-
-        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f || Gdx.input.isKeyPressed(Keys.D)) {
-            temp[3] = oldPlayer.Direction.East;
-            moving = true;
-            player.MovePlayerVelocity(oldPlayer.Direction.East,5, gsm.DeltaTime);
-        } else if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) < -0.2f || Gdx.input.isKeyPressed(Keys.A)) {
-            temp[2] = oldPlayer.Direction.West;
-            moving = true;
-            player.MovePlayerVelocity(oldPlayer.Direction.West,5, gsm.DeltaTime);
-        }
-
-        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyPressed(Keys.S)) {
-            temp[1] = oldPlayer.Direction.South;
-            moving = true;
-            player.MovePlayerVelocity(oldPlayer.Direction.South,5, gsm.DeltaTime);
-        } else if (gsm.ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyPressed(Keys.W)) {
-            temp[0] = oldPlayer.Direction.North;
-            moving = true;
-            player.MovePlayerVelocity(oldPlayer.Direction.North,5, gsm.DeltaTime);
-        }
-
-        //gsm.ctm.testInput();
-
-        if (gsm.ctm.isButtonJustDown(1, controlerManager.buttons.BUTTON_START)){
-            Common.print("Player 2 joined the game!!");
-        }
-
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A)){
-            shaker.addDamage(.2f);
-        }
-
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
-            Common.print("Escape!!");
-            //gsm.ctm.newController("template");
-        }
-
-        //We send the player the correct cardinal direction
-        oldPlayer.Direction finalDirect = player.playerDirection;;
-
-        //Do the calculations
-        if (temp[0] != null && temp[1] != null) {
-            temp[0] = null;
-            temp[1] = null;
-        }
-        if (temp[2] != null && temp[3] != null) {
-            temp[2] = null;
-            temp[3] = null;
-        }
-
-        if (temp[0] != null) { //NORTH
-            if (temp[2] != null) { // WEST
-                finalDirect = oldPlayer.Direction.NorthWest;
-            }
-            if (temp[3] != null) { //EAST
-                finalDirect = oldPlayer.Direction.NorthEast;
-            }
-        } else if (temp[1] != null) { //SOUTH
-            if (temp[2] != null) { // WEST
-                finalDirect = oldPlayer.Direction.SouthWest;
-            }
-            if (temp[3] != null) { //EAST
-                finalDirect = oldPlayer.Direction.SouthEast;
-            }
-        } else {
-            finalDirect = player.playerDirection;
-        }
-
-        if (moving) {
-            player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
-        }
-        //player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
-
-        //if (moving) {
-        //    player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
-        //}
-
-
-        FollowCam(camera, player.Coords.x, player.Coords.y, 0.01f);
+        gsm.MouseX = (int) pos.x;
+        gsm.MouseY = (int) pos.y;
     }
 
     public void reSize(SpriteBatch g, int H, int W) {
-        float posX = camera.position.x;
-        float posY = camera.position.y;
-        float posZ = camera.position.z;
-        camera.setToOrtho(false, W, H);
-        camera.position.set(posX, posY, posZ);
+        float posX = Worldcam.position.x;
+        float posY = Worldcam.position.y;
+        float posZ = Worldcam.position.z;
+        Worldcam.setToOrtho(false, W, H);
+        Worldcam.position.set(posX, posY, posZ);
 
         Matrix4 matrix = new Matrix4();
         matrix.setToOrtho2D(0, 0, W, H);
         guiBatch.setProjectionMatrix(matrix);
-        shaker.reSize(camera);
-        //ShaderResize(W, H);
-        //cameraGui.setToOrtho(false);
+        shaker.reSize(Worldcam);
     }
 
     public void setupSkin() {
-        skin = new Skin(Gdx.files.internal("Skins/flat-earth/skin/flat-earth-ui.json"));
+        skin = new Skin(Gdx.files.internal("Skins/test1/skin.json"));
     }
 
     public void MenuInit() {
 
         setupSkin();
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(gsm.Width, gsm.Height));
+        Gdx.input.setInputProcessor(stage);
 
-        table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+        ChooseFactoryGUI = new Table();
+        ChooseFactoryGUI.setFillParent(true);
+        ChooseFactoryGUI.setVisible(false);
 
-        table.bottom();
-        final TextField text1 = new TextField("", skin);
-        table.add(text1).fillX();
-        table.row();
+        Table ScrollPaneContentL = new Table();
+        Table ScrollPaneContentR = new Table(skin);
+        ScrollPaneContentR.setBackground("Table_dialog_icons");
+        ScrollPane tempScrollPane = new ScrollPane(ScrollPaneContentL, skin);
+        ChooseFactoryGUI.add(tempScrollPane);
+        ChooseFactoryGUI.add(ScrollPaneContentR);
 
-        text1.addListener(new InputListener() {
-            public boolean keyUp(InputEvent event, int keycode) {
-                //Common.print("typed started at" + keycode);
-                if (keycode == 66) {// Enter
-                    //network.Send(text1.getText());
-                    text1.setText("");
-                    stage.setKeyboardFocus(null);
+        for (int i = 0; i < Factory.Types.values().length; i++) {
+            TkTextButton temp = new TkTextButton(Factory.Types.values()[i].name(), skin);
+            Factory.Types tempTemptemp = Factory.Types.values()[i];
+            temp.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    String CostText = "";
+                    for (int j = 0; j < tempTemptemp.getRequirements().size(); j++) {
+                        CostText += "\n\t" + tempTemptemp.getRequirements().get(j).getResource() + ": ";
+                        CostText += tempTemptemp.getRequirements().get(j).getCost();
+                    }
+                    FactoryDescription.setText("" + temp.getText() + " \n\nCost" + CostText + "\n\n Produces 5 every 5 seconds \n Can be upgraded 2 Times");
+                    FactoryPurchaseType = temp.getText().toString();
                 }
-                //if (keycode == 66) // Tab
-                //Do nothing as of right now
-                return false;
+            });
+            ScrollPaneContentL.add(temp).pad(2).row();
+
+        }
+
+        TkTextButton temp = new TkTextButton("Exit", skin);
+        temp.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                ChoosingFactoryXPOS = 0;
+                ChooseFactoryGUI.setVisible(false);
             }
         });
+        ScrollPaneContentL.add(temp).pad(2).row();
 
+        FactoryDescription = new Label("Click Wood on the left\n then buy a factory! ", skin);
+        TkTextButton BuyFactory = new TkTextButton("Buy", skin);
+        BuyFactory.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                for (int j = 0; j < Factory.Types.values().length; j++) {
+                    if (FactoryPurchaseType.equals(Factory.Types.values()[j].name())) {
+                        if (AddFactory(Factory.Types.values()[j], ChoosingFactoryXPOS)) {
+                            FactoryPurchaseType = "";
+                            ChoosingFactoryXPOS = 0;
+                            ChooseFactoryGUI.setVisible(false);
+                            FactoryDescription.setText("Choose a Product!!");
+                        } else {
+                            FactoryDescription.setText("NOT ENOUGH RESOURCES");
+                        }
+                    }
+                }
+            }
+        });
+        ScrollPaneContentR.add(FactoryDescription).pad(2).row();
+        ScrollPaneContentR.add(BuyFactory).pad(2).bottom();
+
+        stage.addActor(ChooseFactoryGUI);
+
+        FloorGUI = new Table();
+        FloorGUI.setSize(60, 32);
+
+        ImageButton UpgradeIcon = new ImageButton(skin, "Upgrade");
+
+        UpgradeIcon.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                UpgradeFloor(FloorSelected);
+                FloorSelected = -1;
+            }
+        });
+        FloorGUI.add(UpgradeIcon);
+        FloorGUI.setVisible(false);
+
+        stage.addActor(FloorGUI);
+
+        FactoryGUI = new Table(skin);
+        FactoryGUI.setSize(32, 28);
+
+        ImageButton FactUpgradeIcon = new ImageButton(skin, "Upgrade");
+
+        FactUpgradeIcon.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                ChoosingFactoryXPOS = 0;
+            }
+        });
+        FactoryGUI.add(FactUpgradeIcon);
+        FactoryGUI.setVisible(false);
+
+        stage.addActor(FactoryGUI);
+
+        ScreenGUI = new Table();
+        ScreenGUI.setFillParent(true);
+
+        Table Window = new Table(skin);
+        Window.setBackground("Table_dialog_icons");
+        ScreenGUI.add(Window);
+
+        ScreenGuiText = new Label("Welcome!\n Build a factory by clicking on the red particles.\n Once you get a factory making more wood,\n you will be able to" +
+                " build the first floor of your tower!\n Hurry! the world is shrinking.\n Use the arrow keys to move around your city.\n The pink line is the edge of the world!!!", skin);
+
+        Window.add(ScreenGuiText).fill().pad(2).row();
+        TkTextButton tempButton2 = new TkTextButton("OK", skin);
+        tempButton2.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                ScreenGuiText.setText("");
+                ScreenGUI.setVisible(false);
+            }
+        });
+        Window.add(tempButton2).pad(2).row();
+
+        stage.addActor(ScreenGUI);
+
+        AnalysisGUI = new Table(skin);
+        AnalysisGUI.setBackground("Table_dialog_icons");
 
     }
 
-    public void MenuDraw(SpriteBatch bbg, int width, int height, float Time) {
+    public void MenuDraw(SpriteBatch bbg) {
+
+        bbg.setProjectionMatrix(GuiCam.combined);
         stage.act(gsm.DeltaTime);
         stage.getRoot().draw(bbg, 1);
+        bbg.setProjectionMatrix(Worldcam.combined);
     }
 
     //Ends the Gui Shit

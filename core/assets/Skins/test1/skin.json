@@ -34,6 +34,13 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		over: button_h
 	}
 }
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	Upgrade: {
+		imageUp: Upgrade_Up
+		imageDown: Upgrade_Down
+		imageOver: Upgrade_Hover
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 	default: {
 		font: Pixel
@@ -57,6 +64,14 @@ com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 		background: health_
 		knobBefore: health_knob
 		knobAfter: health_knob_dis
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		hScroll: health_
+		hScrollKnob: health_knob
+		vScroll: health_
+		vScrollKnob: health_knob
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {

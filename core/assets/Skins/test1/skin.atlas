@@ -19,52 +19,73 @@ filter: Linear,Linear
 repeat: none
 Pixel
   rotate: false
-  xy: 1, 140
+  xy: 1, 143
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
+Table_dialog_icons
+  rotate: false
+  xy: 1, 53
+  size: 88, 88
+  split: 5, 10, 5, 5
+  pad: 5, 4, 5, 4
+  orig: 88, 88
+  offset: 0, 0
+  index: -1
 A_icon
   rotate: false
-  xy: 515, 559
+  xy: 515, 562
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 A_icon_alt
   rotate: false
-  xy: 581, 577
+  xy: 581, 580
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 MenuFocused
   rotate: false
-  xy: 157, 128
+  xy: 157, 131
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 Table_dialog
   rotate: false
-  xy: 91, 107
+  xy: 91, 110
   size: 13, 13
   split: 5, 5, 5, 5
   orig: 13, 13
   offset: 0, 0
   index: -1
-Table_dialog_icons
+Upgrade_Down
   rotate: false
-  xy: 1, 50
-  size: 88, 88
-  split: 5, 10, 5, 5
-  pad: 5, 10, 5, 10
-  orig: 88, 88
+  xy: 647, 647
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+Upgrade_Hover
+  rotate: false
+  xy: 19, 25
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+Upgrade_Up
+  rotate: false
+  xy: 1, 15
+  size: 8, 8
+  orig: 8, 8
   offset: 0, 0
   index: -1
 button_
   rotate: false
-  xy: 91, 122
+  xy: 91, 125
   size: 64, 16
   split: 5, 5, 3, 3
   orig: 64, 16
@@ -72,7 +93,7 @@ button_
   index: -1
 button_d
   rotate: false
-  xy: 515, 636
+  xy: 515, 639
   size: 64, 16
   split: 5, 5, 3, 3
   orig: 64, 16
@@ -80,7 +101,7 @@ button_d
   index: -1
 button_h
   rotate: false
-  xy: 1, 32
+  xy: 1, 35
   size: 64, 16
   split: 5, 5, 3, 3
   orig: 64, 16
@@ -88,7 +109,7 @@ button_h
   index: -1
 health_
   rotate: false
-  xy: 1, 16
+  xy: 85, 47
   size: 3, 4
   split: 1, 1, 1, 1
   orig: 3, 4
@@ -96,7 +117,7 @@ health_
   index: -1
 health_knob
   rotate: false
-  xy: 19, 26
+  xy: 91, 104
   size: 3, 4
   split: 1, 1, 1, 1
   orig: 3, 4
@@ -104,7 +125,7 @@ health_knob
   index: -1
 health_knob_dis
   rotate: false
-  xy: 647, 648
+  xy: 67, 37
   size: 5, 4
   split: 1, 1, 1, 1
   orig: 5, 4
@@ -112,7 +133,7 @@ health_knob_dis
   index: -1
 knob
   rotate: false
-  xy: 1, 22
+  xy: 1, 25
   size: 16, 8
   split: 1, 1, 2, 2
   orig: 16, 8
@@ -120,7 +141,7 @@ knob
   index: -1
 progress
   rotate: false
-  xy: 67, 40
+  xy: 67, 43
   size: 16, 8
   split: 2, 2, 1, 1
   pad: 1, 1, 1, 1
@@ -129,7 +150,7 @@ progress
   index: -1
 window_
   rotate: false
-  xy: 515, 570
+  xy: 515, 573
   size: 64, 64
   split: 5, 5, 37, 5
   orig: 64, 64
@@ -137,7 +158,7 @@ window_
   index: -1
 window_Dialog
   rotate: false
-  xy: 581, 588
+  xy: 581, 591
   size: 64, 64
   split: 5, 5, 26, 5
   orig: 64, 64

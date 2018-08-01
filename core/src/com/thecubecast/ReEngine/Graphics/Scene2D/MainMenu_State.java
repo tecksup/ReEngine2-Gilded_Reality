@@ -7,21 +7,16 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.controlerManager;
-import com.thecubecast.ReEngine.worldObjects.Player;
-import sun.applet.Main;
 
-import javax.swing.text.html.parser.Entity;
 import java.net.URI;
 
 import static com.thecubecast.ReEngine.Data.GameStateManager.AudioM;
@@ -40,20 +35,8 @@ public enum MainMenu_State implements State<MenuFSM> {
            table.setFillParent(true);
            entity.stage.addActor(table);
 
-           final TkTextButton Story = new TkTextButton("Story", entity.skin);
+           final TkTextButton Story = new TkTextButton("Play", entity.skin);
            table.add(Story).pad(2);
-           table.row();
-
-           final TkTextButton button1 = new TkTextButton("Blank", entity.skin);
-           table.add(button1).pad(2);
-           table.row();
-
-           final TkTextButton button4 = new TkTextButton("Test", entity.skin);
-           table.add(button4).pad(2);
-           table.row();
-
-           final TkTextButton Shader = new TkTextButton("Shader", entity.skin);
-           table.add(Shader).pad(2);
            table.row();
 
            final TkTextButton Discord = new TkTextButton("Discord", entity.skin);
@@ -71,47 +54,9 @@ public enum MainMenu_State implements State<MenuFSM> {
            Story.addListener(new ClickListener(){
                @Override
                public void clicked(InputEvent event, float x, float y){
-                   //gsm.Audio.stopMusic("8-bit-Digger");
-                   //GetLogin("", "");
-                   Gdx.app.getPreferences("properties").putString("Username", "");
-                   Gdx.app.getPreferences("properties").flush();
-                   entity.gsm.setState(GameStateManager.State.StoryMode);
-                   button1.setText("Loading");
+                   entity.gsm.setState(GameStateManager.State.PLAY);
                }
            });
-
-           button1.addListener(new ClickListener(){
-               @Override
-               public void clicked(InputEvent event, float x, float y){
-                   //gsm.Audio.stopMusic("8-bit-Digger");
-                   //GetLogin("", "");
-                   Gdx.app.getPreferences("properties").putString("Username", "");
-                   Gdx.app.getPreferences("properties").flush();
-                   entity.gsm.setState(GameStateManager.State.Blank);
-                   button1.setText("Loading");
-               }
-           });
-
-           button4.addListener(new ClickListener(){
-               @Override
-               public void clicked(InputEvent event, float x, float y){
-                   //gsm.Audio.stopMusic("8-bit-Digger");
-                   //GetLogin("", "");
-                   Gdx.app.getPreferences("properties").putString("Username", "");
-                   Gdx.app.getPreferences("properties").flush();
-                   entity.gsm.setState(GameStateManager.State.TEST);
-                   button1.setText("Loading");
-               }
-           });
-
-           Shader.addListener(new ClickListener(){
-               @Override
-               public void clicked(InputEvent event, float x, float y){
-                   //gsm.Audio.stopMusic("8-bit-Digger");
-                   entity.gsm.setState(GameStateManager.State.SHADER);
-               }
-           });
-
 
            Discord.addListener(new ClickListener(){
                @Override

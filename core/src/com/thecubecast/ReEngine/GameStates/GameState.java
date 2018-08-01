@@ -10,8 +10,6 @@ import com.thecubecast.ReEngine.Data.GameStateManager;
 
 public abstract class GameState {
 
-	OrthographicCamera camera;
-
 	protected GameStateManager gsm;
 	
 	public GameState(GameStateManager gsm) {

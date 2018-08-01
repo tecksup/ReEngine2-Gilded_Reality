@@ -77,7 +77,7 @@ public class LoadingState extends GameState {
 			if(gsm.Render.manager.getProgress() == 1) {
 				gsm.Render.LoadVariables();
 				Gdx.graphics.setVSync(true);
-				gsm.setState(GameStateManager.State .StoryMode);
+				gsm.setState(GameStateManager.State.MENU);
 			}
 		}
 		handleInput();
@@ -89,8 +89,6 @@ public class LoadingState extends GameState {
 		g.begin();
 
 		stage.act(Gdx.graphics.getDeltaTime());
-
-		//gsm.Render.DrawAnimatedTile(g, gsm.Render.LoadingAnimation, 50, 50, 2.0f, 2.0f, Time);
 
 		gsm.Render.DrawAnimatedTile(g, gsm.Render.LoadingAnimation, 2, 2, Time);
 		stage.getRoot().draw(g, 1);

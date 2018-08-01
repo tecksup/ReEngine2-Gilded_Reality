@@ -17,7 +17,7 @@ public class GameStateManager {
 	public static boolean Debug = false;
 
     public enum State {
-        INTRO, MENU, PLAY, LOADING, OPTIONS, TEST, SHADER, MULTIPLAYER, PLATFORMER, Blank, Dialog, StoryMode
+        INTRO, MENU, PLAY, LOADING
     }
 
     public State newcurrentState;
@@ -36,8 +36,6 @@ public class GameStateManager {
 	public static SoundManager AudioM;
 
 	public static controlerManager ctm;
-
-	static public EventSystem EventsSys;
 
 	public Discord DiscordManager;
 
@@ -62,7 +60,6 @@ public class GameStateManager {
 	
 	public GameStateManager() {
 
-		EventsSys = new EventSystem();
         ctm = new controlerManager();
 
 		DiscordManager = new Discord("405784101245943810");
@@ -109,42 +106,6 @@ public class GameStateManager {
                 gameState.init();
                 break;
 			case LOADING:
-				break;
-			case OPTIONS:
-				break;
-			case TEST:
-				gameState = new tempState(this);
-				gameState.init();
-                break;
-            case SHADER:
-                Common.print("Loaded state ShaderTest");
-                gameState = new ShaderPipelineTestState(this);
-                gameState.init();
-                break;
-            case MULTIPLAYER:
-                Common.print("Loaded state MultiplayerTestState");
-                gameState = new MultiplayerTestState(this);
-                gameState.init();
-                break;
-			case PLATFORMER:
-				Common.print("Loaded state PlatformerTestState");
-				gameState = new PlatformerTestState(this);
-				gameState.init();
-				break;
-			case Blank:
-				Common.print("Loaded state blank");
-				gameState = new blankTestState(this);
-				gameState.init();
-				break;
-            case Dialog:
-                Common.print("Loaded state Dialog");
-                gameState = new DialogState(this);
-                gameState.init();
-                break;
-			case StoryMode:
-				Common.print("Loaded state Dialog");
-				gameState = new Story(this);
-				gameState.init();
 				break;
         }
 		
