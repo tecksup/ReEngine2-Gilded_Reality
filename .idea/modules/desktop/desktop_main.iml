@@ -23,6 +23,7 @@
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.2" level="project" />
     <orderEntry type="library" name="Gradle: com.github.Ktar5:stateless4j:-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-ai:1.8.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.rafaskoberg.gdx:typing-label:1.0.4" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl:3.1.3" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl:natives-windows:3.1.3" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl:natives-linux:3.1.3" level="project" />

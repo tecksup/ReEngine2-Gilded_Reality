@@ -68,6 +68,7 @@ project(":core") {
         compile 'com.google.code.gson:gson:2.8.2'
         compile 'com.github.Ktar5:stateless4j:-SNAPSHOT'
         compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
+        compile "com.rafaskoberg.gdx:typing-label:1.0.4"
         
     }
 }

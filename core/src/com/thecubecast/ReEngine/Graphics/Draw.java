@@ -238,13 +238,13 @@ public class Draw {
 
 	public static void setFillColorShaderColor(Color outlineColor) {
 		FillColorShader.begin();
-		FillColorShader.setUniform1fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, outlineColor.a }, 0, 4);
+		FillColorShader.setUniform4fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, outlineColor.a }, 0, 4);
 		FillColorShader.end();
 	}
 
 	public static void setFillColorShaderColor(Color outlineColor, float Alpha) {
 		FillColorShader.begin();
-		FillColorShader.setUniform1fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, Alpha }, 0, 4);
+		FillColorShader.setUniform4fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, Alpha }, 0, 4);
 		FillColorShader.end();
 	}
 

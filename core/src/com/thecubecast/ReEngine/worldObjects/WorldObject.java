@@ -135,7 +135,6 @@ public abstract class WorldObject {
     public abstract void init(int Width, int Height);
     public abstract void update(float delta, List<collision> Colls);
     public abstract void draw(SpriteBatch batch, float Time);
-    public abstract void draw(RePipeline batch, float Time);
 
     public Vector2 getPosition() {
         return position;

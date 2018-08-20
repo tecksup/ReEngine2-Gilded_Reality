@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -22,9 +23,7 @@ import com.thecubecast.ReEngine.worldObjects.NPC;
 
 import java.util.List;
 
-import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
-import static com.thecubecast.ReEngine.Graphics.Draw.loadAnim;
-import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
+import static com.thecubecast.ReEngine.Graphics.Draw.*;
 
 public class Hank extends NPC {
 
@@ -39,7 +38,7 @@ public class Hank extends NPC {
     public Hank(int x, int y) {
         super("[YELLOW]H[GREEN]a[BLUE]n[RED]k", x, y, new Vector3(32, 32, 4), .1f, 100);
 
-        FocusStrength = 0.35f;
+        FocusStrength = 0.15f;
 
         idle = new Animation<TextureRegion>(0.1f, loadAnim(sprite, "Sprites/8direct/south.png", 4, 1));
         Skin skin = new Skin(Gdx.files.internal("Skins/test1/skin.json"));
@@ -57,37 +56,29 @@ public class Hank extends NPC {
     }
 
     @Override
-    public void draw(RePipeline batch, float Time) {
+    public void draw(SpriteBatch batch, float Time) {
 
         TextureRegion currentFrame = idle.getKeyFrame(Time, true);
 
-        batch.draw(new PipelineTextureRegion(currentFrame), getPosition().x-6, getPosition().y-4);
+        if (System.nanoTime()/1000000 - getLastDamagedTime() < 1000) {
+
+            batch.draw(new TextureRegion(currentFrame), getPosition().x-6, getPosition().y-4);
+
+        } else {
+            batch.draw(new TextureRegion(currentFrame), getPosition().x-6, getPosition().y-4);
+        }
 
     }
 
     @Override
-    public void drawHighlight(RePipeline batch, float Time) {
+    public void drawHighlight(SpriteBatch batch, float Time) {
         TextureRegion currentFrame = idle.getKeyFrame(Time, true);
 
         setOutlineShaderColor(Color.YELLOW, 0.8f);
 
-        RePipeTextureRegionDrawable temp = new RePipeTextureRegionDrawable() {
-            @Override
-            public void DrawDiffuse(SpriteBatch batch) {
-                batch.setShader(OutlineShader);
-                batch.draw(currentFrame, x, y);
-                batch.setShader(null);
-            }
-
-            @Override
-            public void DrawNormal(SpriteBatch batch) {
-
-            }
-        };
-        temp.x = getPosition().x - 6;
-        temp.y = getPosition().y - 4;
-
-        batch.Layers.get(0).SpriteList.add(temp);
+        batch.setShader(OutlineShader);
+        batch.draw(currentFrame, getPosition().x-6, getPosition().y-4);
+        batch.setShader(null);
 
     }
 

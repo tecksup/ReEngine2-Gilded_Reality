@@ -154,7 +154,6 @@ public class tempState extends GameState {
                             public void draw(SpriteBatch batch, float Time) {
                             }
 
-                            @Override
                             public void draw(RePipeline batch, float Time) {
                                 batch.draw(ChairSprite, getPosition().x + 6, getPosition().y - 15);
                                 batch.draw(DeskSprite, getPosition().x, getPosition().y - 16);
@@ -190,7 +189,6 @@ public class tempState extends GameState {
                                 batch.draw(tiledBits.getBitTiles().get(10)[4].getDiffuse(),getPosition().x ,getPosition().y+128);
                             }
 
-                            @Override
                             public void draw(RePipeline batch, float Time) {
                                 batch.draw(tiledBits.getBitTiles().get(10)[1],getPosition().x ,getPosition().y);
                                 batch.draw(tiledBits.getBitTiles().get(10)[4],getPosition().x ,getPosition().y+16);
@@ -342,7 +340,7 @@ public class tempState extends GameState {
                 batch.setColor(temp);
             }
 
-            @Override
+
             public void draw(RePipeline batch, float Time) {
 
                 RePipeTextureRegionDrawable temp = new RePipeTextureRegionDrawable() {
@@ -505,20 +503,20 @@ public class tempState extends GameState {
                 if(Entities.get(i) instanceof NPC) {
                     NPC Entitemp = (NPC) Entities.get(i);
                     if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getHitbox().width, Entitemp.getHitbox().height))) {
-                        Entitemp.drawHighlight(Repipe, Time);
+                        //Entitemp.drawHighlight(Repipe, Time);
                     }
                 } else {
                     WorldObjectComp temp = new WorldObjectComp();
                     Entities.sort(temp);
                     if(drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getHitbox().width, Entities.get(i).getHitbox().height))) {
-                        Entities.get(i).draw(Repipe, Time);
+                        //Entities.get(i).draw(Repipe, Time);
                     }
                 }
             } else {
                 WorldObjectComp temp = new WorldObjectComp();
                 Entities.sort(temp);
                 if(drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getHitbox().width, Entities.get(i).getHitbox().height))) {
-                    Entities.get(i).draw(Repipe, Time);
+                    //Entities.get(i).draw(Repipe, Time);
                 }
             }
         }

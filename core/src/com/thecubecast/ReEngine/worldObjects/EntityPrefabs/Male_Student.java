@@ -47,17 +47,9 @@ public class Male_Student extends Student {
                 tics = 0;
             }
 
-            if (getPosition().x == 45*16 && getPosition().y == 22*16) {
-                super.setDestination(new Vector2(25*16, 22*16));
-                getAI().updatePath(true);
-            } else if (getPosition().x == 25*16 && getPosition().y == 22*16) {
-                super.setDestination(new Vector2(45*16, 22*16));
-                getAI().updatePath(true);
-            }
         }
     }
 
-    @Override
     public void draw(RePipeline batch, float Time) {
         TextureRegion currentFrame = idle.getKeyFrame(Time, true);
 

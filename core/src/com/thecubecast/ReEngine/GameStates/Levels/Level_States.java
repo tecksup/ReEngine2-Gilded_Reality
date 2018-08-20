@@ -14,11 +14,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.*;
 import com.thecubecast.ReEngine.Data.OGMO.*;
+import com.thecubecast.ReEngine.Graphics.RePipeline;
 import com.thecubecast.ReEngine.Graphics.Scene2D.Dialog;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
 import com.thecubecast.ReEngine.worldObjects.*;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledNode;
+import com.thecubecast.ReEngine.worldObjects.EntityPrefabs.Hank;
+import com.thecubecast.ReEngine.worldObjects.EntityPrefabs.Male_Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +136,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             Entities.add(player);
 
-            Map = new OelMap("Saves/OGMO/collision.oel");
+            Map = new OelMap("Saves/OGMO/Camp.oel");
             MapRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
 
             for (int i = 0; i < Map.getLayers().size(); i++) {
@@ -173,6 +176,16 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             MapGraph = new FlatTiledGraph(Map);
             MapGraph.init(Map);
+
+            Hank tempStudent = new Hank( 120 * 16, 5 * 16) {
+                @Override
+                public void interact() {
+
+                }
+            };
+
+            Entities.add(tempStudent);
+
         }
 
         @Override
@@ -206,6 +219,12 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             g.begin();
 
             MapRenderer.renderLayer(g, Map, "Ground");
+            MapRenderer.renderLayer(g, Map, "Foreground");
+
+            if (entity.gsm.Debug) {
+                MapRenderer.renderLayer(g, Map, "Collision");
+
+            }
 
             WorldObjectComp entitySort = new WorldObjectComp();
             Entities.sort(entitySort);
@@ -214,6 +233,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                     if(Entities.get(i) instanceof NPC) {
                         NPC Entitemp = (NPC) Entities.get(i);
                         if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getHitbox().width, Entitemp.getHitbox().height))) {
+                            //Entities.get(i).draw(g, Time);
                             Entitemp.drawHighlight(g, Time);
                         }
                     } else {
@@ -228,8 +248,6 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                 }
             }
 
-            MapRenderer.renderLayer(g, Map, "Foreground");
-
             if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
                 entity.gsm.Cursor = GameStateManager.CursorType.Question;
 
@@ -242,6 +260,15 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             //Particles
             Particles.Draw(g);
+
+            for (int i = 0; i < Entities.size(); i++) {
+                if(Entities.get(i) instanceof NPC) {
+                    NPC Entitemp = (NPC) Entities.get(i);
+                    if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getHitbox().width, Entitemp.getHitbox().height))) {
+                        ((NPC) Entities.get(i)).drawGui(g, Time);
+                    }
+                }
+            }
 
             g.end();
 
@@ -357,7 +384,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
                 Entities.add(player);
 
-                Map = new OelMap("Saves/OGMO/collision.oel");
+                Map = new OelMap("Saves/OGMO/Camp.oel");
                 MapRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
 
                 for (int i = 0; i < Map.getLayers().size(); i++) {
@@ -392,6 +419,8 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.B)){
                 shaker.addDamage(0.4f);
+                entity.AddDialog("Test", "{WAVE}{COLOR=GREEN}Hello {ENDWAVE},{WAIT} world!"
+                        + "{COLOR=ORANGE}{SLOWER} Did{SHAKE} you{ENDSHAKE} know orange is my favorite color?");
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.T)){
@@ -458,6 +487,9 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             if (entity.gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_X) || Gdx.input.isKeyJustPressed(Input.Keys.C) ){ // ATTACK
                 if(player.AttackTime < .1f) {
 
+                    Vector2 addVeloc = new Vector2(player.getPosition().x - player.getAttackBox().getBoundingRectangle().x, player.getPosition().y - player.getAttackBox().getBoundingRectangle().y);
+                    player.setVelocity(new Vector2(player.getVelocity().x + (addVeloc.x*1.4f * -1), player.getVelocity().y + (addVeloc.y*1.4f * -1)));
+
                     Particles.AddParticleEffect("sparkle", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
                     for (int i = 0; i < Entities.size(); i++) {
                         if(polyoverlap(player.getAttackBox(), Entities.get(i).getHitbox())){
@@ -468,11 +500,12 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
                                 Vector2 hitDirection = new Vector2(player.VecDirction().x*HitVelocity, player.VecDirction().y*HitVelocity);
                                 Entitemp.damage(10, hitDirection);
+                                shaker.addDamage(0.35f);
                             }
                         }
                     }
 
-                    player.AttackTime += 0.5f;
+                    player.AttackTime += 0.75f;
                 } else {
                     moving = false;
                 }
@@ -487,9 +520,13 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                             Entitemp.heal(10);
                             Particles.AddParticleEffect("HealthArea", Entitemp.getPosition().x + Entitemp.getSize().x/2, Entitemp.getPosition().y + Entitemp.getSize().y/2);
                         }
-                    } else
-                        Particles.AddParticleEffect("Health", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
+                    } //else
+                        //Particles.AddParticleEffect("Health", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
                 }
+            }
+
+            if(player.AttackTime > .1f) {
+                moving = false;
             }
 
             if (moving) {

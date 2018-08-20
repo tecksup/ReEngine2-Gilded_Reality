@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.controlerManager;
@@ -48,7 +49,7 @@ public class LevelsFSM implements Telegraph {
     TkLabel dialogBoxTitle;
     Image dialogBoxIcon;
     Image dialogBoxFace;
-    TkLabel dialogBoxText;
+    TypingLabel dialogBoxText;
 
     protected StateMachine<LevelsFSM, Level_States> stateMachine;
     protected GameStateManager gsm;
@@ -59,7 +60,7 @@ public class LevelsFSM implements Telegraph {
 
         this.gsm = gsm;
 
-        stateMachine = new DefaultStateMachine<LevelsFSM, Level_States>(this, Level_States.World);
+        stateMachine = new DefaultStateMachine<LevelsFSM, Level_States>(this, Level_States.CarScene);
         stateMachine.getCurrentState().enter(this);
     }
 
@@ -172,9 +173,8 @@ public class LevelsFSM implements Telegraph {
         dialogBoxFace = new Image(new Texture(Gdx.files.internal("Sprites/face.png")));
         //dialogBoxIcon = new Image(skin, "A_icon");
         dialogBoxFace.setSize(20,20);
-        dialogBoxText= new TkLabel("", skin);
+        dialogBoxText= new TypingLabel("{COLOR=GREEN}Hello", skin);
         dialogBoxText.setAlignment(Align.left);
-        dialogBoxText.setScrolling(true);
         dialogBoxText.setWrap(true);
 
         //Guistage.addActor(dialogBoxIcon);
@@ -233,7 +233,7 @@ public class LevelsFSM implements Telegraph {
         DialogTics = 0;
         if(DialogCache.size() > 0) {
             dialogBoxTitle.setText(DialogCache.get(0).getSpeaker());
-            dialogBoxText.setText(DialogCache.get(0).getText());
+            dialogBoxText.restart(DialogCache.get(0).getText());
             dialogBoxFace.setDrawable(new TextureRegionDrawable(new TextureRegion(DialogCache.get(0).getSpeakerImage())));
         }
         Guistage.act();
@@ -253,7 +253,7 @@ public class LevelsFSM implements Telegraph {
                     DialogOpen = false;
                 }
             } else {
-                dialogBoxText.endScroll();
+                dialogBoxText.skipToTheEnd();
             }
         }
     }

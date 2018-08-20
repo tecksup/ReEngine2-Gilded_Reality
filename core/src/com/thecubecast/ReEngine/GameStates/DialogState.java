@@ -139,10 +139,7 @@ public class DialogState extends GameState {
                                 batch.draw(DeskSprite, getPosition().x, getPosition().y-16);
                             }
 
-                            @Override
-                            public void draw(RePipeline batch, float Time) {
 
-                            }
                         };
 
                         Entities.add(Desk);
@@ -174,10 +171,7 @@ public class DialogState extends GameState {
                                 batch.draw(tiledBits.getBitTiles().get(10)[4].getDiffuse(),getPosition().x ,getPosition().y+128);
                             }
 
-                            @Override
-                            public void draw(RePipeline batch, float Time) {
 
-                            }
                         };
 
                         Entities.add(Desk);
@@ -240,11 +234,6 @@ public class DialogState extends GameState {
 
                 batch.draw(currentFrame, getPosition().x-8, getPosition().y-4);
                 stage.draw(batch, 1);
-            }
-
-            @Override
-            public void draw(RePipeline batch, float Time) {
-
             }
 
             @Override
@@ -396,10 +385,6 @@ public class DialogState extends GameState {
                 batch.setColor(temp);
             }
 
-            @Override
-            public void draw(RePipeline batch, float Time) {
-
-            }
         };
 
         H_closet.init(0,0);

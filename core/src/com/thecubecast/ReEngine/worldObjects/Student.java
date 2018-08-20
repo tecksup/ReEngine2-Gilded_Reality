@@ -42,10 +42,6 @@ public class Student extends NPC {
 
     }
 
-    @Override
-    public void draw(RePipeline batch, float Time) {
-
-    }
 
     @Override
     public void interact() {
@@ -65,6 +61,12 @@ public class Student extends NPC {
 
     public void setDestination(Vector2 destination) {
         Destination = destination;
+        AI.setDestination(Destination);
+        AI.update();
+    }
+
+    public void setDestination(int destinationX, int destinationY) {
+        Destination = new Vector2(destinationX, destinationY);
         AI.setDestination(Destination);
         AI.update();
     }

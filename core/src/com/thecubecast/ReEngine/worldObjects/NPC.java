@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.collision;
-import com.thecubecast.ReEngine.Graphics.RePipeline;
 
 import java.util.List;
 
@@ -14,6 +13,7 @@ import static com.thecubecast.ReEngine.mainclass.FBOW;
 public abstract class NPC extends WorldObject {
 
     private float knockbackResistance;
+    private long LastDamagedTime;
 
     private float health;
     private boolean invulnerable = false;
@@ -114,10 +114,6 @@ public abstract class NPC extends WorldObject {
         draw(batch, Time);
     }
 
-    public void drawHighlight(RePipeline batch, float Time) {
-        draw(batch, Time);
-    }
-
     public void drawGui(SpriteBatch batch, float Time) {
 
     }
@@ -131,6 +127,7 @@ public abstract class NPC extends WorldObject {
     public void damage(int damage) {
         if(!invulnerable) {
             health -= damage;
+            LastDamagedTime = System.nanoTime()/1000000;
         }
 
         if (health < 0) {
@@ -141,6 +138,7 @@ public abstract class NPC extends WorldObject {
     public void damage(int damage, Vector2 knockback) {
         if(!invulnerable) {
             health -= damage;
+            LastDamagedTime = System.nanoTime()/1000000;
             knockback.x -= knockback.x * knockbackResistance;
             knockback.y -= knockback.y * knockbackResistance;
             knockback.x += getVelocity().x;
@@ -213,4 +211,7 @@ public abstract class NPC extends WorldObject {
     public void setKnockbackResistance(float knockbackResistance) {
         this.knockbackResistance = knockbackResistance;
     }
+
+    public long getLastDamagedTime() { return LastDamagedTime; }
+
 }

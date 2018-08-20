@@ -209,8 +209,4 @@ public class Trigger extends WorldObject {
 
     }
 
-    @Override
-    public void draw(RePipeline batch, float Time) {
-
-    }
 }
