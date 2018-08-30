@@ -12,7 +12,6 @@ public class serverclass2 extends ApplicationAdapter {
 		try {
 			server.main();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

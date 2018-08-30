@@ -4,7 +4,6 @@ package com.thecubecast.ReEngine.GameStates;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,7 +25,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.thecubecast.ReEngine.Data.Achievement;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
-import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
 import kryoNetwork.KryoClient;
 
 import java.io.IOException;
@@ -49,7 +47,6 @@ public class MultiplayerTestState extends GameState {
     private List<Rectangle> Collisions = new ArrayList<>();
 
     TiledMap tiledMap;
-    BitwiseTiles tiledBits;
     TiledMapRenderer tiledMapRenderer;
 
     OrthographicCamera camera;
@@ -91,7 +88,6 @@ public class MultiplayerTestState extends GameState {
 
         //SETUP TILEDMAP
         tiledMap = new TmxMapLoader().load("Saves/BITWISE/map.tmx");
-        tiledBits = new BitwiseTiles(tiledMap);
 
         if (tiledMap.hashCode() != network.GetTiledMap())
             Common.print("Does not match!");

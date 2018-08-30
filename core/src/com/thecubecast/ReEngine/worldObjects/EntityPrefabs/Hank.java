@@ -6,18 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.thecubecast.ReEngine.Data.Common;
-import com.thecubecast.ReEngine.Data.collision;
-import com.thecubecast.ReEngine.Graphics.PipelineTextureRegion;
-import com.thecubecast.ReEngine.Graphics.RePipeTextureRegionDrawable;
-import com.thecubecast.ReEngine.Graphics.RePipeline;
-import com.thecubecast.ReEngine.Graphics.Scene2D.Dialog;
+import com.thecubecast.ReEngine.Data.Cube;
 import com.thecubecast.ReEngine.Graphics.Scene2D.TkLabel;
 import com.thecubecast.ReEngine.worldObjects.NPC;
 
@@ -35,8 +28,8 @@ public class Hank extends NPC {
     Group stage;
     ProgressBar HealthBar;
 
-    public Hank(int x, int y) {
-        super("[YELLOW]H[GREEN]a[BLUE]n[RED]k", x, y, new Vector3(32, 32, 4), .1f, 100);
+    public Hank(int x, int y, int z) {
+        super("[YELLOW]H[GREEN]a[BLUE]n[RED]k", x, y, z, new Vector3(32, 32, 4), .1f, 100);
 
         FocusStrength = 0.15f;
 
@@ -74,11 +67,11 @@ public class Hank extends NPC {
     public void drawHighlight(SpriteBatch batch, float Time) {
         TextureRegion currentFrame = idle.getKeyFrame(Time, true);
 
-        setOutlineShaderColor(Color.YELLOW, 0.8f);
+        //setOutlineShaderColor(Color.YELLOW, 0.8f);
 
-        batch.setShader(OutlineShader);
-        batch.draw(currentFrame, getPosition().x-6, getPosition().y-4);
-        batch.setShader(null);
+        //batch.setShader(OutlineShader);
+        //batch.draw(currentFrame, getPosition().x-6, getPosition().y-4);
+        //batch.setShader(null);
 
     }
 
@@ -94,7 +87,7 @@ public class Hank extends NPC {
     }
 
     @Override
-    public void update(float delta, List<collision> Colls) {
+    public void update(float delta, List<Cube> Colls) {
         if (Colls == null) {
             return;
         }

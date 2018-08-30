@@ -40,20 +40,12 @@ public enum MainMenu_State implements State<MenuFSM> {
            table.setFillParent(true);
            entity.stage.addActor(table);
 
-           final TkTextButton Story = new TkTextButton("Story", entity.skin);
-           table.add(Story).pad(2);
+           final TkTextButton StoryState = new TkTextButton("Story State", entity.skin);
+           table.add(StoryState).pad(2);
            table.row();
 
-           final TkTextButton button1 = new TkTextButton("Blank", entity.skin);
-           table.add(button1).pad(2);
-           table.row();
-
-           final TkTextButton button4 = new TkTextButton("Test", entity.skin);
-           table.add(button4).pad(2);
-           table.row();
-
-           final TkTextButton Shader = new TkTextButton("Shader", entity.skin);
-           table.add(Shader).pad(2);
+           final TkTextButton PlayState = new TkTextButton("Play State", entity.skin);
+           table.add(PlayState).pad(2);
            table.row();
 
            final TkTextButton Discord = new TkTextButton("Discord", entity.skin);
@@ -68,7 +60,7 @@ public enum MainMenu_State implements State<MenuFSM> {
            table.add(button3).pad(2);
            table.row();
 
-           Story.addListener(new ClickListener(){
+           StoryState.addListener(new ClickListener(){
                @Override
                public void clicked(InputEvent event, float x, float y){
                    //gsm.Audio.stopMusic("8-bit-Digger");
@@ -76,41 +68,22 @@ public enum MainMenu_State implements State<MenuFSM> {
                    Gdx.app.getPreferences("properties").putString("Username", "");
                    Gdx.app.getPreferences("properties").flush();
                    entity.gsm.setState(GameStateManager.State.StoryMode);
-                   button1.setText("Loading");
+                   StoryState.setText("Loading");
                }
            });
 
-           button1.addListener(new ClickListener(){
+           PlayState.addListener(new ClickListener(){
                @Override
                public void clicked(InputEvent event, float x, float y){
                    //gsm.Audio.stopMusic("8-bit-Digger");
                    //GetLogin("", "");
                    Gdx.app.getPreferences("properties").putString("Username", "");
                    Gdx.app.getPreferences("properties").flush();
-                   entity.gsm.setState(GameStateManager.State.Blank);
-                   button1.setText("Loading");
+                   entity.gsm.setState(GameStateManager.State.PLAY);
+                   PlayState.setText("Loading");
                }
            });
 
-           button4.addListener(new ClickListener(){
-               @Override
-               public void clicked(InputEvent event, float x, float y){
-                   //gsm.Audio.stopMusic("8-bit-Digger");
-                   //GetLogin("", "");
-                   Gdx.app.getPreferences("properties").putString("Username", "");
-                   Gdx.app.getPreferences("properties").flush();
-                   entity.gsm.setState(GameStateManager.State.TEST);
-                   button1.setText("Loading");
-               }
-           });
-
-           Shader.addListener(new ClickListener(){
-               @Override
-               public void clicked(InputEvent event, float x, float y){
-                   //gsm.Audio.stopMusic("8-bit-Digger");
-                   entity.gsm.setState(GameStateManager.State.SHADER);
-               }
-           });
 
 
            Discord.addListener(new ClickListener(){

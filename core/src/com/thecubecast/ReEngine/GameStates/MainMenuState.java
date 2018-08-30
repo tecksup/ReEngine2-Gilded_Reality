@@ -90,7 +90,7 @@ public class MainMenuState extends GameState {
 		}
 
 		if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START)) {
-			gsm.setState(GameStateManager.State.Dialog);
+
 		}
 
 	}

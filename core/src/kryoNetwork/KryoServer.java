@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.esotericsoftware.kryonet.*;
-import com.thecubecast.ReEngine.Data.ServerTmxMapLoader;
 
 
 public class KryoServer {
@@ -18,7 +17,7 @@ public class KryoServer {
 		final List<User> Users = new ArrayList<User>();
 		final List<Integer> Admins = new ArrayList<Integer>();
 		
-		final TiledMap tiledMap = new ServerTmxMapLoader().load("Saves/Save1/map.tmx");
+		//final TiledMap tiledMap = new ServerTmxMapLoader().load("Saves/Save1/map.tmx");
 		
 		final Server server = new Server();
 		
@@ -48,7 +47,7 @@ public class KryoServer {
 	        	   
 	        	   ServerSide response = new ServerSide();
 	        	   response.Users = Users;
-	        	   response.Map = tiledMap.hashCode();
+	        	   //response.Map = tiledMap.hashCode();
 	        	   response.text = "";
 	        	   
 	              //response.text = request.username + " is at " + (response.x) + " " + (response.y);
@@ -57,8 +56,8 @@ public class KryoServer {
 	              
 	           }
 	           if (object instanceof Connect) {
-	        	   Join(Users, tiledMap, (Connect)object, connection);
-	        	   updateClient(tiledMap, Users, server);
+	        	   //Join(Users, tiledMap, (Connect)object, connection);
+	        	   //updateClient(tiledMap, Users, server);
 	        	   
 	           }
 	        }

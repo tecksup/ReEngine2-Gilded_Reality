@@ -184,7 +184,6 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -216,7 +215,6 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }

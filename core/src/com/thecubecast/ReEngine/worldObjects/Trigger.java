@@ -4,15 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.thecubecast.ReEngine.Data.GameStateManager;
+import com.thecubecast.ReEngine.Data.Cube;
 import com.thecubecast.ReEngine.Data.ParticleHandler;
-import com.thecubecast.ReEngine.Data.collision;
-import com.thecubecast.ReEngine.GameStates.Levels.Level_States;
+import com.thecubecast.ReEngine.GameStates.DialogStateExtention;
+import com.thecubecast.ReEngine.GameStates.GameState;
 import com.thecubecast.ReEngine.GameStates.Levels.LevelsFSM;
-import com.thecubecast.ReEngine.Graphics.RePipeline;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Trigger extends WorldObject {
@@ -38,8 +36,8 @@ public class Trigger extends WorldObject {
      * @param y the y pos
      * @param size the size of the hitbox, x and y, ignore z
      **/
-    public Trigger (int x, int y, Vector3 size, String RawEvents, TriggerType TType) {
-        super(x,y,size);
+    public Trigger (int x, int y, int z, Vector3 size, String RawEvents, TriggerType TType) {
+        super(x,y,z,size);
         RawCommands = RawEvents;
 
         ActivationType = TType;
@@ -106,13 +104,13 @@ public class Trigger extends WorldObject {
     }
 
     @Override
-    public void update(float delta, List<collision> Colls) {
+    public void update(float delta, List<Cube> Colls) {
 
     }
 
-    public void Trigger(WorldObject player, ScreenShakeCameraController shaker, LevelsFSM dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
+    public void Trigger(WorldObject player, ScreenShakeCameraController shaker, DialogStateExtention dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
 
-        if (player.getHitbox().overlaps(this.getHitbox())) {
+        if (player.getHitbox().intersects(this.getHitbox())) {
             TriggerActive = true;
         } else {
             TriggerActive = false;
@@ -138,13 +136,13 @@ public class Trigger extends WorldObject {
 
     }
 
-    public void Interact(WorldObject player, ScreenShakeCameraController shaker, LevelsFSM dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
+    public void Interact(WorldObject player, ScreenShakeCameraController shaker, DialogStateExtention dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
         if (ActivationType == TriggerType.OnInteract) {
             RunCommands(player,shaker,dialog,MainCameraFocusPoint,Particles,Entities);
         }
     }
 
-    public void RunCommands(WorldObject player, ScreenShakeCameraController shaker, LevelsFSM dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
+    public void RunCommands(WorldObject player, ScreenShakeCameraController shaker, DialogStateExtention dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
         for (int i = 0; i < Commands.length; i++) {
             //System.out.println("Command " + Commands[i][0]);
             if (Commands[i][0].equals("shaker.addDamage")) { //The screen shake

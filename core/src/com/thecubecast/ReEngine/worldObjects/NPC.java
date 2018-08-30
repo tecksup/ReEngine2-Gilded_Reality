@@ -3,7 +3,7 @@ package com.thecubecast.ReEngine.worldObjects;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.thecubecast.ReEngine.Data.collision;
+import com.thecubecast.ReEngine.Data.Cube;
 
 import java.util.List;
 
@@ -22,8 +22,8 @@ public abstract class NPC extends WorldObject {
     private intractability interact;
     private entityState EState = entityState.alive;
 
-    public NPC(String name, int x, int y, Vector3 size, float knockbackResistance, float health) {
-        super(x, y, size,type.Dynamic);
+    public NPC(String name, int x, int y, int z, Vector3 size, float knockbackResistance, float health) {
+        super(x, y, z, size,type.Dynamic);
         this.knockbackResistance = knockbackResistance;
         this.health = health;
         this.name = name;
@@ -31,8 +31,8 @@ public abstract class NPC extends WorldObject {
         init(FBOW, FBOH);
     }
 
-    public NPC(String name, int x, int y, Vector3 size, float knockbackResistance, float health, boolean invincible) {
-        super(x, y, size,type.Dynamic);
+    public NPC(String name, int x, int y, int z, Vector3 size, float knockbackResistance, float health, boolean invincible) {
+        super(x, y, z, size,type.Dynamic);
         this.knockbackResistance = knockbackResistance;
         this.health = health;
         this.name = name;
@@ -41,8 +41,8 @@ public abstract class NPC extends WorldObject {
         init(FBOW, FBOH);
     }
 
-    public NPC(String name, int x, int y, Vector3 size, float knockbackResistance, float health, intractability interact) {
-        super(x, y, size,type.Dynamic);
+    public NPC(String name, int x, int y, int z, Vector3 size, float knockbackResistance, float health, intractability interact) {
+        super(x, y, z, size,type.Dynamic);
         this.knockbackResistance = knockbackResistance;
         this.health = health;
         this.name = name;
@@ -50,8 +50,8 @@ public abstract class NPC extends WorldObject {
         init(FBOW, FBOH);
     }
 
-    public NPC(String name, int x, int y, Vector3 size, float knockbackResistance, float health, intractability interact, boolean invincible) {
-        super(x, y, size,type.Dynamic);
+    public NPC(String name, int x, int y, int z, Vector3 size, float knockbackResistance, float health, intractability interact, boolean invincible) {
+        super(x, y, z, size,type.Dynamic);
         this.knockbackResistance = knockbackResistance;
         ;
         this.health = health;
@@ -67,7 +67,7 @@ public abstract class NPC extends WorldObject {
     }
 
     @Override
-    public void update(float delta, List<collision> Colls) {
+    public void update(float delta, List<Cube> Colls) {
 
         if (getState().equals(type.Dynamic)) {
             super.setVelocityX((getVelocity().x + getVelocity().x*-1 * 0.1f));
@@ -75,14 +75,16 @@ public abstract class NPC extends WorldObject {
 
             Vector2 pos = new Vector2(getVelocity().x*delta, getVelocity().y*delta);
 
+            /*
+
             if (pos.x < 0) { //Moving left
-                if (checkCollision(-1, 0, Colls)) {
+                if (checkCollision(-1, 0, 0, Colls)) {
                     super.setVelocityX(0);
                 } else {
                     super.setPositionX((getPosition().x - getVelocity().x*delta*-1));
                 }
             } else if (pos.x > 0) { // Moving right
-                if (checkCollision(+1, 0, Colls)) {
+                if (checkCollision(+1, 0, 0, Colls)) {
                     super.setVelocityX(0);
                 } else {
                     super.setPositionX((getPosition().x + getVelocity().x*delta));
@@ -90,18 +92,19 @@ public abstract class NPC extends WorldObject {
             }
 
             if (pos.y < 0) { // Moving down
-                if (checkCollision(0, -1, Colls)) {
+                if (checkCollision(0, -1, 0,Colls)) {
                     super.setVelocityY(0);
                 } else {
                     super.setPositionY((getPosition().y - getVelocity().y*delta*-1));
                 }
             } else if (pos.y > 0) {
-                if (checkCollision(0, +1, Colls)) {
+                if (checkCollision(0, +1, 0, Colls)) {
                     super.setVelocityY(0);
                 } else {
                     super.setPositionY((getPosition().y + getVelocity().y*delta));
                 }
             }
+            */
         }
     }
 
@@ -135,7 +138,7 @@ public abstract class NPC extends WorldObject {
         }
     }
 
-    public void damage(int damage, Vector2 knockback) {
+    public void damage(int damage, Vector3 knockback) {
         if(!invulnerable) {
             health -= damage;
             LastDamagedTime = System.nanoTime()/1000000;

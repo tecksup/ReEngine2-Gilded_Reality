@@ -3,197 +3,183 @@
 package com.thecubecast.ReEngine.GameStates;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.*;
-import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
+import com.thecubecast.ReEngine.Data.OGMO.*;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
+import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
+import com.thecubecast.ReEngine.worldObjects.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.thecubecast.ReEngine.Data.Common.updategsmValues;
 
-public class PlayState extends GameState {
+public class PlayState extends DialogStateExtention {
 
-    oldPlayer player;
-
-    private Skin skin;
-    private Stage stage;
-    private Table table;
-
-    private Vector3 position;
-    private long last_time;
-    private int deltaTime;
-
-    private List<Rectangle> Collisions = new ArrayList<>();
-
-    TiledMap tiledMap;
-    BitwiseTiles tiledBits;
-    TiledMapRenderer tiledMapRenderer;
-
-    OrthographicCamera camera;
-    Rectangle cameraBounds;
+    //Camera
+    OrthographicCamera GuiCam;
     ScreenShakeCameraController shaker;
+    WorldObject MainCameraFocusPoint;
 
-    SpriteBatch guiBatch;
+    //Particles
+    ParticleHandler Particles;
 
-    ParticleEffect pe;
-    Body body;
+    //GameObjects
+    Player player;
+    private List<Cube> Collisions = new ArrayList<>();
+    public List<Area> Areas = new ArrayList<>();
+    private List<WorldObject> Entities = new ArrayList<>();
 
-    private List<Achievement> Achievements = new ArrayList<>();
+    //Map Variables
+    OelMap Map;
+    OelMapRenderer MapRenderer;
+
+    //AI
+    FlatTiledGraph MapGraph;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
     }
 
-    public void AddAchievement(String text, int IconID, float Time, float Durration, boolean Anim) {
-        Achievement temp = new Achievement(text, IconID, Time,  Durration, Anim);
-        Achievements.add(Achievements.size(), temp);
-        Common.print("Added Achievement: " + text);
-    }
-
     public void init() {
 
-        player = new oldPlayer(16, gsm);
+        player = new Player(13*16,1*16, 0, new Vector3(16, 16, 16));
+
+        MainCameraFocusPoint = player;
+
+        Entities.add(player);
+
+        Map = new OelMap("Saves/OGMO/test.oel");
+        MapRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
+
+        for (int i = 0; i < Map.getLayers().size(); i++) {
+            OelLayer layer = Map.getLayers().get(i);
+            if(layer instanceof OelEntitiesLayer) {
+                OelEntitiesLayer EntLayer = (OelEntitiesLayer) layer;
+                EntLayer.loadEntities(Map, player, Entities, Areas);
+            }
+        }
+        
+        //Setup Dialog Instance
+        MenuInit(gsm.Width, gsm.Height);
+        
         gsm.DiscordManager.setPresenceDetails("topdown Demo - Level 1");
         gsm.DiscordManager.setPresenceState("In Game");
         gsm.DiscordManager.getPresence().largeImageText = "Level 1";
         gsm.DiscordManager.getPresence().startTimestamp = System.currentTimeMillis() / 1000;;
 
-        //SETUP TILEDMAP
-        tiledMap = new TmxMapLoader().load("Saves/BITWISE/map.tmx");
-        tiledBits = new BitwiseTiles(tiledMap);
+        //Camera setup
+        camera = new OrthographicCamera();
+        GuiCam = new OrthographicCamera();
+        camera.setToOrtho(false, gsm.Width, gsm.Height);
+        GuiCam.setToOrtho(false, gsm.Width, gsm.Height);
+        shaker = new ScreenShakeCameraController(camera);
 
-        for (int y = 0; y < tiledBits.getBitTileObject(1).realTile.size(); y++) {
-            for(int x = 0; x < tiledBits.getBitTileObject(0).realTile.get(y).length; x++) {
-                if (tiledBits.getBitTileObject(1).realTile.get(y)[x] == 1) {
+        //Particles
+        Particles = new ParticleHandler();
 
-                } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 5)) { //fence
-                    Collisions.add(new Rectangle(x+.25f, y, .4f, 0.25f));
-                } else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 4)) { //Rock
-                    Collisions.add(new Rectangle(x, y, 1, 0.5f));
-                }
-
-                else if ((tiledBits.getBitTileObject(1).realTile.get(y)[x] == 3)) { //Bush (stupid grass block)
-                    Collisions.add(new Rectangle(x, y, 1, 1));
+        for (int i = 0; i < Map.getLayers().size(); i++) {
+            if (Map.getLayers().get(i).getName().equals("Collision")) {
+                OelGridLayer temp = (OelGridLayer) Map.getLayers().get(i);
+                for (int x = 0; x < Map.getWidth()/16; x++) {
+                    for (int y = 0; y < Map.getHeight()/16; y++) {
+                        if (temp.getCell(x, y) == 1) {
+                            Collisions.add(new Cube(x * 16, y * 16, 0, 16, 16, 16 ));
+                        }
+                    }
                 }
             }
         }
 
-        //Collisions.add(new Rectangle(-10, 0, 20, 1));
-        //Collisions.add(new Rectangle(3, 1, 2, 1));
-        //Collisions.add(new Rectangle(6, 2, 2, 1));
+        MapGraph = new FlatTiledGraph(Map);
+        MapGraph.init(Map);
 
-        //gsm.Audio.playMusic("Rain", true);
+        //AddDialog("test", "{COLOR=GREEN}{WAVE}THIS IS FLAWLESSLY ADDED, HOW CONVENIENT");
+
+        Collisions.add(new Cube(64,64,15,32,64,16));
+        Collisions.add(new Cube(128,64,16,32,64,16));
+        Collisions.add(new Cube(192,64,17,32,64,16));
+        Collisions.add(new Cube(256,64,-17,32,64,16));
+
+        Collisions.add(new Cube(324,94,0,10,10,16*1));
 
 
-        //SETUP CAMERA SPRITEBATCH AND MENU
-        guiBatch = new SpriteBatch();
-
-        //ShaderInit(guiBatch);
-
-        camera = new OrthographicCamera();
-
-        camera.position.set((player.Coords.x), (player.Coords.y), camera.position.z);
-        position = camera.position;
-
-        shaker = new ScreenShakeCameraController(camera);
-
-        MenuInit();
-
-        //SETUP SCENE2D INPUT
-        Gdx.input.setInputProcessor(stage);
-
-        //SETUP THE PARTICLES
-        pe = new ParticleEffect();
-        pe.load(Gdx.files.internal("particles/fire.p"),Gdx.files.internal("particles"));
-        pe.getEmitters().first().setPosition(gsm.Width,gsm.Height);
-        pe.start();
 
     }
 
     public void update() {
-        shaker.update(gsm.DeltaTime);
-        handleInput();
 
-        long time = System.nanoTime();
-        deltaTime = (int) ((time - last_time) / 1000000);
-        last_time = time;
+        Particles.Update();
 
-        player.update(gsm.DeltaTime, Collisions);
+        //player.update(Gdx.graphics.getDeltaTime(), Collisions);
 
-        camera.update();
+        for (int i = 0; i < Entities.size(); i++) {
+            Entities.get(i).update(Gdx.graphics.getDeltaTime(), Collisions);
 
-        for(int l=0; l< Achievements.size(); l++){
-            if (Achievements.get(l).getTime() >= Achievements.get(l).getDuration()) {
-                Achievements.remove(l);
+            if (Entities.get(i) instanceof Trigger) {
+                Trigger temp = (Trigger) Entities.get(i);
+                temp.Trigger(player,shaker,this,MainCameraFocusPoint,Particles,Entities);
             }
         }
 
+        cameraUpdate(MainCameraFocusPoint, camera, Entities,0,0, Map.getWidth(), Map.getHeight());
+        
+        handleInput();
     }
 
     public void draw(SpriteBatch g, int height, int width, float Time) {
-        Gdx.gl.glClearColor(13/255f, 32/255f, 48/255f, 1);
-        RenderCam();
-        position = camera.position;
-        camera.setToOrtho(false, width, height);
-        camera.position.set(position);
-        g.setProjectionMatrix(camera.combined);
-        //g.setProjectionMatrix(shaker.getCombinedMatrix());
+
+        shaker.update(gsm.DeltaTime);
+        g.setProjectionMatrix(shaker.getCombinedMatrix());
+
+        Rectangle drawView = new Rectangle(camera.position.x - camera.viewportWidth/2 - camera.viewportWidth/4, camera.position.y - camera.viewportHeight/2  - camera.viewportHeight/4, camera.viewportWidth + camera.viewportWidth/4, camera.viewportHeight + camera.viewportHeight/4);
+
+        MapRenderer.setView(camera);
+
         g.begin();
-        //g.setProjectionMatrix(camera.combined);
 
-        tiledBits.drawLayer(g, 16, Time,0, player.Coords.y, null);
+        MapRenderer.renderLayer(g, Map, "Ground");
+        MapRenderer.renderLayer(g, Map, "Foreground");
 
-        player.draw(g, Time);
-
-        tiledBits.drawLayer(g, 16, Time,1, player.Coords.y, null);
-
-        pe.update(gsm.DeltaTime);
-        //g.setShader(shaderProgram);
-        pe.draw(g);
-        //g.setShader(null);
-        pe.setPosition(gsm.MouseX, gsm.MouseY);
-        if (pe.isComplete())
-            pe.reset();
-
-        g.end();
-
-
-
-        //Overlay Layer
-        camera.setToOrtho(false, width, height);
-        guiBatch.setProjectionMatrix(camera.combined);
-        guiBatch.begin();
-        //guiBatch.setProjectionMatrix(cameraGui.combined);
-
-        gsm.Render.GUIDeco(guiBatch, 0, height-80, "Multiplayer test");
-
-        if (Achievements.size() != 0) {
-            for(int l=0; l< Achievements.size(); l++){
-                Achievements.get(l).setTime(Time);
-                gsm.Render.HUDAchievement(guiBatch, width-260, (70 * l), Achievements.get(l).getText(), Achievements.get(l).getIconID(), Achievements.get(l).getOpacity(), Achievements.get(l).getAnim(), Time);
-            }
+        if (gsm.Debug) {
+            MapRenderer.renderLayer(g, Map, "Collision");
 
         }
 
-        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) { //KeyHit
+        //Block of code renders all the entities
+        WorldObjectComp entitySort = new WorldObjectComp();
+        Entities.sort(entitySort);
+        for (int i = 0; i < Entities.size(); i++) {
+            if(Entities.get(i).getHitbox().intersects(player.getIntereactBox())){
+                if(Entities.get(i) instanceof NPC) {
+                    NPC Entitemp = (NPC) Entities.get(i);
+                    if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getSize().x, Entitemp.getSize().y))) {
+                        //Entities.get(i).draw(g, Time);
+                        Entitemp.drawHighlight(g, Time);
+                    }
+                } else {
+                    if(drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getSize().x, Entities.get(i).getSize().y))) {
+                        Entities.get(i).draw(g, Time);
+                    }
+                }
+            } else {
+                if(drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getSize().x, Entities.get(i).getSize().y))) {
+                    Entities.get(i).draw(g, Time);
+                }
+            }
+        }
+        
+        //Renders my favorite little debug stuff
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
             gsm.Cursor = GameStateManager.CursorType.Question;
 
             Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
@@ -203,80 +189,64 @@ public class PlayState extends GameState {
             gsm.Cursor = GameStateManager.CursorType.Normal;
         }
 
-        MenuDraw(guiBatch, width, height, Time);
+        //Particles
+        Particles.Draw(g);
 
-        //gsm.Render.GUIDrawText(guiBatch, 50, 50, null, "" + network.GetClient());
+        //Renders the GUI for entities
+        for (int i = 0; i < Entities.size(); i++) {
+            if(Entities.get(i) instanceof NPC) {
+                NPC Entitemp = (NPC) Entities.get(i);
+                if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getSize().x, Entitemp.getSize().y))) {
+                    ((NPC) Entities.get(i)).drawGui(g, Time);
+                }
+            }
+        }
 
-        //ShaderDraw(guiBatch, gsm.MouseX, gsm.MouseY, gsm.Width, gsm.Height);
+        g.end();
 
-        guiBatch.end();
+        //Draws things on the screen, and not the world positions
+        g.setProjectionMatrix(GuiCam.combined);
+        g.begin();
+        //GUI must draw last
+        MenuDraw(g, Gdx.graphics.getDeltaTime());
+        g.end();
 
-        //gsm.Render.DrawDebugLine(new Vector2(network.GetClient().x, network.GetClient().y), new Vector2(gsm.MouseX, gsm.MouseY), 1, Color.RED, camera.combined);
-        //gsm.Render.DrawDebugPoint(center, 2, Color.RED, camera.combined);
-
-        int size = 16;
-
-        Rectangle playerrect = new Rectangle(player.Coords.x, player.Coords.y, 1, 1);
-        playerrect.setCenter(playerrect.x + playerrect.getWidth()/2, playerrect.y + playerrect.getHeight()/2);
+        //DEBUG CODE
+        gsm.Render.debugRenderer.setProjectionMatrix(camera.combined);
+        gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
 
         if (gsm.Debug) {
-            gsm.Render.debugRenderer.setProjectionMatrix(shaker.getCombinedMatrix());
-            gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
             gsm.Render.debugRenderer.setColor(Color.GREEN);
-            gsm.Render.debugRenderer.rect(playerrect.x*16, playerrect.y*16, playerrect.width*16, playerrect.height*16);
-            gsm.Render.debugRenderer.setColor(Color.YELLOW);
-            //gsm.Render.debugRenderer.rect(cameraBounds.x, cameraBounds.y, (cameraBounds.width), (cameraBounds.height));
+            for (int i = 0; i < Entities.size(); i++) {
+                gsm.Render.debugRenderer.box(Entities.get(i).getHitbox().min.x, Entities.get(i).getHitbox().min.y, Entities.get(i).getHitbox().min.z, Entities.get(i).getHitbox().getWidth(), Entities.get(i).getHitbox().getHeight(), Entities.get(i).getHitbox().getDepth());
+            }
             gsm.Render.debugRenderer.setColor(Color.RED);
-            Collisions.forEach( number -> gsm.Render.debugRenderer.rect(number.x *16, number.y *16, (number.width)*16, (number.height)*16));
-
-            gsm.Render.debugRenderer.end();
-
-        }
-    }
-
-    public void RenderCam() {
-        camera.update();
-        //tiledMapRenderer.setView(camera);
-        //tiledMapRenderer.render();
-    }
-
-    public void FollowCam(OrthographicCamera cam, float playerx, float playery, float lerp) {
-        int mapBoundX = 10000;
-        int mapBoundY = 10000;
-
-        float tempx = position.x + (playerx*16 - position.x) * lerp * deltaTime;
-        float tempy = position.y + (playery*16 - position.y) * lerp * deltaTime;
-
-        cameraBounds = new Rectangle(camera.position.x - camera.viewportWidth/2 ,camera.position.y - camera.viewportHeight/2, camera.viewportWidth, camera.viewportHeight);
-/*
-        if (tempx >= 0) {
-            if(tempx + cameraBounds.getWidth() <= tiledBits.getBitTileObject(0).width*16) {
-                position.x += (playerx*16 - position.x) * lerp * deltaTime;
+            for (int i = 0; i < Collisions.size(); i++) {
+                gsm.Render.debugRenderer.rect(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight());
+                //gsm.Render.debugRenderer.box(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y, Collisions.get(i).getPrism().min.z, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight(), Collisions.get(i).getPrism().getDepth());
             }
-        }
-        if (tempy >= 0) {
-            if (tempy + cameraBounds.getHeight() <= tiledBits.getBitTileObject(0).height*16) {
-                position.y += (playery*16 - position.y) * lerp * deltaTime;
+
+            gsm.Render.debugRenderer.setColor(Color.ORANGE);
+            gsm.Render.debugRenderer.box(player.getHitbox().min.x, player.getHitbox().min.y, player.getHitbox().min.z, player.getHitbox().getWidth(), player.getHitbox().getHeight(), player.getHitbox().getDepth());
+            gsm.Render.debugRenderer.setColor(Color.YELLOW);
+            gsm.Render.debugRenderer.box(player.getIntereactBox().min.x, player.getIntereactBox().min.y, player.getIntereactBox().min.z, player.getIntereactBox().getWidth(), player.getIntereactBox().getHeight(), player.getIntereactBox().getDepth());
+
+            for (int i = 0; i < Areas.size(); i++) {
+                gsm.Render.debugRenderer.setColor(Color.BLUE);
+                gsm.Render.debugRenderer.rect(Areas.get(i).Rect.x+1, Areas.get(i).Rect.y+1, Areas.get(i).Rect.width-2, Areas.get(i).Rect.height-2);
             }
+
         }
-*/
-        //    float PosibleX = position.x + (playerx - position.x) * lerp * deltaTime;
-        //    if (PosibleX - (gsm.Width/2) >= 0 && PosibleX - (gsm.Width/2) <= mapBoundX) {
-        //        position.x += (playerx - position.x) * lerp * deltaTime;
-        //    }
 
-        //    float PosibleY = position.y + (playery - position.y) * lerp * deltaTime;
-        //    if (PosibleY - (gsm.Height/2) >= 0 && PosibleY - (gsm.Height/2) <= mapBoundY) {
-        //        position.y += (playery - position.y) * lerp * deltaTime;
-        //    } else if (PosibleY - (gsm.Height/2) >= mapBoundY) {
-        //        position.y += (playery+160 - position.y) * lerp * deltaTime;
-        //    }
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
+            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            camera.unproject(pos);
+            gsm.Render.debugRenderer.setColor(Color.WHITE);
+            gsm.Render.debugRenderer.rect(((int)pos.x/16)*16+1, ((int)pos.y/16)*16+1, 15, 15);
+        }
 
-        position.x += (playerx*16 - position.x) * lerp * deltaTime;
-        position.y += (playery*16 - position.y) * lerp * deltaTime;
+        gsm.Render.debugRenderer.end();
 
-        //cam.position.set(position.x, position.y, cam.position.z);
-        cam.update();
     }
 
     private void handleInput() {
@@ -285,51 +255,98 @@ public class PlayState extends GameState {
         camera.unproject(pos);
         updategsmValues(gsm, pos);
 
-        Vector2 center = new Vector2(gsm.Width/2, gsm.Height/2);
-        Vector2 MousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        player.angle = Common.GetAngle(center, MousePos);
-
-
-        oldPlayer.Direction[] temp = new oldPlayer.Direction[4];
+        Player.Direction[] temp = new Player.Direction[4];
         boolean moving = false;
+        Vector3 speedPercent = new Vector3(1, 1, 0);
 
-        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f || Gdx.input.isKeyPressed(Keys.D)) {
-            temp[3] = oldPlayer.Direction.East;
+        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f || Gdx.input.isKeyPressed(Input.Keys.D)) {
+            temp[3] = Player.Direction.East;
             moving = true;
-            player.MovePlayerVelocity(oldPlayer.Direction.East,5, gsm.DeltaTime);
-        } else if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) < -0.2f || Gdx.input.isKeyPressed(Keys.A)) {
-            temp[2] = oldPlayer.Direction.West;
+            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f)
+                speedPercent.x = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X);
+        } else if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) < -0.2f || Gdx.input.isKeyPressed(Input.Keys.A)) {
+            temp[2] = Player.Direction.West;
             moving = true;
-            player.MovePlayerVelocity(oldPlayer.Direction.West,5, gsm.DeltaTime);
+            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > -0.2f)
+                speedPercent.x = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X);
         }
 
-        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyPressed(Keys.S)) {
-            temp[1] = oldPlayer.Direction.South;
+        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyPressed(Input.Keys.S)) {
+            temp[1] = Player.Direction.South;
             moving = true;
-            player.MovePlayerVelocity(oldPlayer.Direction.South,5, gsm.DeltaTime);
-        } else if (gsm.ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyPressed(Keys.W)) {
-            temp[0] = oldPlayer.Direction.North;
+            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > -0.2f)
+                speedPercent.y = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y);
+        } else if (gsm.ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyPressed(Input.Keys.W)) {
+            temp[0] = Player.Direction.North;
             moving = true;
-            player.MovePlayerVelocity(oldPlayer.Direction.North,5, gsm.DeltaTime);
+            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f)
+                speedPercent.y = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y);
         }
-
-        //gsm.ctm.testInput();
 
         if (gsm.ctm.isButtonJustDown(1, controlerManager.buttons.BUTTON_START)){
             Common.print("Player 2 joined the game!!");
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A)){
-            shaker.addDamage(.2f);
-        }
-
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
             Common.print("Escape!!");
             //gsm.ctm.newController("template");
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)){
+            Common.print("Reloaded Map!!");
+            Entities.clear();
+            player = new Player(13*16,1*16, 0, new Vector3(16, 16, 16));
+
+            MainCameraFocusPoint = player;
+
+            Entities.add(player);
+
+            Map = new OelMap("Saves/OGMO/Camp.oel");
+            MapRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
+
+            for (int i = 0; i < Map.getLayers().size(); i++) {
+                OelLayer layer = Map.getLayers().get(i);
+                if(layer instanceof OelEntitiesLayer) {
+                    OelEntitiesLayer EntLayer = (OelEntitiesLayer) layer;
+                    EntLayer.loadEntities(Map, player, Entities, Areas);
+                }
+            }
+
+            Collisions.clear();
+
+            for (int i = 0; i < Map.getLayers().size(); i++) {
+                if (Map.getLayers().get(i).getName().equals("Collision")) {
+                    OelGridLayer temp2 = (OelGridLayer) Map.getLayers().get(i);
+                    for (int x = 0; x < Map.getWidth()/16; x++) {
+                        for (int y = 0; y < Map.getHeight()/16; y++) {
+                            if (temp2.getCell(x, y) == 1) {
+                                Collisions.add(new Cube(x * 16, y * 16, 0, 16, 16, 0 ));
+                            }
+                        }
+                    }
+                }
+            }
+
+            MapGraph = new FlatTiledGraph(Map);
+            MapGraph.init(Map);
+
+            //gsm.ctm.newController("template");
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B)){
+            shaker.addDamage(0.4f);
+            AddDialog("Test", "{WAVE}{COLOR=GREEN}Hello {ENDWAVE},{WAIT} world!"
+                    + "{COLOR=ORANGE}{SLOWER} Did{SHAKE} you{ENDSHAKE} know orange is my favorite color?");
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.T)){
+            Vector3 mousepos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            camera.unproject(mousepos);
+            player.setPosition((int)mousepos.x, (int)mousepos.y, 0);
+        }
+
         //We send the player the correct cardinal direction
-        oldPlayer.Direction finalDirect = player.playerDirection;;
+        Player.Direction finalDirect = player.playerDirection;;
 
         //Do the calculations
         if (temp[0] != null && temp[1] != null) {
@@ -343,33 +360,102 @@ public class PlayState extends GameState {
 
         if (temp[0] != null) { //NORTH
             if (temp[2] != null) { // WEST
-                finalDirect = oldPlayer.Direction.NorthWest;
-            }
-            if (temp[3] != null) { //EAST
-                finalDirect = oldPlayer.Direction.NorthEast;
+                finalDirect = Player.Direction.NorthWest;
+            } else if (temp[3] != null) { //EAST
+                finalDirect = Player.Direction.NorthEast;
+            } else {
+                finalDirect = Player.Direction.North;
             }
         } else if (temp[1] != null) { //SOUTH
             if (temp[2] != null) { // WEST
-                finalDirect = oldPlayer.Direction.SouthWest;
+                finalDirect = Player.Direction.SouthWest;
+            } else if (temp[3] != null) { //EAST
+                finalDirect = Player.Direction.SouthEast;
+            } else {
+                finalDirect = Player.Direction.South;
             }
-            if (temp[3] != null) { //EAST
-                finalDirect = oldPlayer.Direction.SouthEast;
+        } else if (temp[2] != null) { //WEST
+            finalDirect = Player.Direction.West;
+        } else if (temp[3] != null) { //EAST
+            finalDirect = Player.Direction.East;
+        }
+
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Input.Keys.R)){
+            if (DialogOpen) {
+                DialogNext();
+            } else {
+                for (int i = 0; i < Entities.size(); i++) {
+                    if(Entities.get(i).getHitbox().intersects(player.getIntereactBox())){
+                        if(Entities.get(i) instanceof NPC) {
+                            NPC Entitemp = (NPC) Entities.get(i);
+                            Entitemp.interact();
+                        }
+
+                        if(Entities.get(i) instanceof Trigger) {
+                            Trigger Ent = (Trigger) Entities.get(i);
+                            //Ent.Interact(player,shaker,entity,MainCameraFocusPoint,Particles,Entities);
+                        }
+                    }
+                }
             }
-        } else {
-            finalDirect = player.playerDirection;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+            player.setVelocityZ(player.getVelocity().z + 10);
+        }
+
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_X) || Gdx.input.isKeyJustPressed(Input.Keys.C) ){ // ATTACK
+            if(player.AttackTime < .1f) {
+
+                //Vector3 addVeloc = new Vector3(player.getPosition().x - player.getAttackBox().min.x, player.getPosition().y - player.getAttackBox().min.y, 0);
+                //player.setVelocity(new Vector3(player.getVelocity().x + (addVeloc.x*1.4f * -1), player.getVelocity().y + (addVeloc.y*1.4f * -1), player.getVelocity().z + (addVeloc.z*1.4f * -1)));
+
+                Particles.AddParticleEffect("sparkle", player.getIntereactBox().getCenterX(), player.getIntereactBox().getCenterY());
+                for (int i = 0; i < Entities.size(); i++) {
+                    if(player.getAttackBox().intersects(Entities.get(i).getHitbox())){
+                        if(Entities.get(i) instanceof NPC) {
+                            NPC Entitemp = (NPC) Entities.get(i);
+
+                            float HitVelocity = 40;
+
+                            Vector3 hitDirection = new Vector3(player.VecDirction().x*HitVelocity, player.VecDirction().y*HitVelocity,0);
+                            Entitemp.damage(10, hitDirection);
+                            shaker.addDamage(0.35f);
+                        }
+                    }
+                }
+
+                player.AttackTime += 0.75f;
+            } else {
+                moving = false;
+            }
+        }
+
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_L3) || Gdx.input.isKeyJustPressed(Input.Keys.X)){ // THE HEALING BUTTON RIGHT NOW
+            Common.print("Healed");
+            for (int i = 0; i < Entities.size(); i++) {
+                if(player.getAttackBox().intersects(Entities.get(i).getHitbox())){
+                    if(Entities.get(i) instanceof NPC) {
+                        NPC Entitemp = (NPC) Entities.get(i);
+                        Entitemp.heal(10);
+                        Particles.AddParticleEffect("HealthArea", Entitemp.getPosition().x + Entitemp.getSize().x/2, Entitemp.getPosition().y + Entitemp.getSize().y/2);
+                    }
+                } //else
+                //Particles.AddParticleEffect("Health", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
+            }
+        }
+
+        if(player.AttackTime > .1f) {
+            moving = false;
         }
 
         if (moving) {
-            player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
+            if (DialogOpen) {
+                //Dont move
+            } else {
+                player.MovePlayerVelocity(finalDirect,(int) (1));
+            }
         }
-        //player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
-
-        //if (moving) {
-        //    player.MovePlayerVelocity(finalDirect,5, gsm.DeltaTime);
-        //}
-
-
-        FollowCam(camera, player.Coords.x, player.Coords.y, 0.01f);
     }
 
     public void reSize(SpriteBatch g, int H, int W) {
@@ -381,53 +467,48 @@ public class PlayState extends GameState {
 
         Matrix4 matrix = new Matrix4();
         matrix.setToOrtho2D(0, 0, W, H);
-        guiBatch.setProjectionMatrix(matrix);
-        shaker.reSize(camera);
-        //ShaderResize(W, H);
-        //cameraGui.setToOrtho(false);
+        //shaker.reSize(camera);
     }
 
-    public void setupSkin() {
-        skin = new Skin(Gdx.files.internal("Skins/flat-earth/skin/flat-earth-ui.json"));
-    }
+    public void cameraUpdate(WorldObject mainFocus, OrthographicCamera cam, List<WorldObject> Entities, int MinX, int MinY, int MaxX, int MaxY) {
 
-    public void MenuInit() {
+        Vector2 FocalPoint = new Vector2(mainFocus.getPosition().x, mainFocus.getPosition().y);
+        float totalFocusPoints = 1;
 
-        setupSkin();
-        stage = new Stage();
+        for (int i = 0; i < Entities.size(); i++) {
+            if (Entities.get(i).FocusStrength != 0) {
+                if(mainFocus.getPosition().dst(Entities.get(i).getPosition()) <= 200) {
+                    float tempX = Entities.get(i).getPosition().x;
+                    float tempY = Entities.get(i).getPosition().y;
 
-        table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+                    double dist = mainFocus.getPosition().dst(Entities.get(i).getPosition());
 
-        table.bottom();
-        final TextField text1 = new TextField("", skin);
-        table.add(text1).fillX();
-        table.row();
+                    double influence = -((dist-200)/200)*1;
 
-        text1.addListener(new InputListener() {
-            public boolean keyUp(InputEvent event, int keycode) {
-                //Common.print("typed started at" + keycode);
-                if (keycode == 66) {// Enter
-                    //network.Send(text1.getText());
-                    text1.setText("");
-                    stage.setKeyboardFocus(null);
+                    FocalPoint.x += (tempX * (Entities.get(i).FocusStrength*influence));
+                    FocalPoint.y += (tempY * (Entities.get(i).FocusStrength*influence));
+                    totalFocusPoints += Entities.get(i).FocusStrength*influence;
                 }
-                //if (keycode == 66) // Tab
-                //Do nothing as of right now
-                return false;
             }
-        });
+        }
 
+        if (FocalPoint.x - cam.viewportWidth/2 <= MinX) {
+            FocalPoint.x = MinX + cam.viewportWidth/2;
+        } else if (FocalPoint.x + cam.viewportWidth/2 >= MaxX) {
+            FocalPoint.x = MaxX - cam.viewportWidth/2;
+        }
 
+        if (FocalPoint.y - cam.viewportHeight/2 <= MinY) {
+            FocalPoint.y = MinY + cam.viewportHeight/2;
+        } else if (FocalPoint.y + cam.viewportHeight/2 >= MaxY) {
+            FocalPoint.y = MaxY - cam.viewportHeight/2;
+        }
+
+        cam.position.set((int) (FocalPoint.x/totalFocusPoints),(int) (FocalPoint.y/totalFocusPoints), 0);
+
+        cam.update();
     }
 
-    public void MenuDraw(SpriteBatch bbg, int width, int height, float Time) {
-        stage.act(gsm.DeltaTime);
-        stage.getRoot().draw(bbg, 1);
-    }
-
-    //Ends the Gui Shit
 
     @Override
     public void Shutdown() {

@@ -6,13 +6,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.XmlReader;
 import com.thecubecast.ReEngine.Data.Area;
-import com.thecubecast.ReEngine.Data.collision;
-import com.thecubecast.ReEngine.Graphics.RePipeline;
+import com.thecubecast.ReEngine.Data.Cube;
 import com.thecubecast.ReEngine.worldObjects.Player;
 import com.thecubecast.ReEngine.worldObjects.Trigger;
 import com.thecubecast.ReEngine.worldObjects.WorldObject;
 
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -41,6 +39,8 @@ public class OelEntitiesLayer extends OelLayer {
 
                     int x = Integer.parseInt(temp.getAttribute("x"));
                     int y = Integer.parseInt(temp.getAttribute("y"));
+                    //int z = Integer.parseInt(temp.getAttribute("z"));
+                    int z = 0;
                     Vector3 size = new Vector3(Integer.parseInt(temp.getAttribute("width")), Integer.parseInt(temp.getAttribute("height")), 0);
                     String Events = temp.getAttribute("Event");
 
@@ -50,13 +50,13 @@ public class OelEntitiesLayer extends OelLayer {
                     Trigger TriggerObject = null;
 
                     if (temptemp.equals("OnEntry")) {
-                        TriggerObject = new Trigger(x, y, size, Events, Trigger.TriggerType.OnEntry);
+                        TriggerObject = new Trigger(x, y, z, size, Events, Trigger.TriggerType.OnEntry);
                     } else if (temptemp.equals("OnTrigger")) {
-                        TriggerObject = new Trigger(x, y, size, Events, Trigger.TriggerType.OnTrigger);
+                        TriggerObject = new Trigger(x, y, z, size, Events, Trigger.TriggerType.OnTrigger);
                     } else if (temptemp.equals("OnExit")) {
-                        TriggerObject = new Trigger(x, y, size, Events, Trigger.TriggerType.OnExit);
+                        TriggerObject = new Trigger(x, y, z, size, Events, Trigger.TriggerType.OnExit);
                     } else if (temptemp.equals("OnInteract")) {
-                        TriggerObject = new Trigger(x, y, size, Events, Trigger.TriggerType.OnInteract);
+                        TriggerObject = new Trigger(x, y, z, size, Events, Trigger.TriggerType.OnInteract);
                     }
 
                     Entities.add(TriggerObject);
@@ -70,7 +70,7 @@ public class OelEntitiesLayer extends OelLayer {
         if (Layer.getName().equals("Objects") || Layer.getName().equals("Props")) {
             for (int i = 0; i < Layer.getChildCount(); i++) {
                 if (Layer.getChild(i).getName().equals("Player")) {
-                    player.setPosition(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")));
+                    player.setPosition(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")),0);
                 } else if (Layer.getChild(i).getName().equals("CameraHint")) {
                     WorldObject temp = new WorldObject() {
                         @Override
@@ -79,7 +79,7 @@ public class OelEntitiesLayer extends OelLayer {
                         }
 
                         @Override
-                        public void update(float delta, List<collision> Colls) {
+                        public void update(float delta, List<Cube> Colls) {
 
                         }
 
@@ -89,12 +89,12 @@ public class OelEntitiesLayer extends OelLayer {
                         }
                     };
 
-                    temp.setPosition(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")));
+                    temp.setPosition(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")), 0);
                     temp.FocusStrength = (float) Integer.parseInt(Layer.getChild(i).getAttribute("FocusStrength"))/10;
 
                     Entities.add(temp);
                 } else if (Layer.getChild(i).getName().equals("Car")) {
-                    WorldObject temp = new WorldObject(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")) - 57, new Vector3(32, 57, 0)) {
+                    WorldObject temp = new WorldObject(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")) - 57, 0, new Vector3(32, 57, 0)) {
                         Texture Car = new Texture(Gdx.files.internal("Sprites/car.png"));
                         @Override
                         public void init(int Width, int Height) {
@@ -102,7 +102,7 @@ public class OelEntitiesLayer extends OelLayer {
                         }
 
                         @Override
-                        public void update(float delta, List<collision> Colls) {
+                        public void update(float delta, List<Cube> Colls) {
 
                         }
 
@@ -118,7 +118,7 @@ public class OelEntitiesLayer extends OelLayer {
                     Entities.add(temp);
                 } else if (Layer.getChild(i).getName().equals("Object")) {
                     String tempImgLoc = Layer.getChild(i).getAttribute("SpriteLocation");
-                    WorldObject temp = new WorldObject(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")), new Vector3(16, 16, 0)) {
+                    WorldObject temp = new WorldObject(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")), 0, new Vector3(16, 16, 0)) {
                         Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
                         @Override
                         public void init(int Width, int Height) {
@@ -126,7 +126,7 @@ public class OelEntitiesLayer extends OelLayer {
                         }
 
                         @Override
-                        public void update(float delta, List<collision> Colls) {
+                        public void update(float delta, List<Cube> Colls) {
 
                         }
 
@@ -143,7 +143,7 @@ public class OelEntitiesLayer extends OelLayer {
                 } else {
                     String tempImgLoc = Layer.getChild(i).getAttribute("SpriteLocation");
                     Texture tempImage = new Texture(Gdx.files.internal(tempImgLoc));
-                    WorldObject temp = new WorldObject(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")) - tempImage.getHeight(), new Vector3(16, 16, 0)) {
+                    WorldObject temp = new WorldObject(Integer.parseInt(Layer.getChild(i).getAttribute("x")),height - Integer.parseInt(Layer.getChild(i).getAttribute("y")) - tempImage.getHeight(), 0, new Vector3(16, 16, 0)) {
                         Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
                         @Override
                         public void init(int Width, int Height) {
@@ -151,7 +151,7 @@ public class OelEntitiesLayer extends OelLayer {
                         }
 
                         @Override
-                        public void update(float delta, List<collision> Colls) {
+                        public void update(float delta, List<Cube> Colls) {
 
                         }
 

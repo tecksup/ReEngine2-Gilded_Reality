@@ -2,17 +2,17 @@ package com.thecubecast.ReEngine.worldObjects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.*;
-import com.thecubecast.ReEngine.Data.collision;
-import com.thecubecast.ReEngine.Graphics.RePipeline;
+import com.thecubecast.ReEngine.Data.Cube;
+import com.badlogic.gdx.math.collision.BoundingBox;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class WorldObject {
-    private Vector2 position;
-    private Vector2 velocity;
+    private Vector3 position;
+    private Vector3 Size; // The x and y are the entities footprint, z is height.
+    private Vector3 velocity;
 
-    private Vector3 Size; //X is the width, Y is the height, and Z is the Collision box height
+    private int CollisionHashID;
 
     private type State;
 
@@ -30,8 +30,8 @@ public abstract class WorldObject {
      * Is Static
      **/
     public WorldObject () {
-        this.position = new Vector2(0,0);
-        this.velocity = new Vector2(0,0);
+        this.position = new Vector3(0,0,0);
+        this.velocity = new Vector3(0,0,0);
 
         this.Size = new Vector3(16, 16, 4);
 
@@ -44,9 +44,9 @@ public abstract class WorldObject {
      * @param y the y pos
      * @param size the size of the hitbox, x and y, ignore z
      **/
-    public WorldObject (int x, int y, Vector3 size) {
-        this.position = new Vector2(x,y);
-        this.velocity = new Vector2(0,0);
+    public WorldObject (int x, int y, int z, Vector3 size) {
+        this.position = new Vector3(x,y,z);
+        this.velocity = new Vector3(0,0,0);
 
         this.Size = size;
 
@@ -60,9 +60,9 @@ public abstract class WorldObject {
      * @param size the size of the hitbox, x and y, ignore z
      * @param State is whether or not it gets it's movement updated based on it's velocity
      **/
-    public WorldObject (int x, int y, Vector3 size, type State) {
-        this.position = new Vector2(x,y);
-        this.velocity = new Vector2(0,0);
+    public WorldObject (int x, int y, int z, Vector3 size, type State) {
+        this.position = new Vector3(x,y,z);
+        this.velocity = new Vector3(0,0,0);
 
         this.Size = size;
 
@@ -73,14 +73,14 @@ public abstract class WorldObject {
      * Creates a blank WorldObject
      * @param x the x pos
      * @param y the y pos
-     * @param size the size of the hitbox, x and y, ignore z
+     * @param size the size of the hitbox
      * @param State is whether or not it gets it's movement updated based on it's velocity
      * @param collision if it is true, then it keeps track of it's hashid so that it can update the rectangle for collision
      *                  during its update method
      **/
-    public WorldObject (int x, int y, Vector3 size, type State, boolean collision) {
-        this.position = new Vector2(x,y);
-        this.velocity = new Vector2(0,0);
+    public WorldObject (int x, int y, int z, Vector3 size, type State, boolean collision) {
+        this.position = new Vector3(x,y,z);
+        this.velocity = new Vector3(0,0, 0);
 
         this.Size = size;
 
@@ -89,29 +89,19 @@ public abstract class WorldObject {
         this.Collidable = collision;
     }
 
-    public Rectangle getHitbox() {
-        Rectangle RectPla = new Rectangle(getPosition().x, getPosition().y, getSize().x, getSize().y);
-        return RectPla;
+    public BoundingBox getHitbox() {
+        BoundingBox PrismPla = new BoundingBox(new Vector3(getPosition().x, getPosition().y, getPosition().z), new Vector3(getPosition()).add(getSize()));
+        return PrismPla;
     }
 
-    public Polygon getHitboxPoly() {
-        Polygon RectPla = new Polygon(new float[] {getPosition().x, getPosition().y, getPosition().x, getPosition().y + getSize().y, getPosition().x + getSize().x, getPosition().y + getSize().y, getPosition().x + getSize().x, getPosition().y});
-        return RectPla;
-    }
-
-    public boolean checkCollisionPoly(float xOffset, float yOffset, List<collision> Colls) {
-        for(int i = 0; i < Colls.size(); i++) {
-            if (polyoverlap(getHitboxPoly() , Colls.get(i).getRect())) {
-                return true; // Dont move
-            }
+    public boolean checkCollision(Vector3 Newposition, List<Cube> Colls) {
+        if (Colls == null) {
+            return false;
         }
-        return false;
-    }
 
-    public boolean checkCollision(float xOffset, float yOffset, List<collision> Colls) {
-        Rectangle RectPla = new Rectangle(getHitbox().x + xOffset, getHitbox().y + yOffset, getHitbox().width, getHitbox().height);
+        BoundingBox PrismPla = new BoundingBox(Newposition, new Vector3(Newposition).add(getSize()));
         for(int i = 0; i < Colls.size(); i++) {
-            if (RectPla.overlaps(Colls.get(i).getRect())) {
+            if (PrismPla.intersects(Colls.get(i).getPrism())) {
                 return true; // Dont move
             }
         }
@@ -119,33 +109,28 @@ public abstract class WorldObject {
     }
 
     public boolean ifColliding (Rectangle coll) {
-        if (getHitbox().overlaps(coll)) {
+        Rectangle temp = new Rectangle(getPosition().x, getPosition().y, getSize().x, getSize().y);
+        if (temp.overlaps(coll)) {
             return true; // Dont move
         } else {
             return false;
         }
     }
 
-    public static boolean polyoverlap(Polygon p, Rectangle r) {
-        Polygon rPoly = new Polygon(new float[]{ 0, 0, r.width, 0, r.width, r.height, 0, r.height});
-        rPoly.setPosition(r.x, r.y);
-        return Intersector.overlapConvexPolygons(rPoly, p);
-    }
-
     public abstract void init(int Width, int Height);
-    public abstract void update(float delta, List<collision> Colls);
+    public abstract void update(float delta, List<Cube> Colls);
     public abstract void draw(SpriteBatch batch, float Time);
 
-    public Vector2 getPosition() {
+    public Vector3 getPosition() {
         return position;
     }
 
-    public void setPosition(Vector2 position) {
+    public void setPosition(Vector3 position) {
         this.position = position;
     }
 
-    public void setPosition(float x, float y) {
-        this.position = new Vector2(x, y);
+    public void setPosition(float x, float y, float z) {
+        this.position = new Vector3(x, y, z);
     }
     public void setPositionX(float x) {
         this.position.x = x;
@@ -153,22 +138,28 @@ public abstract class WorldObject {
     public void setPositionY(float y) {
         this.position.y = y;
     }
+    public void setPositionZ(float z) {
+        this.position.z = z;
+    }
 
-    public Vector2 getVelocity() {
+    public Vector3 getVelocity() {
         return velocity;
     }
 
-    public void setVelocity(Vector2 velocity) {
+    public void setVelocity(Vector3 velocity) {
         this.velocity = velocity;
     }
-    public void setVelocity(float x, float y) {
-        this.velocity = new Vector2(x, y);
+    public void setVelocity(float x, float y, float z) {
+        this.velocity = new Vector3(x, y, z);
     }
     public void setVelocityX(float x) {
         this.velocity.x = x;
     }
     public void setVelocityY(float y) {
         this.velocity.y = y;
+    }
+    public void setVelocityZ(float z) {
+        this.velocity.z = z;
     }
 
     public type getState() {

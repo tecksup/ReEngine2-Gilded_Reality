@@ -30,8 +30,6 @@ public class Draw {
 	public Animation<TextureRegion> LoadingAnimation; // Must declare frame type (TextureRegion)
 	Texture LoadingSheet;
 
-	public PipelineTexture[] Images;
-
 	public static ShaderProgram OutlineShader;
 	public static ShaderProgram FillColorShader;
 	

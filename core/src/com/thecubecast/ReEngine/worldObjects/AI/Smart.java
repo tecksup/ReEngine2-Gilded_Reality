@@ -6,6 +6,7 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledNode;
@@ -19,7 +20,7 @@ import static com.badlogic.gdx.utils.TimeUtils.nanoTime;
 
 public class Smart implements Telegraph {
 
-    private Vector2 Destination;
+    private Vector3 Destination;
     Student WorldObject;
 
     FlatTiledGraph worldMap;
@@ -32,7 +33,7 @@ public class Smart implements Telegraph {
 
     public Smart(Student WorldObject, FlatTiledGraph worldMap) {
 
-        Destination = new Vector2(WorldObject.getPosition());
+        Destination = new Vector3(WorldObject.getPosition());
 
         this.worldMap = worldMap;
 
@@ -99,11 +100,11 @@ public class Smart implements Telegraph {
         return stateMachine;
     }
 
-    public Vector2 getDestination() {
+    public Vector3 getDestination() {
         return Destination;
     }
 
-    public void setDestination(Vector2 destination) {
+    public void setDestination(Vector3 destination) {
         Destination = destination;
     }
 

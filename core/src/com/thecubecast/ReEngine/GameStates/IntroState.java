@@ -87,7 +87,7 @@ public class IntroState extends GameState {
 
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) { //KeyHit
 			//JukeBox.stop("LogoSound");
-			gsm.Render.Images[00] = null;
+			Splash = null;
 			gsm.setState(GameStateManager.State.MENU);
 		}
 

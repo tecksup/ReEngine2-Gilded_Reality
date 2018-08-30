@@ -14,19 +14,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.*;
 import com.thecubecast.ReEngine.Data.OGMO.*;
-import com.thecubecast.ReEngine.Graphics.RePipeline;
 import com.thecubecast.ReEngine.Graphics.Scene2D.Dialog;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
 import com.thecubecast.ReEngine.worldObjects.*;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledNode;
 import com.thecubecast.ReEngine.worldObjects.EntityPrefabs.Hank;
-import com.thecubecast.ReEngine.worldObjects.EntityPrefabs.Male_Student;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.thecubecast.ReEngine.worldObjects.WorldObject.polyoverlap;
 
 public enum Level_States implements State<LevelsFSM>, Scene {
 
@@ -116,7 +112,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
         //GameObjects
         Player player;
-        private List<collision> Collisions = new ArrayList<>();
+        private List<Cube> Collisions = new ArrayList<>();
         public List<Area> Areas = new ArrayList<>();
         private List<WorldObject> Entities = new ArrayList<>();
 
@@ -130,7 +126,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
         @Override
         public void enter(LevelsFSM entity) {
 
-            player = new Player(13*16,1*16, new Vector3(16, 16, 16));
+            player = new Player(13*16,1*16, 0, new Vector3(16, 16, 16));
 
             MainCameraFocusPoint = player;
 
@@ -166,8 +162,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                     for (int x = 0; x < Map.getWidth()/16; x++) {
                         for (int y = 0; y < Map.getHeight()/16; y++) {
                             if (temp.getCell(x, y) == 1) {
-                                Rectangle tempRect = new Rectangle(x * 16, y * 16, 16, 16);
-                                Collisions.add(new collision(tempRect, tempRect.hashCode()));
+                                Collisions.add(new Cube(x * 16, y * 16, 0, 16, 16, 0 ));
                             }
                         }
                     }
@@ -177,7 +172,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             MapGraph = new FlatTiledGraph(Map);
             MapGraph.init(Map);
 
-            Hank tempStudent = new Hank( 120 * 16, 5 * 16) {
+            Hank tempStudent = new Hank( 120 * 16, 5 * 16,0) {
                 @Override
                 public void interact() {
 
@@ -200,7 +195,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
                 if (Entities.get(i) instanceof Trigger) {
                     Trigger temp = (Trigger) Entities.get(i);
-                    temp.Trigger(player,shaker,entity,MainCameraFocusPoint,Particles,Entities);
+                    //temp.Trigger(player,shaker,entity,MainCameraFocusPoint,Particles,Entities);
                 }
             }
 
@@ -226,28 +221,30 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             }
 
+            //Block of code renders all the entities
             WorldObjectComp entitySort = new WorldObjectComp();
             Entities.sort(entitySort);
             for (int i = 0; i < Entities.size(); i++) {
-                if(Entities.get(i).ifColliding(player.getIntereactBox())){
+                if(Entities.get(i).getHitbox().intersects(player.getIntereactBox())){
                     if(Entities.get(i) instanceof NPC) {
                         NPC Entitemp = (NPC) Entities.get(i);
-                        if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getHitbox().width, Entitemp.getHitbox().height))) {
+                        if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getSize().x, Entitemp.getSize().y))) {
                             //Entities.get(i).draw(g, Time);
                             Entitemp.drawHighlight(g, Time);
                         }
                     } else {
-                        if(drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getHitbox().width, Entities.get(i).getHitbox().height))) {
+                        if(drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getSize().x, Entities.get(i).getSize().y))) {
                             Entities.get(i).draw(g, Time);
                         }
                     }
                 } else {
-                    if(drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getHitbox().width, Entities.get(i).getHitbox().height))) {
+                    if(drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getSize().x, Entities.get(i).getSize().y))) {
                         Entities.get(i).draw(g, Time);
                     }
                 }
             }
 
+            //Renders my favorite little debug stuff
             if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
                 entity.gsm.Cursor = GameStateManager.CursorType.Question;
 
@@ -261,10 +258,11 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             //Particles
             Particles.Draw(g);
 
+            //Renders the GUI for entities
             for (int i = 0; i < Entities.size(); i++) {
                 if(Entities.get(i) instanceof NPC) {
                     NPC Entitemp = (NPC) Entities.get(i);
-                    if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getHitbox().width, Entitemp.getHitbox().height))) {
+                    if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getSize().x, Entitemp.getSize().y))) {
                         ((NPC) Entities.get(i)).drawGui(g, Time);
                     }
                 }
@@ -286,18 +284,12 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             if (entity.gsm.Debug) {
                 entity.gsm.Render.debugRenderer.setColor(Color.GREEN);
                 for (int i = 0; i < Entities.size(); i++) {
-                    entity.gsm.Render.debugRenderer.polygon(Entities.get(i).getHitboxPoly().getVertices());
+                    entity.gsm.Render.debugRenderer.box(Entities.get(i).getHitbox().min.x, Entities.get(i).getHitbox().min.y, Entities.get(i).getHitbox().min.z, Entities.get(i).getHitbox().getWidth(), Entities.get(i).getHitbox().getHeight(), Entities.get(i).getHitbox().getDepth());
                 }
                 entity.gsm.Render.debugRenderer.setColor(Color.ORANGE);
-                entity.gsm.Render.debugRenderer.polygon(player.getAttackBox().getVertices());
+                entity.gsm.Render.debugRenderer.box(player.getHitbox().min.x, player.getHitbox().min.y, player.getHitbox().min.z, player.getHitbox().getWidth(), player.getHitbox().getHeight(), player.getHitbox().getDepth());
                 entity.gsm.Render.debugRenderer.setColor(Color.YELLOW);
-                entity.gsm.Render.debugRenderer.rect(player.getIntereactBox().x, player.getIntereactBox().y, player.getIntereactBox().width, player.getIntereactBox().height);
-
-                if (false) //ONLY SET TO TRUE IF YOU NEED TO VIEW AI GRAPH
-                {
-                    entity.gsm.Render.debugRenderer.setColor(Color.RED);
-                    Collisions.forEach(number -> entity.gsm.Render.debugRenderer.rect(number.getRect().x, number.getRect().y, (number.getRect().width), (number.getRect().height)));
-                }
+                entity.gsm.Render.debugRenderer.box(player.getIntereactBox().min.x, player.getIntereactBox().min.y, player.getIntereactBox().min.z, player.getIntereactBox().getWidth(), player.getIntereactBox().getHeight(), player.getIntereactBox().getDepth());
 
                 entity.gsm.Render.debugRenderer.setColor(Color.FIREBRICK);
                 for (int i = 0; i < Entities.size(); i++) {
@@ -340,7 +332,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
         public void HandleInput(LevelsFSM entity) {
             Player.Direction[] temp = new Player.Direction[4];
             boolean moving = false;
-            Vector2 speedPercent = new Vector2(1, 1);
+            Vector3 speedPercent = new Vector3(1, 1, 0);
 
             if (entity.gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f || Gdx.input.isKeyPressed(Input.Keys.D)) {
                 temp[3] = Player.Direction.East;
@@ -378,7 +370,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)){
                 Common.print("Reloaded Map!!");
                 Entities.clear();
-                player = new Player(13*16,1*16, new Vector3(16, 16, 16));
+                player = new Player(13*16,1*16, 0, new Vector3(16, 16, 16));
 
                 MainCameraFocusPoint = player;
 
@@ -403,8 +395,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                         for (int x = 0; x < Map.getWidth()/16; x++) {
                             for (int y = 0; y < Map.getHeight()/16; y++) {
                                 if (temp2.getCell(x, y) == 1) {
-                                    Rectangle tempRect = new Rectangle(x * 16, y * 16, 16, 16);
-                                    Collisions.add(new collision(tempRect, tempRect.hashCode()));
+                                    Collisions.add(new Cube(x * 16, y * 16, 0, 16, 16, 0 ));
                                 }
                             }
                         }
@@ -426,7 +417,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.T)){
                 Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
                 Worldcam.unproject(pos);
-                player.setPosition((int)pos.x, (int)pos.y);
+                player.setPosition((int)pos.x, (int)pos.y, 0);
             }
 
             //We send the player the correct cardinal direction
@@ -469,7 +460,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                     entity.DialogNext();
                 } else {
                     for (int i = 0; i < Entities.size(); i++) {
-                        if(Entities.get(i).ifColliding(player.getIntereactBox())){
+                        if(Entities.get(i).getHitbox().intersects(player.getIntereactBox())){
                             if(Entities.get(i) instanceof NPC) {
                                 NPC Entitemp = (NPC) Entities.get(i);
                                 Entitemp.interact();
@@ -477,7 +468,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
                             if(Entities.get(i) instanceof Trigger) {
                                 Trigger Ent = (Trigger) Entities.get(i);
-                                Ent.Interact(player,shaker,entity,MainCameraFocusPoint,Particles,Entities);
+                                //Ent.Interact(player,shaker,entity,MainCameraFocusPoint,Particles,Entities);
                             }
                         }
                     }
@@ -487,18 +478,18 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             if (entity.gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_X) || Gdx.input.isKeyJustPressed(Input.Keys.C) ){ // ATTACK
                 if(player.AttackTime < .1f) {
 
-                    Vector2 addVeloc = new Vector2(player.getPosition().x - player.getAttackBox().getBoundingRectangle().x, player.getPosition().y - player.getAttackBox().getBoundingRectangle().y);
-                    player.setVelocity(new Vector2(player.getVelocity().x + (addVeloc.x*1.4f * -1), player.getVelocity().y + (addVeloc.y*1.4f * -1)));
+                    Vector3 addVeloc = new Vector3(player.getPosition().x - player.getAttackBox().min.x, player.getPosition().y - player.getAttackBox().min.y, 0);
+                    player.setVelocity(new Vector3(player.getVelocity().x + (addVeloc.x*1.4f * -1), player.getVelocity().y + (addVeloc.y*1.4f * -1), player.getVelocity().z + (addVeloc.z*1.4f * -1)));
 
-                    Particles.AddParticleEffect("sparkle", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
+                    Particles.AddParticleEffect("sparkle", player.getIntereactBox().getCenterX(), player.getIntereactBox().getCenterY());
                     for (int i = 0; i < Entities.size(); i++) {
-                        if(polyoverlap(player.getAttackBox(), Entities.get(i).getHitbox())){
+                        if(player.getAttackBox().intersects(Entities.get(i).getHitbox())){
                             if(Entities.get(i) instanceof NPC) {
                                 NPC Entitemp = (NPC) Entities.get(i);
 
                                 float HitVelocity = 40;
 
-                                Vector2 hitDirection = new Vector2(player.VecDirction().x*HitVelocity, player.VecDirction().y*HitVelocity);
+                                Vector3 hitDirection = new Vector3(player.VecDirction().x*HitVelocity, player.VecDirction().y*HitVelocity,0);
                                 Entitemp.damage(10, hitDirection);
                                 shaker.addDamage(0.35f);
                             }
@@ -514,7 +505,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
             if (entity.gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_L3) || Gdx.input.isKeyJustPressed(Input.Keys.X)){ // THE HEALING BUTTON RIGHT NOW
                 Common.print("Healed");
                 for (int i = 0; i < Entities.size(); i++) {
-                    if(polyoverlap(player.getAttackBox(), Entities.get(i).getHitbox())){
+                    if(player.getAttackBox().intersects(Entities.get(i).getHitbox())){
                         if(Entities.get(i) instanceof NPC) {
                             NPC Entitemp = (NPC) Entities.get(i);
                             Entitemp.heal(10);
@@ -534,7 +525,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
                     //Dont move
                 } else
                     //player.setPlayerDirection(finalDirect);
-                    player.MovePlayerVelocity(finalDirect,(int) (10), entity.gsm.DeltaTime);
+                    player.MovePlayerVelocity(finalDirect,(int) (10));
             }
 
         }

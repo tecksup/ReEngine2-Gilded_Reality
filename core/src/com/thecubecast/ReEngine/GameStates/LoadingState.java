@@ -77,7 +77,7 @@ public class LoadingState extends GameState {
 			if(gsm.Render.manager.getProgress() == 1) {
 				gsm.Render.LoadVariables();
 				Gdx.graphics.setVSync(true);
-				gsm.setState(GameStateManager.State .StoryMode);
+				gsm.setState(GameStateManager.State .MENU);
 			}
 		}
 		handleInput();

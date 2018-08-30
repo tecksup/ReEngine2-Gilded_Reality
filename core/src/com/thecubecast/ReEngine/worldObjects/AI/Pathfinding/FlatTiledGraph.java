@@ -20,10 +20,8 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.Array;
-import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.OGMO.OelGridLayer;
 import com.thecubecast.ReEngine.Data.OGMO.OelMap;
-import com.thecubecast.ReEngine.Graphics.BitwiseTiles;
 
 /** A random generated graph representing a flat tiled map.
  *
@@ -48,14 +46,6 @@ public class FlatTiledGraph implements TiledGraph<FlatTiledNode> {
     public FlatTiledGraph (OelMap map) {
         sizeX = map.getWidth()/8;
         sizeY = map.getHeight()/8;
-        this.nodes = new Array<FlatTiledNode>(sizeX * sizeY);
-        this.diagonal = false;
-        this.startNode = null;
-    }
-
-    public FlatTiledGraph (BitwiseTiles bitTiles) {
-        sizeX = bitTiles.getBitTileObject(1).realTile.size();
-        sizeY = bitTiles.getBitTileObject(1).realTile.get(0).length;
         this.nodes = new Array<FlatTiledNode>(sizeX * sizeY);
         this.diagonal = false;
         this.startNode = null;
@@ -107,7 +97,7 @@ public class FlatTiledGraph implements TiledGraph<FlatTiledNode> {
         }
     }
 
-    public void init (BitwiseTiles bitTiles) {
+    /*public void init (BitwiseTiles bitTiles) {
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 nodes.add(new FlatTiledNode(x, y, bitTiles.getBitTileObject(1).realTile.get(y)[x], 8));
@@ -124,7 +114,7 @@ public class FlatTiledGraph implements TiledGraph<FlatTiledNode> {
                 if (y < sizeY - 1) addConnection(nodes.get(colOffset + y), 0, 1);
             }
         }
-    }
+    }*/
 
     @Override
     public FlatTiledNode getNode (int x, int y) {
