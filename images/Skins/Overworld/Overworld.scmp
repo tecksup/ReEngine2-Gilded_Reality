@@ -291,6 +291,74 @@ atlasData: {
 			minHeight: 0
 			customized: false
 		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/select-box-pressed.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: select-box-pressed
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/select-box.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: select-box
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/checkbox.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: checkbox
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/checkbox_s.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: checkbox_s
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
 	]
 }
 jsonData: {
@@ -445,14 +513,14 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: checkboxOn
 						optional: false
-						value: null
+						value: checkbox_s
 					}
 					checkboxOff: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: checkboxOff
 						optional: false
-						value: null
+						value: checkbox
 					}
 					checkboxOver: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -480,7 +548,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: null
+						value: Pixel
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -1004,28 +1072,28 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: null
+						value: Pixel
 					}
 					fontColorSelected: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColorSelected
 						optional: false
-						value: null
+						value: white
 					}
 					fontColorUnselected: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColorUnselected
 						optional: false
-						value: null
+						value: black
 					}
 					selection: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: selection
 						optional: false
-						value: null
+						value: button_h
 					}
 					background: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -1243,7 +1311,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: null
+						value: button_
 					}
 					corner: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -1295,14 +1363,14 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: null
+						value: Pixel
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColor
 						optional: false
-						value: null
+						value: black
 					}
 					disabledFontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -1316,7 +1384,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: null
+						value: select-box
 					}
 					scrollStyle: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -1337,7 +1405,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: backgroundOver
 						optional: true
-						value: null
+						value: select-box-pressed
 					}
 					backgroundOpen: {
 						class: com.ray3k.skincomposer.data.StyleProperty

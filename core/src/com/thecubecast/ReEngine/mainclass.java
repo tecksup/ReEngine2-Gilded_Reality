@@ -7,6 +7,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Window;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -28,6 +30,8 @@ import java.util.stream.Stream;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static com.badlogic.gdx.graphics.GL20.GL_NEAREST;
+import static com.thecubecast.ReEngine.Data.Common.GetMonitorSizeH;
+import static com.thecubecast.ReEngine.Data.Common.GetMonitorSizeW;
 
 public class mainclass extends ApplicationAdapter implements InputProcessor{
 	
@@ -46,7 +50,9 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	//Mouse Position in the window
 	private int MouseX;
 	private int MouseY;
+	//The [0] is 1 for dragging, and 0 for not. the rest is x y
 	private int[] MouseDrag = new int[] {0, 0, 0};
+	//The [0] is 1 for clicked, and 0 for not. the rest is x y
 	private int[] MouseClick = new int[] {0, 0, 0};
 	
 	// game state manager
@@ -57,6 +63,16 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	
 	@Override
 	public void create () { // INIT FUNCTION
+
+		String[] temp = Gdx.app.getPreferences("properties").getString("Resolution").split("X");
+		Gdx.graphics.setWindowedMode(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
+
+		Lwjgl3Window window = ((Lwjgl3Graphics)Gdx.graphics).getWindow();
+		window.setPosition(GetMonitorSizeW()/2 - Gdx.graphics.getWidth()/2, GetMonitorSizeH()/2 - Gdx.graphics.getHeight()/2);
+
+		if (Gdx.app.getPreferences("properties").getBoolean("FullScreen")) {
+			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		}
 
 		Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("cursor0.png")), 0, 0);
 		Gdx.graphics.setCursor(customCursor);
@@ -163,8 +179,6 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		FBOH = H/gsm.Scale;
 		MainCam.setToOrtho(false,W,H);
 		//MasterFBO = new FrameBuffer(Pixmap.Format.RGBA8888, MasterFBOOW, MasterFBOOH, false);
-		//callback.setHeight(height);
-		//callback.setWidth(width);
 		Common.print("Ran Resize!");
 		Common.print("" + width + " and H: " + height);
 		gsm.reSize(batch, FBOH, FBOW);

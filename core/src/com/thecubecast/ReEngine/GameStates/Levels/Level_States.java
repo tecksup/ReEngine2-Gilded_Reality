@@ -126,7 +126,7 @@ public enum Level_States implements State<LevelsFSM>, Scene {
         @Override
         public void enter(LevelsFSM entity) {
 
-            player = new Player(13*16,1*16, 0, new Vector3(16, 16, 16));
+            player = new Player(13*16,1*16, 0);
 
             MainCameraFocusPoint = player;
 
@@ -364,47 +364,6 @@ public enum Level_States implements State<LevelsFSM>, Scene {
 
             if (entity.gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
                 Common.print("Escape!!");
-                //entity.gsm.ctm.newController("template");
-            }
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)){
-                Common.print("Reloaded Map!!");
-                Entities.clear();
-                player = new Player(13*16,1*16, 0, new Vector3(16, 16, 16));
-
-                MainCameraFocusPoint = player;
-
-                Entities.add(player);
-
-                Map = new OelMap("Saves/OGMO/Camp.oel");
-                MapRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
-
-                for (int i = 0; i < Map.getLayers().size(); i++) {
-                    OelLayer layer = Map.getLayers().get(i);
-                    if(layer instanceof OelEntitiesLayer) {
-                        OelEntitiesLayer EntLayer = (OelEntitiesLayer) layer;
-                        EntLayer.loadEntities(Map, player, Entities, Areas);
-                    }
-                }
-
-                Collisions.clear();
-
-                for (int i = 0; i < Map.getLayers().size(); i++) {
-                    if (Map.getLayers().get(i).getName().equals("Collision")) {
-                        OelGridLayer temp2 = (OelGridLayer) Map.getLayers().get(i);
-                        for (int x = 0; x < Map.getWidth()/16; x++) {
-                            for (int y = 0; y < Map.getHeight()/16; y++) {
-                                if (temp2.getCell(x, y) == 1) {
-                                    Collisions.add(new Cube(x * 16, y * 16, 0, 16, 16, 0 ));
-                                }
-                            }
-                        }
-                    }
-                }
-
-                MapGraph = new FlatTiledGraph(Map);
-                MapGraph.init(Map);
-
                 //entity.gsm.ctm.newController("template");
             }
 

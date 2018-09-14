@@ -192,7 +192,21 @@ public class GameStateManager {
 		System.out.println(fpsLog[fpsIndex-1]);
 		*/
 	}
-	
+
+	/**
+	 * This is for drawing the world, with the standard pixel art scaling in the engine
+	 */
+	public void drawWorld() {
+
+	}
+
+	/**
+	 * This is for drawing to the slightly larger FBO for UI. With a pixel density twice as large as drawWorld()
+	 */
+	public void drawUI() {
+
+	}
+
 	public void reSize(SpriteBatch bbg, int H, int W) {
 		if(gameState != null) {
 			gameState.reSize(bbg, H, W);

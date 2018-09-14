@@ -12,6 +12,8 @@ public abstract class WorldObject {
     private Vector3 Size; // The x and y are the entities footprint, z is height.
     private Vector3 velocity;
 
+    private float ZFloor = 0;
+
     private int CollisionHashID;
 
     private type State;
@@ -108,6 +110,23 @@ public abstract class WorldObject {
         return false;
     }
 
+    public boolean checkCollision(Vector3 Newposition, List<Cube> Colls, boolean FloorSearch) {
+        if (Colls == null) {
+            return false;
+        }
+
+        BoundingBox PrismPla = new BoundingBox(Newposition, new Vector3(Newposition).add(getSize()));
+        for(int i = 0; i < Colls.size(); i++) {
+            if (PrismPla.intersects(Colls.get(i).getPrism())) {
+                if (FloorSearch) {
+                    ZFloor = Colls.get(i).getPrism().max.z;
+                }
+                return true; // Dont move
+            }
+        }
+        return false;
+    }
+
     public boolean ifColliding (Rectangle coll) {
         Rectangle temp = new Rectangle(getPosition().x, getPosition().y, getSize().x, getSize().y);
         if (temp.overlaps(coll)) {
@@ -184,6 +203,14 @@ public abstract class WorldObject {
 
     public void setCollidable(boolean collidable) {
         Collidable = collidable;
+    }
+
+    public float getZFloor() {
+        return ZFloor;
+    }
+
+    public void setZFloor(float ZFloor) {
+        this.ZFloor = ZFloor;
     }
 
     public void dispose() {

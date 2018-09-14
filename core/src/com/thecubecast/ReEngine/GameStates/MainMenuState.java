@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.controlerManager;
-import com.thecubecast.ReEngine.Graphics.Scene2D.MenuFSM;
+import com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -18,17 +18,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 
-import static com.thecubecast.ReEngine.Data.GameStateManager.AudioM;
-
 
 public class MainMenuState extends GameState {
 	
 	OrthographicCamera cameraGui;
-	MenuFSM Menus;
+	UIFSM Menus;
 
 	int BGMusicID;
 
 	Texture Background;
+	Texture Title;
 
 	public MainMenuState(GameStateManager gsm) {
 		super(gsm);
@@ -37,12 +36,13 @@ public class MainMenuState extends GameState {
 	public void init() {
 
 		Background = new Texture(Gdx.files.internal("Images/image_04.png"));
+		Title = new Texture(Gdx.files.internal("Sprites/Title.png"));
 
 		gsm.DiscordManager.setPresenceState("In Menus");
 		
 		cameraGui = new OrthographicCamera();
 
-		Menus = new MenuFSM(gsm.Width, gsm.Height, cameraGui, gsm);
+		Menus = new UIFSM(gsm.Width, gsm.Height, cameraGui, gsm);
 
 		//BGMusicID = AudioM.playMusic("forgetting.mp3", true);
 	}
@@ -59,10 +59,13 @@ public class MainMenuState extends GameState {
 		bbg.begin();
 
 		bbg.draw(Background, 0, 0, width, height);
+		bbg.draw(Title, width/2 - (200/2), 200, 200, 28);
 
 		Menus.Draw(bbg);
 		
 		bbg.end();
+
+
 	}
 	
 	public void handleInput() {
@@ -98,7 +101,7 @@ public class MainMenuState extends GameState {
 	public void reSize(SpriteBatch g, int H, int W) {
 		//stage.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
 		cameraGui.setToOrtho(false);
-		//Menus.reSize(H, W, cameraGui);
+		//Menus.reSize(cameraGui);
 	}
 	
 	

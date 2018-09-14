@@ -7,22 +7,17 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 
-import java.net.URI;
-
-public class MenuFSM implements Telegraph {
+public class UIFSM implements Telegraph {
 
     public boolean inGame = false;
+    public boolean Visible = true;
 
-    protected StateMachine<MenuFSM, MainMenu_State> stateMachine;
+    protected StateMachine<UIFSM, UI_state> stateMachine;
 
     protected Skin skin;
     protected Stage stage;
@@ -32,7 +27,8 @@ public class MenuFSM implements Telegraph {
 
     protected GameStateManager gsm;
 
-    public MenuFSM(float width, float height, OrthographicCamera cam, GameStateManager gsm) {
+    public UIFSM(float width, float height, OrthographicCamera cam, GameStateManager gsm) {
+
 
         this.gsm = gsm;
 
@@ -46,11 +42,11 @@ public class MenuFSM implements Telegraph {
 
         setupSkin();
 
-        stateMachine = new DefaultStateMachine<MenuFSM, MainMenu_State>(this, MainMenu_State.Home);
+        stateMachine = new DefaultStateMachine<UIFSM, UI_state>(this, UI_state.Home);
         stateMachine.getCurrentState().enter(this);
     }
 
-    public MenuFSM(float width, float height, OrthographicCamera cam, GameStateManager gsm, boolean inGame) {
+    public UIFSM(float width, float height, OrthographicCamera cam, GameStateManager gsm, boolean inGame) {
 
         this.gsm = gsm;
 
@@ -66,31 +62,52 @@ public class MenuFSM implements Telegraph {
 
         setupSkin();
 
-        stateMachine = new DefaultStateMachine<MenuFSM, MainMenu_State>(this, MainMenu_State.Home);
+        stateMachine = new DefaultStateMachine<UIFSM, UI_state>(this, UI_state.Home);
         stateMachine.getCurrentState().enter(this);
     }
-    
+
+    public void setState(UI_state State) {
+        stateMachine.changeState(State);
+        setVisable(true);
+    }
+
+    public UI_state getState() {
+        return stateMachine.getCurrentState();
+    }
+
+    public boolean isVisible() {
+        return Visible;
+    }
+
+    public void setVisable(boolean visable) {
+        Visible = visable;
+    }
+
     public void setupSkin() {
         skin = new Skin(Gdx.files.internal("Skins/test1/skin.json"));
     }
 
     public void Draw(SpriteBatch bbg) {
         stateMachine.update();
-        stage.getRoot().draw(bbg, 1);
+        stage.draw();
+        //stage.getRoot().draw(bbg, 1);
     }
 
 
 
-    public void reSize(float width, float height,  OrthographicCamera cam) {
-        this.width = width;
-        this.height = height;
+    public void reSize() {
+        this.width = gsm.Width;
+        this.height = gsm.Height;
 
-        stage = new Stage(new StretchViewport(width, height));
+        stage = new Stage(new StretchViewport(width,height));
+
         Gdx.input.setInputProcessor(stage);
 
-        stage.getViewport().setCamera(cam);
+        //stage.getViewport().setCamera(cam);
 
-        stateMachine.changeState(stateMachine.getCurrentState());
+        setupSkin();
+
+        stateMachine.getCurrentState().enter(this);
     }
 
     @Override

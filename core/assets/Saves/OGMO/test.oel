@@ -124,6 +124,7 @@
   </Props>
   <Objects>
     <Cube id="0" x="64" y="352" SpriteLocation="Sprites\Map\cube.png" Collidable="False" />
+    <stairs_H id="1" x="95" y="402" SpriteLocation="Sprites\Map\stairs_H.png" Collidable="False" />
   </Objects>
   <Areas />
   <Triggers />

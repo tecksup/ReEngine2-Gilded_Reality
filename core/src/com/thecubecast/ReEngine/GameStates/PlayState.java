@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.*;
 import com.thecubecast.ReEngine.Data.OGMO.*;
+import com.thecubecast.ReEngine.Graphics.Scene2D.UI_state;
+import com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
 import com.thecubecast.ReEngine.worldObjects.*;
@@ -24,6 +27,9 @@ import java.util.List;
 import static com.thecubecast.ReEngine.Data.Common.updategsmValues;
 
 public class PlayState extends DialogStateExtention {
+
+    //GUI
+    UIFSM UI;
 
     //Camera
     OrthographicCamera GuiCam;
@@ -52,7 +58,7 @@ public class PlayState extends DialogStateExtention {
 
     public void init() {
 
-        player = new Player(13*16,1*16, 0, new Vector3(16, 16, 16));
+        player = new Player(13*16,1*16, 0);
 
         MainCameraFocusPoint = player;
 
@@ -84,6 +90,11 @@ public class PlayState extends DialogStateExtention {
         GuiCam.setToOrtho(false, gsm.Width, gsm.Height);
         shaker = new ScreenShakeCameraController(camera);
 
+        UI = new UIFSM(gsm.Width, gsm.Height, GuiCam, gsm);
+        UI.inGame = true;
+        UI.setState(UI_state.InGameHome);
+        UI.setVisable(false);
+
         //Particles
         Particles = new ParticleHandler();
 
@@ -105,12 +116,14 @@ public class PlayState extends DialogStateExtention {
 
         //AddDialog("test", "{COLOR=GREEN}{WAVE}THIS IS FLAWLESSLY ADDED, HOW CONVENIENT");
 
-        Collisions.add(new Cube(64,64,15,32,64,16));
-        Collisions.add(new Cube(128,64,16,32,64,16));
-        Collisions.add(new Cube(192,64,17,32,64,16));
-        Collisions.add(new Cube(256,64,-17,32,64,16));
-
-        Collisions.add(new Cube(324,94,0,10,10,16*1));
+        Collisions.add(new Cube(64,56,0,32,64,16));
+        Collisions.add(new Cube(96,56,0,4,16,14));
+        Collisions.add(new Cube(100,56,0,4,16,12));
+        Collisions.add(new Cube(104,56,0,4,16,10));
+        Collisions.add(new Cube(108,56,0,4,16, 8));
+        Collisions.add(new Cube(112,56,0,4,16,6));
+        Collisions.add(new Cube(116,56,0,4,16,4));
+        Collisions.add(new Cube(120,56,0,4,16,2));
 
 
 
@@ -157,7 +170,9 @@ public class PlayState extends DialogStateExtention {
 
         //Block of code renders all the entities
         WorldObjectComp entitySort = new WorldObjectComp();
+        WorldObjectCompDepth entitySortz = new WorldObjectCompDepth();
         Entities.sort(entitySort);
+        Entities.sort(entitySortz);
         for (int i = 0; i < Entities.size(); i++) {
             if(Entities.get(i).getHitbox().intersects(player.getIntereactBox())){
                 if(Entities.get(i) instanceof NPC) {
@@ -209,6 +224,7 @@ public class PlayState extends DialogStateExtention {
         g.begin();
         //GUI must draw last
         MenuDraw(g, Gdx.graphics.getDeltaTime());
+        UI.Draw(g);
         g.end();
 
         //DEBUG CODE
@@ -216,19 +232,44 @@ public class PlayState extends DialogStateExtention {
         gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
 
         if (gsm.Debug) {
-            gsm.Render.debugRenderer.setColor(Color.GREEN);
+            //gsm.Render.debugRenderer.setColor(Color.GREEN);
             for (int i = 0; i < Entities.size(); i++) {
-                gsm.Render.debugRenderer.box(Entities.get(i).getHitbox().min.x, Entities.get(i).getHitbox().min.y, Entities.get(i).getHitbox().min.z, Entities.get(i).getHitbox().getWidth(), Entities.get(i).getHitbox().getHeight(), Entities.get(i).getHitbox().getDepth());
+                //gsm.Render.debugRenderer.box(Entities.get(i).getHitbox().min.x, Entities.get(i).getHitbox().min.y, Entities.get(i).getHitbox().min.z, Entities.get(i).getHitbox().getWidth(), Entities.get(i).getHitbox().getHeight(), Entities.get(i).getHitbox().getDepth());
+
+                //The bottom
+                gsm.Render.debugRenderer.setColor(Color.GREEN);
+                gsm.Render.debugRenderer.rect(Entities.get(i).getHitbox().min.x, Entities.get(i).getHitbox().min.y + Entities.get(i).getHitbox().min.z/2, Entities.get(i).getHitbox().getWidth(), Entities.get(i).getHitbox().getHeight());
+
+                //The top of the Cube
+                gsm.Render.debugRenderer.setColor(Color.BLUE);
+                gsm.Render.debugRenderer.rect(Entities.get(i).getHitbox().min.x, Entities.get(i).getHitbox().min.y + Entities.get(i).getHitbox().getDepth()/2 + Entities.get(i).getHitbox().min.z/2, Entities.get(i).getHitbox().getWidth(), Entities.get(i).getHitbox().getHeight());
+
             }
-            gsm.Render.debugRenderer.setColor(Color.RED);
+
             for (int i = 0; i < Collisions.size(); i++) {
-                gsm.Render.debugRenderer.rect(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight());
+
+                //The bottom
+                gsm.Render.debugRenderer.setColor(Color.YELLOW);
+                gsm.Render.debugRenderer.rect(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y + Collisions.get(i).getPrism().min.z/2, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight());
+
+                //The top of the Cube
+                gsm.Render.debugRenderer.setColor(Color.RED);
+                gsm.Render.debugRenderer.rect(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y + Collisions.get(i).getPrism().getDepth()/2 + Collisions.get(i).getPrism().min.z/2, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight());
+
+                gsm.Render.debugRenderer.setColor(Color.ORANGE);
+                //gsm.Render.debugRenderer.rect(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight());
+                //gsm.Render.debugRenderer.rect(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight());
                 //gsm.Render.debugRenderer.box(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y, Collisions.get(i).getPrism().min.z, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight(), Collisions.get(i).getPrism().getDepth());
             }
 
-            gsm.Render.debugRenderer.setColor(Color.ORANGE);
-            gsm.Render.debugRenderer.box(player.getHitbox().min.x, player.getHitbox().min.y, player.getHitbox().min.z, player.getHitbox().getWidth(), player.getHitbox().getHeight(), player.getHitbox().getDepth());
+            //The bottom of the PLAYER
             gsm.Render.debugRenderer.setColor(Color.YELLOW);
+            gsm.Render.debugRenderer.rect(player.getHitbox().min.x, player.getHitbox().min.y + player.getHitbox().min.z/2, player.getHitbox().getWidth(), player.getHitbox().getHeight());
+            //The top of the Cube
+            gsm.Render.debugRenderer.setColor(Color.RED);
+            gsm.Render.debugRenderer.rect(player.getHitbox().min.x, player.getHitbox().min.y + player.getHitbox().getDepth()/2 + player.getHitbox().min.z/2, player.getHitbox().getWidth(), player.getHitbox().getHeight());
+
+            gsm.Render.debugRenderer.setColor(Color.PURPLE);
             gsm.Render.debugRenderer.box(player.getIntereactBox().min.x, player.getIntereactBox().min.y, player.getIntereactBox().min.z, player.getIntereactBox().getWidth(), player.getIntereactBox().getHeight(), player.getIntereactBox().getDepth());
 
             for (int i = 0; i < Areas.size(); i++) {
@@ -250,6 +291,34 @@ public class PlayState extends DialogStateExtention {
     }
 
     private void handleInput() {
+
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isTouched()) { //KeyHit
+            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            camera.unproject(pos);
+            WorldObject Crop = new WorldObject() {
+                Texture Crop = new Texture(Gdx.files.internal("Sprites/Map/crops.png"));
+                @Override
+                public void init(int Width, int Height) {
+
+                }
+
+                @Override
+                public void update(float delta, List<Cube> Colls) {
+
+                }
+
+                @Override
+                public void draw(SpriteBatch batch, float Time) {
+                    batch.draw(Crop, getPosition().x, getPosition().y + getPosition().z/2);
+                }
+            };
+
+            Crop.setPosition(((int)pos.x/16)*16, ((int)pos.y/16)*16, 0);
+            Crop.setSize(new Vector3(16,16,4));
+
+
+            Entities.add(Crop);
+        }
 
         Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
         camera.unproject(pos);
@@ -289,47 +358,23 @@ public class PlayState extends DialogStateExtention {
 
         if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
             Common.print("Escape!!");
+            if (UI.getState().equals(UI_state.Inventory) && UI.Visible) {
+                UI.setVisable(!UI.Visible);
+            } else if (!UI.Visible) {
+                UI.setState(UI_state.InGameHome);
+            } else {
+                UI.setVisable(!UI.Visible);
+            }
             //gsm.ctm.newController("template");
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)){
-            Common.print("Reloaded Map!!");
-            Entities.clear();
-            player = new Player(13*16,1*16, 0, new Vector3(16, 16, 16));
-
-            MainCameraFocusPoint = player;
-
-            Entities.add(player);
-
-            Map = new OelMap("Saves/OGMO/Camp.oel");
-            MapRenderer = new OelMapRenderer("Saves/OGMO/test.oep");
-
-            for (int i = 0; i < Map.getLayers().size(); i++) {
-                OelLayer layer = Map.getLayers().get(i);
-                if(layer instanceof OelEntitiesLayer) {
-                    OelEntitiesLayer EntLayer = (OelEntitiesLayer) layer;
-                    EntLayer.loadEntities(Map, player, Entities, Areas);
-                }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
+            if (UI.getState().equals(UI_state.Inventory)) {
+                UI.setVisable(!UI.isVisible());
             }
-
-            Collisions.clear();
-
-            for (int i = 0; i < Map.getLayers().size(); i++) {
-                if (Map.getLayers().get(i).getName().equals("Collision")) {
-                    OelGridLayer temp2 = (OelGridLayer) Map.getLayers().get(i);
-                    for (int x = 0; x < Map.getWidth()/16; x++) {
-                        for (int y = 0; y < Map.getHeight()/16; y++) {
-                            if (temp2.getCell(x, y) == 1) {
-                                Collisions.add(new Cube(x * 16, y * 16, 0, 16, 16, 0 ));
-                            }
-                        }
-                    }
-                }
+            else {
+                UI.setState(UI_state.Inventory);
             }
-
-            MapGraph = new FlatTiledGraph(Map);
-            MapGraph.init(Map);
-
             //gsm.ctm.newController("template");
         }
 
@@ -380,7 +425,7 @@ public class PlayState extends DialogStateExtention {
             finalDirect = Player.Direction.East;
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Input.Keys.R)){
+        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_Y) || Gdx.input.isKeyJustPressed(Input.Keys.R)){
             if (DialogOpen) {
                 DialogNext();
             } else {
@@ -400,8 +445,12 @@ public class PlayState extends DialogStateExtention {
             }
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A)){
             player.setVelocityZ(player.getVelocity().z + 10);
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)){
+            gsm.setState(GameStateManager.State.MENU);
         }
 
         if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_X) || Gdx.input.isKeyJustPressed(Input.Keys.C) ){ // ATTACK
@@ -513,6 +562,19 @@ public class PlayState extends DialogStateExtention {
     @Override
     public void Shutdown() {
 
+    }
+
+    public float HighestZAtPos(int x, int y) {
+
+        float highestZ = 0;
+
+        for (int i = 0; i < Collisions.size(); i++) {
+            if (Collisions.get(i).getPrism().max.z >= highestZ) {
+                highestZ = Collisions.get(i).getPrism().max.z;
+            }
+        }
+
+        return highestZ;
     }
 
 }

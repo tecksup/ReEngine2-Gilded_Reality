@@ -4,37 +4,41 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Window;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
+import com.thecubecast.ReEngine.Data.Item;
 import com.thecubecast.ReEngine.Data.controlerManager;
-import com.thecubecast.ReEngine.worldObjects.Player;
-import sun.applet.Main;
 
-import javax.swing.text.html.parser.Entity;
+import javax.swing.*;
 import java.net.URI;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static com.thecubecast.ReEngine.Data.Common.GetMonitorSizeH;
+import static com.thecubecast.ReEngine.Data.Common.GetMonitorSizeW;
 import static com.thecubecast.ReEngine.Data.GameStateManager.AudioM;
 import static com.thecubecast.ReEngine.Data.GameStateManager.ctm;
 
-public enum MainMenu_State implements State<MenuFSM> {
+public enum UI_state implements State<UIFSM> {
 
    Home() {
 
        private Table table;
-       
+
        @Override
-       public void enter(MenuFSM entity) {
+       public void enter(UIFSM entity) {
 
            table = new Table();
            table.setFillParent(true);
@@ -101,7 +105,7 @@ public enum MainMenu_State implements State<MenuFSM> {
            Options.addListener(new ClickListener(){
                @Override
                public void clicked(InputEvent event, float x, float y){
-                   entity.stateMachine.changeState(MainMenu_State.Options);
+                   entity.stateMachine.changeState(UI_state.Options);
                }
            });
 
@@ -120,88 +124,84 @@ public enum MainMenu_State implements State<MenuFSM> {
        }
 
       @Override
-        public void update(MenuFSM entity) { 
-            ControllerCheck(table);
-
-            entity.stage.act(Gdx.graphics.getDeltaTime()); 
+        public void update(UIFSM entity) {
+          table.setVisible(entity.Visible);
+          ControllerCheck(table);
+          entity.stage.act(Gdx.graphics.getDeltaTime());
         }
 
        @Override
-       public void exit(MenuFSM entity) {
+       public void exit(UIFSM entity) {
            entity.stage.clear();
        }
 
        @Override
-       public boolean onMessage(MenuFSM entity, Telegram telegram) {
+       public boolean onMessage(UIFSM entity, Telegram telegram) {
            return false;
        }
    },
 
     InGameHome() {
 
+
         private Table table;
 
         @Override
-        public void enter(MenuFSM entity) {
+        public void enter(UIFSM entity) {
 
+            table = new Table();
+            table.setFillParent(true);
+            entity.stage.addActor(table);
+
+            final TkTextButton Continue = new TkTextButton("Return to Game", entity.skin);
+            table.add(Continue).pad(2);
+            table.row();
+
+            final TkTextButton Options = new TkTextButton("Options", entity.skin);
+            table.add(Options).pad(2);
+            table.row();
+
+            final TkTextButton MainMenu = new TkTextButton("Main Menu", entity.skin);
+            table.add(MainMenu).pad(2);
+            table.row();
+
+            Continue.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    entity.setVisable(false);
+                }
+            });
+
+            Options.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    entity.stateMachine.changeState(UI_state.Options);
+                }
+            });
+
+            MainMenu.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    //Return to main menu
+                    entity.gsm.setState(GameStateManager.State.MENU);
+                }
+            });
         }
 
         @Override
-       public void update(MenuFSM entity) {
-           if(ctm.controllers.size() > 0) {
-               for(int i = 0; i < table.getCells().size; i++) {
-                   if(table.getCells().get(i).getActor() instanceof TkTextButton) {
-                      int nextSelection = i;
-                      if(((TkTextButton) table.getCells().get(i).getActor()).Selected) {
-                          //Gdx.app.log("menu", "i is " + i);
-                          if (ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-                              ((TkTextButton) table.getCells().get(i).getActor()).Selected = false;
-                              nextSelection += 1;
-
-                          } else if (ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-                              ((TkTextButton) table.getCells().get(i).getActor()).Selected = false;
-                              nextSelection -= 1;
-                          }
-
-                          if (nextSelection < 0)
-                              nextSelection = table.getCells().size;
-                          if (nextSelection >= table.getCells().size)
-                              nextSelection = 0;
-
-                          if(table.getCells().get(nextSelection).getActor() instanceof TkTextButton) {
-                              ((TkTextButton) table.getCells().get(nextSelection).getActor()).Selected = true;
-                          }
-
-                          if(ctm.isButtonJustDown(0,controlerManager.buttons.BUTTON_A) || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
-                              Array<EventListener> listeners = table.getCells().get(i).getActor().getListeners();
-                              for(int b=0;b<listeners.size;b++)
-                              {
-                                  if(listeners.get(b) instanceof ClickListener){
-                                      ((ClickListener)listeners.get(b)).clicked(null, 0, 0);
-                                  }
-                              }
-                          }
-
-                          break;
-                      }
-                      else if(i == table.getCells().size-1) {
-                          ((TkTextButton) table.getCells().get(i).getActor()).Selected = true;
-                      }
-                   }
-               }
-
-           }
-
-           entity.stage.act(Gdx.graphics.getDeltaTime());
-       }
+        public void update(UIFSM entity) {
+            table.setVisible(entity.Visible);
+            ControllerCheck(table);
+            entity.stage.act(Gdx.graphics.getDeltaTime());
+        }
 
         @Override
-        public void exit(MenuFSM entity) {
+        public void exit(UIFSM entity) {
             entity.stage.clear();
         }
 
         @Override
-        public boolean onMessage(MenuFSM entity, Telegram telegram) {
+        public boolean onMessage(UIFSM entity, Telegram telegram) {
             return false;
         }
     },
@@ -210,7 +210,7 @@ public enum MainMenu_State implements State<MenuFSM> {
         private Table table;
 
         @Override
-        public void enter(MenuFSM entity) {
+        public void enter(UIFSM entity) {
             table = new Table();
             table.setFillParent(true);
             entity.stage.addActor(table);
@@ -234,21 +234,21 @@ public enum MainMenu_State implements State<MenuFSM> {
             Audio.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y){
-                    entity.stateMachine.changeState(MainMenu_State.Audio);
+                    entity.stateMachine.changeState(UI_state.Audio);
                 }
             });
 
             Graphics.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y){
-                    entity.stateMachine.changeState(MainMenu_State.Graphics);
+                    entity.stateMachine.changeState(UI_state.Graphics);
                 }
             });
 
             Controls.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y){
-                    entity.stateMachine.changeState(MainMenu_State.Controls);
+                    entity.stateMachine.changeState(UI_state.Controls);
                 }
             });
 
@@ -256,28 +256,28 @@ public enum MainMenu_State implements State<MenuFSM> {
                 @Override
                 public void clicked(InputEvent event, float x, float y){
                     if(entity.inGame) {
-                        entity.stateMachine.changeState(MainMenu_State.InGameHome);
+                        entity.stateMachine.changeState(UI_state.InGameHome);
                     } else {
-                        entity.stateMachine.changeState(MainMenu_State.Home);
+                        entity.stateMachine.changeState(UI_state.Home);
                     }
                 }
             });
         }
 
        @Override
-        public void update(MenuFSM entity) { 
-            ControllerCheck(table);
-
-            entity.stage.act(Gdx.graphics.getDeltaTime()); 
-        }
+        public void update(UIFSM entity) {
+           table.setVisible(entity.Visible);
+           ControllerCheck(table);
+           entity.stage.act(Gdx.graphics.getDeltaTime());
+       }
 
         @Override
-        public void exit(MenuFSM entity) {
+        public void exit(UIFSM entity) {
             entity.stage.clear();
         }
 
         @Override
-        public boolean onMessage(MenuFSM entity, Telegram telegram) {
+        public boolean onMessage(UIFSM entity, Telegram telegram) {
             return false;
         }
     },
@@ -286,7 +286,7 @@ public enum MainMenu_State implements State<MenuFSM> {
         private Table table;
 
         @Override
-        public void enter(MenuFSM entity) {
+        public void enter(UIFSM entity) {
             table = new Table();
             table.setFillParent(true);
             entity.stage.addActor(table);
@@ -349,31 +349,97 @@ public enum MainMenu_State implements State<MenuFSM> {
         }
 
        @Override
-        public void update(MenuFSM entity) { 
-            ControllerCheck(table);
-
-            entity.stage.act(Gdx.graphics.getDeltaTime()); 
-        }
+        public void update(UIFSM entity) {
+           table.setVisible(entity.Visible);
+           ControllerCheck(table);
+           entity.stage.act(Gdx.graphics.getDeltaTime());
+       }
 
         @Override
-        public void exit(MenuFSM entity) {
+        public void exit(UIFSM entity) {
             entity.stage.clear();
         }
 
         @Override
-        public boolean onMessage(MenuFSM entity, Telegram telegram) {
+        public boolean onMessage(UIFSM entity, Telegram telegram) {
             return false;
         }
     },
+
     Graphics() {
 
         private Table table;
+        SelectBox ResolutionOptions;
+        CheckBox FullScreen;
 
         @Override
-        public void enter(MenuFSM entity) {
+        public void enter(UIFSM entity) {
             table = new Table();
             table.setFillParent(true);
             entity.stage.addActor(table);
+
+            if (Gdx.app.getPreferences("properties").getString("FullScreen").equals("")) {
+                Gdx.app.getPreferences("properties").putString("Resolution", "1280X720");
+                Gdx.app.getPreferences("properties").flush();
+            }
+
+            FullScreen = new CheckBox("FullScreen", entity.skin);
+            FullScreen.setChecked(Gdx.graphics.isFullscreen());
+            FullScreen.getLabel().setColor(Color.BLACK);
+            FullScreen.setChecked(Gdx.app.getPreferences("properties").getBoolean("FullScreen"));
+            table.add(FullScreen).pad(2).row();
+
+            FullScreen.addListener(new ChangeListener(){
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    Gdx.app.getPreferences("properties").putBoolean("FullScreen", FullScreen.isChecked());
+                    Gdx.app.getPreferences("properties").flush();
+
+                    if (FullScreen.isChecked()) {
+                        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+                    }
+                    else {
+                        String[] temp = Gdx.app.getPreferences("properties").getString("Resolution").split("X");
+                        Gdx.graphics.setWindowedMode(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
+                    }
+
+                    String[] temp = Gdx.app.getPreferences("properties").getString("Resolution").split("X");
+                    entity.reSize();
+                }
+            });
+
+            ResolutionOptions = new SelectBox(entity.skin) {
+                @Override
+                protected void onShow (Actor selectBoxList, boolean below) {
+                    //selectBoxList.getColor().a = 0;
+                    //selectBoxList.addAction(fadeIn(0.3f, Interpolation.fade));
+                }
+                @Override
+                protected void onHide (Actor selectBoxList) {
+                    //selectBoxList.getColor().a = 1;
+                    selectBoxList.addAction(removeActor());
+                }
+            };
+            ResolutionOptions.setItems(new String[] {"1280X720", "1366X768", "1440X900", "1600X900", "1920X1080"});
+            ResolutionOptions.setSelected(Gdx.app.getPreferences("properties").getString("Resolution"));
+            table.add(ResolutionOptions).pad(2).row();
+
+            ResolutionOptions.addListener(new ChangeListener(){
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    Gdx.app.getPreferences("properties").putString("Resolution", ResolutionOptions.getSelected().toString());
+                    Gdx.app.getPreferences("properties").flush();
+
+                    String[] temp = ResolutionOptions.getSelected().toString().split("X");
+                    FullScreen.setChecked(false);
+                    Gdx.graphics.setWindowedMode(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
+                    entity.reSize();
+
+                    Lwjgl3Window window = ((Lwjgl3Graphics)Gdx.graphics).getWindow();
+                    window.setPosition(GetMonitorSizeW()/2 - Gdx.graphics.getWidth()/2, GetMonitorSizeH()/2 - Gdx.graphics.getHeight()/2);
+                }
+
+            });
 
             final TkTextButton back = new TkTextButton("Back", entity.skin);
             table.add(back).pad(2);
@@ -388,28 +454,29 @@ public enum MainMenu_State implements State<MenuFSM> {
         }
 
        @Override
-        public void update(MenuFSM entity) { 
-            ControllerCheck(table);
-
-            entity.stage.act(Gdx.graphics.getDeltaTime()); 
-        }
+        public void update(UIFSM entity) {
+           table.setVisible(entity.Visible);
+           ControllerCheck(table);
+           entity.stage.act(Gdx.graphics.getDeltaTime());
+       }
 
         @Override
-        public void exit(MenuFSM entity) {
+        public void exit(UIFSM entity) {
             entity.stage.clear();
         }
 
         @Override
-        public boolean onMessage(MenuFSM entity, Telegram telegram) {
+        public boolean onMessage(UIFSM entity, Telegram telegram) {
             return false;
         }
     },
+
     Controls() {
 
         private Table table;
 
         @Override
-        public void enter(MenuFSM entity) {
+        public void enter(UIFSM entity) {
             table = new Table();
             table.setFillParent(true);
             entity.stage.addActor(table);
@@ -427,23 +494,125 @@ public enum MainMenu_State implements State<MenuFSM> {
         }
         
         @Override
-        public void update(MenuFSM entity) { 
+        public void update(UIFSM entity) {
+            table.setVisible(entity.Visible);
             ControllerCheck(table);
-
-            entity.stage.act(Gdx.graphics.getDeltaTime()); 
+            entity.stage.act(Gdx.graphics.getDeltaTime());
         }
 
         @Override
-        public void exit(MenuFSM entity) {
+        public void exit(UIFSM entity) {
             entity.stage.clear();
         }
 
         @Override
-        public boolean onMessage(MenuFSM entity, Telegram telegram) {
+        public boolean onMessage(UIFSM entity, Telegram telegram) {
             return false;
         }
-    };
+    },
 
+   //PLAY STATE STUFF
+
+    Inventory() {
+
+        Skin StoredSkin;
+
+        Item[] InventoryArray = new Item[30];
+
+        private Table Screen;
+        private Table InventoryWindow;
+        private Table InventoryTable;
+
+        @Override
+        public void enter(UIFSM entity) {
+
+            InventoryArray[0] = new Item("", 0, 1, "Sprites/evil.png");
+            for (int i = 1; i < InventoryArray.length; i++) {
+                InventoryArray[i] = new Item("", 0, 1, "Sprites/red.png");
+            }
+
+            StoredSkin = entity.skin;
+            Screen = new Table(entity.skin);
+            Screen.setFillParent(true);
+            entity.stage.addActor(Screen);
+
+            InventoryWindow = new Table(entity.skin);
+            InventoryWindow.setBackground("Table_dialog");
+            InventoryWindow.pad(2);
+
+            InventoryTable = new Table(entity.skin);
+
+            for (int i = 1; i < InventoryArray.length+1; i++) {
+                int tempi = i;
+
+                Actor Icons = new Actor() {
+                    Texture Icon = new Texture(Gdx.files.internal(InventoryArray[tempi-1].getTexLocation()));
+                    @Override
+                    public void draw(Batch batch, float parentAlpha) {
+                        batch.draw(Icon, getX(), getY(), getWidth(), getHeight());
+                    }
+                };
+
+                /*
+                Label Icons = new Label(InventoryArray[tempi-1].getQuantity() + "", entity.skin) {
+                    Texture Icon = new Texture(Gdx.files.internal(InventoryArray[tempi-1].getTexLocation()));
+                    @Override
+                    public void draw(Batch batch, float parentAlpha) {
+                        batch.draw(Icon, getX(), getY(), getWidth(), getHeight());
+                        super.draw(batch, parentAlpha);
+                    }
+                };
+                 */
+
+                InventoryTable.add(Icons).size(15);
+                if (i % 6 == 0)
+                    InventoryTable.row();
+            }
+
+            InventoryWindow.add(InventoryTable).row();
+
+            Screen.add(InventoryWindow);
+
+            final TkTextButton Close = new TkTextButton("Close", entity.skin);
+            InventoryWindow.add(Close);
+            InventoryWindow.row();
+
+            Close.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    entity.stateMachine.changeState(entity.stateMachine.getPreviousState());
+                }
+            });
+        }
+
+        @Override
+        public void update(UIFSM entity) {
+            Screen.setVisible(entity.Visible);
+            ControllerCheck(Screen);
+            entity.stage.act(Gdx.graphics.getDeltaTime());
+        }
+
+        @Override
+        public void exit(UIFSM entity) {
+            entity.stage.clear();
+        }
+
+        @Override
+        public boolean onMessage(UIFSM entity, Telegram telegram) {
+            return false;
+        }
+
+        public void UpdateInventory(Item[] Items) {
+            InventoryArray = Items;
+
+            InventoryTable.clear();
+
+            for (int i = 0; i < InventoryArray.length; i++) {
+                TkTextButton Icons = new TkTextButton(InventoryArray[i].getName(), StoredSkin);
+                InventoryTable.add(Icons);
+            }
+        }
+    };
 
     public void ControllerCheck(Table table) {
         if(ctm.controllers.size() > 0) {

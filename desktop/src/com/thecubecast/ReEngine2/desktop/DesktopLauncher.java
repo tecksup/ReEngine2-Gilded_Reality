@@ -80,7 +80,7 @@ public class DesktopLauncher {
 			} else { //Windowed
 				Common.print("Windowed");
 				config.setResizable(false);
-				config.setWindowedMode(1280, 720);
+				config.setWindowedMode(1920, 1080);
 				//config.setMaximized(true);
 			}
 		}
