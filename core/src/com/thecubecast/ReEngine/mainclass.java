@@ -38,14 +38,8 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	//The Drawing Variable
 	private int W;
 	private int H;
-	public static int FBOW;
-    public static int FBOH;
-
-	private int SCALE = 2;
 
 	private SpriteBatch batch;
-	public static FrameBuffer MasterFBO;
-	OrthographicCamera MainCam;
 	
 	//Mouse Position in the window
 	private int MouseX;
@@ -81,18 +75,13 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		
 		Gdx.input.setInputProcessor(this);
 
-		gsm = new GameStateManager();
-
 		//Just setting up the variables
 		W = Gdx.graphics.getWidth();
 		H = Gdx.graphics.getHeight();
-		FBOW = W/gsm.Scale;
-		FBOH = H/gsm.Scale;
+
+		gsm = new GameStateManager(W, H);
 
 		//This is essentially the graphics object we draw too
-		MainCam = new OrthographicCamera();
-		MainCam.setToOrtho(false,W,H);
-		MasterFBO = new FrameBuffer(Pixmap.Format.RGBA8888, FBOW, FBOH, false);
 		batch = new SpriteBatch();
 	}
 	
@@ -110,23 +99,11 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		
 		stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
 
-		//batch.begin();
-		MasterFBO.bind();
-		MasterFBO.begin();
-		Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
 		Draw(batch); //DRAW
-		MasterFBO.end();
-		MasterFBO.unbind();
-
-		MasterFBO.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-
-		//batch.end();
-		batch.setProjectionMatrix(MainCam.combined);
 		batch.begin();
-		batch.draw(MasterFBO.getColorBufferTexture(),0, H, W, -H);
-			gsm.Render.GUIDrawText(batch, 0,H , Gdx.graphics.getFramesPerSecond() + "", Color.YELLOW);
+		gsm.Render.GUIDrawText(batch, 0,H , Gdx.graphics.getFramesPerSecond() + "", Color.YELLOW);
 		batch.end();
-		
+
 		if(MouseClick[0] == 1) {
 			MouseClick[0] = 0;
 		}
@@ -163,25 +140,21 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 		
 		//Figure out how to do this before you start exporting things to external files
 		gsm.update(MouseX, MouseY, MouseDrag, MouseClick);
-		MainCam.update();
 	}
 	
 	public void Draw(SpriteBatch bbg) {
 		//Figure out how to do this before you start exporting things to external files
-		gsm.draw(bbg, FBOW, FBOH, stateTime);
+		gsm.draw(bbg, W, H, stateTime);
 	}
 	
 	@Override
 	public void resize(int width, int height) {
 		W = width;
 		H = height;
-		FBOW = W/gsm.Scale;
-		FBOH = H/gsm.Scale;
-		MainCam.setToOrtho(false,W,H);
 		//MasterFBO = new FrameBuffer(Pixmap.Format.RGBA8888, MasterFBOOW, MasterFBOOH, false);
 		Common.print("Ran Resize!");
 		Common.print("" + width + " and H: " + height);
-		gsm.reSize(batch, FBOH, FBOW);
+		gsm.reSize(batch, H, W);
 	}
 	
 	

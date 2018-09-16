@@ -71,7 +71,6 @@ public enum UI_state implements State<UIFSM> {
                    //GetLogin("", "");
                    Gdx.app.getPreferences("properties").putString("Username", "");
                    Gdx.app.getPreferences("properties").flush();
-                   entity.gsm.setState(GameStateManager.State.StoryMode);
                    StoryState.setText("Loading");
                }
            });
@@ -580,7 +579,7 @@ public enum UI_state implements State<UIFSM> {
             Close.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y){
-                    entity.stateMachine.changeState(entity.stateMachine.getPreviousState());
+                    entity.Visible = false;
                 }
             });
         }

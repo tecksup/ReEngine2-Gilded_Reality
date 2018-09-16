@@ -42,7 +42,7 @@ public class MainMenuState extends GameState {
 		
 		cameraGui = new OrthographicCamera();
 
-		Menus = new UIFSM(gsm.Width, gsm.Height, cameraGui, gsm);
+		Menus = new UIFSM(gsm.UIWidth, gsm.UIHeight, cameraGui, gsm);
 
 		//BGMusicID = AudioM.playMusic("forgetting.mp3", true);
 	}
@@ -54,20 +54,30 @@ public class MainMenuState extends GameState {
 	}
 	
 	public void draw(SpriteBatch bbg, int height, int width, float Time) {
+
 		cameraGui.setToOrtho(false, width, height);
 		bbg.setProjectionMatrix(cameraGui.combined);
 		bbg.begin();
 
 		bbg.draw(Background, 0, 0, width, height);
 		bbg.draw(Title, width/2 - (200/2), 200, 200, 28);
-
-		Menus.Draw(bbg);
 		
 		bbg.end();
 
 
 	}
-	
+
+	public void drawUI(SpriteBatch g, int height, int width, float Time) {
+		//Draws things on the screen, and not the world positions
+		cameraGui.setToOrtho(false, width, height);
+		g.setProjectionMatrix(cameraGui.combined);
+		g.begin();
+		//GUI must draw last
+		Menus.Draw(g);
+		g.end();
+	}
+
+
 	public void handleInput() {
 		
 		Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);

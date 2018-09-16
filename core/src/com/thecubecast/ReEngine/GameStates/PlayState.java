@@ -76,7 +76,7 @@ public class PlayState extends DialogStateExtention {
         }
         
         //Setup Dialog Instance
-        MenuInit(gsm.Width, gsm.Height);
+        MenuInit(gsm.UIWidth, gsm.UIHeight);
         
         gsm.DiscordManager.setPresenceDetails("topdown Demo - Level 1");
         gsm.DiscordManager.setPresenceState("In Game");
@@ -86,11 +86,11 @@ public class PlayState extends DialogStateExtention {
         //Camera setup
         camera = new OrthographicCamera();
         GuiCam = new OrthographicCamera();
-        camera.setToOrtho(false, gsm.Width, gsm.Height);
-        GuiCam.setToOrtho(false, gsm.Width, gsm.Height);
+        camera.setToOrtho(false, gsm.WorldWidth, gsm.WorldHeight);
+        GuiCam.setToOrtho(false, gsm.UIWidth, gsm.UIHeight);
         shaker = new ScreenShakeCameraController(camera);
 
-        UI = new UIFSM(gsm.Width, gsm.Height, GuiCam, gsm);
+        UI = new UIFSM(gsm.UIWidth, gsm.UIHeight, GuiCam, gsm);
         UI.inGame = true;
         UI.setState(UI_state.InGameHome);
         UI.setVisable(false);
@@ -219,14 +219,6 @@ public class PlayState extends DialogStateExtention {
 
         g.end();
 
-        //Draws things on the screen, and not the world positions
-        g.setProjectionMatrix(GuiCam.combined);
-        g.begin();
-        //GUI must draw last
-        MenuDraw(g, Gdx.graphics.getDeltaTime());
-        UI.Draw(g);
-        g.end();
-
         //DEBUG CODE
         gsm.Render.debugRenderer.setProjectionMatrix(camera.combined);
         gsm.Render.debugRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -288,6 +280,16 @@ public class PlayState extends DialogStateExtention {
 
         gsm.Render.debugRenderer.end();
 
+    }
+
+    public void drawUI(SpriteBatch g, int height, int width, float Time) {
+        //Draws things on the screen, and not the world positions
+        g.setProjectionMatrix(GuiCam.combined);
+        g.begin();
+        //GUI must draw last
+        MenuDraw(g, Gdx.graphics.getDeltaTime());
+        UI.Draw(g);
+        g.end();
     }
 
     private void handleInput() {

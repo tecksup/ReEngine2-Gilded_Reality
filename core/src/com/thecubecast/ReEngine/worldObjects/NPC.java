@@ -7,8 +7,8 @@ import com.thecubecast.ReEngine.Data.Cube;
 
 import java.util.List;
 
-import static com.thecubecast.ReEngine.mainclass.FBOH;
-import static com.thecubecast.ReEngine.mainclass.FBOW;
+import static com.thecubecast.ReEngine.Data.GameStateManager.WorldHeight;
+import static com.thecubecast.ReEngine.Data.GameStateManager.WorldWidth;
 
 public abstract class NPC extends WorldObject {
 
@@ -28,7 +28,7 @@ public abstract class NPC extends WorldObject {
         this.health = health;
         this.name = name;
         this.interact = intractability.Silent;
-        init(FBOW, FBOH);
+        init(WorldWidth, WorldHeight);
     }
 
     public NPC(String name, int x, int y, int z, Vector3 size, float knockbackResistance, float health, boolean invincible) {
@@ -38,7 +38,7 @@ public abstract class NPC extends WorldObject {
         this.name = name;
         this.interact = intractability.Silent;
         this.invulnerable = invincible;
-        init(FBOW, FBOH);
+        init(WorldWidth, WorldHeight);
     }
 
     public NPC(String name, int x, int y, int z, Vector3 size, float knockbackResistance, float health, intractability interact) {
@@ -47,7 +47,7 @@ public abstract class NPC extends WorldObject {
         this.health = health;
         this.name = name;
         this.interact = interact;
-        init(FBOW, FBOH);
+        init(WorldWidth, WorldHeight);
     }
 
     public NPC(String name, int x, int y, int z, Vector3 size, float knockbackResistance, float health, intractability interact, boolean invincible) {
@@ -58,7 +58,7 @@ public abstract class NPC extends WorldObject {
         this.name = name;
         this.interact = interact;
         this.invulnerable = invincible;
-        init(FBOW, FBOH);
+        init(WorldWidth, WorldHeight);
     }
 
     @Override

@@ -242,6 +242,13 @@ public class MultiplayerTestState extends GameState {
         */
     }
 
+    public void drawUI(SpriteBatch g, int height, int width, float Time) {
+        //Draws things on the screen, and not the world positions
+        g.begin();
+        //GUI must draw last
+        g.end();
+    }
+
     public void RenderCam() {
         camera.update();
         //tiledMapRenderer.setView(camera);

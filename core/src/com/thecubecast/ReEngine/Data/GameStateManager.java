@@ -6,6 +6,12 @@
 
 package com.thecubecast.ReEngine.Data;
 
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.thecubecast.ReEngine.GameStates.*;
 import com.thecubecast.ReEngine.Graphics.Draw;
 import com.badlogic.gdx.Gdx;
@@ -13,15 +19,20 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 
+import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
+import static com.badlogic.gdx.graphics.GL20.GL_COLOR_CLEAR_VALUE;
+import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+
 public class GameStateManager {
 	public static boolean Debug = false;
 
     public enum State {
-        INTRO, MENU, PLAY, LOADING, MULTIPLAYER, StoryMode
+        INTRO, MENU, PLAY, LOADING, MULTIPLAYER
     }
 
-    public State newcurrentState;
-    private State newpreviousState;
+    public State currentState;
+    private State previousState;
 
     private GameState gameState;
 
@@ -32,12 +43,15 @@ public class GameStateManager {
 	public Draw Render;
 	public int ticks = 0;
 
+	private OrthographicCamera MainCam;
+
+	private FrameBuffer WorldFBO;
+	private FrameBuffer UIFBO;
+
 	//Public Audio handler
 	public static SoundManager AudioM;
 
 	public static controlerManager ctm;
-
-	static public EventSystem EventsSys;
 
 	public Discord DiscordManager;
 
@@ -56,13 +70,31 @@ public class GameStateManager {
 	public CursorType Cursor = CursorType.Normal;
 	
 	//screen
-	public int Width;
-	public int Height;
-	public int Scale = 4;
-	
-	public GameStateManager() {
+	private int Width;
+	private int Height;
+	private int Scale = 4;
 
-		EventsSys = new EventSystem();
+	public static int WorldWidth;
+	public static int WorldHeight;
+
+	public static int UIWidth;
+	public static int UIHeight;
+
+	public GameStateManager(int W, int H) {
+
+		Width = W;
+		Height = H;
+		WorldWidth = Width/Scale;
+		WorldHeight = Height/Scale;
+		UIWidth = Width/(Scale/2);
+		UIHeight = Height/(Scale/2);
+
+		WorldFBO = new FrameBuffer(Pixmap.Format.RGBA8888, Width/Scale, Height/Scale, false);
+		UIFBO = new FrameBuffer(Pixmap.Format.RGBA8888, Width/(Scale/2), Height/(Scale/2), false);
+
+		MainCam = new OrthographicCamera();
+		MainCam.setToOrtho(false, Width,Height);
+
         ctm = new controlerManager();
 
 		DiscordManager = new Discord("405784101245943810");
@@ -75,13 +107,12 @@ public class GameStateManager {
 
 		//setState(SHADER);
 		LoadState("STARTUP"); //THIS IS THE STATE WERE WE START WHEN THE GAME IS RUN
-		
 	}
 	
 	public void LoadState(String LoadIt) {
-		newpreviousState = newcurrentState;
+		previousState = currentState;
 		unloadState();
-		newcurrentState = State.LOADING;
+		currentState = State.LOADING;
 		//Set up the loading state 
 		gameState = new LoadingState(this);
 		((LoadingState) gameState).setLoad("STARTUP");
@@ -89,10 +120,10 @@ public class GameStateManager {
 	}
 	
 	public void setState(State i) {
-		newpreviousState = newcurrentState;
+		previousState = currentState;
 		unloadState();
-        newcurrentState = i;
-        switch (newcurrentState) {
+        currentState = i;
+        switch (currentState) {
             case INTRO:
                 Common.print("Loaded state Intro");
                 gameState = new IntroState(this);
@@ -115,11 +146,6 @@ public class GameStateManager {
                 gameState = new MultiplayerTestState(this);
                 gameState.init();
                 break;
-			case StoryMode:
-				Common.print("Loaded state Dialog");
-				gameState = new Story(this);
-				gameState.init();
-				break;
         }
 		
 	}
@@ -167,6 +193,8 @@ public class GameStateManager {
 
 		DiscordManager.UpdatePresence();
 		ctm.update();
+
+		MainCam.update();
 	}
 	
 	public void draw(SpriteBatch bbg, int W, int H, float Time) {
@@ -176,7 +204,19 @@ public class GameStateManager {
 		DeltaTime = Math.min(Gdx.graphics.getDeltaTime(), 1f / 60f);
 		if(gameState != null) {
 			//Notice how the height and width are swapped, woops
-			gameState.draw(bbg, H, W, Time);
+			Texture World = drawWorld(bbg, WorldFBO.getHeight(), WorldFBO.getWidth(), Time);
+			Texture UI = drawUI(bbg, UIFBO.getHeight(), UIFBO.getWidth(), Time);
+
+			//bbg.setBlendFunction(GL20.GL_ONE_MINUS_DST_ALPHA, GL20.GL_SRC_ALPHA);
+
+			bbg.setProjectionMatrix(MainCam.combined);
+			bbg.begin();
+			bbg.draw(World,0, H, W, -H);
+			bbg.draw(UI,0, H, W, -H);
+			bbg.end();
+
+			//bbg.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
 		}
 
         //Gdx.graphics.setVSync(!Debug);
@@ -196,14 +236,37 @@ public class GameStateManager {
 	/**
 	 * This is for drawing the world, with the standard pixel art scaling in the engine
 	 */
-	public void drawWorld() {
+	public Texture drawWorld(SpriteBatch bbg, int W, int H, float Time) {
+		WorldFBO.bind();
+		WorldFBO.begin();
+		Gdx.gl.glClearColor(0,0,0,0);
+		Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
+		gameState.draw(bbg, W, H, Time);
+		WorldFBO.end();
+		WorldFBO.unbind();
 
+		WorldFBO.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+		return WorldFBO.getColorBufferTexture();
 	}
 
 	/**
 	 * This is for drawing to the slightly larger FBO for UI. With a pixel density twice as large as drawWorld()
 	 */
-	public void drawUI() {
+	public Texture drawUI(SpriteBatch bbg, int W, int H, float Time) {
+		UIFBO.bind();
+		UIFBO.begin();
+		Gdx.gl.glClearColor(0,0,0,0);
+		Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
+
+		gameState.drawUI(bbg, W, H, Time);
+		UIFBO.end();
+		UIFBO.unbind();
+
+		UIFBO.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+		return UIFBO.getColorBufferTexture();
+
 
 	}
 
@@ -216,6 +279,8 @@ public class GameStateManager {
 		bbg.setProjectionMatrix(matrix);
 		Height = H;
 		Width = W;
+
+		MainCam.setToOrtho(false,W,H);
 	}
 
 	public void dispose() {

@@ -82,6 +82,14 @@ public class IntroState extends GameState {
 		g.draw(Splash, width/2 - ((Splash.getWidth() * 0.5f)/2), height/2 - ((Splash.getHeight() * 0.5f)/2), Splash.getWidth() * 0.5f, Splash.getHeight() * 0.5f);
 		g.end();
 	}
+
+	public void drawUI(SpriteBatch g, int height, int width, float Time) {
+		//Draws things on the screen, and not the world positions
+		g.setProjectionMatrix(camera.combined);
+		g.begin();
+		//GUI must draw last
+		g.end();
+	}
 	
 	public void handleInput() {
 

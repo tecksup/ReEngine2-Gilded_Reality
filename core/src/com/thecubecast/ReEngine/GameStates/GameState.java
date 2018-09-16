@@ -21,6 +21,7 @@ public abstract class GameState {
 	public abstract void init();
 	public abstract void update();
 	public abstract void draw(SpriteBatch g, int height, int width, float Time);
+	public abstract void drawUI(SpriteBatch g, int height, int width, float Time);
 	
 	public void RenderCam() {}
 

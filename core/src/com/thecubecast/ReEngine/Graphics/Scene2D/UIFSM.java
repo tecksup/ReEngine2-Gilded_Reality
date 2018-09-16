@@ -96,8 +96,8 @@ public class UIFSM implements Telegraph {
 
 
     public void reSize() {
-        this.width = gsm.Width;
-        this.height = gsm.Height;
+        this.width = gsm.UIWidth;
+        this.height = gsm.UIHeight;
 
         stage = new Stage(new StretchViewport(width,height));
 
