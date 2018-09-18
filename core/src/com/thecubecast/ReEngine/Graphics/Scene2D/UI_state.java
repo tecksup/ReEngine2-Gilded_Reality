@@ -15,14 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.Item;
 import com.thecubecast.ReEngine.Data.controlerManager;
 
-import javax.swing.*;
 import java.net.URI;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -514,7 +512,7 @@ public enum UI_state implements State<UIFSM> {
 
     Inventory() {
 
-        Skin StoredSkin;
+        Skin BackupSkin;
 
         Item[] InventoryArray = new Item[30];
 
@@ -525,12 +523,9 @@ public enum UI_state implements State<UIFSM> {
         @Override
         public void enter(UIFSM entity) {
 
-            InventoryArray[0] = new Item("", 0, 1, "Sprites/evil.png");
-            for (int i = 1; i < InventoryArray.length; i++) {
-                InventoryArray[i] = new Item("", 0, 1, "Sprites/red.png");
-            }
+            InventoryArray = entity.player.Inventory;
 
-            StoredSkin = entity.skin;
+            BackupSkin = entity.skin;
             Screen = new Table(entity.skin);
             Screen.setFillParent(true);
             entity.stage.addActor(Screen);
@@ -544,26 +539,46 @@ public enum UI_state implements State<UIFSM> {
             for (int i = 1; i < InventoryArray.length+1; i++) {
                 int tempi = i;
 
-                Actor Icons = new Actor() {
-                    Texture Icon = new Texture(Gdx.files.internal(InventoryArray[tempi-1].getTexLocation()));
-                    @Override
-                    public void draw(Batch batch, float parentAlpha) {
-                        batch.draw(Icon, getX(), getY(), getWidth(), getHeight());
-                    }
-                };
+                Table ItemBox = new Table(entity.skin);
+                ItemBox.setBackground("Table_dialog");
 
-                /*
-                Label Icons = new Label(InventoryArray[tempi-1].getQuantity() + "", entity.skin) {
-                    Texture Icon = new Texture(Gdx.files.internal(InventoryArray[tempi-1].getTexLocation()));
-                    @Override
-                    public void draw(Batch batch, float parentAlpha) {
-                        batch.draw(Icon, getX(), getY(), getWidth(), getHeight());
-                        super.draw(batch, parentAlpha);
-                    }
-                };
-                 */
+                TkItem temp = new TkItem(entity.skin, InventoryArray[tempi-1]);
+                temp.setName("Item");
 
-                InventoryTable.add(Icons).size(15);
+                ItemBox.add(temp).size(28);
+
+                temp.addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y){
+                        //Play a click sound
+                        AudioM.play("Click");
+
+                        if (entity.CursorItem == null) { //Pickup
+                            System.out.println("Picked up");
+                            entity.CursorItem = temp.getItem();
+                            temp.setItem(null);
+
+                        } else {
+                            if (temp.getItem() != null) {
+                                //Swap
+                                Item tempItem = entity.CursorItem;
+                                entity.CursorItem = temp.getItem();
+                                temp.setItem(tempItem);
+                                System.out.println("Swaped");
+
+                            } else {
+                                //Place
+                                temp.setItem(entity.CursorItem);
+                                entity.CursorItem = null;
+                                System.out.println("Put Down");
+
+                            }
+                        }
+
+                    }
+                });
+
+                InventoryTable.add(ItemBox).size(32);
                 if (i % 6 == 0)
                     InventoryTable.row();
             }
@@ -571,6 +586,8 @@ public enum UI_state implements State<UIFSM> {
             InventoryWindow.add(InventoryTable).row();
 
             Screen.add(InventoryWindow);
+
+            //__________________________________________________________
 
             final TkTextButton Close = new TkTextButton("Close", entity.skin);
             InventoryWindow.add(Close);
@@ -582,10 +599,68 @@ public enum UI_state implements State<UIFSM> {
                     entity.Visible = false;
                 }
             });
+
         }
 
         @Override
         public void update(UIFSM entity) {
+
+
+
+            if (!InventoryArray.equals(entity.player.Inventory)) {
+                InventoryArray = entity.player.Inventory;
+
+                InventoryTable.clear();
+
+                for (int i = 1; i < InventoryArray.length+1; i++) {
+                    int tempi = i;
+
+                    Table ItemBox = new Table(entity.skin);
+                    ItemBox.setBackground("Table_dialog");
+
+                    TkItem temp = new TkItem(entity.skin, InventoryArray[tempi-1]);
+                    temp.setName("Item");
+
+                    ItemBox.add(temp).size(28);
+
+                    temp.addListener(new ClickListener(){
+                        @Override
+                        public void clicked(InputEvent event, float x, float y){
+                            //Play a click sound
+                            AudioM.play("Click");
+
+                            if (entity.CursorItem == null) { //Pickup
+                                System.out.println("Picked up");
+                                entity.CursorItem = temp.getItem();
+                                temp.setItem(null);
+
+                            } else {
+                                if (temp.getItem() != null) {
+                                    //Swap
+                                    Item tempItem = entity.CursorItem;
+                                    entity.CursorItem = temp.getItem();
+                                    temp.setItem(tempItem);
+                                    System.out.println("Swaped");
+
+                                } else {
+                                    //Place
+                                    temp.setItem(entity.CursorItem);
+                                    entity.CursorItem = null;
+                                    System.out.println("Put Down");
+
+                                }
+                            }
+
+                        }
+                    });
+
+                    InventoryTable.add(ItemBox).size(32);
+                    if (i % 6 == 0)
+                        InventoryTable.row();
+                }
+
+            }
+
             Screen.setVisible(entity.Visible);
             ControllerCheck(Screen);
             entity.stage.act(Gdx.graphics.getDeltaTime());
@@ -599,17 +674,6 @@ public enum UI_state implements State<UIFSM> {
         @Override
         public boolean onMessage(UIFSM entity, Telegram telegram) {
             return false;
-        }
-
-        public void UpdateInventory(Item[] Items) {
-            InventoryArray = Items;
-
-            InventoryTable.clear();
-
-            for (int i = 0; i < InventoryArray.length; i++) {
-                TkTextButton Icons = new TkTextButton(InventoryArray[i].getName(), StoredSkin);
-                InventoryTable.add(Icons);
-            }
         }
     };
 

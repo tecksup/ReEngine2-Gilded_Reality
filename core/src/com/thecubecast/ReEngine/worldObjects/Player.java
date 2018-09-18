@@ -19,7 +19,7 @@ import static com.thecubecast.ReEngine.Graphics.Draw.loadAnim;
 
 public class Player extends WorldObject {
 
-    Item[] Invetory = new Item[30];
+    public Item[] Inventory = new Item[30];
 
     Texture Shadow = new Texture(Gdx.files.internal("Sprites/Shadow.png"));
     int imageWidth = 16;
@@ -47,6 +47,8 @@ public class Player extends WorldObject {
 
     public Player(int x, int y, int z) {
         super(x, y, z, new Vector3(10,10,12),type.Dynamic);
+
+        Inventory[0] = new Item("Evil", 0, 12, "Sprites/evil.png");
 
         PengAnim0 = new Animation<TextureRegion>(0.1f, loadAnim(penguin0, "Sprites/8direct/south.png", 4, 1));
         PengAnim1 = new Animation<TextureRegion>(0.1f, loadAnim(penguin1, "Sprites/8direct/southEast.png", 4, 1));

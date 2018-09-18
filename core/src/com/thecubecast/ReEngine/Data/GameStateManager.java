@@ -277,10 +277,19 @@ public class GameStateManager {
 		Matrix4 matrix = new Matrix4();
 		matrix.setToOrtho2D(0, 0, W, H);
 		bbg.setProjectionMatrix(matrix);
-		Height = H;
-		Width = W;
 
 		MainCam.setToOrtho(false,W,H);
+
+		Width = W;
+		Height = H;
+		WorldWidth = Width/Scale;
+		WorldHeight = Height/Scale;
+		UIWidth = Width/(Scale/2);
+		UIHeight = Height/(Scale/2);
+
+		WorldFBO = new FrameBuffer(Pixmap.Format.RGBA8888, Width/Scale, Height/Scale, false);
+		UIFBO = new FrameBuffer(Pixmap.Format.RGBA8888, Width/(Scale/2), Height/(Scale/2), false);
+
 	}
 
 	public void dispose() {

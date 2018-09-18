@@ -147,6 +147,8 @@ public class PlayState extends DialogStateExtention {
         cameraUpdate(MainCameraFocusPoint, camera, Entities,0,0, Map.getWidth(), Map.getHeight());
         
         handleInput();
+
+        UI.setPlayer(player);
     }
 
     public void draw(SpriteBatch g, int height, int width, float Time) {
@@ -289,6 +291,12 @@ public class PlayState extends DialogStateExtention {
         //GUI must draw last
         MenuDraw(g, Gdx.graphics.getDeltaTime());
         UI.Draw(g);
+        if (UI.CursorItem != null) {
+            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            GuiCam.unproject(pos);
+            g.draw(new Texture(Gdx.files.internal(UI.CursorItem.getTexLocation())), pos.x, pos.y);
+
+        }
         g.end();
     }
 

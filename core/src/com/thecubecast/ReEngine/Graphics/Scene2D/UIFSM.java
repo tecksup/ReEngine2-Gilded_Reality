@@ -6,13 +6,22 @@ import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.thecubecast.ReEngine.Data.GameStateManager;
+import com.thecubecast.ReEngine.Data.Item;
+import com.thecubecast.ReEngine.worldObjects.Player;
+
+import javax.xml.soap.Text;
 
 public class UIFSM implements Telegraph {
+
+    Player player;
+    public Item CursorItem;
+    public Texture CursorItemImage;
 
     public boolean inGame = false;
     public boolean Visible = true;
@@ -89,11 +98,13 @@ public class UIFSM implements Telegraph {
 
     public void Draw(SpriteBatch bbg) {
         stateMachine.update();
-        stage.draw();
-        //stage.getRoot().draw(bbg, 1);
+        //stage.draw();
+        stage.getRoot().draw(bbg, 1);
     }
 
-
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
     public void reSize() {
         this.width = gsm.UIWidth;
