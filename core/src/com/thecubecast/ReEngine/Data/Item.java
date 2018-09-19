@@ -45,4 +45,8 @@ public class Item {
     public String getTexLocation() {
         return TexLocation;
     }
+
+    public static boolean compare(Item item1, Item item2) {
+        return (item1 == null ? item2 == null : item1.equals(item2));
+    }
 }

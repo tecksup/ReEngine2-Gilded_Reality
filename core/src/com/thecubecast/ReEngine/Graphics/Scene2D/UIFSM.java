@@ -1,6 +1,7 @@
 package com.thecubecast.ReEngine.Graphics.Scene2D;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.ai.msg.Telegram;
@@ -20,7 +21,7 @@ import javax.xml.soap.Text;
 public class UIFSM implements Telegraph {
 
     Player player;
-    public Item CursorItem;
+    public static Item CursorItem;
     public Texture CursorItemImage;
 
     public boolean inGame = false;

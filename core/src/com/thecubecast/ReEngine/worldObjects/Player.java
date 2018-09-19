@@ -49,6 +49,8 @@ public class Player extends WorldObject {
         super(x, y, z, new Vector3(10,10,12),type.Dynamic);
 
         Inventory[0] = new Item("Evil", 0, 12, "Sprites/evil.png");
+        Inventory[1] = new Item("blue", 0, 8, "Sprites/blue.png");
+        Inventory[5] = new Item("green", 0, 4, "Sprites/green.png");
 
         PengAnim0 = new Animation<TextureRegion>(0.1f, loadAnim(penguin0, "Sprites/8direct/south.png", 4, 1));
         PengAnim1 = new Animation<TextureRegion>(0.1f, loadAnim(penguin1, "Sprites/8direct/southEast.png", 4, 1));

@@ -28,6 +28,7 @@ import static com.thecubecast.ReEngine.Data.Common.GetMonitorSizeH;
 import static com.thecubecast.ReEngine.Data.Common.GetMonitorSizeW;
 import static com.thecubecast.ReEngine.Data.GameStateManager.AudioM;
 import static com.thecubecast.ReEngine.Data.GameStateManager.ctm;
+import static com.thecubecast.ReEngine.GameStates.PlayState.player;
 
 public enum UI_state implements State<UIFSM> {
 
@@ -542,41 +543,9 @@ public enum UI_state implements State<UIFSM> {
                 Table ItemBox = new Table(entity.skin);
                 ItemBox.setBackground("Table_dialog");
 
-                TkItem temp = new TkItem(entity.skin, InventoryArray[tempi-1]);
-                temp.setName("Item");
+                TkItem temp = new TkItem(entity.skin, tempi-1);
 
                 ItemBox.add(temp).size(28);
-
-                temp.addListener(new ClickListener(){
-                    @Override
-                    public void clicked(InputEvent event, float x, float y){
-                        //Play a click sound
-                        AudioM.play("Click");
-
-                        if (entity.CursorItem == null) { //Pickup
-                            System.out.println("Picked up");
-                            entity.CursorItem = temp.getItem();
-                            temp.setItem(null);
-
-                        } else {
-                            if (temp.getItem() != null) {
-                                //Swap
-                                Item tempItem = entity.CursorItem;
-                                entity.CursorItem = temp.getItem();
-                                temp.setItem(tempItem);
-                                System.out.println("Swaped");
-
-                            } else {
-                                //Place
-                                temp.setItem(entity.CursorItem);
-                                entity.CursorItem = null;
-                                System.out.println("Put Down");
-
-                            }
-                        }
-
-                    }
-                });
 
                 InventoryTable.add(ItemBox).size(32);
                 if (i % 6 == 0)
@@ -604,63 +573,6 @@ public enum UI_state implements State<UIFSM> {
 
         @Override
         public void update(UIFSM entity) {
-
-
-
-            if (!InventoryArray.equals(entity.player.Inventory)) {
-                InventoryArray = entity.player.Inventory;
-
-                InventoryTable.clear();
-
-                for (int i = 1; i < InventoryArray.length+1; i++) {
-                    int tempi = i;
-
-                    Table ItemBox = new Table(entity.skin);
-                    ItemBox.setBackground("Table_dialog");
-
-                    TkItem temp = new TkItem(entity.skin, InventoryArray[tempi-1]);
-                    temp.setName("Item");
-
-                    ItemBox.add(temp).size(28);
-
-                    temp.addListener(new ClickListener(){
-                        @Override
-                        public void clicked(InputEvent event, float x, float y){
-                            //Play a click sound
-                            AudioM.play("Click");
-
-                            if (entity.CursorItem == null) { //Pickup
-                                System.out.println("Picked up");
-                                entity.CursorItem = temp.getItem();
-                                temp.setItem(null);
-
-                            } else {
-                                if (temp.getItem() != null) {
-                                    //Swap
-                                    Item tempItem = entity.CursorItem;
-                                    entity.CursorItem = temp.getItem();
-                                    temp.setItem(tempItem);
-                                    System.out.println("Swaped");
-
-                                } else {
-                                    //Place
-                                    temp.setItem(entity.CursorItem);
-                                    entity.CursorItem = null;
-                                    System.out.println("Put Down");
-
-                                }
-                            }
-
-                        }
-                    });
-
-                    InventoryTable.add(ItemBox).size(32);
-                    if (i % 6 == 0)
-                        InventoryTable.row();
-                }
-
-            }
-
             Screen.setVisible(entity.Visible);
             ControllerCheck(Screen);
             entity.stage.act(Gdx.graphics.getDeltaTime());

@@ -40,7 +40,7 @@ public class PlayState extends DialogStateExtention {
     ParticleHandler Particles;
 
     //GameObjects
-    Player player;
+    public static Player player;
     private List<Cube> Collisions = new ArrayList<>();
     public List<Area> Areas = new ArrayList<>();
     private List<WorldObject> Entities = new ArrayList<>();
@@ -131,16 +131,42 @@ public class PlayState extends DialogStateExtention {
 
     public void update() {
 
+
+        //Drops the item in hand when you press Q
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+            if (UI.CursorItem != null) {
+                WorldItem temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, UI.CursorItem);
+                Entities.add(temp);
+                UI.CursorItem = null;
+            }
+        }
+
         Particles.Update();
 
-        //player.update(Gdx.graphics.getDeltaTime(), Collisions);
-
+        //This is for triggers
         for (int i = 0; i < Entities.size(); i++) {
             Entities.get(i).update(Gdx.graphics.getDeltaTime(), Collisions);
 
             if (Entities.get(i) instanceof Trigger) {
                 Trigger temp = (Trigger) Entities.get(i);
                 temp.Trigger(player,shaker,this,MainCameraFocusPoint,Particles,Entities);
+            }
+        }
+
+        //This finds out if you have picked up an item
+        for (int i = 0; i < Entities.size(); i++) {
+            if(Entities.get(i) instanceof WorldItem) {
+                WorldItem Entitemp = (WorldItem) Entities.get(i);
+                if(Entitemp.getHitbox().intersects(player.getHitbox())) {
+                    //Add the item to inventory
+                    for (int j = 0; j < player.Inventory.length; j++) {
+                        if(player.Inventory[j] == null) {
+                            player.Inventory[j] = Entitemp.item;
+                            Entities.remove(i);
+                            break;
+                        }
+                    }
+                }
             }
         }
 
