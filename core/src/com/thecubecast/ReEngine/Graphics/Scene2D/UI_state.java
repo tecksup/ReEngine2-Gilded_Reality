@@ -20,6 +20,8 @@ import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.Item;
 import com.thecubecast.ReEngine.Data.controlerManager;
+import com.thecubecast.ReEngine.GameStates.PlayState;
+import com.thecubecast.ReEngine.worldObjects.WorldItem;
 
 import java.net.URI;
 
@@ -29,6 +31,7 @@ import static com.thecubecast.ReEngine.Data.Common.GetMonitorSizeW;
 import static com.thecubecast.ReEngine.Data.GameStateManager.AudioM;
 import static com.thecubecast.ReEngine.Data.GameStateManager.ctm;
 import static com.thecubecast.ReEngine.GameStates.PlayState.player;
+import static com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM.CursorItem;
 
 public enum UI_state implements State<UIFSM> {
 
@@ -521,10 +524,29 @@ public enum UI_state implements State<UIFSM> {
         private Table InventoryWindow;
         private Table InventoryTable;
 
+        ClickListener StageListener;
+
         @Override
         public void enter(UIFSM entity) {
 
             InventoryArray = entity.player.Inventory;
+
+            StageListener = new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    //drop out of inventory
+                    if (entity.ClickedOutsideInventory) {
+                        //Drop item in CursorItem
+                        if (entity.CursorItem != null) {
+                            WorldItem temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                            PlayState.Entities.add(temp);
+                            entity.CursorItem = null;
+                        }
+                    }
+
+                    entity.ClickedOutsideInventory = true;
+                }
+            };
 
             BackupSkin = entity.skin;
             Screen = new Table(entity.skin);
@@ -534,6 +556,21 @@ public enum UI_state implements State<UIFSM> {
             InventoryWindow = new Table(entity.skin);
             InventoryWindow.setBackground("Table_dialog");
             InventoryWindow.pad(2);
+
+            entity.stage.addListener(StageListener);
+
+            InventoryWindow.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    //Place
+                    entity.ClickedOutsideInventory = false;
+                    /*if (entity.CursorItem != null) {
+                        WorldItem temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                        PlayState.Entities.add(temp);
+                        entity.CursorItem = null;
+                    }*/
+                }
+            });
 
             InventoryTable = new Table(entity.skin);
 
@@ -580,7 +617,17 @@ public enum UI_state implements State<UIFSM> {
 
         @Override
         public void exit(UIFSM entity) {
+
+            for (int j = 0; j < player.Inventory.length; j++) {
+                if(player.Inventory[j] == null) {
+                    player.Inventory[j] = CursorItem;
+                    CursorItem = null;
+                    break;
+                }
+            }
+
             entity.stage.clear();
+            entity.stage.removeListener(StageListener);
         }
 
         @Override

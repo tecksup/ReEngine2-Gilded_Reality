@@ -43,7 +43,7 @@ public class PlayState extends DialogStateExtention {
     public static Player player;
     private List<Cube> Collisions = new ArrayList<>();
     public List<Area> Areas = new ArrayList<>();
-    private List<WorldObject> Entities = new ArrayList<>();
+    public static List<WorldObject> Entities = new ArrayList<>();
 
     //Map Variables
     OelMap Map;
@@ -130,16 +130,6 @@ public class PlayState extends DialogStateExtention {
     }
 
     public void update() {
-
-
-        //Drops the item in hand when you press Q
-        if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-            if (UI.CursorItem != null) {
-                WorldItem temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, UI.CursorItem);
-                Entities.add(temp);
-                UI.CursorItem = null;
-            }
-        }
 
         Particles.Update();
 
