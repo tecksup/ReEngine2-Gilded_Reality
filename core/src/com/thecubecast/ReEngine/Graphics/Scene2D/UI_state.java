@@ -29,7 +29,9 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.thecubecast.ReEngine.Data.Common.GetMonitorSizeH;
 import static com.thecubecast.ReEngine.Data.Common.GetMonitorSizeW;
 import static com.thecubecast.ReEngine.Data.GameStateManager.AudioM;
+import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
 import static com.thecubecast.ReEngine.Data.GameStateManager.ctm;
+import static com.thecubecast.ReEngine.GameStates.PlayState.CraftingRecipes;
 import static com.thecubecast.ReEngine.GameStates.PlayState.player;
 import static com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM.CursorItem;
 
@@ -518,18 +520,16 @@ public enum UI_state implements State<UIFSM> {
 
         Skin BackupSkin;
 
-        Item[] InventoryArray = new Item[30];
-
         private Table Screen;
         private Table InventoryWindow;
+
         private Table InventoryTable;
+        private Table EquipmentTable;
 
         ClickListener StageListener;
 
         @Override
         public void enter(UIFSM entity) {
-
-            InventoryArray = entity.player.Inventory;
 
             StageListener = new ClickListener() {
                 @Override
@@ -538,7 +538,34 @@ public enum UI_state implements State<UIFSM> {
                     if (entity.ClickedOutsideInventory) {
                         //Drop item in CursorItem
                         if (entity.CursorItem != null) {
-                            WorldItem temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                            WorldItem temp = new WorldItem(0, 0, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                            switch (player.playerDirection) {
+
+                                case South:
+                                    temp = new WorldItem((int) player.getIntereactBox().min.x, (int) player.getIntereactBox().min.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                    break;
+                                case SouthEast:
+                                    temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                    break;
+                                case East:
+                                    temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                    break;
+                                case NorthEast:
+                                    temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                    break;
+                                case North:
+                                    temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                    break;
+                                case NorthWest:
+                                    temp = new WorldItem((int) player.getIntereactBox().min.x, (int) player.getIntereactBox().min.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                    break;
+                                case West:
+                                    temp = new WorldItem((int) player.getIntereactBox().min.x, (int) player.getIntereactBox().min.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                    break;
+                                case SouthWest:
+                                    temp = new WorldItem((int) player.getIntereactBox().min.x, (int) player.getIntereactBox().min.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                    break;
+                            }
                             PlayState.Entities.add(temp);
                             entity.CursorItem = null;
                         }
@@ -554,7 +581,7 @@ public enum UI_state implements State<UIFSM> {
             entity.stage.addActor(Screen);
 
             InventoryWindow = new Table(entity.skin);
-            InventoryWindow.setBackground("Table_dialog");
+            InventoryWindow.setBackground("Window_grey_back");
             InventoryWindow.pad(2);
 
             entity.stage.addListener(StageListener);
@@ -574,7 +601,7 @@ public enum UI_state implements State<UIFSM> {
 
             InventoryTable = new Table(entity.skin);
 
-            for (int i = 1; i < InventoryArray.length+1; i++) {
+            for (int i = 1; i < player.Inventory.length+1; i++) {
                 int tempi = i;
 
                 Table ItemBox = new Table(entity.skin);
@@ -584,12 +611,28 @@ public enum UI_state implements State<UIFSM> {
 
                 ItemBox.add(temp).size(28);
 
-                InventoryTable.add(ItemBox).size(32);
+                InventoryTable.add(ItemBox).size(32).pad(0.5f);
                 if (i % 6 == 0)
                     InventoryTable.row();
             }
 
-            InventoryWindow.add(InventoryTable).row();
+            EquipmentTable = new Table(entity.skin);
+
+            for (int i = 1; i < player.Equipment.length+1; i++) {
+                int tempi = i;
+
+                Table ItemBox = new Table(entity.skin);
+                ItemBox.setBackground("Table_dialog");
+
+                TkItem temp = new TkItem(entity.skin, tempi-1, true);
+
+                ItemBox.add(temp).size(28);
+
+                EquipmentTable.add(ItemBox).size(32).pad(0.5f).row();
+            }
+
+            InventoryWindow.add(InventoryTable);
+            InventoryWindow.add(EquipmentTable).row();
 
             Screen.add(InventoryWindow);
 
@@ -613,6 +656,7 @@ public enum UI_state implements State<UIFSM> {
             Screen.setVisible(entity.Visible);
             ControllerCheck(Screen);
             entity.stage.act(Gdx.graphics.getDeltaTime());
+
         }
 
         @Override
@@ -634,7 +678,86 @@ public enum UI_state implements State<UIFSM> {
         public boolean onMessage(UIFSM entity, Telegram telegram) {
             return false;
         }
+    },
+
+    Crafting() {
+
+        Skin BackupSkin;
+
+        private Table Screen;
+        private Table InventoryWindow;
+
+        private Table InventoryTable;
+        private Table EquipmentTable;
+
+        @Override
+        public void enter(UIFSM entity) {
+
+            BackupSkin = entity.skin;
+            Screen = new Table(entity.skin);
+            Screen.setFillParent(true);
+            entity.stage.addActor(Screen);
+
+            InventoryWindow = new Table(entity.skin);
+            InventoryWindow.setBackground("Window_grey_back");
+            InventoryWindow.pad(2);
+
+            InventoryTable = new Table(entity.skin);
+
+            for (int i = 0; i < CraftingRecipes.size(); i++) {
+                int tempi = i;
+
+                //Make the TkCraftingRecipe and add it
+                TkCraftingRecipe CraftingRow = new TkCraftingRecipe(entity.skin, tempi);
+
+                InventoryTable.add(CraftingRow).height(32).pad(0.5f);
+
+
+                InventoryTable.row();
+            }
+
+            EquipmentTable = new Table(entity.skin);
+
+            InventoryWindow.add(InventoryTable);
+            InventoryWindow.add(EquipmentTable).row();
+
+            Screen.add(InventoryWindow);
+
+            //__________________________________________________________
+
+            final TkTextButton Close = new TkTextButton("Close", entity.skin);
+            InventoryWindow.add(Close);
+            InventoryWindow.row();
+
+            Close.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    entity.Visible = false;
+                }
+            });
+
+        }
+
+        @Override
+        public void update(UIFSM entity) {
+            Screen.setVisible(entity.Visible);
+            ControllerCheck(Screen);
+            entity.stage.act(Gdx.graphics.getDeltaTime());
+
+        }
+
+        @Override
+        public void exit(UIFSM entity) {
+            entity.stage.clear();
+        }
+
+        @Override
+        public boolean onMessage(UIFSM entity, Telegram telegram) {
+            return false;
+        }
     };
+
+
 
     public void ControllerCheck(Table table) {
         if(ctm.controllers.size() > 0) {

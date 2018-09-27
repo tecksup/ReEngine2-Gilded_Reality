@@ -100,6 +100,13 @@ public class UIFSM implements Telegraph {
     }
 
     public void Draw(SpriteBatch bbg) {
+
+        if (CursorItem != null) {
+            if (CursorItem.getQuantity() == 0) {
+                CursorItem = null;
+            }
+        }
+
         stateMachine.update();
         //stage.draw();
         stage.getRoot().draw(bbg, 1);

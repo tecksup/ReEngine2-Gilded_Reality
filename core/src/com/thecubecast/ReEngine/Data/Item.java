@@ -1,32 +1,28 @@
 package com.thecubecast.ReEngine.Data;
 
+import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
+
 public class Item {
     private String Name = "";
     private int ID = 0;
     private int Quantity = 0;
     private String TexLocation = "";
 
-    public Item(String Name, int ID) {
-        this.Name = Name;
-        this.ID = ID;
+    public Item(int ID, int Quantity) {
+        this(ItemPresets.get(ID));
+        this.Quantity = Quantity;
+    }
+
+    public Item(Item item) {
+        this.Name = item.getName();
+        this.ID = item.getID();
+        this.Quantity = item.getQuantity();
+        this.TexLocation = item.getTexLocation();
     }
 
     public Item(String Name, int ID, String SpriteLocation) {
         this.Name = Name;
         this.ID = ID;
-        this.TexLocation = SpriteLocation;
-    }
-
-    public Item(String Name, int ID, int Quantity) {
-        this.Name = Name;
-        this.ID = ID;
-        this.Quantity = Quantity;
-    }
-
-    public Item(String Name, int ID, int Quantity, String SpriteLocation) {
-        this.Name = Name;
-        this.ID = ID;
-        this.Quantity = Quantity;
         this.TexLocation = SpriteLocation;
     }
 
@@ -40,6 +36,10 @@ public class Item {
 
     public int getQuantity() {
         return Quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        Quantity = quantity;
     }
 
     public String getTexLocation() {

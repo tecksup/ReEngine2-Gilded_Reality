@@ -319,6 +319,7 @@
       <ValueDefinitions>
         <ValueDefinition xsi:type="StringValueDefinition" Name="SpriteLocation" Default="Sprites\Map\Green_Tree.png" MaxChars="-1" MultiLine="false" />
         <ValueDefinition xsi:type="BoolValueDefinition" Name="Collidable" Default="false" />
+        <ValueDefinition xsi:type="BoolValueDefinition" Name="Resource" Default="false" />
       </ValueDefinitions>
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>

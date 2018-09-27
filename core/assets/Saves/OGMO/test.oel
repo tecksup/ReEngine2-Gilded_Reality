@@ -80,7 +80,7 @@
 0000000000000000000000000000000000000000
 0000000000000000000000000000000000000000
 0000000000000000000000000000000000000000
-0000000000000000000000000000000000000000
+0000000000000000000000000000010000000000
 0000000000000000000000000000000000000000
 0000000000000000000000000000000000000000
 0000000000000000000000000000000000000000
@@ -125,6 +125,9 @@
   <Objects>
     <Cube id="0" x="64" y="352" SpriteLocation="Sprites\Map\cube.png" Collidable="False" />
     <stairs_H id="1" x="95" y="402" SpriteLocation="Sprites\Map\stairs_H.png" Collidable="False" />
+    <green_rock_big id="1" x="224" y="267" SpriteLocation="Sprites\Map\Objects_08.png" Collidable="False" />
+    <Green_Tree id="1" x="357" y="290" SpriteLocation="Sprites\Map\Green_Tree.png" Collidable="False" />
+    <Green_Bush id="1" x="459" y="332" SpriteLocation="Sprites\Map\Green_Bush.png" Collidable="False" />
   </Objects>
   <Areas />
   <Triggers />

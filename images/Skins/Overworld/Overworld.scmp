@@ -359,6 +359,74 @@ atlasData: {
 			minHeight: 0
 			customized: false
 		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/Window_grey.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: Window_grey
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/Window_red.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: Window_red
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/Window_grey_back.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: Window_grey_back
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/Window_green.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: Window_green
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
 	]
 }
 jsonData: {

@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.thecubecast.ReEngine.Data.*;
 import com.thecubecast.ReEngine.Data.OGMO.*;
 import com.thecubecast.ReEngine.Graphics.Scene2D.UI_state;
@@ -22,6 +24,7 @@ import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
 import com.thecubecast.ReEngine.worldObjects.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.thecubecast.ReEngine.Data.Common.updategsmValues;
@@ -30,6 +33,8 @@ public class PlayState extends DialogStateExtention {
 
     //GUI
     UIFSM UI;
+
+    public static HashMap<Integer, Craftable> CraftingRecipes;
 
     //Camera
     OrthographicCamera GuiCam;
@@ -57,6 +62,17 @@ public class PlayState extends DialogStateExtention {
     }
 
     public void init() {
+
+        CraftingRecipes = new HashMap<>();
+
+        JsonParser tempparser = new JsonParser();
+        JsonArray tempJson = tempparser.parse(Gdx.files.internal("Crafting.dat").readString()).getAsJsonArray();
+        for (int i = 0; i < tempJson.size(); i++) {
+            int Item = tempJson.get(i).getAsJsonObject().get("Crafting").getAsInt();
+            int Quantity = tempJson.get(i).getAsJsonObject().get("Quantity").getAsInt();
+            JsonArray Requirements = tempJson.get(i).getAsJsonObject().get("Required").getAsJsonArray();
+            CraftingRecipes.put(Item, new Craftable(Item, Requirements, Quantity));
+        }
 
         player = new Player(13*16,1*16, 0);
 
@@ -133,18 +149,16 @@ public class PlayState extends DialogStateExtention {
 
         Particles.Update();
 
-        //This is for triggers
         for (int i = 0; i < Entities.size(); i++) {
             Entities.get(i).update(Gdx.graphics.getDeltaTime(), Collisions);
 
+            //This is for triggers
             if (Entities.get(i) instanceof Trigger) {
                 Trigger temp = (Trigger) Entities.get(i);
                 temp.Trigger(player,shaker,this,MainCameraFocusPoint,Particles,Entities);
             }
-        }
 
-        //This finds out if you have picked up an item
-        for (int i = 0; i < Entities.size(); i++) {
+            //This finds out if you have picked up an item
             if(Entities.get(i) instanceof WorldItem) {
                 WorldItem Entitemp = (WorldItem) Entities.get(i);
                 if(Entitemp.getHitbox().intersects(player.getHitbox())) {
@@ -383,7 +397,6 @@ public class PlayState extends DialogStateExtention {
         }
 
         if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-            Common.print("Escape!!");
             if (UI.getState().equals(UI_state.Inventory) && UI.Visible) {
                 UI.setVisable(!UI.Visible);
             } else if (!UI.Visible) {
@@ -400,6 +413,16 @@ public class PlayState extends DialogStateExtention {
             }
             else {
                 UI.setState(UI_state.Inventory);
+            }
+            //gsm.ctm.newController("template");
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Y)){
+            if (UI.getState().equals(UI_state.Crafting)) {
+                UI.setVisable(!UI.isVisible());
+            }
+            else {
+                UI.setState(UI_state.Crafting);
             }
             //gsm.ctm.newController("template");
         }

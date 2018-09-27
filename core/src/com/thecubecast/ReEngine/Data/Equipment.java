@@ -1,0 +1,15 @@
+package com.thecubecast.ReEngine.Data;
+
+public class Equipment extends Item {
+    public Equipment(int ID, int Quantity) {
+        super(ID, Quantity);
+    }
+
+    public Equipment(Item item) {
+        super(item);
+    }
+
+    public Equipment(String Name, int ID, String SpriteLocation) {
+        super(Name, ID, SpriteLocation);
+    }
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "Name": "Evil",
+    "TexLocation": "Sprites/evil.png",
+    "Equipment": false,
+    "Max": 64
+  },
+  {
+    "Name": "Green",
+    "TexLocation": "Sprites/green.png",
+    "Equipment": false,
+    "Max": 64
+  },
+  {
+    "Name": "Blue",
+    "TexLocation": "Sprites/blue.png",
+    "Equipment": false,
+    "Max": 64
+  },
+  {
+    "Name": "Happy",
+    "TexLocation": "Sprites/face.png",
+    "Equipment": false,
+    "Max": 64
+  },
+     {
+       "Name": "Happy2",
+       "TexLocation": "Sprites/face.png",
+       "Equipment": false,
+       "Max": 64
+     },
+        {
+          "Name": "Happy3",
+          "TexLocation": "Sprites/face.png",
+          "Equipment": false,
+          "Max": 64
+        },
+           {
+             "Name": "Happy4",
+             "TexLocation": "Sprites/face.png",
+             "Equipment": false,
+             "Max": 64
+           },
+              {
+                "Name": "Happy5",
+                "TexLocation": "Sprites/face.png",
+                "Equipment": false,
+                "Max": 64
+              }
+]
