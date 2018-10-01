@@ -418,11 +418,11 @@ public class PlayState extends DialogStateExtention {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Y)){
-            if (UI.getState().equals(UI_state.Crafting)) {
+            if (UI.getState().equals(UI_state.CraftingNew)) {
                 UI.setVisable(!UI.isVisible());
             }
             else {
-                UI.setState(UI_state.Crafting);
+                UI.setState(UI_state.CraftingNew);
             }
             //gsm.ctm.newController("template");
         }

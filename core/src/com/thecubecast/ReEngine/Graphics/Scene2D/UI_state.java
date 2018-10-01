@@ -755,6 +755,87 @@ public enum UI_state implements State<UIFSM> {
         public boolean onMessage(UIFSM entity, Telegram telegram) {
             return false;
         }
+    },
+
+    CraftingNew() {
+
+        Skin BackupSkin;
+
+        private Table Screen;
+        private Table UIWindow;
+        private Table CraftingWindow;
+
+        private Table RecipeList;
+        private Table CraftingDescription;
+
+        @Override
+        public void enter(UIFSM entity) {
+
+            BackupSkin = entity.skin;
+            Screen = new Table(entity.skin);
+            Screen.setFillParent(true);
+            entity.stage.addActor(Screen);
+
+            UIWindow = new Table(entity.skin);
+            UIWindow.setBackground("Window_grey_back");
+
+            CraftingWindow = new Table(entity.skin);
+            UIWindow.add(CraftingWindow).fill();
+
+            RecipeList = new Table(entity.skin);
+            ScrollPane RecipeScroll = new ScrollPane(RecipeList, entity.skin);
+            RecipeScroll.setHeight(Gdx.graphics.getHeight()/6*4);
+            RecipeList.setBackground("Window_green");
+            CraftingDescription = new Table(entity.skin);
+            CraftingDescription.setBackground("Window_red");
+
+            CraftingWindow.add(RecipeScroll);
+            CraftingWindow.add(CraftingDescription);
+
+            for (int i = 0; i < CraftingRecipes.size(); i++) {
+                int tempi = i;
+
+                TkItemIcon CraftingRow = new TkItemIcon(entity.skin, tempi);
+
+                RecipeList.add(CraftingRow).size(32);
+
+//                RecipeList.row();
+            }
+
+            Screen.add(UIWindow);
+
+            //------------------------
+
+            UIWindow.row();
+            final TkTextButton Close = new TkTextButton("Close", entity.skin);
+            UIWindow.add(Close);
+
+            Close.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    entity.Visible = false;
+                }
+            });
+
+        }
+
+        @Override
+        public void update(UIFSM entity) {
+            Screen.setVisible(entity.Visible);
+            ControllerCheck(Screen);
+            entity.stage.act(Gdx.graphics.getDeltaTime());
+
+        }
+
+        @Override
+        public void exit(UIFSM entity) {
+            entity.stage.clear();
+        }
+
+        @Override
+        public boolean onMessage(UIFSM entity, Telegram telegram) {
+            return false;
+        }
     };
 
 

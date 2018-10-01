@@ -23,6 +23,19 @@ public class TkItemIcon extends Stack {
     Image Icons;
     Label Quant;
 
+    public TkItemIcon(Skin skin, int itemID) {
+
+        super();
+
+        LabelTable = new Table();
+
+        Texture Icon = new Texture(Gdx.files.internal(ItemPresets.get(itemID).getTexLocation()));
+        Icons = new Image(Icon);
+
+        this.add(Icons);
+
+    }
+
     public TkItemIcon(Skin skin, int itemID, int Quantity) {
 
         super();
