@@ -42,7 +42,7 @@ public class MainMenuState extends GameState {
 		
 		cameraGui = new OrthographicCamera();
 
-		Menus = new UIFSM(gsm.UIWidth, gsm.UIHeight, cameraGui, gsm);
+		Menus = new UIFSM(cameraGui, gsm);
 
 		//BGMusicID = AudioM.playMusic("forgetting.mp3", true);
 	}

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.Item;
@@ -34,20 +35,15 @@ public class UIFSM implements Telegraph {
     protected Skin skin;
     protected Stage stage;
 
-    protected float width;
-    protected float height;
-
     protected GameStateManager gsm;
 
-    public UIFSM(float width, float height, OrthographicCamera cam, GameStateManager gsm) {
+    public UIFSM(OrthographicCamera cam, GameStateManager gsm) {
 
 
         this.gsm = gsm;
 
-        this.width = width;
-        this.height = height;
+        stage = new Stage(new FitViewport(gsm.UIWidth, gsm.UIHeight));
 
-        stage = new Stage(new StretchViewport(width, height));
         Gdx.input.setInputProcessor(stage);
 
         stage.getViewport().setCamera(cam);
@@ -58,16 +54,13 @@ public class UIFSM implements Telegraph {
         stateMachine.getCurrentState().enter(this);
     }
 
-    public UIFSM(float width, float height, OrthographicCamera cam, GameStateManager gsm, boolean inGame) {
+    public UIFSM(OrthographicCamera cam, GameStateManager gsm, boolean inGame) {
 
         this.gsm = gsm;
 
         this.inGame = inGame;
 
-        this.width = width;
-        this.height = height;
-
-        stage = new Stage(new StretchViewport(width, height));
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
 
         stage.getViewport().setCamera(cam);
@@ -108,8 +101,10 @@ public class UIFSM implements Telegraph {
         }
 
         stateMachine.update();
-        //stage.draw();
-        stage.getRoot().draw(bbg, 1);
+
+        stage.getViewport().update(gsm.UIWidth, gsm.UIHeight, true);
+        stage.draw();
+        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
     }
 
     public void setPlayer(Player player) {
@@ -117,10 +112,7 @@ public class UIFSM implements Telegraph {
     }
 
     public void reSize() {
-        this.width = gsm.UIWidth;
-        this.height = gsm.UIHeight;
-
-        stage = new Stage(new StretchViewport(width,height));
+        stage = new Stage(new FitViewport(gsm.UIWidth, gsm.UIHeight));
 
         Gdx.input.setInputProcessor(stage);
 

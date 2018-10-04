@@ -106,7 +106,7 @@ public class PlayState extends DialogStateExtention {
         GuiCam.setToOrtho(false, gsm.UIWidth, gsm.UIHeight);
         shaker = new ScreenShakeCameraController(camera);
 
-        UI = new UIFSM(gsm.UIWidth, gsm.UIHeight, GuiCam, gsm);
+        UI = new UIFSM(GuiCam, gsm);
         UI.inGame = true;
         UI.setState(UI_state.InGameHome);
         UI.setVisable(false);
@@ -172,6 +172,17 @@ public class PlayState extends DialogStateExtention {
                     }
                 }
             }
+
+            //This is for if the object is interactable
+            if(Entities.get(i) instanceof Interactable) {
+                Interactable Entitemp = (Interactable) Entities.get(i);
+                Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+                camera.unproject(pos);
+                if(Entitemp.getHitbox().contains(new Vector3(pos.x, pos.y, player.getPosition().z))) {
+                    System.out.println("OVERLAPPING");
+                }
+            }
+
         }
 
         cameraUpdate(MainCameraFocusPoint, camera, Entities,0,0, Map.getWidth(), Map.getHeight());
