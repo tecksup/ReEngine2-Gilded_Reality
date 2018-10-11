@@ -12,4 +12,8 @@ public class Equipment extends Item {
     public Equipment(String Name, int ID, String SpriteLocation) {
         super(Name, ID, SpriteLocation);
     }
+
+    public Equipment(String Name, int ID, String SpriteLocation, String Desc) {
+        super(Name, ID, SpriteLocation, Desc);
+    }
 }

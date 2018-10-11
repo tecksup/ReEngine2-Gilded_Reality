@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.thecubecast.ReEngine.Data.Equipment;
 import com.thecubecast.ReEngine.Data.Item;
 
@@ -26,7 +27,7 @@ public class TkItem extends Stack {
     Table LabelTable;
 
     Image Icons;
-    Label Quant;
+    TypingLabel Quant;
 
     public TkItem(Skin skin, int ItemArrayPos) {
 
@@ -39,11 +40,16 @@ public class TkItem extends Stack {
 
         if (player.Inventory[id] == null) {
             Icons = new Image();
-            Quant = new Label("", skin);
+            Quant = new TypingLabel("", skin);
+            Quant.skipToTheEnd();
         } else {
             Texture Icon = new Texture(Gdx.files.internal(player.Inventory[id].getTexLocation()));
             Icons = new Image(Icon);
-            Quant = new Label(player.Inventory[id].getQuantity() + "", skin);
+            if (player.Inventory[id].getQuantity() > 99)
+                Quant = new TypingLabel("99+", skin);
+            else
+                Quant = new TypingLabel(player.Inventory[id].getQuantity() + "", skin);
+            Quant.skipToTheEnd();
         }
 
         this.add(Icons);
@@ -142,11 +148,16 @@ public class TkItem extends Stack {
 
         if (player.Equipment[id] == null) {
             Icons = new Image();
-            Quant = new Label("", skin);
+            Quant = new TypingLabel("", skin);
+            Quant.skipToTheEnd();
         } else {
             Texture Icon = new Texture(Gdx.files.internal(player.Equipment[id].getTexLocation()));
             Icons = new Image(Icon);
-            Quant = new Label(player.Equipment[id].getQuantity() + "", skin);
+            if (player.Inventory[id].getQuantity() > 99)
+                Quant = new TypingLabel("99+", skin);
+            else
+                Quant = new TypingLabel(player.Inventory[id].getQuantity() + "", skin);
+            Quant.skipToTheEnd();
         }
 
         this.add(Icons);

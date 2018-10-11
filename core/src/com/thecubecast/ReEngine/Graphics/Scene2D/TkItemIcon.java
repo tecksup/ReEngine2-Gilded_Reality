@@ -3,9 +3,12 @@ package com.thecubecast.ReEngine.Graphics.Scene2D;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.thecubecast.ReEngine.Data.Item;
 
 import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
@@ -21,7 +24,7 @@ public class TkItemIcon extends Stack {
     Table LabelTable;
 
     Image Icons;
-    Label Quant;
+    TypingLabel Quant;
 
     public TkItemIcon(Skin skin, int itemID) {
 
@@ -29,28 +32,41 @@ public class TkItemIcon extends Stack {
 
         LabelTable = new Table();
 
-        Texture Icon = new Texture(Gdx.files.internal(ItemPresets.get(itemID).getTexLocation()));
-        Icons = new Image(Icon);
-
+        Icons = new Image();
         this.add(Icons);
+
+        if (itemID >= 0) {
+            Icons.setVisible(true);
+            Icons.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(ItemPresets.get(itemID).getTexLocation())))));
+        } else {
+            Icons.setVisible(false);
+        }
 
     }
 
     public TkItemIcon(Skin skin, int itemID, int Quantity) {
 
-        super();
+        this(skin, itemID);
 
-        LabelTable = new Table();
+        if (Quantity > 99)
+            Quant = new TypingLabel("99+", skin);
+        else
+            Quant = new TypingLabel(Quantity + "", skin);
 
-        Texture Icon = new Texture(Gdx.files.internal(ItemPresets.get(itemID).getTexLocation()));
-        Icons = new Image(Icon);
-        Quant = new Label(Quantity + "", skin);
+        Quant.skipToTheEnd();
 
-        this.add(Icons);
         LabelTable.add(Quant);
         LabelTable.bottom().right();
         this.add(LabelTable);
 
     }
 
+    public void reload(int IconID) {
+        if (IconID >= 0) {
+            Icons.setVisible(true);
+            Icons.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(ItemPresets.get(IconID).getTexLocation())))));
+        } else {
+            Icons.setVisible(false);
+        }
+    }
 }

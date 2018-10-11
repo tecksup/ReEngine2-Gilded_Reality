@@ -7,6 +7,7 @@ public class Item {
     private int ID = 0;
     private int Quantity = 0;
     private String TexLocation = "";
+    private String Description = "";
 
     public Item(int ID, int Quantity) {
         this(ItemPresets.get(ID));
@@ -26,6 +27,13 @@ public class Item {
         this.TexLocation = SpriteLocation;
     }
 
+    public Item(String Name, int ID, String SpriteLocation, String Description) {
+        this.Name = Name;
+        this.ID = ID;
+        this.TexLocation = SpriteLocation;
+        this.Description = Description;
+    }
+
     public String getName() {
         return Name;
     }
@@ -38,8 +46,9 @@ public class Item {
         return Quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public Item setQuantity(int quantity) {
         Quantity = quantity;
+        return this;
     }
 
     public String getTexLocation() {
@@ -48,5 +57,14 @@ public class Item {
 
     public static boolean compare(Item item1, Item item2) {
         return (item1 == null ? item2 == null : item1.equals(item2));
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public Item setDescription(String description) {
+        Description = description;
+        return this;
     }
 }

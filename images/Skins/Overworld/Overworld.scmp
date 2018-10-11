@@ -427,6 +427,23 @@ atlasData: {
 			minHeight: 0
 			customized: false
 		}
+		{
+			file: D:/GitHub/ReEngine2/images/Skins/Overworld/Raw/Window_grey_TopOutline.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			tintName: null
+			name: Window_grey_TopOutline
+			tiled: false
+			minWidth: 0
+			minHeight: 0
+			customized: false
+		}
 	]
 }
 jsonData: {
@@ -522,7 +539,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: disabled
 						optional: true
-						value: null
+						value: button_d
 					}
 					pressedOffsetX: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -1101,7 +1118,7 @@ jsonData: {
 			}
 			{
 				class: com.ray3k.skincomposer.data.StyleData
-				name: white
+				name: Big
 				clazz: com.badlogic.gdx.scenes.scene2d.ui.Label
 				properties: {
 					font: {
@@ -1109,7 +1126,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: Pixel
+						value: Mecha
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -1379,7 +1396,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: button_
+						value: Window_red
 					}
 					corner: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -1778,7 +1795,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: disabled
 						optional: true
-						value: null
+						value: button_d
 					}
 					pressedOffsetX: {
 						class: com.ray3k.skincomposer.data.StyleProperty

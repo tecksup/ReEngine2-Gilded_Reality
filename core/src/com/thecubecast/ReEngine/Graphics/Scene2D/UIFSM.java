@@ -27,6 +27,9 @@ public class UIFSM implements Telegraph {
     public static Item CursorItem;
     public boolean ClickedOutsideInventory = true;
 
+    //-1 if nothing selected, positive numbers including 0 are for actual crafting ids
+    public static int CraftingIDSelected = -1;
+
     public boolean inGame = false;
     public boolean Visible = true;
 
@@ -44,23 +47,6 @@ public class UIFSM implements Telegraph {
 
         stage = new Stage(new FitViewport(gsm.UIWidth, gsm.UIHeight));
 
-        Gdx.input.setInputProcessor(stage);
-
-        stage.getViewport().setCamera(cam);
-
-        setupSkin();
-
-        stateMachine = new DefaultStateMachine<UIFSM, UI_state>(this, UI_state.Home);
-        stateMachine.getCurrentState().enter(this);
-    }
-
-    public UIFSM(OrthographicCamera cam, GameStateManager gsm, boolean inGame) {
-
-        this.gsm = gsm;
-
-        this.inGame = inGame;
-
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
 
         stage.getViewport().setCamera(cam);

@@ -3,48 +3,56 @@
     "Name": "Evil",
     "TexLocation": "Sprites/evil.png",
     "Equipment": false,
+    "Description": "Will Kill you",
     "Max": 64
   },
   {
-    "Name": "Green",
+    "Name": "{color=green}Green",
     "TexLocation": "Sprites/green.png",
     "Equipment": false,
+    "Description": "{color=green}Legendary color,{CLEARCOLOR} This is also a test of how {WAVE}long{ENDWAVE} i can make text before it gets REALLY fucked up. Now i will make it that much longer, we need that scroll!!!",
     "Max": 64
   },
   {
     "Name": "Blue",
     "TexLocation": "Sprites/blue.png",
     "Equipment": false,
+    "Description": "Blue",
     "Max": 64
   },
   {
     "Name": "Happy",
     "TexLocation": "Sprites/face.png",
     "Equipment": false,
+    "Description": "",
     "Max": 64
   },
      {
-       "Name": "Happy2",
-       "TexLocation": "Sprites/face.png",
+       "Name": "OMG yellow",
+       "TexLocation": "Sprites/Yellow_Marker.png",
        "Equipment": false,
+       "Description": "",
        "Max": 64
      },
         {
-          "Name": "Happy3",
-          "TexLocation": "Sprites/face.png",
+          "Name": "OMG red",
+          "TexLocation": "Sprites/Red_Marker.png",
           "Equipment": false,
+          "Description": "",
           "Max": 64
         },
            {
-             "Name": "Happy4",
-             "TexLocation": "Sprites/face.png",
+             "Name": "Wheat",
+             "TexLocation": "Sprites/Wheat.png",
              "Equipment": false,
+             "Description": "You could eat it, but it's pretty dry.",
              "Max": 64
            },
               {
                 "Name": "Happy5",
                 "TexLocation": "Sprites/face.png",
                 "Equipment": false,
+                "Description": "",
                 "Max": 64
               }
 ]

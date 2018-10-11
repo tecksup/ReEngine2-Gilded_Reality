@@ -11,11 +11,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.thecubecast.ReEngine.Data.Common;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.Item;
@@ -33,6 +37,7 @@ import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
 import static com.thecubecast.ReEngine.Data.GameStateManager.ctm;
 import static com.thecubecast.ReEngine.GameStates.PlayState.CraftingRecipes;
 import static com.thecubecast.ReEngine.GameStates.PlayState.player;
+import static com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM.CraftingIDSelected;
 import static com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM.CursorItem;
 
 public enum UI_state implements State<UIFSM> {
@@ -609,9 +614,9 @@ public enum UI_state implements State<UIFSM> {
 
                 TkItem temp = new TkItem(entity.skin, tempi-1);
 
-                ItemBox.add(temp).size(28);
+                ItemBox.add(temp).size(32);
 
-                InventoryTable.add(ItemBox).size(32).pad(0.5f);
+                InventoryTable.add(ItemBox).size(36).pad(0.5f);
                 if (i % 6 == 0)
                     InventoryTable.row();
             }
@@ -626,9 +631,9 @@ public enum UI_state implements State<UIFSM> {
 
                 TkItem temp = new TkItem(entity.skin, tempi-1, true);
 
-                ItemBox.add(temp).size(28);
+                ItemBox.add(temp).size(32);
 
-                EquipmentTable.add(ItemBox).size(32).pad(0.5f).row();
+                EquipmentTable.add(ItemBox).size(36).pad(0.5f).row();
             }
 
             InventoryWindow.add(InventoryTable);
@@ -680,83 +685,6 @@ public enum UI_state implements State<UIFSM> {
         }
     },
 
-    Crafting() {
-
-        Skin BackupSkin;
-
-        private Table Screen;
-        private Table InventoryWindow;
-
-        private Table InventoryTable;
-        private Table EquipmentTable;
-
-        @Override
-        public void enter(UIFSM entity) {
-
-            BackupSkin = entity.skin;
-            Screen = new Table(entity.skin);
-            Screen.setFillParent(true);
-            entity.stage.addActor(Screen);
-
-            InventoryWindow = new Table(entity.skin);
-            InventoryWindow.setBackground("Window_grey_back");
-            InventoryWindow.pad(2);
-
-            InventoryTable = new Table(entity.skin);
-
-            for (int i = 0; i < CraftingRecipes.size(); i++) {
-                int tempi = i;
-
-                //Make the TkCraftingRecipe and add it
-                TkCraftingRecipe CraftingRow = new TkCraftingRecipe(entity.skin, tempi);
-
-                InventoryTable.add(CraftingRow).height(32).pad(0.5f);
-
-
-                InventoryTable.row();
-            }
-
-            EquipmentTable = new Table(entity.skin);
-
-            InventoryWindow.add(InventoryTable);
-            InventoryWindow.add(EquipmentTable).row();
-
-            Screen.add(InventoryWindow);
-
-            //__________________________________________________________
-
-            final TkTextButton Close = new TkTextButton("Close", entity.skin);
-            InventoryWindow.add(Close);
-            InventoryWindow.row();
-
-            Close.addListener(new ClickListener(){
-                @Override
-                public void clicked(InputEvent event, float x, float y){
-                    entity.Visible = false;
-                }
-            });
-
-        }
-
-        @Override
-        public void update(UIFSM entity) {
-            Screen.setVisible(entity.Visible);
-            ControllerCheck(Screen);
-            entity.stage.act(Gdx.graphics.getDeltaTime());
-
-        }
-
-        @Override
-        public void exit(UIFSM entity) {
-            entity.stage.clear();
-        }
-
-        @Override
-        public boolean onMessage(UIFSM entity, Telegram telegram) {
-            return false;
-        }
-    },
-
     CraftingNew() {
 
         Skin BackupSkin;
@@ -782,33 +710,181 @@ public enum UI_state implements State<UIFSM> {
             CraftingWindow = new Table(entity.skin);
             UIWindow.add(CraftingWindow).fill();
 
-            RecipeList = new Table(entity.skin);
-            ScrollPane RecipeScroll = new ScrollPane(RecipeList, entity.skin);
-            RecipeScroll.setHeight(Gdx.graphics.getHeight()/6*4);
-            RecipeList.setBackground("Window_green");
+            //--------------------
+
             CraftingDescription = new Table(entity.skin);
             CraftingDescription.setBackground("Window_red");
 
-            CraftingWindow.add(RecipeScroll);
-            CraftingWindow.add(CraftingDescription);
+            Table CraftingDescTop = new Table(entity.skin);
+            TypingLabel ItemName = new TypingLabel("", entity.skin);
+            ItemName.setWidth(CraftingDescTop.getWidth());
+            ItemName.setName("ItemTitle");
+            if (CraftingIDSelected != -1) {
+                ItemName.restart(ItemPresets.get(CraftingRecipes.get(CraftingIDSelected).getCraftableID()).getName());
+                ItemName.skipToTheEnd();
+            } else {
+                ItemName.restart("Select an Icon from the left!\nCheck the requirements\nThen Click Craft!");
+            }
+            CraftingDescTop.add(ItemName).pad(5).row();
+            TkItemIcon CrafintItemIcon = new TkItemIcon(entity.skin, CraftingIDSelected);
+            CrafintItemIcon.setName("CraftingIcon");
+            CraftingDescTop.add(CrafintItemIcon).size(48).center().row();
+            CraftingDescTop.row();
+
+            CraftingDescription.add(CraftingDescTop).row();
+            Table CraftingDescBottom = new Table(entity.skin);
+            CraftingDescBottom.setBackground("Window_grey_TopOutline");
+            CraftingDescription.add(CraftingDescBottom).padTop(5).expand().row();
+
+            TypingLabel RescourLable = new TypingLabel("Ingredients", entity.skin);
+            RescourLable.skipToTheEnd();
+            CraftingDescBottom.add(RescourLable).row();
+
+            TkIngrediantsTable IngrediatesTable = new TkIngrediantsTable(entity.skin);
+
+            CraftingDescBottom.add(IngrediatesTable).padTop(2).center().row();
+            CraftingDescBottom.row();
+
+            TypingLabel ItemDescription = new TypingLabel("", entity.skin);
+            ItemDescription.setWrap(true);
+            if (CraftingIDSelected != -1) {
+                ItemDescription.restart(ItemPresets.get(CraftingRecipes.get(CraftingIDSelected).getCraftableID()).getDescription());
+                ItemDescription.skipToTheEnd();
+            }
+            ScrollPane DescPane = new ScrollPane(ItemDescription, entity.skin);
+            DescPane.setScrollingDisabled(true, false);
+            DescPane.addListener(new ClickListener(){
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    super.enter(event, x, y, pointer, fromActor);
+                    entity.stage.setScrollFocus(DescPane);
+                }
+
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    super.exit(event, x, y, pointer, toActor);
+                    entity.stage.setScrollFocus(null);
+                }
+            });
+            CraftingDescBottom.add(DescPane).width(130).expandY().pad(5).row();
+
+            //--------------------
+            RecipeList = new Table(entity.skin);
+            ScrollPane RecipeScroll = new ScrollPane(RecipeList, entity.skin);
+            RecipeScroll.setupOverscroll(5, 50f, 100f);
+            RecipeScroll.addListener(new ClickListener(){
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    super.enter(event, x, y, pointer, fromActor);
+                    entity.stage.setScrollFocus(RecipeScroll);
+                }
+
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    super.exit(event, x, y, pointer, toActor);
+                    entity.stage.setScrollFocus(null);
+                }
+            });
+
+            CraftingWindow.add(RecipeScroll).width(150).height(200).padRight(1);
 
             for (int i = 0; i < CraftingRecipes.size(); i++) {
                 int tempi = i;
 
-                TkItemIcon CraftingRow = new TkItemIcon(entity.skin, tempi);
+                Table Container = new Table(entity.skin);
+                TkItemIcon ItemIcon = new TkItemIcon(entity.skin, tempi);
+                Container.add(ItemIcon).size(32);
+                ItemIcon.addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y){
+                        CraftingIDSelected = CraftingRecipes.get(tempi).getCraftableID();
+                        TkItemIcon temp = CraftingDescTop.findActor("CraftingIcon");
+                        temp.reload(CraftingIDSelected);
+                        ItemDescription.restart(ItemPresets.get(CraftingRecipes.get(CraftingIDSelected).getCraftableID()).getDescription());
+                        ItemDescription.skipToTheEnd();
+                        ItemName.restart(ItemPresets.get(CraftingRecipes.get(CraftingIDSelected).getCraftableID()).getName());
+                        ItemName.skipToTheEnd();
+                    }
 
-                RecipeList.add(CraftingRow).size(32);
+                    @Override
+                    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                        super.enter(event, x, y, pointer, fromActor);
+                        Container.setBackground("Window_grey");
+                    }
 
-//                RecipeList.row();
+                    @Override
+                    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                        super.exit(event, x, y, pointer, toActor);
+                        Container.setBackground((Drawable) null);
+                    }
+                });
+
+                RecipeList.add(Container).size(36);
+
+                RecipeList.row();
             }
 
-            Screen.add(UIWindow);
 
-            //------------------------
+            //--------------------------------------
+
+            CraftingWindow.add(CraftingDescription).top().width(150).height(200).padLeft(1);
+
+            TextButton Craft = new TextButton("Craft", entity.skin) {
+                @Override
+                public void act(float delta) {
+                    super.act(delta);
+                    //Check if crafting is aloud
+                    //Disable button if you can't craft it
+                    boolean canCraft = true;
+                    if (CraftingIDSelected == -1) {
+                        this.setDisabled(true);
+                        return;
+                    }
+                    for (int i = 0; i < CraftingRecipes.get(CraftingIDSelected).RequiredResources().length; i++) {
+                        if (CraftingRecipes.get(CraftingIDSelected).RequiredResources()[i][1] >  player.getItemQuant(CraftingRecipes.get(CraftingIDSelected).RequiredResources()[i][0])) {
+                            canCraft = false;
+                        }
+                    }
+                    this.setDisabled(!canCraft);
+                }
+            };
+            CraftingDescription.add(Craft);
+            Craft.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+
+                    if (CraftingIDSelected == -1)
+                            return;
+
+                    boolean canCraft = true;
+                    for (int i = 0; i < CraftingRecipes.get(CraftingIDSelected).RequiredResources().length; i++) {
+                        if (CraftingRecipes.get(CraftingIDSelected).RequiredResources()[i][1] >  player.getItemQuant(CraftingRecipes.get(CraftingIDSelected).RequiredResources()[i][0])) {
+                            canCraft = false;
+                        }
+                    }
+
+                    if (!canCraft) {
+                        return;
+                    }
+
+                    //Deduct the items from inventory
+                    for (int i = 0; i < CraftingRecipes.get(CraftingIDSelected).RequiredResources().length; i++) {
+                        player.DeductFromInventory(CraftingRecipes.get(CraftingIDSelected).RequiredResources()[i][0], CraftingRecipes.get(CraftingIDSelected).RequiredResources()[i][1]);
+                    }
+
+                    //Craft it and add it to inventory
+                    player.AddToInventory(ItemPresets.get(CraftingRecipes.get(CraftingIDSelected).getCraftableID()).setQuantity(CraftingRecipes.get(CraftingIDSelected).getQuantity()));
+
+                    IngrediatesTable.reload();
+                }
+            });
+
+            //--------------------------------------
+            Screen.add(UIWindow);
 
             UIWindow.row();
             final TkTextButton Close = new TkTextButton("Close", entity.skin);
-            UIWindow.add(Close);
+            UIWindow.add(Close).padTop(2);
 
             Close.addListener(new ClickListener(){
                 @Override

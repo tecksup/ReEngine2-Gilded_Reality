@@ -96,12 +96,13 @@ public class GameStateManager {
 		for (int i = 0; i < tempJson.size(); i++) {
 			String Name = tempJson.get(i).getAsJsonObject().get("Name").getAsString();
 			String TexLocation = tempJson.get(i).getAsJsonObject().get("TexLocation").getAsString();
+			String Desc = tempJson.get(i).getAsJsonObject().get("Description").getAsString();
 			int Max = tempJson.get(i).getAsJsonObject().get("Max").getAsInt();
 			if (tempJson.get(i).getAsJsonObject().get("Equipment").getAsBoolean()) {
-				Equipment tempItem = new Equipment(Name, i, TexLocation);
+				Equipment tempItem = new Equipment(Name, i, TexLocation, Desc);
 				ItemPresets.put(i, tempItem);
 			} else {
-				Item tempItem = new Item(Name, i, TexLocation);
+				Item tempItem = new Item(Name, i, TexLocation, Desc);
 				ItemPresets.put(i, tempItem);
 			}
 		}

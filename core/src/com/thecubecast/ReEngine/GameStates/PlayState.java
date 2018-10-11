@@ -159,7 +159,7 @@ public class PlayState extends DialogStateExtention {
             }
 
             //This finds out if you have picked up an item
-            if(Entities.get(i) instanceof WorldItem) {
+            else if(Entities.get(i) instanceof WorldItem) {
                 WorldItem Entitemp = (WorldItem) Entities.get(i);
                 if(Entitemp.getHitbox().intersects(player.getHitbox())) {
                     //Add the item to inventory
@@ -174,7 +174,7 @@ public class PlayState extends DialogStateExtention {
             }
 
             //This is for if the object is interactable
-            if(Entities.get(i) instanceof Interactable) {
+            else if(Entities.get(i) instanceof Interactable) {
                 Interactable Entitemp = (Interactable) Entities.get(i);
                 Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
                 camera.unproject(pos);
@@ -331,11 +331,13 @@ public class PlayState extends DialogStateExtention {
         g.begin();
         //GUI must draw last
         MenuDraw(g, Gdx.graphics.getDeltaTime());
+        g.end();
         UI.Draw(g);
+        g.begin();
         if (UI.CursorItem != null) {
             Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
             GuiCam.unproject(pos);
-            g.draw(new Texture(Gdx.files.internal(UI.CursorItem.getTexLocation())), pos.x, pos.y);
+            g.draw(new Texture(Gdx.files.internal(UI.CursorItem.getTexLocation())), pos.x/2, pos.y/2, 16, 16);
 
         }
         g.end();
@@ -568,14 +570,7 @@ public class PlayState extends DialogStateExtention {
     }
 
     public void reSize(SpriteBatch g, int H, int W) {
-        float posX = camera.position.x;
-        float posY = camera.position.y;
-        float posZ = camera.position.z;
-        camera.setToOrtho(false, W, H);
-        camera.position.set(posX, posY, posZ);
 
-        Matrix4 matrix = new Matrix4();
-        matrix.setToOrtho2D(0, 0, W, H);
         //shaker.reSize(camera);
     }
 
@@ -618,6 +613,12 @@ public class PlayState extends DialogStateExtention {
         cam.update();
     }
 
+    @Override
+    public void dispose() {
+        Collisions.clear();
+        Areas.clear();
+        Entities.clear();
+    }
 
     @Override
     public void Shutdown() {

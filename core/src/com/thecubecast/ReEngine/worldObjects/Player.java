@@ -15,6 +15,9 @@ import com.thecubecast.ReEngine.Data.Item;
 
 import java.util.List;
 
+import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
+import static com.thecubecast.ReEngine.GameStates.PlayState.CraftingRecipes;
+import static com.thecubecast.ReEngine.GameStates.PlayState.player;
 import static com.thecubecast.ReEngine.Graphics.Draw.loadAnim;
 
 public class Player extends WorldObject {
@@ -51,9 +54,9 @@ public class Player extends WorldObject {
 
         Inventory[7] = new Item(0, 12);
         Inventory[4] = new Item(1, 12);
-        Inventory[3] = new Item(2, 12);
-        Inventory[9] = new Item(3, 12);
-        Inventory[12] = new Item(1, 12);
+        Inventory[3] = new Item(2, 98);
+        Inventory[9] = new Item(3, 99);
+        Inventory[12] = new Item(1, 103);
 
         PengAnim0 = new Animation<TextureRegion>(0.1f, loadAnim(penguin0, "Sprites/8direct/south.png", 4, 1));
         PengAnim1 = new Animation<TextureRegion>(0.1f, loadAnim(penguin1, "Sprites/8direct/southEast.png", 4, 1));
@@ -68,8 +71,6 @@ public class Player extends WorldObject {
 
     @Override
     public void init(int Width, int Height) {
-
-
 
     }
 
@@ -148,6 +149,86 @@ public class Player extends WorldObject {
             AnimState = AnimationState.Standing;
         }
 
+    }
+
+    public int getItemQuant(int ItemId) {
+        int StoredResource = 0;
+
+        for (int j = 0; j < Inventory.length; j++) {
+            if (Inventory[j] != null) {
+                if (Inventory[j].getID() == ItemId) {
+                    //Found matching item
+                    StoredResource += Inventory[j].getQuantity();
+                }
+            }
+        }
+
+        return StoredResource;
+    }
+
+    public boolean AddToInventory(Item item) {
+
+        boolean found = false;
+
+        //Finds first Matching spot
+        for (int j = 0; j < Inventory.length; j++) {
+            if (Inventory[j] != null) {
+                if(Inventory[j].getID() == item.getID()) {
+                    Inventory[j].setQuantity(Inventory[j].getQuantity() + item.getQuantity());
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            for (int j = 0; j < Inventory.length; j++) {
+                if (Inventory[j] == null) {
+                    Item tempItem = new Item(item);
+                    Inventory[j] = tempItem;
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        return found;
+    }
+
+    public boolean DeductFromInventory(int ItemID, int Quant) {
+        boolean Success = false;
+
+        if(getItemQuant(ItemID) >= Quant) {
+
+            int ResourceRemaining = Quant;
+
+            for (int j = 0; j < Inventory.length; j++) {
+                if (Inventory[j] != null) {
+                    if (Inventory[j].getID() == ItemID) { //Found matching item
+                        if (Inventory[j].getQuantity() < ResourceRemaining) { //if that item Quant is less then needed
+                            ResourceRemaining -= Inventory[j].getQuantity();
+                            Inventory[j] = null;
+                        } else if (Inventory[j].getQuantity() == ResourceRemaining) {
+                            ResourceRemaining = 0;
+                            Inventory[j] = null;
+                            break;
+                        } else {
+                            Inventory[j].setQuantity(Inventory[j].getQuantity() - ResourceRemaining);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (ResourceRemaining == 0) {
+                Success = true;
+            }
+
+        } else {
+            return false;
+        }
+
+        return Success;
     }
 
     public BoundingBox getAttackBox() {
