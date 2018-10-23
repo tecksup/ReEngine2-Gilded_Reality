@@ -393,23 +393,19 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/tecksup/.gradle/caches/modules-2/files-2.1/com.badlogicgames.jlayer/jlayer/1.0.1-gdx/7cca83cec5c1b2f011362f4d85aabd71a73b049d/jlayer-1.0.1-gdx.jar!/"/>
+          <root url="jar://C:/Users/tecksup/.m2/repository/com/badlogicgames/jlayer/jlayer/1.0.1-gdx/jlayer-1.0.1-gdx.jar!/"/>
         </CLASSES>
         <JAVADOC/>
-        <SOURCES>
-          <root url="jar://C:/Users/tecksup/.gradle/caches/modules-2/files-2.1/com.badlogicgames.jlayer/jlayer/1.0.1-gdx/f1c4ffebc5e4f68be914404faab580c20de8ea1f/jlayer-1.0.1-gdx-sources.jar!/"/>
-        </SOURCES>
+        <SOURCES/>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/tecksup/.gradle/caches/modules-2/files-2.1/org.jcraft/jorbis/0.0.17/8872d22b293e8f5d7d56ff92be966e6dc28ebdc6/jorbis-0.0.17.jar!/"/>
+          <root url="jar://C:/Users/tecksup/.m2/repository/org/jcraft/jorbis/0.0.17/jorbis-0.0.17.jar!/"/>
         </CLASSES>
         <JAVADOC/>
-        <SOURCES>
-          <root url="jar://C:/Users/tecksup/.gradle/caches/modules-2/files-2.1/org.jcraft/jorbis/0.0.17/5446be5d62e4c6b347c8e6cd28dc00a936417ba2/jorbis-0.0.17-sources.jar!/"/>
-        </SOURCES>
+        <SOURCES/>
       </library>
     </orderEntry>
     <orderEntry type="module-library">

@@ -89,13 +89,4 @@ public class DesktopLauncher {
 		config.useVsync(true);
 		new Lwjgl3Application(new mainclass(), config);
 	}
-	
-	public static int GetMonitorSizeW() {
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		return gd.getDisplayMode().getWidth();
-	}
-	public static int GetMonitorSizeH() {
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		return gd.getDisplayMode().getHeight();
-	}
 }

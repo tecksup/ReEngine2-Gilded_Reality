@@ -10,6 +10,7 @@ import java.util.List;
 public abstract class WorldObject {
     private Vector3 position;
     private Vector3 Size; // The x and y are the entities footprint, z is height.
+    private Vector3 HitboxOffset;
     private Vector3 velocity;
 
     private float ZFloor = 0;
@@ -92,7 +93,7 @@ public abstract class WorldObject {
     }
 
     public BoundingBox getHitbox() {
-        BoundingBox PrismPla = new BoundingBox(new Vector3(getPosition().x, getPosition().y, getPosition().z), new Vector3(getPosition()).add(getSize()));
+        BoundingBox PrismPla = new BoundingBox(new Vector3(getPosition().x + HitboxOffset.x, getPosition().y + HitboxOffset.y, getPosition().z + + HitboxOffset.z), new Vector3(getPosition()).add(getSize()));
         return PrismPla;
     }
 
