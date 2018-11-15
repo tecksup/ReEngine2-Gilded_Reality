@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.thecubecast.ReEngine.Data.*;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.thecubecast.ReEngine.Data.Common.updategsmValues;
+import static com.thecubecast.ReEngine.Graphics.Draw.*;
 
 public class PlayState extends DialogStateExtention {
 
@@ -39,6 +41,7 @@ public class PlayState extends DialogStateExtention {
 
     //Camera
     OrthographicCamera GuiCam;
+    public static OrthographicCamera camera;
     ScreenShakeCameraController shaker;
     WorldObject MainCameraFocusPoint;
 
@@ -47,7 +50,7 @@ public class PlayState extends DialogStateExtention {
 
     //GameObjects
     public static Player player;
-    private List<Cube> Collisions = new ArrayList<>();
+    public static List<Cube> Collisions = new ArrayList<>();
     public List<Area> Areas = new ArrayList<>();
     public static List<WorldObject> Entities = new ArrayList<>();
 
@@ -64,13 +67,15 @@ public class PlayState extends DialogStateExtention {
     public void init() {
 
         tempshitgiggle = new TkMap("Saves/CubeEditor/Level.cube");
-        for (int i = 0; i < tempshitgiggle.getObjects().size(); i++) {
-            Entities.add(tempshitgiggle.getObjects().get(i));
-            if (tempshitgiggle.getObjects().get(i).isCollidable()) {
-                Vector3 tempVec = tempshitgiggle.getObjects().get(i).getPosition();
-                Vector3 tempVecSize = tempshitgiggle.getObjects().get(i).getSize();
-                Collisions.add(new Cube((int)tempVec.x, (int)tempVec.y, (int)tempVec.z, (int)tempVecSize.x, (int)tempVecSize.y, (int)tempVecSize.z ));
-                System.out.println(tempshitgiggle.getObjects().get(i).getPosition());
+        ArrayList<WorldObject> tempobjsshit = tempshitgiggle.getObjects();
+        for (int i = 0; i < tempobjsshit.size(); i++) {
+            Entities.add(tempobjsshit.get(i));
+            if (tempobjsshit.get(i).isCollidable()) {
+                Vector3 tempVec = tempobjsshit.get(i).getPosition();
+                Vector3 tempVecOffset = tempobjsshit.get(i).getHitboxOffset();
+                Vector3 tempVecSize = tempobjsshit.get(i).getSize();
+                Collisions.add(new Cube((int)tempVec.x + (int)tempVecOffset.x, (int)tempVec.y + (int)tempVecOffset.y, (int)tempVec.z + (int)tempVecOffset.z, (int)tempVecSize.x, (int)tempVecSize.y, (int)tempVecSize.z ));
+                //System.out.println(tempshitgiggle.getObjects().get(i).getPosition());
             }
         }
 
@@ -98,10 +103,10 @@ public class PlayState extends DialogStateExtention {
         MainCameraFocusPoint = player;
 
         Entities.add(player);
-        
+
         //Setup Dialog Instance
         MenuInit(gsm.UIWidth, gsm.UIHeight);
-        
+
         gsm.DiscordManager.setPresenceDetails("topdown Demo - Level 1");
         gsm.DiscordManager.setPresenceState("In Game");
         gsm.DiscordManager.getPresence().largeImageText = "Level 1";
@@ -150,18 +155,12 @@ public class PlayState extends DialogStateExtention {
                 temp.Trigger(player,shaker,this,MainCameraFocusPoint,Particles,Entities);
             }
 
-            //This finds out if you have picked up an item
             else if(Entities.get(i) instanceof WorldItem) {
                 WorldItem Entitemp = (WorldItem) Entities.get(i);
                 if(Entitemp.getHitbox().intersects(player.getHitbox())) {
                     //Add the item to inventory
-                    for (int j = 0; j < player.Inventory.length; j++) {
-                        if(player.Inventory[j] == null) {
-                            player.Inventory[j] = Entitemp.item;
-                            Entities.remove(i);
-                            break;
-                        }
-                    }
+                    player.AddToInventory(Entitemp.item);
+                    Entities.remove(i);
                 }
             }
 
@@ -170,15 +169,28 @@ public class PlayState extends DialogStateExtention {
                 Interactable Entitemp = (Interactable) Entities.get(i);
                 Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
                 camera.unproject(pos);
-                if(Entitemp.getHitbox().contains(new Vector3(pos.x, pos.y, player.getPosition().z))) {
-                    System.out.println("OVERLAPPING");
+                if(Entitemp.getImageHitbox().contains(new Vector3(pos.x, pos.y, player.getPosition().z))) {
+                    ((Interactable) Entities.get(i)).Highlight = true;
+                    ((Interactable) Entities.get(i)).HighlightColor = Color.YELLOW;
+                    if (Gdx.input.isTouched() && !UI.isVisible()) {
+                        //Trigger the action, mine it, open it, trigger the event code
+                        ((Interactable) Entities.get(i)).HighlightColor = Color.RED;
+                        if (Entities.get(i) instanceof Storage) {
+                            Storage temp = (Storage) Entities.get(i);
+                            UI.StorageOpen = (Storage) Entities.get(i);
+                            UI.setState(UI_state.InventoryAndStorage);
+                            UI.setVisable(true);
+                        }
+                    }
+                } else {
+                    ((Interactable) Entities.get(i)).Highlight = false;
                 }
             }
 
         }
 
         cameraUpdate(MainCameraFocusPoint, camera, Entities,0,0, tempshitgiggle.getWidth()*tempshitgiggle.getTileSize(), tempshitgiggle.getHeight()*tempshitgiggle.getTileSize());
-        
+
         handleInput();
 
         UI.setPlayer(player);
@@ -191,6 +203,7 @@ public class PlayState extends DialogStateExtention {
 
         Rectangle drawView = new Rectangle(camera.position.x - camera.viewportWidth/2 - camera.viewportWidth/4, camera.position.y - camera.viewportHeight/2  - camera.viewportHeight/4, camera.viewportWidth + camera.viewportWidth/4, camera.viewportHeight + camera.viewportHeight/4);
 
+        g.setShader(null);
         g.begin();
 
         //MapRenderer.renderLayer(g, Map, "Ground");
@@ -226,7 +239,7 @@ public class PlayState extends DialogStateExtention {
                 }
             }
         }
-        
+
         //Renders my favorite little debug stuff
         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
             gsm.Cursor = GameStateManager.CursorType.Question;
@@ -321,14 +334,22 @@ public class PlayState extends DialogStateExtention {
         MenuDraw(g, Gdx.graphics.getDeltaTime());
         g.end();
         UI.Draw(g);
-        g.begin();
         if (UI.CursorItem != null) {
             Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
             GuiCam.unproject(pos);
-            g.draw(new Texture(Gdx.files.internal(UI.CursorItem.getTexLocation())), pos.x/2, pos.y/2, 16, 16);
-
+            if (!UI.CursorItem.isStructure()) {
+                g.begin();
+                g.draw(new Texture(Gdx.files.internal(UI.CursorItem.getTexLocation())), pos.x/2, pos.y/2, 16, 16);
+            } else {
+                g.flush();
+                g.setShader(FillColorShader);
+                setFillColorShaderColor(Color.GREEN, 0.6f);
+                g.begin();
+                g.draw(new Texture(Gdx.files.internal(UI.CursorItem.getTexLocation())), pos.x/2, pos.y/2);
+                g.setShader(null);
+            }
+            g.end();
         }
-        g.end();
     }
 
     private void handleInput() {

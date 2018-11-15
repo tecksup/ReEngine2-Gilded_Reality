@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.thecubecast.ReEngine.Data.GameStateManager;
 import com.thecubecast.ReEngine.Data.Item;
 import com.thecubecast.ReEngine.worldObjects.Player;
+import com.thecubecast.ReEngine.worldObjects.Storage;
 import com.thecubecast.ReEngine.worldObjects.WorldObject;
 
 import javax.xml.soap.Text;
@@ -24,6 +25,7 @@ import java.util.List;
 public class UIFSM implements Telegraph {
 
     Player player;
+    public Storage StorageOpen;
     public static Item CursorItem;
     public boolean ClickedOutsideInventory = true;
 

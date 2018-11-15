@@ -223,15 +223,11 @@ public class Draw {
 	}
 
 	public static void setOutlineShaderColor(Color outlineColor) {
-		OutlineShader.begin();
 		OutlineShader.setUniform1fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, outlineColor.a }, 0, 4);
-		OutlineShader.end();
 	}
 
 	public static void setOutlineShaderColor(Color outlineColor, float Alpha) {
-		OutlineShader.begin();
 		OutlineShader.setUniform1fv("outline_Color", new float[] { outlineColor.r, outlineColor.g, outlineColor.b, Alpha }, 0, 4);
-		OutlineShader.end();
 	}
 
 	public static void setFillColorShaderColor(Color outlineColor) {

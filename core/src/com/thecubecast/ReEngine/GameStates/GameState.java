@@ -10,7 +10,7 @@ import com.thecubecast.ReEngine.Data.GameStateManager;
 
 public abstract class GameState {
 
-	OrthographicCamera camera;
+	public OrthographicCamera camera;
 
 	protected GameStateManager gsm;
 	
@@ -32,5 +32,4 @@ public abstract class GameState {
 	public void dispose() {
 
 	}
-	
 }

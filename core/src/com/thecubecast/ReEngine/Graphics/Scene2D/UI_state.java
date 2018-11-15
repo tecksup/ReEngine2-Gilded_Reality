@@ -9,6 +9,9 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Window;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -20,14 +23,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
-import com.thecubecast.ReEngine.Data.Common;
-import com.thecubecast.ReEngine.Data.GameStateManager;
-import com.thecubecast.ReEngine.Data.Item;
-import com.thecubecast.ReEngine.Data.controlerManager;
+import com.thecubecast.ReEngine.Data.*;
 import com.thecubecast.ReEngine.GameStates.PlayState;
+import com.thecubecast.ReEngine.worldObjects.Storage;
 import com.thecubecast.ReEngine.worldObjects.WorldItem;
+import com.thecubecast.ReEngine.worldObjects.WorldObject;
 
 import java.net.URI;
+import java.util.List;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.thecubecast.ReEngine.Data.Common.GetMonitorSizeH;
@@ -37,6 +40,8 @@ import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
 import static com.thecubecast.ReEngine.Data.GameStateManager.ctm;
 import static com.thecubecast.ReEngine.GameStates.PlayState.CraftingRecipes;
 import static com.thecubecast.ReEngine.GameStates.PlayState.player;
+import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
+import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
 import static com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM.CraftingIDSelected;
 import static com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM.CursorItem;
 
@@ -543,6 +548,227 @@ public enum UI_state implements State<UIFSM> {
                     if (entity.ClickedOutsideInventory) {
                         //Drop item in CursorItem
                         if (entity.CursorItem != null) {
+
+                            if (CursorItem.isStructure()) {
+
+                                //GET CORRECT POSITION ON WORLD
+                                Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+                                PlayState.camera.unproject(pos);
+
+                                Storage tempObj = new Storage((int) pos.x, (int) pos.y, (int) pos.z, new Vector3(11, 8, 8), WorldObject.type.Static, true) {
+                                    Texture Image = new Texture(Gdx.files.internal("Sprites/Map/Objects_04.png"));
+
+                                    @Override
+                                    public void init(int Width, int Height) {
+
+                                    }
+
+                                    @Override
+                                    public void update(float delta, List<Cube> Colls) {
+
+                                    }
+
+                                    @Override
+                                    public void draw(SpriteBatch batch, float Time) {
+                                        if (Highlight) {
+                                            batch.flush();
+                                            batch.setShader(OutlineShader);
+                                            setOutlineShaderColor(this.HighlightColor, 0.8f);
+                                            batch.draw(Image, getPosition().x, getPosition().y);
+                                            batch.setShader(null);
+                                        } else {
+                                            batch.draw(Image, getPosition().x, getPosition().y);
+                                        }
+                                    }
+
+                                    @Override
+                                    public BoundingBox getImageHitbox() {
+                                        BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
+                                        return temp;
+                                    }
+                                };
+
+                                tempObj.setHitboxOffset(new Vector3(3, 0, 0));
+
+                                PlayState.Entities.add(tempObj);
+                                CursorItem = null;
+                                Vector3 tempVec = tempObj.getPosition();
+                                Vector3 tempVecOffset = tempObj.getHitboxOffset();
+                                Vector3 tempVecSize = tempObj.getSize();
+                                PlayState.Collisions.add(new Cube((int) tempVec.x + (int) tempVecOffset.x, (int) tempVec.y + (int) tempVecOffset.y, (int) tempVec.z + (int) tempVecOffset.z, (int) tempVecSize.x, (int) tempVecSize.y, (int) tempVecSize.z));
+
+
+                            } else {
+
+                                WorldItem temp = new WorldItem(0, 0, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                switch (player.playerDirection) {
+
+                                    case South:
+                                        temp = new WorldItem((int) player.getIntereactBox().min.x, (int) player.getIntereactBox().min.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                        break;
+                                    case SouthEast:
+                                        temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                        break;
+                                    case East:
+                                        temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                        break;
+                                    case NorthEast:
+                                        temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                        break;
+                                    case North:
+                                        temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                        break;
+                                    case NorthWest:
+                                        temp = new WorldItem((int) player.getIntereactBox().min.x, (int) player.getIntereactBox().min.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                        break;
+                                    case West:
+                                        temp = new WorldItem((int) player.getIntereactBox().min.x, (int) player.getIntereactBox().min.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                        break;
+                                    case SouthWest:
+                                        temp = new WorldItem((int) player.getIntereactBox().min.x, (int) player.getIntereactBox().min.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                                        break;
+                                }
+                                PlayState.Entities.add(temp);
+                                entity.CursorItem = null;
+                            }
+                        }
+                    }
+
+                    entity.ClickedOutsideInventory = true;
+                }
+            };
+
+            BackupSkin = entity.skin;
+            Screen = new Table(entity.skin);
+            Screen.setFillParent(true);
+            entity.stage.addActor(Screen);
+
+            InventoryWindow = new Table(entity.skin);
+            InventoryWindow.setBackground("Window_grey_back");
+            InventoryWindow.pad(2);
+
+            entity.stage.addListener(StageListener);
+
+            InventoryWindow.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    //Place
+                    entity.ClickedOutsideInventory = false;
+                    /*if (entity.CursorItem != null) {
+                        WorldItem temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                        PlayState.Entities.add(temp);
+                        entity.CursorItem = null;
+                    }*/
+                }
+            });
+
+            InventoryTable = new Table(entity.skin);
+
+            for (int i = 1; i < player.Inventory.length+1; i++) {
+                int tempi = i;
+
+                Table ItemBox = new Table(entity.skin);
+                ItemBox.setBackground("Table_dialog");
+
+                TkItem temp = new TkItem(entity.skin, tempi-1);
+
+                ItemBox.add(temp).size(32);
+
+                InventoryTable.add(ItemBox).size(36).pad(0.5f);
+                if (i % 6 == 0)
+                    InventoryTable.row();
+            }
+
+            EquipmentTable = new Table(entity.skin);
+
+            for (int i = 1; i < player.Equipment.length+1; i++) {
+                int tempi = i;
+
+                Table ItemBox = new Table(entity.skin);
+                ItemBox.setBackground("Table_dialog");
+
+                TkItem temp = new TkItem(entity.skin, tempi-1, true);
+
+                ItemBox.add(temp).size(32);
+
+                EquipmentTable.add(ItemBox).size(36).pad(0.5f).row();
+            }
+
+            InventoryWindow.add(InventoryTable);
+            InventoryWindow.add(EquipmentTable).row();
+
+            Screen.add(InventoryWindow);
+
+            //__________________________________________________________
+
+            final TkTextButton Close = new TkTextButton("Close", entity.skin);
+            InventoryWindow.add(Close);
+            InventoryWindow.row();
+
+            Close.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    entity.Visible = false;
+                }
+            });
+
+        }
+
+        @Override
+        public void update(UIFSM entity) {
+            Screen.setVisible(entity.Visible);
+            ControllerCheck(Screen);
+            entity.stage.act(Gdx.graphics.getDeltaTime());
+
+        }
+
+        @Override
+        public void exit(UIFSM entity) {
+
+            for (int j = 0; j < player.Inventory.length; j++) {
+                if(player.Inventory[j] == null) {
+                    player.Inventory[j] = CursorItem;
+                    CursorItem = null;
+                    break;
+                }
+            }
+
+            entity.stage.clear();
+            entity.stage.removeListener(StageListener);
+        }
+
+        @Override
+        public boolean onMessage(UIFSM entity, Telegram telegram) {
+            return false;
+        }
+    },
+
+    InventoryAndStorage() {
+
+        Skin BackupSkin;
+
+        private Table Screen;
+        private Table InventoryWindow;
+
+        private Table InventoryTable;
+        private Table EquipmentTable;
+
+        private Table StorageInventoryWindow;
+
+        private Table StorageInventoryTable;
+
+        ClickListener StageListener;
+
+        @Override
+        public void enter(UIFSM entity) {
+
+            StageListener = new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    //drop out of inventory
+                    if (entity.ClickedOutsideInventory) {
+                        //Drop item in CursorItem
+                        if (entity.CursorItem != null) {
                             WorldItem temp = new WorldItem(0, 0, (int) player.getIntereactBox().max.z, entity.CursorItem);
                             switch (player.playerDirection) {
 
@@ -640,6 +866,43 @@ public enum UI_state implements State<UIFSM> {
             InventoryWindow.add(EquipmentTable).row();
 
             Screen.add(InventoryWindow);
+
+            StorageInventoryWindow = new Table(entity.skin);
+            StorageInventoryWindow.setBackground("Window_grey_back");
+            StorageInventoryWindow.pad(2);
+
+            StorageInventoryWindow.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    //Place
+                    entity.ClickedOutsideInventory = false;
+                    /*if (entity.CursorItem != null) {
+                        WorldItem temp = new WorldItem((int) player.getIntereactBox().max.x, (int) player.getIntereactBox().max.y, (int) player.getIntereactBox().max.z, entity.CursorItem);
+                        PlayState.Entities.add(temp);
+                        entity.CursorItem = null;
+                    }*/
+                }
+            });
+
+            StorageInventoryTable = new Table(entity.skin);
+
+            for (int i = 1; i < entity.StorageOpen.Inventory.length+1; i++) {
+                int tempi = i;
+
+                Table ItemBox = new Table(entity.skin);
+                ItemBox.setBackground("Table_dialog");
+
+                TkItem temp = new TkItem(entity.skin, tempi-1, entity.StorageOpen);
+
+                ItemBox.add(temp).size(32);
+
+                StorageInventoryTable.add(ItemBox).size(36).pad(0.5f);
+                if (i % 6 == 0)
+                    StorageInventoryTable.row();
+            }
+
+            StorageInventoryWindow.add(StorageInventoryTable);
+            Screen.add(StorageInventoryWindow);
 
             //__________________________________________________________
 

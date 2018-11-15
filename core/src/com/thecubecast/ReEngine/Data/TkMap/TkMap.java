@@ -1,19 +1,28 @@
 package com.thecubecast.ReEngine.Data.TkMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.thecubecast.ReEngine.Data.Cube;
+import com.thecubecast.ReEngine.worldObjects.Interactable;
+import com.thecubecast.ReEngine.worldObjects.Storage;
 import com.thecubecast.ReEngine.worldObjects.WorldObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
+import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
 
 public class TkMap {
 
@@ -195,7 +204,7 @@ public class TkMap {
         ArrayList<WorldObject> temp = new ArrayList<>();
         JsonArray temparray = getMapObject().get("Objects").getAsJsonArray();
         for (int i = 0; i < temparray.size(); i++) {
-            int X,Y,Z,W,H,D;
+            int X,Y,Z,W,H,D,OffsetX,OffsetY,OffsetZ;
             JsonObject tempObject = temparray.get(i).getAsJsonObject();
             X = tempObject.get("x").getAsInt();
             Y = tempObject.get("y").getAsInt();
@@ -203,6 +212,9 @@ public class TkMap {
             W = tempObject.get("Width").getAsInt();
             H = tempObject.get("Height").getAsInt();
             D = tempObject.get("Depth").getAsInt();
+            OffsetX = tempObject.get("WidthOffset").getAsInt();
+            OffsetY = tempObject.get("HeightOffset").getAsInt();
+            OffsetZ = tempObject.get("DepthOffset").getAsInt();
             String tempImgLoc = tempObject.get("TexLocation").getAsString();
             WorldObject.type Type;
             boolean Collidable = false;
@@ -213,25 +225,80 @@ public class TkMap {
             } else if (tempObject.get("Physics").getAsString().equals("Dynamic")){
                 Type = WorldObject.type.Dynamic;
             } else { Type = WorldObject.type.Static;}
-            WorldObject tempObj = new WorldObject(X, Y, Z, new Vector3(W,H,D), Type, Collidable) {
-                Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
-                @Override
-                public void init(int Width, int Height) {
 
-                }
+            if (tempObject.get("Operation").getAsString().equals("Chest")) {
+                Storage tempObj = new Storage(X, Y, Z, new Vector3(W,H,D), Type, Collidable) {
+                    Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
+                    @Override
+                    public void init(int Width, int Height) {
 
-                @Override
-                public void update(float delta, List<Cube> Colls) {
+                    }
 
-                }
+                    @Override
+                    public void update(float delta, List<Cube> Colls) {
 
-                @Override
-                public void draw(SpriteBatch batch, float Time) {
-                    batch.draw(Image, getPosition().x, getPosition().y);
-                }
-            };
+                    }
 
-            temp.add(tempObj);
+                    @Override
+                    public void draw(SpriteBatch batch, float Time) {
+                        if (Highlight) {
+                            batch.flush();
+                            batch.setShader(OutlineShader);
+                            setOutlineShaderColor(this.HighlightColor, 0.8f);
+                            batch.draw(Image, getPosition().x, getPosition().y);
+                            batch.setShader(null);
+                        } else {
+                            batch.draw(Image, getPosition().x, getPosition().y);
+                        }
+                    }
+
+                    @Override
+                    public BoundingBox getImageHitbox() {
+                        BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
+                        return temp;
+                    }
+                };
+
+                tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
+
+                temp.add(tempObj);
+            } else {
+                Interactable tempObj = new Interactable(X, Y, Z, new Vector3(W,H,D), Type, Collidable) {
+                    Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
+                    @Override
+                    public void init(int Width, int Height) {
+
+                    }
+
+                    @Override
+                    public void update(float delta, List<Cube> Colls) {
+
+                    }
+
+                    @Override
+                    public void draw(SpriteBatch batch, float Time) {
+                        if (Highlight) {
+                            batch.flush();
+                            batch.setShader(OutlineShader);
+                            setOutlineShaderColor(this.HighlightColor, 0.8f);
+                            batch.draw(Image, getPosition().x, getPosition().y);
+                            batch.setShader(null);
+                        } else {
+                            batch.draw(Image, getPosition().x, getPosition().y);
+                        }
+                    }
+
+                    @Override
+                    public BoundingBox getImageHitbox() {
+                        BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
+                        return temp;
+                    }
+                };
+
+                tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
+
+                temp.add(tempObj);
+            }
         }
         return temp;
     }

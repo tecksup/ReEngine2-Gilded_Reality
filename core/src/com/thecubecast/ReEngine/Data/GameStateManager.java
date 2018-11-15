@@ -6,28 +6,21 @@
 
 package com.thecubecast.ReEngine.Data;
 
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.badlogic.gdx.math.Matrix4;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.thecubecast.ReEngine.GameStates.*;
 import com.thecubecast.ReEngine.Graphics.Draw;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
 
 import java.util.HashMap;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static com.badlogic.gdx.graphics.GL20.GL_COLOR_CLEAR_VALUE;
-import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 
 public class GameStateManager {
 	public static boolean Debug = false;
@@ -97,13 +90,16 @@ public class GameStateManager {
 			String Name = tempJson.get(i).getAsJsonObject().get("Name").getAsString();
 			String TexLocation = tempJson.get(i).getAsJsonObject().get("TexLocation").getAsString();
 			String Desc = tempJson.get(i).getAsJsonObject().get("Description").getAsString();
+			boolean Struct = tempJson.get(i).getAsJsonObject().get("Structure").getAsBoolean();
 			int Max = tempJson.get(i).getAsJsonObject().get("Max").getAsInt();
+			int ID = tempJson.get(i).getAsJsonObject().get("ID").getAsInt();
 			if (tempJson.get(i).getAsJsonObject().get("Equipment").getAsBoolean()) {
-				Equipment tempItem = new Equipment(Name, i, TexLocation, Desc);
-				ItemPresets.put(i, tempItem);
+				Equipment tempItem = new Equipment(Name, ID, TexLocation, Desc);
+				ItemPresets.put(ID, tempItem);
 			} else {
-				Item tempItem = new Item(Name, i, TexLocation, Desc);
-				ItemPresets.put(i, tempItem);
+				Item tempItem = new Item(Name, ID, TexLocation, Desc, Struct);
+				tempItem.setMax(Max);
+				ItemPresets.put(ID, tempItem);
 			}
 		}
 
@@ -232,15 +228,11 @@ public class GameStateManager {
 			Texture World = drawWorld(bbg, WorldFBO.getHeight(), WorldFBO.getWidth(), Time);
 			Texture UI = drawUI(bbg, UIFBO.getHeight(), UIFBO.getWidth(), Time);
 
-			//bbg.setBlendFunction(GL20.GL_ONE_MINUS_DST_ALPHA, GL20.GL_SRC_ALPHA);
-
 			bbg.setProjectionMatrix(MainCam.combined);
 			bbg.begin();
 			bbg.draw(World,0, H, W, -H);
 			bbg.draw(UI,0, H, W, -H);
 			bbg.end();
-
-			//bbg.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
 		}
 
@@ -251,11 +243,6 @@ public class GameStateManager {
             //bbg.totalRenderCalls = 0;
         }
 
-        /*
-		fpsLog[fpsIndex] = Gdx.graphics.getFramesPerSecond();
-		fpsIndex++;
-		System.out.println(fpsLog[fpsIndex-1]);
-		*/
 	}
 
 	/**

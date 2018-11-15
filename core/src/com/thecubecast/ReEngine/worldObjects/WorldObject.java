@@ -35,6 +35,7 @@ public abstract class WorldObject {
     public WorldObject () {
         this.position = new Vector3(0,0,0);
         this.velocity = new Vector3(0,0,0);
+        this.HitboxOffset = new Vector3(0,0,0);
 
         this.Size = new Vector3(16, 16, 4);
 
@@ -50,6 +51,7 @@ public abstract class WorldObject {
     public WorldObject (int x, int y, int z, Vector3 size) {
         this.position = new Vector3(x,y,z);
         this.velocity = new Vector3(0,0,0);
+        this.HitboxOffset = new Vector3(0,0,0);
 
         this.Size = size;
 
@@ -66,6 +68,7 @@ public abstract class WorldObject {
     public WorldObject (int x, int y, int z, Vector3 size, type State) {
         this.position = new Vector3(x,y,z);
         this.velocity = new Vector3(0,0,0);
+        this.HitboxOffset = new Vector3(0,0,0);
 
         this.Size = size;
 
@@ -84,6 +87,7 @@ public abstract class WorldObject {
     public WorldObject (int x, int y, int z, Vector3 size, type State, boolean collision) {
         this.position = new Vector3(x,y,z);
         this.velocity = new Vector3(0,0, 0);
+        this.HitboxOffset = new Vector3(0,0,0);
 
         this.Size = size;
 
@@ -93,7 +97,7 @@ public abstract class WorldObject {
     }
 
     public BoundingBox getHitbox() {
-        BoundingBox PrismPla = new BoundingBox(new Vector3(getPosition().x + HitboxOffset.x, getPosition().y + HitboxOffset.y, getPosition().z + + HitboxOffset.z), new Vector3(getPosition()).add(getSize()));
+        BoundingBox PrismPla = new BoundingBox(new Vector3(getPosition().x + HitboxOffset.x, getPosition().y + HitboxOffset.y, getPosition().z + + HitboxOffset.z), new Vector3(getPosition()).add(getHitboxOffset()).add(getSize()));
         return PrismPla;
     }
 
@@ -212,6 +216,14 @@ public abstract class WorldObject {
 
     public void setZFloor(float ZFloor) {
         this.ZFloor = ZFloor;
+    }
+
+    public Vector3 getHitboxOffset() {
+        return HitboxOffset;
+    }
+
+    public void setHitboxOffset(Vector3 hitboxOffset) {
+        HitboxOffset = hitboxOffset;
     }
 
     public void dispose() {

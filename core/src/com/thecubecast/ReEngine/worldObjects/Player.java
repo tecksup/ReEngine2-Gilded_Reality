@@ -52,6 +52,7 @@ public class Player extends WorldObject {
     public Player(int x, int y, int z) {
         super(x, y, z, new Vector3(10,10,12),type.Dynamic);
 
+        Inventory[0] = new Item(4, 1);
         Inventory[7] = new Item(0, 12);
         Inventory[4] = new Item(1, 12);
         Inventory[3] = new Item(2, 98);

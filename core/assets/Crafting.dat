@@ -14,25 +14,14 @@
     "Quantity": 2,
     "Required": ["1:3","3:3", "0:1"]
   },
-     {
-       "Crafting": 3,
-       "Quantity": 2,
-       "Required": ["1:3","3:3", "0:1"]
-     },
-        {
-          "Crafting": 4,
-          "Quantity": 2,
-          "Required": ["1:3","3:3", "0:1"]
-        },
-           {
-             "Crafting": 5,
-             "Quantity": 2,
-             "Required": ["1:3","3:3", "0:1", "2:1", "4:1"]
-           }
-           ,
-                      {
-                        "Crafting": 6,
-                        "Quantity": 2,
-                        "Required": ["1:3","3:3", "0:1", "2:1", "4:1"]
-                      }
+  {
+    "Crafting": 3,
+    "Quantity": 1,
+    "Required": ["1:3"]
+  },
+  {
+    "Crafting": 4,
+    "Quantity": 1,
+    "Required": ["5:3"]
+  }
 ]
