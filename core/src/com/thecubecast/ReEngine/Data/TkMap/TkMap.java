@@ -1,12 +1,9 @@
 package com.thecubecast.ReEngine.Data.TkMap;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
@@ -14,9 +11,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.thecubecast.ReEngine.Data.Cube;
-import com.thecubecast.ReEngine.worldObjects.Interactable;
-import com.thecubecast.ReEngine.worldObjects.Storage;
-import com.thecubecast.ReEngine.worldObjects.WorldObject;
+import com.thecubecast.ReEngine.worldObjects.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -250,6 +245,57 @@ public class TkMap {
                         } else {
                             batch.draw(Image, getPosition().x, getPosition().y);
                         }
+                    }
+
+                    @Override
+                    public BoundingBox getImageHitbox() {
+                        BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
+                        return temp;
+                    }
+                };
+
+                tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
+
+                temp.add(tempObj);
+            } else if (tempObject.get("Operation").getAsString().equals("Chop")) {
+                Chop tempObj = new Chop(X, Y, Z, new Vector3(W,H,D), Type, Collidable) {
+                    Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
+                    @Override
+                    public void init(int Width, int Height) {
+
+                    }
+
+                    @Override
+                    public void draw(SpriteBatch batch, float Time) {
+                        batch.draw(Image, getPosition().x + xoffset, getPosition().y);
+                    }
+
+                    @Override
+                    public BoundingBox getImageHitbox() {
+                        BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
+                        return temp;
+                    }
+                };
+
+                tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
+
+                temp.add(tempObj);
+            } else if (tempObject.get("Operation").getAsString().equals("Mine")) {
+                Mine tempObj = new Mine(X, Y, Z, new Vector3(W,H,D), Type, Collidable) {
+                    Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
+                    @Override
+                    public void init(int Width, int Height) {
+                        /*this.drops[0][0] =  tempObject.get("x").getAsInt();
+                        this.drops[0][1] = ;
+                        this.drops[1][0] = ;
+                        this.drops[1][1] = ;
+                        this.drops[2][0] = ;
+                        this.drops[2][1] = ;*/
+                    }
+
+                    @Override
+                    public void draw(SpriteBatch batch, float Time) {
+                        batch.draw(Image, getPosition().x + xoffset, getPosition().y);
                     }
 
                     @Override

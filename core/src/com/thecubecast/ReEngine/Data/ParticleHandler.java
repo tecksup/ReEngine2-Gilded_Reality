@@ -25,13 +25,14 @@ public class ParticleHandler {
         ParticleEffects.add(temp);
     }
 
-    public void AddParticleEffect(String ParticleName, float x, float y) {
+    public ParticleEffect AddParticleEffect(String ParticleName, float x, float y) {
         //SETUP THE PARTICLES
         ParticleEffect temp = new ParticleEffect();
         temp.load(Gdx.files.internal("Tkparticles/" + ParticleName + ".p"),Gdx.files.internal("Tkparticles"));
         temp.setPosition(x, y);
         temp.start();
         ParticleEffects.add(temp);
+        return temp;
     }
 
     public void Update() {

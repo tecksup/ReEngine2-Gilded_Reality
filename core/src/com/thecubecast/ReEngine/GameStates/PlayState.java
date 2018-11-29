@@ -9,20 +9,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.thecubecast.ReEngine.Data.*;
-import com.thecubecast.ReEngine.Data.OGMO.*;
 import com.thecubecast.ReEngine.Data.TkMap.TkMap;
-import com.thecubecast.ReEngine.Graphics.Scene2D.UI_state;
 import com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM;
+import com.thecubecast.ReEngine.Graphics.Scene2D.UI_state;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
-import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
 import com.thecubecast.ReEngine.worldObjects.*;
 
 import java.util.ArrayList;
@@ -30,7 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.thecubecast.ReEngine.Data.Common.updategsmValues;
-import static com.thecubecast.ReEngine.Graphics.Draw.*;
+import static com.thecubecast.ReEngine.Graphics.Draw.FillColorShader;
+import static com.thecubecast.ReEngine.Graphics.Draw.setFillColorShaderColor;
 
 public class PlayState extends DialogStateExtention {
 
@@ -46,7 +43,7 @@ public class PlayState extends DialogStateExtention {
     WorldObject MainCameraFocusPoint;
 
     //Particles
-    ParticleHandler Particles;
+    public static ParticleHandler Particles;
 
     //GameObjects
     public static Player player;
@@ -74,7 +71,9 @@ public class PlayState extends DialogStateExtention {
                 Vector3 tempVec = tempobjsshit.get(i).getPosition();
                 Vector3 tempVecOffset = tempobjsshit.get(i).getHitboxOffset();
                 Vector3 tempVecSize = tempobjsshit.get(i).getSize();
-                Collisions.add(new Cube((int)tempVec.x + (int)tempVecOffset.x, (int)tempVec.y + (int)tempVecOffset.y, (int)tempVec.z + (int)tempVecOffset.z, (int)tempVecSize.x, (int)tempVecSize.y, (int)tempVecSize.z ));
+                Cube tempCube = new Cube((int)tempVec.x + (int)tempVecOffset.x, (int)tempVec.y + (int)tempVecOffset.y, (int)tempVec.z + (int)tempVecOffset.z, (int)tempVecSize.x, (int)tempVecSize.y, (int)tempVecSize.z );
+                Entities.get(i).CollisionHashID = Collisions.size();
+                Collisions.add(tempCube);
                 //System.out.println(tempshitgiggle.getObjects().get(i).getPosition());
             }
         }
@@ -129,7 +128,7 @@ public class PlayState extends DialogStateExtention {
 
         //AddDialog("test", "{COLOR=GREEN}{WAVE}THIS IS FLAWLESSLY ADDED, HOW CONVENIENT");
 
-        Collisions.add(new Cube(64,56,0,32,64,16));
+        /*Collisions.add(new Cube(64,56,0,32,64,16));
         Collisions.add(new Cube(96,56,0,4,16,14));
         Collisions.add(new Cube(100,56,0,4,16,12));
         Collisions.add(new Cube(104,56,0,4,16,10));
@@ -137,7 +136,7 @@ public class PlayState extends DialogStateExtention {
         Collisions.add(new Cube(112,56,0,4,16,6));
         Collisions.add(new Cube(116,56,0,4,16,4));
         Collisions.add(new Cube(120,56,0,4,16,2));
-
+        */
 
 
     }
@@ -156,11 +155,23 @@ public class PlayState extends DialogStateExtention {
             }
 
             else if(Entities.get(i) instanceof WorldItem) {
+
                 WorldItem Entitemp = (WorldItem) Entities.get(i);
-                if(Entitemp.getHitbox().intersects(player.getHitbox())) {
-                    //Add the item to inventory
-                    player.AddToInventory(Entitemp.item);
-                    Entities.remove(i);
+
+                if (Entitemp.JustDroppedDelay <= 0) {
+
+                    Vector3 tempCenter = new Vector3(player.getPosition().x + player.getSize().x / 2 + 4, player.getPosition().y + player.getSize().y / 2, player.getPosition().z + player.getSize().z / 2);
+                    Vector3 CBS = new Vector3(48, 48, 32); //CollectionBoxSize
+
+                    if (Entitemp.ifColliding(new Rectangle(tempCenter.x - CBS.x / 2, tempCenter.y - CBS.y / 2, CBS.x, CBS.y))) {
+                        Entitemp.setPosition(new Vector3(tempCenter).sub(Entitemp.getPosition()).clamp(0, 2).add(Entitemp.getPosition()));
+                    }
+
+                    if (Entitemp.getHitbox().intersects(player.getHitbox())) {
+                        //Add the item to inventory
+                        player.AddToInventory(Entitemp.item);
+                        Entities.remove(i);
+                    }
                 }
             }
 
@@ -180,6 +191,9 @@ public class PlayState extends DialogStateExtention {
                             UI.StorageOpen = (Storage) Entities.get(i);
                             UI.setState(UI_state.InventoryAndStorage);
                             UI.setVisable(true);
+                        } else if (Entities.get(i) instanceof Interactable){
+                            Interactable temp = (Interactable) Entities.get(i);
+                            temp.Activated();
                         }
                     }
                 } else {
@@ -313,6 +327,12 @@ public class PlayState extends DialogStateExtention {
                 gsm.Render.debugRenderer.rect(Areas.get(i).Rect.x+1, Areas.get(i).Rect.y+1, Areas.get(i).Rect.width-2, Areas.get(i).Rect.height-2);
             }
 
+            //Item Collection
+            gsm.Render.debugRenderer.setColor(Color.LIGHT_GRAY);
+            Vector3 tempCenter = new Vector3(player.getPosition().x + player.getSize().x/2 + 4, player.getPosition().y + player.getSize().y/2, player.getPosition().z + player.getSize().z/2);
+            Vector3 CBS = new Vector3(48, 48, 32); //CollectionBoxSize
+            gsm.Render.debugRenderer.rect(tempCenter.x - CBS.x/2 , tempCenter.y - CBS.y/2, CBS.x , CBS.y);
+            
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
@@ -430,11 +450,10 @@ public class PlayState extends DialogStateExtention {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
-            if (UI.getState().equals(UI_state.Inventory)) {
-                UI.setVisable(!UI.isVisible());
-            }
-            else {
+            if (!UI.isVisible()) {
                 UI.setState(UI_state.Inventory);
+            } else if (UI.getState().equals(UI_state.Inventory) || UI.getState().equals(UI_state.InventoryAndStorage) || UI.getState().equals(UI_state.CraftingNew)) {
+                UI.setVisable(!UI.isVisible());
             }
             //gsm.ctm.newController("template");
         }

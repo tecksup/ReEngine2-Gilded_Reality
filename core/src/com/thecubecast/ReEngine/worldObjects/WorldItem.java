@@ -14,10 +14,13 @@ public class WorldItem extends WorldObject {
     public Item item;
     private Texture ItemImage;
 
+    public int JustDroppedDelay;
+
     public WorldItem(int x, int y, int z, Item item) {
         super(x,y,z, new Vector3(4,4,4));
         this.item = item;
         ItemImage = new Texture(Gdx.files.internal(item.getTexLocation()));
+        JustDroppedDelay = 60;
     }
 
     @Override
@@ -27,11 +30,13 @@ public class WorldItem extends WorldObject {
 
     @Override
     public void update(float delta, List<Cube> Colls) {
-
+        if (JustDroppedDelay > 0)
+            JustDroppedDelay--;
     }
 
     @Override
     public void draw(SpriteBatch batch, float Time) {
-        batch.draw(ItemImage, getPosition().x, getPosition().y + getPosition().z/2, getSize().x, getSize().y);
+        //batch.draw(ItemImage, getPosition().x, getPosition().y + getPosition().z/2, getSize().x, getSize().y);
+        batch.draw(ItemImage, getPosition().x, getPosition().y + getPosition().z/2);
     }
 }

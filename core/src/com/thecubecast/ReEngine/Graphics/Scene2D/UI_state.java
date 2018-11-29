@@ -591,7 +591,10 @@ public enum UI_state implements State<UIFSM> {
                                 tempObj.setHitboxOffset(new Vector3(3, 0, 0));
 
                                 PlayState.Entities.add(tempObj);
-                                CursorItem = null;
+                                if (entity.CursorItem.getQuantity() > 1)
+                                    entity.CursorItem.setQuantity(entity.CursorItem.getQuantity()-1);
+                                else
+                                    entity.CursorItem = null;
                                 Vector3 tempVec = tempObj.getPosition();
                                 Vector3 tempVecOffset = tempObj.getHitboxOffset();
                                 Vector3 tempVecSize = tempObj.getSize();

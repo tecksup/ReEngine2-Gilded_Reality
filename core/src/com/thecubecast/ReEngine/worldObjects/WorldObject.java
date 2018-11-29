@@ -15,7 +15,7 @@ public abstract class WorldObject {
 
     private float ZFloor = 0;
 
-    private int CollisionHashID;
+    public int CollisionHashID;
 
     private type State;
 

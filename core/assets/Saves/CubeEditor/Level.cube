@@ -88,6 +88,26 @@
 		"Event": ""
 		},
 		{
+		"Name": "Rock",
+		"Description": "",
+		"x": 400,
+		"y": 180,
+		"z": 0,
+		"Width":12,
+		"WidthOffset":2,
+		"Height":12,
+		"HeightOffset":2,
+		"Depth":12,
+		"DepthOffset":0,
+		"TexLocation": "Sprites/Map/Objects_05.png",
+		"Physics": "Static",
+		"Collidable":true,
+		"Operation": "Mine",
+		"Collectible":"",
+		"TriggerType":"",
+		"Event": ""
+		},
+		{
 		"Name": "Crate",
 		"Description": "",
 		"x": 300,

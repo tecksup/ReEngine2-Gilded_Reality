@@ -44,7 +44,7 @@ public class Player extends WorldObject {
         South, SouthEast, East, NorthEast, North, NorthWest, West, SouthWest
     }
 
-    public boolean Facing = false; //true is left
+    public boolean Facing = false; //true is left direction
     public enum AnimationState {
         Standing, Walking, Running, Jumping, Falling
     }
