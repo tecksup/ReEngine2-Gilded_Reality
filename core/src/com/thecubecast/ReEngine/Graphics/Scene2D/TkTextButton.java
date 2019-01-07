@@ -14,6 +14,7 @@ import static com.thecubecast.ReEngine.Data.GameStateManager.AudioM;
 public class TkTextButton extends TextButton {
 
     boolean Selected;
+    public boolean togglable = false;
 
     public TkTextButton(String text, Skin skin) {
         super(text, skin);
@@ -37,5 +38,13 @@ public class TkTextButton extends TextButton {
         }
 
         super.drawBackground(batch, parentAlpha, x, y);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (!togglable) {
+            super.setChecked(false);
+        }
     }
 }

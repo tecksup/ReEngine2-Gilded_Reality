@@ -19,6 +19,8 @@ public abstract class WorldObject {
 
     private type State;
 
+    private boolean DebugView = false;
+
     public float FocusStrength = 0;
 
     public enum type {
@@ -224,6 +226,14 @@ public abstract class WorldObject {
 
     public void setHitboxOffset(Vector3 hitboxOffset) {
         HitboxOffset = hitboxOffset;
+    }
+
+    public boolean isDebugView() {
+        return DebugView;
+    }
+
+    public void setDebugView(boolean debugView) {
+        DebugView = debugView;
     }
 
     public void dispose() {

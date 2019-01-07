@@ -102,13 +102,8 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		up: button_
 		down: button_d
 		over: button_h
+		checked: button_h
 		disabled: button_d
-	}
-	checked: {
-		font: Pixel
-		up: button_h
-		down: button_d
-		over: button_
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {

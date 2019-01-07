@@ -78,11 +78,12 @@ public class Common {
 	}
 
 	public static void updategsmValues(GameStateManager gsm, Vector3 pos) {
-		gsm.MouseX = (int) pos.x;
+		/*gsm.MouseX = (int) pos.x;
 		gsm.MouseY = (int) pos.y;
 		gsm.MouseClick[1] = (int) pos.x;
 		gsm.MouseClick[2] = (int) pos.y;
 		gsm.MouseDrag[1] = (int) pos.x;
 		gsm.MouseDrag[2] = (int) pos.y;
+		*/
 	}
 }

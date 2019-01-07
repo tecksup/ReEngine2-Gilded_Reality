@@ -58,7 +58,7 @@ public enum UI_state implements State<UIFSM> {
            table.setFillParent(true);
            entity.stage.addActor(table);
 
-           final TkTextButton StoryState = new TkTextButton("Story State", entity.skin);
+           final TkTextButton StoryState = new TkTextButton("Editor State", entity.skin);
            table.add(StoryState).pad(2);
            table.row();
 
@@ -81,11 +81,7 @@ public enum UI_state implements State<UIFSM> {
            StoryState.addListener(new ClickListener(){
                @Override
                public void clicked(InputEvent event, float x, float y){
-                   //gsm.Audio.stopMusic("8-bit-Digger");
-                   //GetLogin("", "");
-                   Gdx.app.getPreferences("properties").putString("Username", "");
-                   Gdx.app.getPreferences("properties").flush();
-                   StoryState.setText("Loading");
+                   entity.gsm.setState(GameStateManager.State.EDITOR);
                }
            });
 

@@ -80,16 +80,6 @@ public class MainMenuState extends GameState {
 
 	public void handleInput() {
 		
-		Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
-		cameraGui.unproject(pos);
-		
-		gsm.MouseX = (int) pos.x;
-		gsm.MouseY = (int) pos.y;
-		gsm.MouseClick[1] = (int) pos.x;
-		gsm.MouseClick[2] = (int) pos.y;
-		gsm.MouseDrag[1] = (int) pos.x;
-		gsm.MouseDrag[2] = (int) pos.y;
-		
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			//JukeBox.stop("MenuNavigate");
 			//Click.play((SoundVolume * MasterVolume),1,0);

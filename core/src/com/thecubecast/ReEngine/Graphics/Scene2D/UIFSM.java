@@ -38,7 +38,7 @@ public class UIFSM implements Telegraph {
     protected StateMachine<UIFSM, UI_state> stateMachine;
 
     protected Skin skin;
-    protected Stage stage;
+    public Stage stage;
 
     protected GameStateManager gsm;
 

@@ -110,11 +110,7 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	}
 	
 	public void UpdateInput(){
-		
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) { //KeyHit
-			//Common.print("Pressed Enter");
-		}
-		
+
 		if (Gdx.input.isKeyJustPressed(Keys.GRAVE)) { //KeyHit
 			Common.ProperShutdown(gsm);
 		}
@@ -177,7 +173,7 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		MouseDrag[0] = 0;
-		//Common.print("Clicked!");
+		Common.print("Clicked!");
 		int[] MouseClicked = new int[] {1, MouseX, MouseY};
 		MouseClick = MouseClicked;
 		return false;
@@ -185,7 +181,7 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		//Common.print("Dragging");
+		Common.print("Dragging");
 			int[] MouseDraged = new int[] {1, screenX, screenY};
 			MouseDrag = MouseDraged;
 			MouseX = screenX;

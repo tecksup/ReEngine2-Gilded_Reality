@@ -26,7 +26,7 @@ public class GameStateManager {
 	public static boolean Debug = false;
 
     public enum State {
-        INTRO, MENU, PLAY, LOADING, MULTIPLAYER
+        INTRO, MENU, PLAY, LOADING, MULTIPLAYER, EDITOR
     }
 
     public State currentState;
@@ -56,8 +56,8 @@ public class GameStateManager {
 	//MousePos
 	public int MouseX;
 	public int MouseY;
-	public int[] MouseDrag;
-	public int[] MouseClick;
+	public int[] MouseDrag = new int[] {0, 0, 0};
+	public int[] MouseClick = new int[] {0, 0, 0};
 
 	//The cursor image
 	public enum CursorType {
@@ -72,7 +72,7 @@ public class GameStateManager {
 	//screen
 	private int Width;
 	private int Height;
-	private int Scale = 4;
+	public int Scale = 4;
 
 	public static int WorldWidth;
 	public static int WorldHeight;
@@ -164,10 +164,15 @@ public class GameStateManager {
 				break;
             case MULTIPLAYER:
                 Common.print("Loaded state MultiplayerTestState");
-                gameState = new MultiplayerTestState(this);
-                gameState.init();
+				gameState = new MultiplayerTestState(this);
+				gameState.init();
                 break;
-        }
+			case EDITOR:
+				Common.print("Loaded state Editor");
+				gameState = new EditorState(this);
+				gameState.init();
+				break;
+		}
 		
 	}
 
@@ -203,8 +208,8 @@ public class GameStateManager {
 		}
 		MouseX = MousX;
 		MouseY = MousY;
-		MouseDrag = Draging;
-		MouseClick = MousCl;
+		//MouseDrag = Draging;
+		//MouseClick = MousCl;
 		if(gameState != null) {
 			gameState.update();
 		}

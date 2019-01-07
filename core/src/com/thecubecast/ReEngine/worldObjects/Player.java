@@ -41,6 +41,9 @@ public class Player extends WorldObject {
     Texture penguin0, penguin1, penguin2, penguin3, penguin4, penguin5, penguin6, penguin7;
 
     public enum Direction {
+        Direction () {
+
+        },
         South, SouthEast, East, NorthEast, North, NorthWest, West, SouthWest
     }
 

@@ -1781,7 +1781,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: checked
 						optional: true
-						value: null
+						value: button_h
 					}
 					checkedOver: {
 						class: com.ray3k.skincomposer.data.StyleProperty

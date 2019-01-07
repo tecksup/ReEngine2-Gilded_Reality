@@ -41,4 +41,7 @@ public class TkTileset {
 
     }
 
+    public TextureRegion[] getTiles() {
+        return Tiles;
+    }
 }

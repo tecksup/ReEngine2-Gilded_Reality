@@ -29,8 +29,8 @@ public class TkMap {
 
     int TileSize;
 
-    Texture pixel;
-    TkTileset Tileset;
+    private Texture pixel;
+    public TkTileset Tileset;
 
     int[][] Ground;
     int[][] Foreground;
@@ -136,6 +136,14 @@ public class TkMap {
 
     public Boolean[][] getCollision() {
         return Collision;
+    }
+
+    public void setGroundCell(int x, int y, int ID) {
+        Ground[x][y] = ID;
+    }
+
+    public void setForegroundCell(int x, int y, int ID) {
+        Foreground[x][y] = ID;
     }
 
     public void Draw(OrthographicCamera cam, SpriteBatch batch) {
