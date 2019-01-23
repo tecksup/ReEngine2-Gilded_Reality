@@ -17,6 +17,8 @@ public class Interactable extends WorldObject {
     public boolean Highlight = false;
     public Color HighlightColor = Color.YELLOW;
 
+    public String TexLocation = "";
+
     public Interactable(int x, int y, int z, Vector3 size, type State, boolean collision) {
         super(x,y,z,size,State,collision);
     }
@@ -46,5 +48,13 @@ public class Interactable extends WorldObject {
 
     public void Activated() {
 
+    }
+
+    public String getTexLocation() {
+        return TexLocation;
+    }
+
+    public void setTexLocation(String texLocation) {
+        TexLocation = texLocation;
     }
 }

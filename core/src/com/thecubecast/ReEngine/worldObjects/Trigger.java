@@ -205,4 +205,11 @@ public class Trigger extends WorldObject {
 
     }
 
+    public TriggerType getActivationType() {
+        return ActivationType;
+    }
+
+    public String getRawCommands() {
+        return RawCommands;
+    }
 }

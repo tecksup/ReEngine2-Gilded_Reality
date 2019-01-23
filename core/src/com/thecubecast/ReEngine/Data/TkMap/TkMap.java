@@ -261,6 +261,7 @@ public class TkMap {
                         return temp;
                     }
                 };
+                tempObj.setTexLocation(tempImgLoc);
 
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
@@ -284,6 +285,7 @@ public class TkMap {
                         return temp;
                     }
                 };
+                tempObj.setTexLocation(tempImgLoc);
 
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
@@ -312,12 +314,14 @@ public class TkMap {
                         return temp;
                     }
                 };
+                tempObj.setTexLocation(tempImgLoc);
 
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
                 temp.add(tempObj);
             } else {
                 Interactable tempObj = new Interactable(X, Y, Z, new Vector3(W,H,D), Type, Collidable) {
+
                     Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
                     @Override
                     public void init(int Width, int Height) {
@@ -348,6 +352,7 @@ public class TkMap {
                         return temp;
                     }
                 };
+                tempObj.setTexLocation(tempImgLoc);
 
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
@@ -362,8 +367,129 @@ public class TkMap {
 
     }
 
-    public String SerializeMap(ArrayList<WorldObject> entities) {
-        return null;
+    public String SerializeMap(List<WorldObject> entities) {
+        JsonObject Output = new JsonObject();
+        Output.addProperty("Width", this.getWidth());
+        Output.addProperty("Height", this.getHeight());
+
+        JsonArray Tilesets = new JsonArray();
+            JsonObject TilesetObject = new JsonObject();
+            TilesetObject.addProperty("Name", Tileset.Name);
+            TilesetObject.addProperty("FilePath", Tileset.FilePath);
+            JsonObject Size = new JsonObject();
+            Size.addProperty("Width", Tileset.TileSizeW);
+            Size.addProperty("Height", Tileset.TileSizeH);
+            TilesetObject.add("TileSize", Size);
+            TilesetObject.addProperty("TileSep", Tileset.TileSep);
+            Tilesets.add(TilesetObject);
+        Output.add("Tilesets", Tilesets);
+
+        JsonObject GroundLayer = new JsonObject();
+        GroundLayer.addProperty("tileset", this.Tileset.Name);
+        GroundLayer.addProperty("exportMode", "CSV");
+        String GroundTiles = "";
+        for (int y = this.getHeight()-1; y >= 0; y--) {
+            for (int x = 0; x < this.getWidth(); x++) {
+                if (x == 0) {
+                    GroundTiles += "" + this.Ground[x][y];
+                } else {
+                    GroundTiles += "," + this.Ground[x][y];
+                }
+            }
+            if (y != 0) {
+                GroundTiles += "\n" ;
+            }
+        }
+        GroundLayer.addProperty("text", GroundTiles);
+        Output.add("Ground", GroundLayer);
+
+        //----------------------------------------------------
+
+        JsonObject ForegroundLayer = new JsonObject();
+        ForegroundLayer.addProperty("tileset", this.Tileset.Name);
+        ForegroundLayer.addProperty("exportMode", "CSV");
+        String ForegroundTiles = "";
+        for (int y = this.getHeight()-1; y >= 0; y--) {
+            for (int x = 0; x < this.getWidth(); x++) {
+                if (x == 0) {
+                    ForegroundTiles += "" + this.Foreground[x][y];
+                } else {
+                    ForegroundTiles += "," + this.Foreground[x][y];
+                }
+            }
+            if (y != 0) {
+                ForegroundTiles += "\n" ;
+            }
+        }
+        ForegroundLayer.addProperty("text", ForegroundTiles);
+        Output.add("Foreground", ForegroundLayer);
+
+        //---------------------------------------------------
+
+        JsonObject CollisionLayer = new JsonObject();
+        CollisionLayer.addProperty("exportMode", "Bitstring");
+        String CollisionTiles = "";
+        for (int y = this.getHeight()-1; y >= 0; y--) {
+            for (int x = 0; x < this.getWidth(); x++) {
+                    if (this.Collision[x][y]) {
+                        CollisionTiles += "1";
+                    } else {
+                        CollisionTiles += "0";
+                    }
+            }
+            if (y != 0) {
+                CollisionTiles += "\n" ;
+            }
+        }
+        CollisionLayer.addProperty("text", CollisionTiles);
+        Output.add("Collision", CollisionLayer);
+
+        //Objects
+        JsonArray ObjectsList = new JsonArray();
+        for (int i = 0; i < entities.size(); i++) {
+            JsonObject Entity= new JsonObject();
+            Entity.addProperty("Name", entities.get(i).getName());
+            Entity.addProperty("Description", "");
+            Entity.addProperty("x",  entities.get(i).getPosition().x);
+            Entity.addProperty("y",  entities.get(i).getPosition().y);
+            Entity.addProperty("z",  entities.get(i).getPosition().z);
+            Entity.addProperty("Width",  entities.get(i).getSize().x);
+            Entity.addProperty("WidthOffset",  entities.get(i).getHitboxOffset().x);
+            Entity.addProperty("Height",  entities.get(i).getSize().y);
+            Entity.addProperty("HeightOffset",  entities.get(i).getHitboxOffset().y);
+            Entity.addProperty("Depth",  entities.get(i).getSize().z);
+            Entity.addProperty("DepthOffset",  entities.get(i).getHitboxOffset().z);
+            if (entities.get(i) instanceof Interactable) {
+                Entity.addProperty("TexLocation", ((Interactable) entities.get(i)).getTexLocation());
+            } else {
+                Entity.addProperty("TexLocation", "");
+            }
+            Entity.addProperty("Physics",  entities.get(i).getState().name());
+            Entity.addProperty("Collidable",  entities.get(i).isCollidable());
+            if (entities.get(i) instanceof Interactable)
+                Entity.addProperty("Operation", entities.get(i).getClass().getName());
+            else
+                Entity.addProperty("Operation", "None");
+            if (entities.get(i) instanceof Mine)
+                Entity.addProperty("Collectible", "" + ((Mine) entities.get(i)).drops[0] + ":" + ((Mine) entities.get(i)).drops[1]);
+            else if (entities.get(i) instanceof Chop)
+                Entity.addProperty("Collectible", "" + ((Chop) entities.get(i)).drops[0] + ":" + ((Chop) entities.get(i)).drops[1]);
+            else
+                Entity.addProperty("Collectible",  "");
+            if (entities.get(i) instanceof Trigger) {
+                Entity.addProperty("TriggerType",  ((Trigger) entities.get(i)).getActivationType().toString());
+                Entity.addProperty("Event",  ((Trigger) entities.get(i)).getRawCommands());
+            } else {
+                Entity.addProperty("TriggerType",  "");
+                Entity.addProperty("Event", "");
+            }
+
+            ObjectsList.add(Entity);
+        }
+
+        Output.add("Objects", ObjectsList);
+
+        return Output.toString();
     }
 
 }

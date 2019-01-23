@@ -339,6 +339,10 @@ public class EditorState extends GameState {
 
     private void handleInput() {
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            System.out.println(tempshitgiggle.SerializeMap(Entities));
+        }
+
         if (Gdx.input.isTouched()) { //KeyHit
             Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
             camera.unproject(pos);
