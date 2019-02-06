@@ -148,13 +148,7 @@ public class PlayState extends DialogStateExtention {
         for (int i = 0; i < Entities.size(); i++) {
             Entities.get(i).update(Gdx.graphics.getDeltaTime(), Collisions);
 
-            //This is for triggers
-            if (Entities.get(i) instanceof Trigger) {
-                Trigger temp = (Trigger) Entities.get(i);
-                temp.Trigger(player,shaker,this,MainCameraFocusPoint,Particles,Entities);
-            }
-
-            else if(Entities.get(i) instanceof WorldItem) {
+            if(Entities.get(i) instanceof WorldItem) {
 
                 WorldItem Entitemp = (WorldItem) Entities.get(i);
 
@@ -178,6 +172,7 @@ public class PlayState extends DialogStateExtention {
             //This is for if the object is interactable
             else if(Entities.get(i) instanceof Interactable) {
                 Interactable Entitemp = (Interactable) Entities.get(i);
+                Entitemp.Trigger(player,shaker,this,MainCameraFocusPoint,Particles,Entities);
                 Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
                 camera.unproject(pos);
                 if(Entitemp.getImageHitbox().contains(new Vector3(pos.x, pos.y, player.getPosition().z))) {

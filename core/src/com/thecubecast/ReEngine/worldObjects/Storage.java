@@ -9,6 +9,7 @@ public class Storage extends Interactable {
 
     public Storage(int x, int y, int z, Vector3 size, type State, boolean collision) {
         super(x, y, z, size, State, collision);
+        ID = "Chest";
     }
 
     @Override

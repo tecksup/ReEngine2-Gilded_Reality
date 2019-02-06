@@ -20,7 +20,9 @@ public class Trigger extends WorldObject {
         OnEntry,
         OnTrigger,
         OnExit,
-        OnInteract
+        OnInteract,
+        OnClick,
+        None
     }
 
     TriggerType ActivationType;
@@ -96,6 +98,68 @@ public class Trigger extends WorldObject {
 
     }
 
+    public Trigger (int x, int y, int z, Vector3 size, type State, boolean collision, String RawEvents, TriggerType TType) {
+        super(x,y,z,size,State,collision);
+        RawCommands = RawEvents;
+
+        ActivationType = TType;
+
+        //Parse and then run the script
+        String[] Lines = RawCommands.split("&#xD;&#xA;");
+        for (int i = 0; i < Lines.length; i++) {
+            //Replaces all the XML markup chars with real ones, or cuts them for easier parsing later
+            //Lines[i] = Lines[i].replace("&quot;", "");
+            //Lines[i] = Lines[i].replace(" ", "");
+        }
+
+        //Max of 10 Args for each command
+        Commands = new String[Lines.length][10];
+
+        //Populates the Commands array
+        for (int i = 0; i < Lines.length; i++) {
+            String CommandName = Lines[i].split("\\(")[0];
+
+            if (CommandName.equals("") || CommandName.equals("Null") || CommandName.equals("null")) {
+                Commands[i] = new String[] {CommandName};
+                continue;
+            }
+
+            //System.out.println(CommandName);
+
+            String params = "";
+
+            //Double checks if the Command has parameters
+            if (Lines[i].indexOf("(") != -1 && Lines[i].indexOf(")") != -1) {
+
+                params = Lines[i].substring(
+                        Lines[i].indexOf("(")+1,
+                        Lines[i].indexOf(")"));
+
+                params = params.replace(", ", ",");
+
+            }
+
+            //System.out.println(params);
+
+
+            String[] paramsSplit = params.split(",");
+
+            String[] temp2 = new String[paramsSplit.length + 1];
+            for (int j = 0; j < temp2.length; j++) {
+                if (j <= 0) {
+                    temp2[0] = CommandName;
+                }
+                else {
+                    //IF PARAMS IS EMPTY THEN DONT FILL IT WITH AN EMPTY SCORE
+                    temp2[j] = paramsSplit[j-1];
+                }
+            }
+
+            Commands[i] = temp2;
+        }
+
+    }
+
     @Override
     public void init(int Width, int Height) {
 
@@ -107,6 +171,10 @@ public class Trigger extends WorldObject {
     }
 
     public void Trigger(WorldObject player, ScreenShakeCameraController shaker, DialogStateExtention dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
+
+        if (ActivationType.equals(TriggerType.None)) {
+            return;
+        }
 
         if (player.getHitbox().intersects(this.getHitbox())) {
             TriggerActive = true;
@@ -207,6 +275,10 @@ public class Trigger extends WorldObject {
 
     public TriggerType getActivationType() {
         return ActivationType;
+    }
+
+    public void setActivationType(TriggerType activationType) {
+        ActivationType = activationType;
     }
 
     public String getRawCommands() {

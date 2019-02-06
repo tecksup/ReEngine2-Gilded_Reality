@@ -12,7 +12,13 @@ import java.util.List;
 import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
 import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
 
-public class Interactable extends WorldObject {
+public class Interactable extends Trigger{
+
+    public String ID = "None";
+    public String Name = "";
+    public String Description = "";
+
+    public boolean Collision;
 
     public boolean Highlight = false;
     public Color HighlightColor = Color.YELLOW;
@@ -20,7 +26,13 @@ public class Interactable extends WorldObject {
     public String TexLocation = "";
 
     public Interactable(int x, int y, int z, Vector3 size, type State, boolean collision) {
-        super(x,y,z,size,State,collision);
+        super(x,y,z,size,State,collision,"", TriggerType.None);
+        this.Collision = collision;
+    }
+
+    public Interactable(int x, int y, int z, Vector3 size, type State, boolean collision, String RawEvents, TriggerType TType) {
+        super(x,y,z,size,State,collision,RawEvents, TType);
+        this.Collision = collision;
     }
 
     @Override

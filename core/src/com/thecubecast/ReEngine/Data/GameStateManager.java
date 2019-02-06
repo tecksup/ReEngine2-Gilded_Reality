@@ -80,6 +80,11 @@ public class GameStateManager {
 	public static int UIWidth;
 	public static int UIHeight;
 
+	public static String Savename = "";
+	public static int SaveW;
+	public static int SaveH;
+	public static int SaveSize;
+
 	public GameStateManager(int W, int H) {
 
 		//Load Itemes.dat file and populate the hashmap
@@ -275,7 +280,6 @@ public class GameStateManager {
 		UIFBO.begin();
 		Gdx.gl.glClearColor(0,0,0,0);
 		Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
-
 		gameState.drawUI(bbg, W, H, Time);
 		UIFBO.end();
 		UIFBO.unbind();
@@ -288,6 +292,7 @@ public class GameStateManager {
 	}
 
 	public void reSize(SpriteBatch bbg, int H, int W) {
+		System.out.println("Resize Just Ran");
 		if(gameState != null) {
 			gameState.reSize(bbg, H, W);
 		}

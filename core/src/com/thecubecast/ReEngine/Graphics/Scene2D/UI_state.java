@@ -81,7 +81,7 @@ public enum UI_state implements State<UIFSM> {
            StoryState.addListener(new ClickListener(){
                @Override
                public void clicked(InputEvent event, float x, float y){
-                   entity.gsm.setState(GameStateManager.State.EDITOR);
+                   entity.stateMachine.changeState(UI_state.EditorSetup);
                }
            });
 
@@ -1163,6 +1163,93 @@ public enum UI_state implements State<UIFSM> {
             ControllerCheck(Screen);
             entity.stage.act(Gdx.graphics.getDeltaTime());
 
+        }
+
+        @Override
+        public void exit(UIFSM entity) {
+            entity.stage.clear();
+        }
+
+        @Override
+        public boolean onMessage(UIFSM entity, Telegram telegram) {
+            return false;
+        }
+    },
+
+    EditorSetup() {
+
+
+        private Table table;
+
+        @Override
+        public void enter(UIFSM entity) {
+
+            table = new Table();
+            table.setFillParent(true);
+            entity.stage.addActor(table);
+
+            Table InputTable = new Table();
+            Table Statstable = new Table();
+
+            TextField SaveWidth = new TextField("40", entity.skin);
+            TextField SaveHeight = new TextField("30", entity.skin);
+            TextField SaveTileSize = new TextField("16", entity.skin);
+            TextField SaveNameCreate = new TextField("", entity.skin);
+            final TkTextButton Create = new TkTextButton("Create New", entity.skin);
+            Statstable.add(SaveWidth).width(64).pad(2);
+            Statstable.add(SaveHeight).width(64).pad(2);
+            Statstable.add(SaveTileSize).width(64).pad(2);
+            InputTable.add(Statstable).row();
+            InputTable.add(SaveNameCreate).pad(2);
+            InputTable.add(Create).pad(2);
+            InputTable.row();
+            table.add(InputTable);
+            table.row();
+
+            TextField SaveName = new TextField(Gdx.app.getPreferences("properties").getString("MostRecentLoadedMap"), entity.skin);
+            final TkTextButton Load = new TkTextButton("Load", entity.skin);
+            InputTable.add(SaveName).pad(2);
+            InputTable.add(Load).pad(2);
+            table.row();
+
+            final TkTextButton back = new TkTextButton("Back", entity.skin);
+            table.add(back).pad(2);
+            table.row();
+
+            Create.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    entity.gsm.SaveW = Integer.parseInt(SaveWidth.getText());
+                    entity.gsm.SaveH = Integer.parseInt(SaveHeight.getText());
+                    entity.gsm.SaveSize = Integer.parseInt(SaveTileSize.getText());
+                    entity.gsm.Savename = SaveNameCreate.getText();
+                    entity.gsm.setState(GameStateManager.State.EDITOR);
+                }
+            });
+
+            Load.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    entity.gsm.Savename = SaveName.getText();
+                    Gdx.app.getPreferences("properties").putString("MostRecentLoadedMap", SaveName.getText());
+                    Gdx.app.getPreferences("properties").flush();
+                    entity.gsm.setState(GameStateManager.State.EDITOR);
+                }
+            });
+
+            back.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    entity.stateMachine.changeState(entity.stateMachine.getPreviousState());
+                }
+            });
+        }
+
+        @Override
+        public void update(UIFSM entity) {
+            table.setVisible(entity.Visible);
+            ControllerCheck(table);
+            entity.stage.act(Gdx.graphics.getDeltaTime());
         }
 
         @Override

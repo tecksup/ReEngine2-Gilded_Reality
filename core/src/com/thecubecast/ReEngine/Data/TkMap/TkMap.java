@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.thecubecast.ReEngine.Data.Cube;
 import com.thecubecast.ReEngine.worldObjects.*;
 
@@ -110,6 +108,41 @@ public class TkMap {
 
     }
 
+    public TkMap(int Width, int Height, int TileSize) {
+
+        this.Width = Width;
+        this.Height = Height;
+        this.TileSize = TileSize;
+
+        Tileset = new TkTileset("World","Sprites/Map/World.png", TileSize, TileSize, 0);
+
+        Ground = new int[Width][Height];
+        Foreground = new int[Width][Height];
+        Collision = new Boolean[Width][Height];
+
+        for (int y = this.getHeight()-1; y >= 0; y--) {
+            for (int x = 0; x < this.getWidth(); x++) {
+                this.Ground[x][y] = 150;
+            }
+        }
+
+        //----------------------------------------------------
+
+        for (int y = this.getHeight()-1; y >= 0; y--) {
+            for (int x = 0; x < this.getWidth(); x++) {
+                this.Foreground[x][y] = -1;
+            }
+        }
+
+        //---------------------------------------------------
+
+        for (int y = this.getHeight()-1; y >= 0; y--) {
+            for (int x = 0; x < this.getWidth(); x++) {
+                this.Collision[x][y] = false;
+            }
+        }
+    }
+
     public JsonObject getMapObject() {
         return MapObject;
     }
@@ -205,11 +238,16 @@ public class TkMap {
     //Returns the objects that were in the map file
     public ArrayList<WorldObject> getObjects() {
         ArrayList<WorldObject> temp = new ArrayList<>();
+        if (getMapObject() == null) {
+            return temp;
+        }
         JsonArray temparray = getMapObject().get("Objects").getAsJsonArray();
         for (int i = 0; i < temparray.size(); i++) {
             int X,Y,Z,W,H,D,OffsetX,OffsetY,OffsetZ;
             JsonObject tempObject = temparray.get(i).getAsJsonObject();
             X = tempObject.get("x").getAsInt();
+            String Name = tempObject.get("Name").getAsString();
+            String Description = tempObject.get("Description").getAsString();
             Y = tempObject.get("y").getAsInt();
             Z = tempObject.get("z").getAsInt();
             W = tempObject.get("Width").getAsInt();
@@ -262,6 +300,8 @@ public class TkMap {
                     }
                 };
                 tempObj.setTexLocation(tempImgLoc);
+                tempObj.Name = Name;
+                tempObj.Description = Description;
 
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
@@ -286,6 +326,8 @@ public class TkMap {
                     }
                 };
                 tempObj.setTexLocation(tempImgLoc);
+                tempObj.Name = Name;
+                tempObj.Description = Description;
 
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
@@ -315,6 +357,8 @@ public class TkMap {
                     }
                 };
                 tempObj.setTexLocation(tempImgLoc);
+                tempObj.Name = Name;
+                tempObj.Description = Description;
 
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
@@ -353,6 +397,8 @@ public class TkMap {
                     }
                 };
                 tempObj.setTexLocation(tempImgLoc);
+                tempObj.Name = Name;
+                tempObj.Description = Description;
 
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
@@ -447,8 +493,8 @@ public class TkMap {
         //Objects
         JsonArray ObjectsList = new JsonArray();
         for (int i = 0; i < entities.size(); i++) {
-            JsonObject Entity= new JsonObject();
-            Entity.addProperty("Name", entities.get(i).getName());
+            JsonObject Entity = new JsonObject();
+            Entity.addProperty("Name", ((Interactable) entities.get(i)).Name);
             Entity.addProperty("Description", "");
             Entity.addProperty("x",  entities.get(i).getPosition().x);
             Entity.addProperty("y",  entities.get(i).getPosition().y);
@@ -467,7 +513,7 @@ public class TkMap {
             Entity.addProperty("Physics",  entities.get(i).getState().name());
             Entity.addProperty("Collidable",  entities.get(i).isCollidable());
             if (entities.get(i) instanceof Interactable)
-                Entity.addProperty("Operation", entities.get(i).getClass().getName());
+                Entity.addProperty("Operation", ((Interactable) entities.get(i)).Name);
             else
                 Entity.addProperty("Operation", "None");
             if (entities.get(i) instanceof Mine)
@@ -489,7 +535,9 @@ public class TkMap {
 
         Output.add("Objects", ObjectsList);
 
-        return Output.toString();
+        Gson temp = new GsonBuilder().setPrettyPrinting().create();
+
+        return temp.toJson(Output);
     }
 
 }

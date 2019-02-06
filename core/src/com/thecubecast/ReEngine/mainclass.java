@@ -58,14 +58,23 @@ public class mainclass extends ApplicationAdapter implements InputProcessor{
 	@Override
 	public void create () { // INIT FUNCTION
 
-		String[] temp = Gdx.app.getPreferences("properties").getString("Resolution").split("X");
+		String[] temp = new String[] {"", ""};
+		if (Gdx.app.getPreferences("properties").contains("Resolution")) {
+			temp = Gdx.app.getPreferences("properties").getString("Resolution").split("X");
+		} else {
+			temp[0] = "1280";
+			temp[1] = "720";
+		}
+
 		Gdx.graphics.setWindowedMode(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
 
 		Lwjgl3Window window = ((Lwjgl3Graphics)Gdx.graphics).getWindow();
 		window.setPosition(GetMonitorSizeW()/2 - Gdx.graphics.getWidth()/2, GetMonitorSizeH()/2 - Gdx.graphics.getHeight()/2);
 
-		if (Gdx.app.getPreferences("properties").getBoolean("FullScreen")) {
-			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		if (Gdx.app.getPreferences("properties").contains("FullScreen")) {
+			if (Gdx.app.getPreferences("properties").getBoolean("FullScreen")) {
+				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+			}
 		}
 
 		Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("cursor0.png")), 0, 0);

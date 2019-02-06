@@ -34,6 +34,9 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		over: button_h
 		disabled: button_d
 	}
+	Blank: {
+		up: Window_green
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: {
@@ -110,6 +113,10 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: Pixel
 		fontColor: white
+		background: Window_grey
+		focusedBackground: Window_grey_back
+		cursor: Cursor_text
+		selection: Window_green
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {

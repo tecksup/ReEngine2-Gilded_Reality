@@ -17,9 +17,8 @@
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-controllers-lwjgl3:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-box2d:1.9.8" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.MinnDevelopment:Java-DiscordRPC:-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: club.minnced:java-discord-rpc:2.0.2" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.Ktar5:stateless4j:-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-ai:1.8.1" level="project" />
     <orderEntry type="library" name="Gradle: com.rafaskoberg.gdx:typing-label:1.0.4" level="project" />
     <orderEntry type="library" name="Gradle: com.esotericsoftware.reflectasm:reflectasm:shaded:1.07" level="project" />
@@ -49,8 +48,7 @@
     <orderEntry type="library" name="Gradle: org.jcraft:jorbis:0.0.17" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-controllers:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: net.java.dev.jna:jna:4.4.0" level="project" />
-    <orderEntry type="library" name="Gradle: club.minnced:discord-rpc-release:v3.3.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" name="Gradle: club.minnced:discord-rpc-release:v3.4.0" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="core_main" />
 </module>

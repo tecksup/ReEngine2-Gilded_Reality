@@ -24,6 +24,7 @@ public class Chop extends Interactable {
 
     public Chop(int x, int y, int z, Vector3 size, type State, boolean collision) {
         super(x, y, z, size, State, collision);
+        ID = "Chop";
     }
 
     @Override

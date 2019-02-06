@@ -13,8 +13,6 @@ public abstract class WorldObject {
     private Vector3 HitboxOffset;
     private Vector3 velocity;
 
-    private String name;
-
     private float ZFloor = 0;
 
     public int CollisionHashID;
@@ -26,7 +24,7 @@ public abstract class WorldObject {
     public float FocusStrength = 0;
 
     public enum type {
-        Static, Dynamic
+        Static, Dynamic;
     }
 
     private boolean Collidable = false;
@@ -228,14 +226,6 @@ public abstract class WorldObject {
 
     public void setHitboxOffset(Vector3 hitboxOffset) {
         HitboxOffset = hitboxOffset;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public boolean isDebugView() {

@@ -24,6 +24,7 @@ public class Mine extends Interactable {
 
     public Mine(int x, int y, int z, Vector3 size, type State, boolean collision) {
         super(x, y, z, size, State, collision);
+        ID = "Mine";
     }
 
     @Override

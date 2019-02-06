@@ -31,10 +31,10 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "http://clojars.org/repo/" }
-        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -64,9 +64,8 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "com.github.MinnDevelopment:Java-DiscordRPC:-SNAPSHOT"
+        compile 'club.minnced:java-discord-rpc:2.0.2'
         compile 'com.google.code.gson:gson:2.8.2'
-        compile 'com.github.Ktar5:stateless4j:-SNAPSHOT'
         compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
         compile "com.rafaskoberg.gdx:typing-label:1.0.4"
         
