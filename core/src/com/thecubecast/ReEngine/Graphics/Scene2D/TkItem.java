@@ -270,21 +270,21 @@ public class TkItem extends Stack {
         StorageBox = DUD;
 
         this.id = ItemArrayPos;
-        BackupItem = StorageBox.Inventory[id];
+        BackupItem = StorageBox.getInventory()[id];
 
         LabelTable = new Table();
 
-        if (StorageBox.Inventory[id] == null) {
+        if (StorageBox.getInventory()[id] == null) {
             Icons = new Image();
             Quant = new TypingLabel("", skin);
             Quant.skipToTheEnd();
         } else {
-            Texture Icon = new Texture(Gdx.files.internal(StorageBox.Inventory[id].getTexLocation()));
+            Texture Icon = new Texture(Gdx.files.internal(StorageBox.getInventory()[id].getTexLocation()));
             Icons = new Image(Icon);
-            if (StorageBox.Inventory[id].getQuantity() > 99)
+            if (StorageBox.getInventory()[id].getQuantity() > 99)
                 Quant = new TypingLabel("99+", skin);
             else
-                Quant = new TypingLabel(StorageBox.Inventory[id].getQuantity() + "", skin);
+                Quant = new TypingLabel(StorageBox.getInventory()[id].getQuantity() + "", skin);
             Quant.skipToTheEnd();
         }
 
@@ -301,31 +301,31 @@ public class TkItem extends Stack {
 
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
                     if (getItem() != null) {
-                        player.AddToInventory(StorageBox.Inventory[id]);
-                        StorageBox.Inventory[id] = null;
+                        player.AddToInventory(StorageBox.getInventory()[id]);
+                        StorageBox.getInventory()[id] = null;
                     }
                 } else {
                     if (CursorItem == null) { //Pickup
-                        CursorItem = StorageBox.Inventory[id];
-                        StorageBox.Inventory[id] = null;
+                        CursorItem = StorageBox.getInventory()[id];
+                        StorageBox.getInventory()[id] = null;
                         Reload();
 
                     } else {
                         if (getItem() != null) {
-                            if (CursorItem.getName().equals(StorageBox.Inventory[id].getName())) { //Stack
-                                StorageBox.Inventory[id].setQuantity(StorageBox.Inventory[id].getQuantity() + CursorItem.getQuantity());
+                            if (CursorItem.getName().equals(StorageBox.getInventory()[id].getName())) { //Stack
+                                StorageBox.getInventory()[id].setQuantity(StorageBox.getInventory()[id].getQuantity() + CursorItem.getQuantity());
                                 CursorItem = null;
                                 Reload();
                             } else { //SWAP
                                 Item tempItem = CursorItem;
                                 CursorItem = getItem();
-                                StorageBox.Inventory[id] = tempItem;
+                                StorageBox.getInventory()[id] = tempItem;
                                 Reload();
                             }
 
                         } else {
                             //Place
-                            StorageBox.Inventory[id] = CursorItem;
+                            StorageBox.getInventory()[id] = CursorItem;
                             CursorItem = null;
                             Reload();
 
@@ -348,7 +348,7 @@ public class TkItem extends Stack {
             }
         } else if (isStorage) {
             if (!Item.compare(BackupItem, player.Inventory[id])) {
-                BackupItem = StorageBox.Inventory[id];
+                BackupItem = StorageBox.getInventory()[id];
                 Reload();
             }
         } else {
@@ -373,14 +373,14 @@ public class TkItem extends Stack {
                 Quant.skipToTheEnd();
             }
         } else if (isStorage) {
-            if (StorageBox.Inventory[id] == null) {
+            if (StorageBox.getInventory()[id] == null) {
                 Icons.setDrawable(null);
                 Quant.setText("");
             } else {
-                Texture Icon = new Texture(Gdx.files.internal(StorageBox.Inventory[id].getTexLocation()));
+                Texture Icon = new Texture(Gdx.files.internal(StorageBox.getInventory()[id].getTexLocation()));
                 Icons.setDrawable(new TextureRegionDrawable(new TextureRegion(Icon)));
 
-                Quant.setText(StorageBox.Inventory[id].getQuantity() + "");
+                Quant.setText(StorageBox.getInventory()[id].getQuantity() + "");
                 Quant.skipToTheEnd();
             }
         } else {
@@ -401,7 +401,7 @@ public class TkItem extends Stack {
         if (isEquipment) {
             return player.Equipment[id];
         } else if (isStorage) {
-            return StorageBox.Inventory[id];
+            return StorageBox.getInventory()[id];
         }else {
             return player.Inventory[id];
         }

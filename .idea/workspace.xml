@@ -7,13 +7,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb25fbef-5489-47ea-a71f-ccba7b5476c9" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/core/assets/Saves/CubeEditor/Level.cube" afterPath="$PROJECT_DIR$/core/assets/Saves/CubeEditor/Level.cube" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java" />
     </list>
@@ -126,62 +126,64 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="EditorState.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="EditorState.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="1263" column="25" lean-forward="false" selection-start-line="1263" selection-start-column="25" selection-end-line="1263" selection-end-column="25" />
+            <state relative-caret-position="-4217">
+              <caret line="1060" column="52" lean-forward="true" selection-start-line="1060" selection-start-column="52" selection-end-line="1060" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3771#3772#0" expanded="true" />
                 <element signature="e#3797#3798#0" expanded="true" />
-                <element signature="e#23861#24041#0" expanded="true" />
-                <element signature="e#24040#24041#0" expanded="true" />
-                <element signature="e#25026#25206#0" expanded="true" />
-                <element signature="e#25205#25206#0" expanded="true" />
-                <element signature="e#25664#25847#0" expanded="true" />
-                <element signature="e#25846#25847#0" expanded="true" />
-                <element signature="e#30904#31099#0" expanded="true" />
-                <element signature="e#31098#31099#0" expanded="true" />
-                <element signature="e#31946#32141#0" expanded="true" />
-                <element signature="e#32140#32141#0" expanded="true" />
-                <element signature="e#32426#32756#0" expanded="true" />
-                <element signature="e#32755#32756#0" expanded="true" />
-                <element signature="e#32990#33334#0" expanded="true" />
-                <element signature="e#33333#33334#0" expanded="true" />
-                <element signature="e#33542#33926#0" expanded="true" />
-                <element signature="e#33925#33926#0" expanded="true" />
-                <element signature="e#34114#34498#0" expanded="true" />
-                <element signature="e#34497#34498#0" expanded="true" />
-                <element signature="e#34686#35070#0" expanded="true" />
-                <element signature="e#35069#35070#0" expanded="true" />
-                <element signature="e#35274#35757#0" expanded="true" />
-                <element signature="e#35756#35757#0" expanded="true" />
-                <element signature="e#35994#36514#0" expanded="true" />
-                <element signature="e#36513#36514#0" expanded="true" />
-                <element signature="e#36742#37228#0" expanded="true" />
-                <element signature="e#37227#37228#0" expanded="true" />
-                <element signature="e#37471#37993#0" expanded="true" />
-                <element signature="e#37992#37993#0" expanded="true" />
-                <element signature="e#38219#38703#0" expanded="true" />
-                <element signature="e#38702#38703#0" expanded="true" />
-                <element signature="e#38940#39460#0" expanded="true" />
-                <element signature="e#39459#39460#0" expanded="true" />
-                <element signature="e#39697#40037#0" expanded="true" />
-                <element signature="e#40036#40037#0" expanded="true" />
-                <element signature="e#40263#40793#0" expanded="true" />
-                <element signature="e#40792#40793#0" expanded="true" />
-                <element signature="e#40951#41293#0" expanded="true" />
-                <element signature="e#41292#41293#0" expanded="true" />
-                <element signature="e#41673#47368#0" expanded="true" />
-                <element signature="e#47367#47368#0" expanded="true" />
-                <element signature="e#47760#48777#0" expanded="true" />
-                <element signature="e#48776#48777#0" expanded="true" />
-                <element signature="e#49223#50293#0" expanded="true" />
-                <element signature="e#50292#50293#0" expanded="true" />
-                <element signature="e#51333#54866#0" expanded="true" />
-                <element signature="e#54865#54866#0" expanded="true" />
-                <element signature="e#59447#59455#0" expanded="true" />
+                <element signature="e#25946#26126#0" expanded="true" />
+                <element signature="e#26125#26126#0" expanded="true" />
+                <element signature="e#27111#27291#0" expanded="true" />
+                <element signature="e#27290#27291#0" expanded="true" />
+                <element signature="e#27749#27932#0" expanded="true" />
+                <element signature="e#27931#27932#0" expanded="true" />
+                <element signature="e#32989#33184#0" expanded="true" />
+                <element signature="e#33183#33184#0" expanded="true" />
+                <element signature="e#34031#34226#0" expanded="true" />
+                <element signature="e#34225#34226#0" expanded="true" />
+                <element signature="e#34511#34841#0" expanded="true" />
+                <element signature="e#34840#34841#0" expanded="true" />
+                <element signature="e#35075#35419#0" expanded="true" />
+                <element signature="e#35418#35419#0" expanded="true" />
+                <element signature="e#35627#36011#0" expanded="true" />
+                <element signature="e#36010#36011#0" expanded="true" />
+                <element signature="e#36199#36583#0" expanded="true" />
+                <element signature="e#36582#36583#0" expanded="true" />
+                <element signature="e#36771#37155#0" expanded="true" />
+                <element signature="e#37154#37155#0" expanded="true" />
+                <element signature="e#37359#37842#0" expanded="true" />
+                <element signature="e#37841#37842#0" expanded="true" />
+                <element signature="e#38079#38599#0" expanded="true" />
+                <element signature="e#38598#38599#0" expanded="true" />
+                <element signature="e#38827#39313#0" expanded="true" />
+                <element signature="e#39312#39313#0" expanded="true" />
+                <element signature="e#39556#40078#0" expanded="true" />
+                <element signature="e#40077#40078#0" expanded="true" />
+                <element signature="e#40304#40788#0" expanded="true" />
+                <element signature="e#40787#40788#0" expanded="true" />
+                <element signature="e#41025#41545#0" expanded="true" />
+                <element signature="e#41544#41545#0" expanded="true" />
+                <element signature="e#41782#42122#0" expanded="true" />
+                <element signature="e#42121#42122#0" expanded="true" />
+                <element signature="e#42348#42878#0" expanded="true" />
+                <element signature="e#42877#42878#0" expanded="true" />
+                <element signature="e#43036#43378#0" expanded="true" />
+                <element signature="e#43377#43378#0" expanded="true" />
+                <element signature="e#43758#49985#0" expanded="true" />
+                <element signature="e#49984#49985#0" expanded="true" />
+                <element signature="e#50377#52120#0" expanded="true" />
+                <element signature="e#52119#52120#0" expanded="true" />
+                <element signature="e#52566#53636#0" expanded="true" />
+                <element signature="e#53635#53636#0" expanded="true" />
+                <element signature="e#54676#58209#0" expanded="true" />
+                <element signature="e#58208#58209#0" expanded="true" />
+                <element signature="e#58303#58671#0" expanded="true" />
+                <element signature="e#58670#58671#0" expanded="true" />
+                <element signature="e#65737#65745#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -197,11 +199,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TkMap.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TkMap.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="389">
-              <caret line="293" column="84" lean-forward="true" selection-start-line="293" selection-start-column="84" selection-end-line="293" selection-end-column="84" />
+            <state relative-caret-position="266">
+              <caret line="516" column="47" lean-forward="true" selection-start-line="516" selection-start-column="47" selection-end-line="516" selection-end-column="108" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5295#5296#0" expanded="true" />
@@ -222,50 +224,7 @@
                 <element signature="e#5801#5802#0" expanded="true" />
                 <element signature="e#5860#5861#0" expanded="true" />
                 <element signature="e#5897#5898#0" expanded="true" />
-                <element signature="e#18907#18915#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Storage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="11" column="38" lean-forward="false" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Chop.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="56" column="487" lean-forward="false" selection-start-line="56" selection-start-column="487" selection-end-line="56" selection-end-column="487" />
-              <folding>
-                <element signature="e#890#891#0" expanded="true" />
-                <element signature="e#967#968#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UI_state.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="558" column="73" lean-forward="false" selection-start-line="558" selection-start-column="73" selection-end-line="558" selection-end-column="73" />
-              <folding>
-                <element signature="e#27040#27041#0" expanded="true" />
-                <element signature="e#27076#27077#0" expanded="true" />
-                <element signature="e#35442#35443#0" expanded="true" />
-                <element signature="e#35478#35479#0" expanded="true" />
-                <element signature="class#38391:38954" expanded="false" />
-                <element signature="e#45110#45111#0" expanded="true" />
-                <element signature="e#45154#45155#0" expanded="true" />
-                <element signature="e#45241#45242#0" expanded="true" />
-                <element signature="e#45277#45278#0" expanded="true" />
+                <element signature="e#21685#21693#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -275,7 +234,7 @@
         <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="252">
-              <caret line="31" column="29" lean-forward="false" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
+              <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -295,18 +254,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Overhud</find>
-      <find>Over h</find>
-      <find>Gdx.input.setInputProcessor(UIStage);</find>
-      <find>Gdx.input.setInputProcessor</find>
-      <find>input</find>
-      <find>setin</find>
-      <find>act</find>
-      <find>setInputProcessor</find>
-      <find>drag</find>
-      <find>OverHud</find>
-      <find>BoxStuff</find>
-      <find>CameraFocusPointEdit</find>
       <find>cameraUpdate</find>
       <find>resize</find>
       <find>Activ</find>
@@ -323,12 +270,22 @@
       <find>Cursor</find>
       <find>UI.CursorItem.isStructure()</find>
       <find>new String[] {&quot;1280X720&quot;, &quot;1366X768&quot;, &quot;1440X900&quot;, &quot;1600X900&quot;, &quot;1920X1080&quot;}</find>
-      <find>CursorItem</find>
       <find>Collectables</find>
+      <find>CursorItem</find>
+      <find>ex</find>
+      <find>reg</find>
+      <find>Inventory</find>
+      <find>player.getInventory()</find>
+      <find>(Storage)</find>
+      <find>.getInventory()</find>
+      <find>Drops</find>
+      <find>SelectedObjects</find>
+      <find>SelectedObjects.c</find>
+      <find>SaveMap</find>
+      <find>This be</find>
+      <find>This</find>
     </findStrings>
     <replaceStrings>
-      <replace>getSize().y</replace>
-      <replace>getPosition().y + getPosition().z/2</replace>
       <replace>Entities.get(i).getHitbox()</replace>
       <replace>imageWidth</replace>
       <replace>imageHeight</replace>
@@ -357,6 +314,8 @@
       <replace>setHitboxOffset</replace>
       <replace>+ getHitboxOffset().x</replace>
       <replace>getPosition().y + getHitboxOffset().y +</replace>
+      <replace>getInventory()</replace>
+      <replace>player.Inventory</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -1192,7 +1151,6 @@
         <option value="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/test.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/LoadingState.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java" />
         <option value="$PROJECT_DIR$/core/assets/Crafting.dat" />
         <option value="$PROJECT_DIR$/core/assets/Items.dat" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/GameState.java" />
@@ -1211,15 +1169,16 @@
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/InGameObject.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Trigger.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" />
         <option value="$USER_HOME$/Downloads/Practice.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Item.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Item.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java" />
       </list>
     </option>
@@ -1230,7 +1189,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="width" value="1429" />
     <option name="height" value="1038" />
@@ -1675,7 +1634,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="7" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1729,10 +1688,30 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java</url>
+          <line>198</line>
+          <properties />
+          <option name="timeStamp" value="79" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java</url>
+          <line>566</line>
+          <properties />
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java</url>
+          <line>31</line>
+          <properties field="Drops" class="com.thecubecast.ReEngine.worldObjects.Interactable" />
+          <option name="timeStamp" value="82" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="78" />
+      <option name="time" value="83" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1776,13 +1755,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4431">
           <caret line="233" column="23" lean-forward="false" selection-start-line="233" selection-start-column="8" selection-end-line="233" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="354" column="32" lean-forward="false" selection-start-line="354" selection-start-column="32" selection-end-line="354" selection-end-column="32" />
         </state>
       </provider>
     </entry>
@@ -2093,131 +2065,50 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="558" column="73" lean-forward="false" selection-start-line="558" selection-start-column="73" selection-end-line="558" selection-end-column="73" />
+        <state relative-caret-position="178">
+          <caret line="859" column="65" lean-forward="false" selection-start-line="859" selection-start-column="65" selection-end-line="859" selection-end-column="65" />
           <folding>
-            <element signature="e#27040#27041#0" expanded="true" />
-            <element signature="e#27076#27077#0" expanded="true" />
-            <element signature="e#35442#35443#0" expanded="true" />
-            <element signature="e#35478#35479#0" expanded="true" />
-            <element signature="class#38391:38954" expanded="false" />
-            <element signature="e#45110#45111#0" expanded="true" />
-            <element signature="e#45154#45155#0" expanded="true" />
-            <element signature="e#45241#45242#0" expanded="true" />
-            <element signature="e#45277#45278#0" expanded="true" />
+            <element signature="e#27040#27041#0" expanded="false" />
+            <element signature="e#27076#27077#0" expanded="false" />
+            <element signature="e#35447#35448#0" expanded="false" />
+            <element signature="e#35483#35484#0" expanded="false" />
+            <element signature="class#38396:38959" expanded="false" />
+            <element signature="e#45115#45116#0" expanded="false" />
+            <element signature="e#45159#45160#0" expanded="false" />
+            <element signature="e#45246#45247#0" expanded="false" />
+            <element signature="e#45282#45283#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="19" column="29" lean-forward="false" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-          <folding>
-            <element signature="e#890#891#0" expanded="true" />
-            <element signature="e#967#968#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="11" column="38" lean-forward="false" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="56" column="487" lean-forward="false" selection-start-line="56" selection-start-column="487" selection-end-line="56" selection-end-column="487" />
-          <folding>
-            <element signature="e#890#891#0" expanded="true" />
-            <element signature="e#967#968#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="31" column="29" lean-forward="false" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
+        <state relative-caret-position="297">
+          <caret line="390" column="78" lean-forward="false" selection-start-line="390" selection-start-column="62" selection-end-line="390" selection-end-column="78" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Item.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="14" column="24" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="24" />
+        <state relative-caret-position="326">
+          <caret line="81" column="5" lean-forward="true" selection-start-line="81" selection-start-column="5" selection-end-line="81" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="1263" column="25" lean-forward="false" selection-start-line="1263" selection-start-column="25" selection-end-line="1263" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3771#3772#0" expanded="true" />
-            <element signature="e#3797#3798#0" expanded="true" />
-            <element signature="e#23861#24041#0" expanded="true" />
-            <element signature="e#24040#24041#0" expanded="true" />
-            <element signature="e#25026#25206#0" expanded="true" />
-            <element signature="e#25205#25206#0" expanded="true" />
-            <element signature="e#25664#25847#0" expanded="true" />
-            <element signature="e#25846#25847#0" expanded="true" />
-            <element signature="e#30904#31099#0" expanded="true" />
-            <element signature="e#31098#31099#0" expanded="true" />
-            <element signature="e#31946#32141#0" expanded="true" />
-            <element signature="e#32140#32141#0" expanded="true" />
-            <element signature="e#32426#32756#0" expanded="true" />
-            <element signature="e#32755#32756#0" expanded="true" />
-            <element signature="e#32990#33334#0" expanded="true" />
-            <element signature="e#33333#33334#0" expanded="true" />
-            <element signature="e#33542#33926#0" expanded="true" />
-            <element signature="e#33925#33926#0" expanded="true" />
-            <element signature="e#34114#34498#0" expanded="true" />
-            <element signature="e#34497#34498#0" expanded="true" />
-            <element signature="e#34686#35070#0" expanded="true" />
-            <element signature="e#35069#35070#0" expanded="true" />
-            <element signature="e#35274#35757#0" expanded="true" />
-            <element signature="e#35756#35757#0" expanded="true" />
-            <element signature="e#35994#36514#0" expanded="true" />
-            <element signature="e#36513#36514#0" expanded="true" />
-            <element signature="e#36742#37228#0" expanded="true" />
-            <element signature="e#37227#37228#0" expanded="true" />
-            <element signature="e#37471#37993#0" expanded="true" />
-            <element signature="e#37992#37993#0" expanded="true" />
-            <element signature="e#38219#38703#0" expanded="true" />
-            <element signature="e#38702#38703#0" expanded="true" />
-            <element signature="e#38940#39460#0" expanded="true" />
-            <element signature="e#39459#39460#0" expanded="true" />
-            <element signature="e#39697#40037#0" expanded="true" />
-            <element signature="e#40036#40037#0" expanded="true" />
-            <element signature="e#40263#40793#0" expanded="true" />
-            <element signature="e#40792#40793#0" expanded="true" />
-            <element signature="e#40951#41293#0" expanded="true" />
-            <element signature="e#41292#41293#0" expanded="true" />
-            <element signature="e#41673#47368#0" expanded="true" />
-            <element signature="e#47367#47368#0" expanded="true" />
-            <element signature="e#47760#48777#0" expanded="true" />
-            <element signature="e#48776#48777#0" expanded="true" />
-            <element signature="e#49223#50293#0" expanded="true" />
-            <element signature="e#50292#50293#0" expanded="true" />
-            <element signature="e#51333#54866#0" expanded="true" />
-            <element signature="e#54865#54866#0" expanded="true" />
-            <element signature="e#59447#59455#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="252">
+          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="293" column="84" lean-forward="true" selection-start-line="293" selection-start-column="84" selection-end-line="293" selection-end-column="84" />
+        <state relative-caret-position="266">
+          <caret line="516" column="47" lean-forward="true" selection-start-line="516" selection-start-column="47" selection-end-line="516" selection-end-column="108" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#5295#5296#0" expanded="true" />
@@ -2238,7 +2129,105 @@
             <element signature="e#5801#5802#0" expanded="true" />
             <element signature="e#5860#5861#0" expanded="true" />
             <element signature="e#5897#5898#0" expanded="true" />
-            <element signature="e#18907#18915#0" expanded="true" />
+            <element signature="e#21685#21693#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="797">
+          <caret line="48" column="32" lean-forward="false" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
+          <folding>
+            <element signature="e#1137#1138#0" expanded="true" />
+            <element signature="e#1169#1170#0" expanded="true" />
+            <element signature="e#1219#1220#0" expanded="true" />
+            <element signature="e#1256#1257#0" expanded="true" />
+            <element signature="e#1435#1436#0" expanded="true" />
+            <element signature="e#1473#1474#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="59" column="17" lean-forward="true" selection-start-line="55" selection-start-column="16" selection-end-line="59" selection-end-column="17" />
+          <folding>
+            <element signature="e#890#891#0" expanded="true" />
+            <element signature="e#967#968#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="59" column="17" lean-forward="false" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="17" />
+          <folding>
+            <element signature="e#890#891#0" expanded="true" />
+            <element signature="e#967#968#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4217">
+          <caret line="1060" column="52" lean-forward="true" selection-start-line="1060" selection-start-column="52" selection-end-line="1060" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3771#3772#0" expanded="true" />
+            <element signature="e#3797#3798#0" expanded="true" />
+            <element signature="e#25946#26126#0" expanded="true" />
+            <element signature="e#26125#26126#0" expanded="true" />
+            <element signature="e#27111#27291#0" expanded="true" />
+            <element signature="e#27290#27291#0" expanded="true" />
+            <element signature="e#27749#27932#0" expanded="true" />
+            <element signature="e#27931#27932#0" expanded="true" />
+            <element signature="e#32989#33184#0" expanded="true" />
+            <element signature="e#33183#33184#0" expanded="true" />
+            <element signature="e#34031#34226#0" expanded="true" />
+            <element signature="e#34225#34226#0" expanded="true" />
+            <element signature="e#34511#34841#0" expanded="true" />
+            <element signature="e#34840#34841#0" expanded="true" />
+            <element signature="e#35075#35419#0" expanded="true" />
+            <element signature="e#35418#35419#0" expanded="true" />
+            <element signature="e#35627#36011#0" expanded="true" />
+            <element signature="e#36010#36011#0" expanded="true" />
+            <element signature="e#36199#36583#0" expanded="true" />
+            <element signature="e#36582#36583#0" expanded="true" />
+            <element signature="e#36771#37155#0" expanded="true" />
+            <element signature="e#37154#37155#0" expanded="true" />
+            <element signature="e#37359#37842#0" expanded="true" />
+            <element signature="e#37841#37842#0" expanded="true" />
+            <element signature="e#38079#38599#0" expanded="true" />
+            <element signature="e#38598#38599#0" expanded="true" />
+            <element signature="e#38827#39313#0" expanded="true" />
+            <element signature="e#39312#39313#0" expanded="true" />
+            <element signature="e#39556#40078#0" expanded="true" />
+            <element signature="e#40077#40078#0" expanded="true" />
+            <element signature="e#40304#40788#0" expanded="true" />
+            <element signature="e#40787#40788#0" expanded="true" />
+            <element signature="e#41025#41545#0" expanded="true" />
+            <element signature="e#41544#41545#0" expanded="true" />
+            <element signature="e#41782#42122#0" expanded="true" />
+            <element signature="e#42121#42122#0" expanded="true" />
+            <element signature="e#42348#42878#0" expanded="true" />
+            <element signature="e#42877#42878#0" expanded="true" />
+            <element signature="e#43036#43378#0" expanded="true" />
+            <element signature="e#43377#43378#0" expanded="true" />
+            <element signature="e#43758#49985#0" expanded="true" />
+            <element signature="e#49984#49985#0" expanded="true" />
+            <element signature="e#50377#52120#0" expanded="true" />
+            <element signature="e#52119#52120#0" expanded="true" />
+            <element signature="e#52566#53636#0" expanded="true" />
+            <element signature="e#53635#53636#0" expanded="true" />
+            <element signature="e#54676#58209#0" expanded="true" />
+            <element signature="e#58208#58209#0" expanded="true" />
+            <element signature="e#58303#58671#0" expanded="true" />
+            <element signature="e#58670#58671#0" expanded="true" />
+            <element signature="e#65737#65745#0" expanded="true" />
           </folding>
         </state>
       </provider>

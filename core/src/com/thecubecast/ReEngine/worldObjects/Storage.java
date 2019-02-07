@@ -9,7 +9,9 @@ import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
 
 public class Storage extends Interactable {
 
-    public Item[] Inventory = new Item[30];
+    public int InventorySize = 30;
+
+    private Item[] Inventory = new Item[InventorySize];
 
     public Storage(int x, int y, int z, Vector3 size, type State, boolean collision) {
         super(x, y, z, size, State, collision);
@@ -32,6 +34,24 @@ public class Storage extends Interactable {
     @Override
     public void Activated() {
 
+    }
+
+    public Item[] getInventory() {
+        return Inventory;
+    }
+
+    public void setInventory(Item[] inventory) {
+        Inventory = inventory;
+    }
+
+    public void ClearInventory() {
+        for (int i = 0; i < InventorySize; i++) {
+            Inventory[i] = null;
+        }
+    }
+
+    public Item getInventoryAt(int spot) {
+        return Inventory[spot];
     }
 
     public int getItemQuant(int ItemId) {

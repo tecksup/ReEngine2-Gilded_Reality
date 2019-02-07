@@ -857,7 +857,7 @@ public enum UI_state implements State<UIFSM> {
 
             StorageInventoryTable = new Table(entity.skin);
 
-            for (int i = 1; i < entity.StorageOpen.Inventory.length+1; i++) {
+            for (int i = 1; i < entity.StorageOpen.getInventory().length+1; i++) {
                 int tempi = i;
 
                 Table ItemBox = new Table(entity.skin);

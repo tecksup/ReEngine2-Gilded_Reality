@@ -197,6 +197,7 @@ public class EditorState extends GameState {
                 SelectedObjects.get(i).setDebugView(false);
             }
             SelectedObjects.clear();
+            HiddenButtonTriggeresLoading.init(0,0);
         }
 
         Particles.Update();
@@ -228,8 +229,6 @@ public class EditorState extends GameState {
 
                             SelectedObjects.add(Entities.get(i));
                             Entities.get(i).setDebugView(true);
-                            InputEvent event1 = new InputEvent();
-                            event1.setType(InputEvent.Type.touchDown);
                             HiddenButtonTriggeresLoading.init(0,0);
                             break;
                         }
@@ -408,6 +407,44 @@ public class EditorState extends GameState {
 
         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.S)) {
             SaveMap(SaveNameText);
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) || Gdx.input.isKeyJustPressed(Input.Keys.DEL)) {
+            for (int i = 0; i < SelectedObjects.size(); i++) {
+                Entities.remove(SelectedObjects.get(i));
+            }
+            SelectedObjects.clear();
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+            if (SelectedObjects.size() == 1) {
+                Interactable temp = (Interactable) SelectedObjects.get(0);
+                if (SelectedObjects.get(0) instanceof Storage) {
+                    System.out.println("it's a storage");
+                    String Inventory = "";
+                    Storage tempStore = (Storage) SelectedObjects.get(0);
+                    for (int j = 0; j < tempStore.InventorySize; j++) {
+                        if (tempStore.getInventoryAt(j) != null) {
+                            System.out.println("Found " + tempStore.getInventory()[j].getID() + "," + tempStore.getInventory()[j].getQuantity() + "; at " + j);
+                            Inventory = Inventory + tempStore.getInventory()[j].getID() + "," + tempStore.getInventory()[j].getQuantity() + ";";
+                        } else {
+                        }
+                    }
+                    System.out.println("" + Inventory);
+                } else {
+                    System.out.println("it's a " + temp.ID);
+                    System.out.println(temp.Drops.size());
+                    String Inventory = "";
+                    for (int j = 0; j < temp.Drops.size(); j++) {
+                        if (temp.Drops.get(j) != null) {
+                            System.out.println("Found " + temp.Drops.get(j).getID() + "," + temp.Drops.get(j).getQuantity() + ";");
+                            Inventory = Inventory + temp.Drops.get(j).getID() + "," + temp.Drops.get(j).getQuantity() + ";";
+                        }
+                    }
+                    System.out.println(temp.Drops.size());
+                    System.out.println("" + Inventory);
+                }
+            }
         }
 
         if (Gdx.input.isTouched() && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) { //KeyHit
@@ -1017,7 +1054,6 @@ public class EditorState extends GameState {
         Operation.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
                 WorldObject.type Type;
                 if (Physics.getSelected().equals("Static")) {
                     Type = WorldObject.type.Static;
@@ -1031,6 +1067,7 @@ public class EditorState extends GameState {
                         tempObj.setTexLocation(Texture.getText());
                         tempObj.Name = Name.getText();
                         tempObj.Description = Description.getText();
+                        tempObj.Drops = ((Interactable) SelectedObjects.get(0)).Drops;
 
                         tempObj.setHitboxOffset(new Vector3(Integer.parseInt(WidthOffset.getText()),Integer.parseInt(HeightOffset.getText()),Integer.parseInt(DepthOffset.getText())));
 
@@ -1044,6 +1081,7 @@ public class EditorState extends GameState {
                         tempObj.setTexLocation(Texture.getText());
                         tempObj.Name = Name.getText();
                         tempObj.Description = Description.getText();
+                        tempObj.Drops = ((Interactable) SelectedObjects.get(0)).Drops;
 
                         tempObj.setHitboxOffset(new Vector3(Integer.parseInt(WidthOffset.getText()),Integer.parseInt(HeightOffset.getText()),Integer.parseInt(DepthOffset.getText())));
 
@@ -1057,6 +1095,7 @@ public class EditorState extends GameState {
                         tempObj.setTexLocation(Texture.getText());
                         tempObj.Name = Name.getText();
                         tempObj.Description = Description.getText();
+                        tempObj.Drops = ((Interactable) SelectedObjects.get(0)).Drops;
 
                         tempObj.setHitboxOffset(new Vector3(Integer.parseInt(WidthOffset.getText()),Integer.parseInt(HeightOffset.getText()),Integer.parseInt(DepthOffset.getText())));
 
@@ -1070,6 +1109,7 @@ public class EditorState extends GameState {
                         tempObj.setTexLocation(Texture.getText());
                         tempObj.Name = Name.getText();
                         tempObj.Description = Description.getText();
+                        tempObj.Drops = ((Interactable) SelectedObjects.get(0)).Drops;
 
                         tempObj.setHitboxOffset(new Vector3(Integer.parseInt(WidthOffset.getText()),Integer.parseInt(HeightOffset.getText()),Integer.parseInt(DepthOffset.getText())));
 
@@ -1083,6 +1123,8 @@ public class EditorState extends GameState {
                         tempObj.setTexLocation(Texture.getText());
                         tempObj.Name = Name.getText();
                         tempObj.Description = Description.getText();
+                        tempObj.Drops = ((Interactable) SelectedObjects.get(0)).Drops;
+                        tempObj.setInventory(((Storage) SelectedObjects.get(0)).getInventory());
 
                         tempObj.setHitboxOffset(new Vector3(Integer.parseInt(WidthOffset.getText()),Integer.parseInt(HeightOffset.getText()),Integer.parseInt(DepthOffset.getText())));
 
@@ -1093,6 +1135,7 @@ public class EditorState extends GameState {
                         SelectedObjects.get(0).setDebugView(true);
                     }
                 }
+
             }
         });
         Operation.setItems(new String[] {"None", "Mine", "Chop", "Harvest", "Chest"});
@@ -1100,24 +1143,35 @@ public class EditorState extends GameState {
         ObjectEditor.add(OperationL);
         ObjectEditor.add(Operation).fillX().row();
         //
-        Label CollectablesL = new Label("Collectables", skin);
+        Label CollectiblesL = new Label("Collectables", skin);
         TextField Collectables = new TextField("5,12;6,4;", skin);
         Collectables.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("We detected a change!");
                 if (SelectedObjects.size() == 1) {
-                    ((Interactable)SelectedObjects.get(0)).Drops.clear();
+                    if (SelectedObjects.get(0) instanceof Storage) {
+                        ((Storage) SelectedObjects.get(0)).ClearInventory();
+                    } else {
+                        ((Interactable)SelectedObjects.get(0)).Drops.clear();
+                    }
 
                     if (!Collectables.getText().equals("")){
                         String[] Inventory = Collectables.getText().split(";");
 
                         for (int j = 0; j < Inventory.length; j++) {
                             String[] itemtemp = Inventory[j].split(",");
-                            Item tempItem = new Item(Integer.parseInt(itemtemp[0]), Integer.parseInt(itemtemp[1]));
-                            if (!ItemPresets.containsKey(Integer.parseInt(itemtemp[0]))) {
+                            if (itemtemp.length > 1 && itemtemp[0].matches("-?\\d+(\\.\\d+)?") && itemtemp[1].matches("-?\\d+(\\.\\d+)?")) {
+                                Item tempItem = new Item(Integer.parseInt(itemtemp[0]), Integer.parseInt(itemtemp[1]));
+                                if (!ItemPresets.containsKey(Integer.parseInt(itemtemp[0]))) {
 
-                            } else if (Integer.parseInt(itemtemp[1]) > 0) {
-                                ((Interactable)SelectedObjects.get(0)).Drops.add(tempItem);
+                                } else if (Integer.parseInt(itemtemp[1]) > 0) {
+                                    if (SelectedObjects.get(0) instanceof Storage) {
+                                        ((Storage) SelectedObjects.get(0)).AddToInventory(tempItem);
+                                    } else {
+                                        ((Interactable)SelectedObjects.get(0)).Drops.add(tempItem);
+                                    }
+                                }
                             }
                         }
                     }
@@ -1126,7 +1180,7 @@ public class EditorState extends GameState {
             }
         });
 
-        ObjectEditor.add(CollectablesL).left();
+        ObjectEditor.add(CollectiblesL).left();
         ObjectEditor.add(Collectables).row();
         //
         CheckBox IsTrigger = new CheckBox("IsTrigger", skin);
@@ -1231,7 +1285,19 @@ public class EditorState extends GameState {
                 }
             }
         });
-        ObjectEditor.add(DuplicateOrCreate).row();
+        TkTextButton Delete = new TkTextButton("Delete", skin);
+        Delete.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                for (int i = 0; i < SelectedObjects.size(); i++) {
+                    Entities.remove(SelectedObjects.get(i));
+                }
+                SelectedObjects.clear();
+            }
+        });
+        ObjectEditor.add(DuplicateOrCreate);
+        ObjectEditor.add(Delete).row();
 
         HiddenButtonTriggeresLoading = new WorldObject() {
 
@@ -1254,17 +1320,24 @@ public class EditorState extends GameState {
                     Physics.setSelected(temp.getState());
                     Collision.setChecked(temp.Collision);
                     Operation.setSelected(temp.ID);
-                    if (temp instanceof Storage) {
+
+                    if (SelectedObjects.get(0) instanceof Storage) {
                         String Inventory = "";
-                        Storage tempStore = (Storage) temp;
-                        for (int j = 0; j < tempStore.Inventory.length; j++) {
-                            if (tempStore.Inventory[j] != null) {
-                                Inventory = Inventory + tempStore.Inventory[j].getID() + "," + tempStore.Inventory[j].getQuantity() + ";";
+                        Storage tempStore = (Storage) SelectedObjects.get(0);
+                        for (int j = 0; j < tempStore.InventorySize; j++) {
+                            if (tempStore.getInventoryAt(j) != null) {
+                                Inventory = Inventory + tempStore.getInventory()[j].getID() + "," + tempStore.getInventory()[j].getQuantity() + ";";
                             }
                         }
                         Collectables.setText(Inventory);
                     } else {
-                        Collectables.setText("Not Configured to accept Drops");
+                        String Inventory = "";
+                        for (int j = 0; j < temp.Drops.size(); j++) {
+                            if (temp.Drops.get(j) != null) {
+                                Inventory = Inventory + temp.Drops.get(j).getID() + "," + temp.Drops.get(j).getQuantity() + ";";
+                            }
+                        }
+                        Collectables.setText(Inventory);
                     }
                     if (temp.getActivationType().name().equals("None")) {
                         IsTrigger.setChecked(false);
@@ -1273,7 +1346,50 @@ public class EditorState extends GameState {
                     }
                     TriggerTypeChoice.setSelected(temp.getActivationType().name().toString());
                     EventCode.setText(temp.getRawCommands());
+                } else if (SelectedObjects.size() == 0) {
+                    Interactable temp = (Interactable) SelectedObjects.get(0);
+                    Name.setText(temp.Name);
+                    Description.setText(temp.Description);
+                    X.setText("");
+                    Y.setText("");
+                    Z.setText("");
+                    Width.setText("");
+                    WidthOffset.setText("");
+                    Height.setText("");
+                    HeightOffset.setText("");
+                    Depth.setText("");
+                    DepthOffset.setText("");
+                    Texture.setText("");
+                    Physics.setSelected("Static");
+                    Collision.setChecked(false);
+                    Operation.setSelected("----");
+                    Collectables.setText("NOPE");
+                    IsTrigger.setChecked(false);
+                    TriggerTypeChoice.setSelected("None");
+                    EventCode.setText("None");
+                } else if (SelectedObjects.size() > 1) {
+                    Interactable temp = (Interactable) SelectedObjects.get(0);
+                    Name.setText("Several Objects Selected");
+                    Description.setText("At the moment, editing of only one object at a time is supported!");
+                    X.setText("");
+                    Y.setText("");
+                    Z.setText("");
+                    Width.setText("");
+                    WidthOffset.setText("");
+                    Height.setText("");
+                    HeightOffset.setText("");
+                    Depth.setText("");
+                    DepthOffset.setText("");
+                    Texture.setText("");
+                    Physics.setSelected("Static");
+                    Collision.setChecked(false);
+                    Operation.setSelected("----");
+                    Collectables.setText("NOPE");
+                    IsTrigger.setChecked(false);
+                    TriggerTypeChoice.setSelected("None");
+                    EventCode.setText("None");
                 }
+
             }
 
             @Override

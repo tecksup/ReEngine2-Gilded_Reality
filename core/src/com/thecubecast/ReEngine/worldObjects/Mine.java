@@ -53,9 +53,11 @@ public class Mine extends Interactable {
             Random rand = new Random();
             //rand.nextInt((3 - 1) + 1) + 1;
             for (int i = 0; i < rand.nextInt((3 - 2) + 2) + 2; i++) {
-                //WorldItem temp = new WorldItem((int) this.getPosition().x + (int) this.getSize().x/2 + (rand.nextInt(((int) this.getSize().x/2 - (int) this.getSize().x/2) + (int) this.getSize().x/2) + (int) this.getSize().x/2), (int) this.getPosition().y + (int) this.getSize().y/2 + (rand.nextInt(((int) this.getSize().y/2 - (int) this.getSize().y/2) + (int) this.getSize().y/2) + (int) this.getSize().y/2), (int) player.getIntereactBox().max.z, ItemPresets.get(5));
-                //temp.item.setQuantity(5);
-                //PlayState.Entities.add(temp);
+                for (int j = 0; j < Drops.size(); j++) {
+                    WorldItem temp = new WorldItem((int) this.getPosition().x + (int) this.getSize().x/2 + (rand.nextInt(((int) this.getSize().x/2 - (int) this.getSize().x/2) + (int) this.getSize().x/2) + (int) this.getSize().x/2), (int) this.getPosition().y + (int) this.getSize().y/2 + (rand.nextInt(((int) this.getSize().y/2 - (int) this.getSize().y/2) + (int) this.getSize().y/2) + (int) this.getSize().y/2), (int) player.getIntereactBox().max.z, ItemPresets.get(Drops.get(j).getID()));
+                    temp.item.setQuantity(Drops.get(j).getQuantity());
+                    PlayState.Entities.add(temp);
+                }
             }
             Colls.remove(CollisionHashID);
             Entities.remove(this);

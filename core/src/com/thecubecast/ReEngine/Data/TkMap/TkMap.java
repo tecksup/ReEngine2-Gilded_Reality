@@ -291,11 +291,13 @@ public class TkMap {
 
                     for (int j = 0; j < Inventory.length; j++) {
                         String[] itemtemp = Inventory[j].split(",");
-                        Item tempItem = new Item(Integer.parseInt(itemtemp[0]), Integer.parseInt(itemtemp[1]));
-                        if (!ItemPresets.containsKey(Integer.parseInt(itemtemp[0]))) {
+                        if (itemtemp[0].matches("-?\\d+(\\.\\d+)?") || itemtemp[1].matches("-?\\d+(\\.\\d+)?")) {
+                            Item tempItem = new Item(Integer.parseInt(itemtemp[0]), Integer.parseInt(itemtemp[1]));
+                            if (!ItemPresets.containsKey(Integer.parseInt(itemtemp[0]))) {
 
-                        } else if (Integer.parseInt(itemtemp[1]) > 0) {
-                            tempObj.AddToInventory(tempItem);
+                            } else if (Integer.parseInt(itemtemp[1]) > 0) {
+                                tempObj.AddToInventory(tempItem);
+                            }
                         }
                     }
                 }
@@ -309,6 +311,22 @@ public class TkMap {
                 tempObj.Name = Name;
                 tempObj.Description = Description;
 
+                if (!tempObject.get("Collectible").getAsString().equals("")){
+                    String[] Inventory = tempObject.get("Collectible").getAsString().split(";");
+
+                    for (int j = 0; j < Inventory.length; j++) {
+                        String[] itemtemp = Inventory[j].split(",");
+                        if (itemtemp[0].matches("-?\\d+(\\.\\d+)?") || itemtemp[1].matches("-?\\d+(\\.\\d+)?")) {
+                            Item tempItem = new Item(Integer.parseInt(itemtemp[0]), Integer.parseInt(itemtemp[1]));
+                            if (!ItemPresets.containsKey(Integer.parseInt(itemtemp[0]))) {
+
+                            } else if (Integer.parseInt(itemtemp[1]) > 0) {
+                                tempObj.Drops.add(tempItem);
+                            }
+                        }
+                    }
+                }
+
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
                 temp.add(tempObj);
@@ -318,6 +336,22 @@ public class TkMap {
                 tempObj.Name = Name;
                 tempObj.Description = Description;
 
+                if (!tempObject.get("Collectible").getAsString().equals("")){
+                    String[] Inventory = tempObject.get("Collectible").getAsString().split(";");
+
+                    for (int j = 0; j < Inventory.length; j++) {
+                        String[] itemtemp = Inventory[j].split(",");
+                        if (itemtemp[0].matches("-?\\d+(\\.\\d+)?") || itemtemp[1].matches("-?\\d+(\\.\\d+)?")) {
+                            Item tempItem = new Item(Integer.parseInt(itemtemp[0]), Integer.parseInt(itemtemp[1]));
+                            if (!ItemPresets.containsKey(Integer.parseInt(itemtemp[0]))) {
+
+                            } else if (Integer.parseInt(itemtemp[1]) > 0) {
+                                tempObj.Drops.add(tempItem);
+                            }
+                        }
+                    }
+                }
+
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
                 temp.add(tempObj);
@@ -326,6 +360,22 @@ public class TkMap {
                 tempObj.setTexLocation(tempImgLoc);
                 tempObj.Name = Name;
                 tempObj.Description = Description;
+
+                if (!tempObject.get("Collectible").getAsString().equals("")){
+                    String[] Inventory = tempObject.get("Collectible").getAsString().split(";");
+
+                    for (int j = 0; j < Inventory.length; j++) {
+                        String[] itemtemp = Inventory[j].split(",");
+                        if (itemtemp[0].matches("-?\\d+(\\.\\d+)?") || itemtemp[1].matches("-?\\d+(\\.\\d+)?")) {
+                            Item tempItem = new Item(Integer.parseInt(itemtemp[0]), Integer.parseInt(itemtemp[1]));
+                            if (!ItemPresets.containsKey(Integer.parseInt(itemtemp[0]))) {
+
+                            } else if (Integer.parseInt(itemtemp[1]) > 0) {
+                                tempObj.Drops.add(tempItem);
+                            }
+                        }
+                    }
+                }
 
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
@@ -451,9 +501,9 @@ public class TkMap {
 
                     String Inventory = "";
 
-                    for (int j = 0; j < temp.Inventory.length; j++) {
-                        if (temp.Inventory[j] != null)
-                            Inventory += temp.Inventory[j].getID() + "," + temp.Inventory[j].getQuantity() + ";";
+                    for (int j = 0; j < temp.getInventory().length; j++) {
+                        if (temp.getInventory()[j] != null)
+                            Inventory += temp.getInventory()[j].getID() + "," + temp.getInventory()[j].getQuantity() + ";";
                     }
 
 
