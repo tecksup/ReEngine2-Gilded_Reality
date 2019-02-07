@@ -551,40 +551,12 @@ public enum UI_state implements State<UIFSM> {
                                 Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
                                 PlayState.camera.unproject(pos);
 
-                                Storage tempObj = new Storage((int) pos.x, (int) pos.y, (int) pos.z, new Vector3(11, 8, 8), WorldObject.type.Static, true) {
-                                    Texture Image = new Texture(Gdx.files.internal("Sprites/Map/Objects_04.png"));
+                                Storage tempObj = new Storage((int) pos.x, (int) pos.y, (int) pos.z, new Vector3(11, 8, 8), WorldObject.type.Static, true);
+                                tempObj.setTexLocation("Sprites/Map/Objects_04.png");
+                                tempObj.Name = CursorItem.getName();
+                                tempObj.Description = CursorItem.getDescription();
 
-                                    @Override
-                                    public void init(int Width, int Height) {
-
-                                    }
-
-                                    @Override
-                                    public void update(float delta, List<Cube> Colls) {
-
-                                    }
-
-                                    @Override
-                                    public void draw(SpriteBatch batch, float Time) {
-                                        if (Highlight) {
-                                            batch.flush();
-                                            batch.setShader(OutlineShader);
-                                            setOutlineShaderColor(this.HighlightColor, 0.8f);
-                                            batch.draw(Image, getPosition().x, getPosition().y);
-                                            batch.setShader(null);
-                                        } else {
-                                            batch.draw(Image, getPosition().x, getPosition().y);
-                                        }
-                                    }
-
-                                    @Override
-                                    public BoundingBox getImageHitbox() {
-                                        BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
-                                        return temp;
-                                    }
-                                };
-
-                                tempObj.setHitboxOffset(new Vector3(3, 0, 0));
+                                tempObj.setHitboxOffset(new Vector3(3,0,0));
 
                                 PlayState.Entities.add(tempObj);
                                 if (entity.CursorItem.getQuantity() > 1)

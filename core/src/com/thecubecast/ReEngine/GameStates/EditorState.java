@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.thecubecast.ReEngine.Data.Common.updategsmValues;
+import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
 import static com.thecubecast.ReEngine.Graphics.Draw.*;
 import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
 import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
@@ -208,11 +209,18 @@ public class EditorState extends GameState {
             if (selected.equals(selection.Object)) {
                 if(Entities.get(i).getHitbox().contains(new Vector3(pos.x, pos.y, 2))) {
                     //Entities.get(i).setDebugView(true);
-                    if (SelectedArea == null &&Gdx.input.isTouched() && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                    if (SelectedArea == null && Gdx.input.isTouched() && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
                             SelectedObjects.add(Entities.get(i));
                             Entities.get(i).setDebugView(true);
                         } else {
+
+                            if (SelectedObjects.size() == 1) {
+                                if (SelectedObjects.get(0).equals(Entities.get(i))) {
+                                    break;
+                                }
+                            }
+
                             for (int j = 0; j < SelectedObjects.size(); j++) {
                                 SelectedObjects.get(j).setDebugView(false);
                             }
@@ -1009,30 +1017,116 @@ public class EditorState extends GameState {
         Operation.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
+                WorldObject.type Type;
+                if (Physics.getSelected().equals("Static")) {
+                    Type = WorldObject.type.Static;
+                } else if (Physics.getSelected().equals("Dynamic")){
+                    Type = WorldObject.type.Dynamic;
+                } else { Type = WorldObject.type.Static;}
+
                 if (SelectedObjects.size() == 1) {
                     if (Operation.getSelected().equals("None")) {
+                        Interactable tempObj = new Interactable(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked());
+                        tempObj.setTexLocation(Texture.getText());
+                        tempObj.Name = Name.getText();
+                        tempObj.Description = Description.getText();
 
-                    } else if (Operation.getSelected().equals("Dynamic")) {
+                        tempObj.setHitboxOffset(new Vector3(Integer.parseInt(WidthOffset.getText()),Integer.parseInt(HeightOffset.getText()),Integer.parseInt(DepthOffset.getText())));
 
+                        Entities.remove(SelectedObjects.get(0));
+                        SelectedObjects.clear();
+                        Entities.add(tempObj);
+                        SelectedObjects.add(tempObj);
+                        SelectedObjects.get(0).setDebugView(true);
+                    } else if (Operation.getSelected().equals("Mine")) {
+                        Mine tempObj = new Mine(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked());
+                        tempObj.setTexLocation(Texture.getText());
+                        tempObj.Name = Name.getText();
+                        tempObj.Description = Description.getText();
+
+                        tempObj.setHitboxOffset(new Vector3(Integer.parseInt(WidthOffset.getText()),Integer.parseInt(HeightOffset.getText()),Integer.parseInt(DepthOffset.getText())));
+
+                        Entities.remove(SelectedObjects.get(0));
+                        SelectedObjects.clear();
+                        Entities.add(tempObj);
+                        SelectedObjects.add(tempObj);
+                        SelectedObjects.get(0).setDebugView(true);
+                    } else if (Operation.getSelected().equals("Chop")) {
+                        Chop tempObj = new Chop(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked());
+                        tempObj.setTexLocation(Texture.getText());
+                        tempObj.Name = Name.getText();
+                        tempObj.Description = Description.getText();
+
+                        tempObj.setHitboxOffset(new Vector3(Integer.parseInt(WidthOffset.getText()),Integer.parseInt(HeightOffset.getText()),Integer.parseInt(DepthOffset.getText())));
+
+                        Entities.remove(SelectedObjects.get(0));
+                        SelectedObjects.clear();
+                        Entities.add(tempObj);
+                        SelectedObjects.add(tempObj);
+                        SelectedObjects.get(0).setDebugView(true);
+                    } else if (Operation.getSelected().equals("Harvest")) {
+                        Interactable tempObj = new Interactable(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked());
+                        tempObj.setTexLocation(Texture.getText());
+                        tempObj.Name = Name.getText();
+                        tempObj.Description = Description.getText();
+
+                        tempObj.setHitboxOffset(new Vector3(Integer.parseInt(WidthOffset.getText()),Integer.parseInt(HeightOffset.getText()),Integer.parseInt(DepthOffset.getText())));
+
+                        Entities.remove(SelectedObjects.get(0));
+                        SelectedObjects.clear();
+                        Entities.add(tempObj);
+                        SelectedObjects.add(tempObj);
+                        SelectedObjects.get(0).setDebugView(true);
+                    } else if (Operation.getSelected().equals("Chest")) {
+                        Storage tempObj = new Storage(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked());
+                        tempObj.setTexLocation(Texture.getText());
+                        tempObj.Name = Name.getText();
+                        tempObj.Description = Description.getText();
+
+                        tempObj.setHitboxOffset(new Vector3(Integer.parseInt(WidthOffset.getText()),Integer.parseInt(HeightOffset.getText()),Integer.parseInt(DepthOffset.getText())));
+
+                        Entities.remove(SelectedObjects.get(0));
+                        SelectedObjects.clear();
+                        Entities.add(tempObj);
+                        SelectedObjects.add(tempObj);
+                        SelectedObjects.get(0).setDebugView(true);
                     }
                 }
             }
         });
-        Operation.setItems(new String[] {"None", "Mine", "Chop", "Harvest", "Chest", "Other"});
+        Operation.setItems(new String[] {"None", "Mine", "Chop", "Harvest", "Chest"});
         Operation.setSelected("None");
         ObjectEditor.add(OperationL);
         ObjectEditor.add(Operation).fillX().row();
         //
-        CheckBox IsCollectable = new CheckBox("Drops Items", skin);
-        TextField Collectables = new TextField("5,12;6,4;", skin) {
+        Label CollectablesL = new Label("Collectables", skin);
+        TextField Collectables = new TextField("5,12;6,4;", skin);
+        Collectables.addListener(new ChangeListener() {
             @Override
-            public void act(float delta) {
-                super.act(delta);
-                setDisabled(!IsCollectable.isChecked());
-            }
-        };
+            public void changed(ChangeEvent event, Actor actor) {
+                if (SelectedObjects.size() == 1) {
+                    ((Interactable)SelectedObjects.get(0)).Drops.clear();
 
-        ObjectEditor.add(IsCollectable).left();
+                    if (!Collectables.getText().equals("")){
+                        String[] Inventory = Collectables.getText().split(";");
+
+                        for (int j = 0; j < Inventory.length; j++) {
+                            String[] itemtemp = Inventory[j].split(",");
+                            Item tempItem = new Item(Integer.parseInt(itemtemp[0]), Integer.parseInt(itemtemp[1]));
+                            if (!ItemPresets.containsKey(Integer.parseInt(itemtemp[0]))) {
+
+                            } else if (Integer.parseInt(itemtemp[1]) > 0) {
+                                ((Interactable)SelectedObjects.get(0)).Drops.add(tempItem);
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
+
+        ObjectEditor.add(CollectablesL).left();
         ObjectEditor.add(Collectables).row();
         //
         CheckBox IsTrigger = new CheckBox("IsTrigger", skin);
@@ -1083,7 +1177,7 @@ public class EditorState extends GameState {
                 if (SelectedObjects.size() == 1) {
                     setText("Duplicate");
                 } else {
-                    setText("Create New Object");
+                    setText("Create New");
                 }
             }
         };
@@ -1099,29 +1193,7 @@ public class EditorState extends GameState {
                 } else { Type = WorldObject.type.Static;}
 
                 if (Operation.getSelected().equals("Chest")) {
-                    Storage tempObj = new Storage(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked()) {
-                        Texture Image = new Texture(Gdx.files.internal(Texture.getText()));
-                        @Override
-                        public void init(int Width, int Height) {
-
-                        }
-
-                        @Override
-                        public void update(float delta, List<Cube> Colls) {
-
-                        }
-
-                        @Override
-                        public void draw(SpriteBatch batch, float Time) {
-                            batch.draw(Image, getPosition().x, getPosition().y);
-                        }
-
-                        @Override
-                        public BoundingBox getImageHitbox() {
-                            BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
-                            return temp;
-                        }
-                    };
+                    Storage tempObj = new Storage(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked());
                     tempObj.setTexLocation(Texture.getText());
                     tempObj.Name = Name.getText();
                     tempObj.Description = Description.getText();
@@ -1130,24 +1202,7 @@ public class EditorState extends GameState {
 
                     Entities.add(tempObj);
                 } else if (Operation.getSelected().equals("Chop")) {
-                    Chop tempObj = new Chop(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked()) {
-                        Texture Image = new Texture(Gdx.files.internal(Texture.getText()));
-                        @Override
-                        public void init(int Width, int Height) {
-
-                        }
-
-                        @Override
-                        public void draw(SpriteBatch batch, float Time) {
-                            batch.draw(Image, getPosition().x + xoffset, getPosition().y);
-                        }
-
-                        @Override
-                        public BoundingBox getImageHitbox() {
-                            BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
-                            return temp;
-                        }
-                    };
+                    Chop tempObj = new Chop(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked());
                     tempObj.setTexLocation(Texture.getText());
                     tempObj.Name = Name.getText();
                     tempObj.Description = Description.getText();
@@ -1156,29 +1211,7 @@ public class EditorState extends GameState {
 
                     Entities.add(tempObj);
                 } else if (Operation.getSelected().equals("Mine")) {
-                    Mine tempObj = new Mine(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked()) {
-                        Texture Image = new Texture(Gdx.files.internal(Texture.getText()));
-                        @Override
-                        public void init(int Width, int Height) {
-                        /*this.drops[0][0] =  tempObject.get("x").getAsInt();
-                        this.drops[0][1] = ;
-                        this.drops[1][0] = ;
-                        this.drops[1][1] = ;
-                        this.drops[2][0] = ;
-                        this.drops[2][1] = ;*/
-                        }
-
-                        @Override
-                        public void draw(SpriteBatch batch, float Time) {
-                            batch.draw(Image, getPosition().x + xoffset, getPosition().y);
-                        }
-
-                        @Override
-                        public BoundingBox getImageHitbox() {
-                            BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
-                            return temp;
-                        }
-                    };
+                    Mine tempObj = new Mine(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked());
                     tempObj.setTexLocation(Texture.getText());
                     tempObj.Name = Name.getText();
                     tempObj.Description = Description.getText();
@@ -1187,37 +1220,7 @@ public class EditorState extends GameState {
 
                     Entities.add(tempObj);
                 } else {
-                    Interactable tempObj = new Interactable(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked()) {
-                        Texture Image = new Texture(Gdx.files.internal(Texture.getText()));
-                        @Override
-                        public void init(int Width, int Height) {
-
-                        }
-
-                        @Override
-                        public void update(float delta, List<Cube> Colls) {
-
-                        }
-
-                        @Override
-                        public void draw(SpriteBatch batch, float Time) {
-                            if (Highlight) {
-                                batch.flush();
-                                batch.setShader(OutlineShader);
-                                setOutlineShaderColor(this.HighlightColor, 0.8f);
-                                batch.draw(Image, getPosition().x, getPosition().y);
-                                batch.setShader(null);
-                            } else {
-                                batch.draw(Image, getPosition().x, getPosition().y);
-                            }
-                        }
-
-                        @Override
-                        public BoundingBox getImageHitbox() {
-                            BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
-                            return temp;
-                        }
-                    };
+                    Interactable tempObj = new Interactable(Integer.parseInt(X.getText()), Integer.parseInt(Y.getText()), Integer.parseInt(Z.getText()), new Vector3(Integer.parseInt(Width.getText()),Integer.parseInt(Height.getText()),Integer.parseInt(Depth.getText())), Type, Collision.isChecked());
                     tempObj.setTexLocation(Texture.getText());
                     tempObj.Name = Name.getText();
                     tempObj.Description = Description.getText();
@@ -1251,7 +1254,18 @@ public class EditorState extends GameState {
                     Physics.setSelected(temp.getState());
                     Collision.setChecked(temp.Collision);
                     Operation.setSelected(temp.ID);
-                    Collectables.setText("");
+                    if (temp instanceof Storage) {
+                        String Inventory = "";
+                        Storage tempStore = (Storage) temp;
+                        for (int j = 0; j < tempStore.Inventory.length; j++) {
+                            if (tempStore.Inventory[j] != null) {
+                                Inventory = Inventory + tempStore.Inventory[j].getID() + "," + tempStore.Inventory[j].getQuantity() + ";";
+                            }
+                        }
+                        Collectables.setText(Inventory);
+                    } else {
+                        Collectables.setText("Not Configured to accept Drops");
+                    }
                     if (temp.getActivationType().name().equals("None")) {
                         IsTrigger.setChecked(false);
                     } else {

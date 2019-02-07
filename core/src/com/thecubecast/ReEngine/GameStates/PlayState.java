@@ -369,6 +369,10 @@ public class PlayState extends DialogStateExtention {
 
     private void handleInput() {
 
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            tempshitgiggle.SaveMap(Entities);
+        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isTouched()) { //KeyHit
             Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
             camera.unproject(pos);

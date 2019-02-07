@@ -9,11 +9,19 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.google.gson.*;
 import com.thecubecast.ReEngine.Data.Cube;
+import com.thecubecast.ReEngine.Data.Item;
 import com.thecubecast.ReEngine.worldObjects.*;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
 import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
 import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
 
@@ -21,6 +29,8 @@ public class TkMap {
 
     JsonParser jsonReaderthing;
     JsonObject MapObject;
+
+    String MapLocation;
 
     int Width;
     int Height;
@@ -35,6 +45,7 @@ public class TkMap {
     Boolean[][] Collision;
 
     public TkMap(String MapLocation) {
+        this.MapLocation = MapLocation;
         pixel = new Texture(Gdx.files.internal("white-pixel.png"));
         jsonReaderthing = new JsonParser();
         MapObject = jsonReaderthing.parse(Gdx.files.internal(MapLocation).readString()).getAsJsonObject();
@@ -109,6 +120,8 @@ public class TkMap {
     }
 
     public TkMap(int Width, int Height, int TileSize) {
+
+        this.MapLocation = MapLocation;
 
         this.Width = Width;
         this.Height = Height;
@@ -268,63 +281,30 @@ public class TkMap {
             } else { Type = WorldObject.type.Static;}
 
             if (tempObject.get("Operation").getAsString().equals("Chest")) {
-                Storage tempObj = new Storage(X, Y, Z, new Vector3(W,H,D), Type, Collidable) {
-                    Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
-                    @Override
-                    public void init(int Width, int Height) {
-
-                    }
-
-                    @Override
-                    public void update(float delta, List<Cube> Colls) {
-
-                    }
-
-                    @Override
-                    public void draw(SpriteBatch batch, float Time) {
-                        if (Highlight) {
-                            batch.flush();
-                            batch.setShader(OutlineShader);
-                            setOutlineShaderColor(this.HighlightColor, 0.8f);
-                            batch.draw(Image, getPosition().x, getPosition().y);
-                            batch.setShader(null);
-                        } else {
-                            batch.draw(Image, getPosition().x, getPosition().y);
-                        }
-                    }
-
-                    @Override
-                    public BoundingBox getImageHitbox() {
-                        BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
-                        return temp;
-                    }
-                };
+                Storage tempObj = new Storage(X, Y, Z, new Vector3(W,H,D), Type, Collidable);
                 tempObj.setTexLocation(tempImgLoc);
                 tempObj.Name = Name;
                 tempObj.Description = Description;
+
+                if (!tempObject.get("Collectible").getAsString().equals("")){
+                    String[] Inventory = tempObject.get("Collectible").getAsString().split(";");
+
+                    for (int j = 0; j < Inventory.length; j++) {
+                        String[] itemtemp = Inventory[j].split(",");
+                        Item tempItem = new Item(Integer.parseInt(itemtemp[0]), Integer.parseInt(itemtemp[1]));
+                        if (!ItemPresets.containsKey(Integer.parseInt(itemtemp[0]))) {
+
+                        } else if (Integer.parseInt(itemtemp[1]) > 0) {
+                            tempObj.AddToInventory(tempItem);
+                        }
+                    }
+                }
 
                 tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
 
                 temp.add(tempObj);
             } else if (tempObject.get("Operation").getAsString().equals("Chop")) {
-                Chop tempObj = new Chop(X, Y, Z, new Vector3(W,H,D), Type, Collidable) {
-                    Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
-                    @Override
-                    public void init(int Width, int Height) {
-
-                    }
-
-                    @Override
-                    public void draw(SpriteBatch batch, float Time) {
-                        batch.draw(Image, getPosition().x + xoffset, getPosition().y);
-                    }
-
-                    @Override
-                    public BoundingBox getImageHitbox() {
-                        BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
-                        return temp;
-                    }
-                };
+                Chop tempObj = new Chop(X, Y, Z, new Vector3(W,H,D), Type, Collidable);
                 tempObj.setTexLocation(tempImgLoc);
                 tempObj.Name = Name;
                 tempObj.Description = Description;
@@ -333,29 +313,7 @@ public class TkMap {
 
                 temp.add(tempObj);
             } else if (tempObject.get("Operation").getAsString().equals("Mine")) {
-                Mine tempObj = new Mine(X, Y, Z, new Vector3(W,H,D), Type, Collidable) {
-                    Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
-                    @Override
-                    public void init(int Width, int Height) {
-                        /*this.drops[0][0] =  tempObject.get("x").getAsInt();
-                        this.drops[0][1] = ;
-                        this.drops[1][0] = ;
-                        this.drops[1][1] = ;
-                        this.drops[2][0] = ;
-                        this.drops[2][1] = ;*/
-                    }
-
-                    @Override
-                    public void draw(SpriteBatch batch, float Time) {
-                        batch.draw(Image, getPosition().x + xoffset, getPosition().y);
-                    }
-
-                    @Override
-                    public BoundingBox getImageHitbox() {
-                        BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
-                        return temp;
-                    }
-                };
+                Mine tempObj = new Mine(X, Y, Z, new Vector3(W,H,D), Type, Collidable);
                 tempObj.setTexLocation(tempImgLoc);
                 tempObj.Name = Name;
                 tempObj.Description = Description;
@@ -364,38 +322,7 @@ public class TkMap {
 
                 temp.add(tempObj);
             } else {
-                Interactable tempObj = new Interactable(X, Y, Z, new Vector3(W,H,D), Type, Collidable) {
-
-                    Texture Image = new Texture(Gdx.files.internal(tempImgLoc));
-                    @Override
-                    public void init(int Width, int Height) {
-
-                    }
-
-                    @Override
-                    public void update(float delta, List<Cube> Colls) {
-
-                    }
-
-                    @Override
-                    public void draw(SpriteBatch batch, float Time) {
-                        if (Highlight) {
-                            batch.flush();
-                            batch.setShader(OutlineShader);
-                            setOutlineShaderColor(this.HighlightColor, 0.8f);
-                            batch.draw(Image, getPosition().x, getPosition().y);
-                            batch.setShader(null);
-                        } else {
-                            batch.draw(Image, getPosition().x, getPosition().y);
-                        }
-                    }
-
-                    @Override
-                    public BoundingBox getImageHitbox() {
-                        BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
-                        return temp;
-                    }
-                };
+                Interactable tempObj = new Interactable(X, Y, Z, new Vector3(W,H,D), Type, Collidable);
                 tempObj.setTexLocation(tempImgLoc);
                 tempObj.Name = Name;
                 tempObj.Description = Description;
@@ -493,44 +420,65 @@ public class TkMap {
         //Objects
         JsonArray ObjectsList = new JsonArray();
         for (int i = 0; i < entities.size(); i++) {
-            JsonObject Entity = new JsonObject();
-            Entity.addProperty("Name", ((Interactable) entities.get(i)).Name);
-            Entity.addProperty("Description", "");
-            Entity.addProperty("x",  entities.get(i).getPosition().x);
-            Entity.addProperty("y",  entities.get(i).getPosition().y);
-            Entity.addProperty("z",  entities.get(i).getPosition().z);
-            Entity.addProperty("Width",  entities.get(i).getSize().x);
-            Entity.addProperty("WidthOffset",  entities.get(i).getHitboxOffset().x);
-            Entity.addProperty("Height",  entities.get(i).getSize().y);
-            Entity.addProperty("HeightOffset",  entities.get(i).getHitboxOffset().y);
-            Entity.addProperty("Depth",  entities.get(i).getSize().z);
-            Entity.addProperty("DepthOffset",  entities.get(i).getHitboxOffset().z);
-            if (entities.get(i) instanceof Interactable) {
-                Entity.addProperty("TexLocation", ((Interactable) entities.get(i)).getTexLocation());
-            } else {
-                Entity.addProperty("TexLocation", "");
-            }
-            Entity.addProperty("Physics",  entities.get(i).getState().name());
-            Entity.addProperty("Collidable",  entities.get(i).isCollidable());
-            if (entities.get(i) instanceof Interactable)
-                Entity.addProperty("Operation", ((Interactable) entities.get(i)).Name);
-            else
-                Entity.addProperty("Operation", "None");
-            if (entities.get(i) instanceof Mine)
-                Entity.addProperty("Collectible", "" + ((Mine) entities.get(i)).drops[0] + ":" + ((Mine) entities.get(i)).drops[1]);
-            else if (entities.get(i) instanceof Chop)
-                Entity.addProperty("Collectible", "" + ((Chop) entities.get(i)).drops[0] + ":" + ((Chop) entities.get(i)).drops[1]);
-            else
-                Entity.addProperty("Collectible",  "");
-            if (entities.get(i) instanceof Trigger) {
-                Entity.addProperty("TriggerType",  ((Trigger) entities.get(i)).getActivationType().toString());
-                Entity.addProperty("Event",  ((Trigger) entities.get(i)).getRawCommands());
-            } else {
-                Entity.addProperty("TriggerType",  "");
-                Entity.addProperty("Event", "");
-            }
 
-            ObjectsList.add(Entity);
+            if (entities.get(i) instanceof Interactable) {
+                JsonObject Entity = new JsonObject();
+                Entity.addProperty("Name", ((Interactable) entities.get(i)).Name);
+                Entity.addProperty("Description", "");
+                Entity.addProperty("x",  entities.get(i).getPosition().x);
+                Entity.addProperty("y",  entities.get(i).getPosition().y);
+                Entity.addProperty("z",  entities.get(i).getPosition().z);
+                Entity.addProperty("Width",  entities.get(i).getSize().x);
+                Entity.addProperty("WidthOffset",  entities.get(i).getHitboxOffset().x);
+                Entity.addProperty("Height",  entities.get(i).getSize().y);
+                Entity.addProperty("HeightOffset",  entities.get(i).getHitboxOffset().y);
+                Entity.addProperty("Depth",  entities.get(i).getSize().z);
+                Entity.addProperty("DepthOffset",  entities.get(i).getHitboxOffset().z);
+                if (entities.get(i) instanceof Interactable) {
+                    Entity.addProperty("TexLocation", ((Interactable) entities.get(i)).getTexLocation());
+                } else {
+                    Entity.addProperty("TexLocation", "");
+                }
+                Entity.addProperty("Physics",  entities.get(i).getState().name());
+                Entity.addProperty("Collidable",  entities.get(i).isCollidable());
+                if (entities.get(i) instanceof Interactable)
+                    Entity.addProperty("Operation", ((Interactable) entities.get(i)).ID);
+                else
+                    Entity.addProperty("Operation", "None");
+                if (entities.get(i) instanceof Storage) {
+
+                    Storage temp = (Storage) entities.get(i);
+
+                    String Inventory = "";
+
+                    for (int j = 0; j < temp.Inventory.length; j++) {
+                        if (temp.Inventory[j] != null)
+                            Inventory += temp.Inventory[j].getID() + "," + temp.Inventory[j].getQuantity() + ";";
+                    }
+
+
+                    Entity.addProperty("Collectible", Inventory);
+                }
+                else {
+                    String Inventory = "";
+
+                    for (int j = 0; j < ((Interactable) entities.get(i)).Drops.size(); j++) {
+                        Interactable temp = (Interactable) entities.get(i);
+                        Inventory += temp.Drops.get(j).getID() + "," + temp.Drops.get(j).getQuantity() + ";";
+                    }
+
+
+                    Entity.addProperty("Collectible", Inventory);
+                } if (entities.get(i) instanceof Trigger) {
+                    Entity.addProperty("TriggerType",  ((Trigger) entities.get(i)).getActivationType().toString());
+                    Entity.addProperty("Event",  ((Trigger) entities.get(i)).getRawCommands());
+                } else {
+                    Entity.addProperty("TriggerType",  "");
+                    Entity.addProperty("Event", "");
+                }
+
+                ObjectsList.add(Entity);
+            }
         }
 
         Output.add("Objects", ObjectsList);
@@ -538,6 +486,20 @@ public class TkMap {
         Gson temp = new GsonBuilder().setPrettyPrinting().create();
 
         return temp.toJson(Output);
+    }
+
+    public void SaveMap(List<WorldObject> Entities) {
+        Path path = Paths.get(MapLocation);
+        ArrayList<String> lines = new ArrayList<String>();
+        lines.add(SerializeMap(Entities));
+
+        try {
+            Files.deleteIfExists(path);
+            Files.write(path, lines, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Saved Map!");
     }
 
 }

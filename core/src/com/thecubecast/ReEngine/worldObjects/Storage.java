@@ -1,7 +1,11 @@
 package com.thecubecast.ReEngine.worldObjects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.Item;
+
+import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
+import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
 
 public class Storage extends Interactable {
 
@@ -10,6 +14,19 @@ public class Storage extends Interactable {
     public Storage(int x, int y, int z, Vector3 size, type State, boolean collision) {
         super(x, y, z, size, State, collision);
         ID = "Chest";
+    }
+
+    @Override
+    public void draw(SpriteBatch batch, float Time) {
+        if (Highlight) {
+            batch.flush();
+            batch.setShader(OutlineShader);
+            setOutlineShaderColor(this.HighlightColor, 0.8f);
+            batch.draw(Image, getPosition().x, getPosition().y);
+            batch.setShader(null);
+        } else {
+            batch.draw(Image, getPosition().x, getPosition().y);
+        }
     }
 
     @Override

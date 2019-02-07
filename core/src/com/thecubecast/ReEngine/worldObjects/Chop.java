@@ -1,5 +1,6 @@
 package com.thecubecast.ReEngine.worldObjects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.Cube;
 import com.thecubecast.ReEngine.GameStates.PlayState;
@@ -18,13 +19,16 @@ public class Chop extends Interactable {
     boolean Hit = false;
     boolean IGNOREME = false;
 
-    public int[] drops = new int[2];
-
     int TotalHits = 0;
 
     public Chop(int x, int y, int z, Vector3 size, type State, boolean collision) {
         super(x, y, z, size, State, collision);
         ID = "Chop";
+    }
+
+    @Override
+    public void draw(SpriteBatch batch, float Time) {
+        batch.draw(Image, getPosition().x + xoffset, getPosition().y);
     }
 
     @Override
@@ -49,9 +53,11 @@ public class Chop extends Interactable {
             Random rand = new Random();
             //rand.nextInt((3 - 1) + 1) + 1;
             for (int i = 0; i < rand.nextInt((3 - 2) + 2) + 2; i++) {
-                WorldItem temp = new WorldItem((int) this.getPosition().x + (int) this.getSize().x/2 + (rand.nextInt(((int) this.getSize().x/2 - (int) this.getSize().x/2) + (int) this.getSize().x/2) + (int) this.getSize().x/2), (int) this.getPosition().y + (int) this.getSize().y/2 + (rand.nextInt(((int) this.getSize().y/2 - (int) this.getSize().y/2) + (int) this.getSize().y/2) + (int) this.getSize().y/2), (int) player.getIntereactBox().max.z, ItemPresets.get(5));
-                temp.item.setQuantity(5);
-                PlayState.Entities.add(temp);
+                for (int j = 0; j < Drops.size(); j++) {
+                    WorldItem temp = new WorldItem((int) this.getPosition().x + (int) this.getSize().x/2 + (rand.nextInt(((int) this.getSize().x/2 - (int) this.getSize().x/2) + (int) this.getSize().x/2) + (int) this.getSize().x/2), (int) this.getPosition().y + (int) this.getSize().y/2 + (rand.nextInt(((int) this.getSize().y/2 - (int) this.getSize().y/2) + (int) this.getSize().y/2) + (int) this.getSize().y/2), (int) player.getIntereactBox().max.z, ItemPresets.get(Drops.get(j).getID()));
+                    temp.item.setQuantity(5);
+                    PlayState.Entities.add(temp);
+                }
             }
             Colls.remove(CollisionHashID);
             Entities.remove(this);

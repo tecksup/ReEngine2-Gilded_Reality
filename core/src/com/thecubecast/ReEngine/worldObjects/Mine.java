@@ -1,5 +1,6 @@
 package com.thecubecast.ReEngine.worldObjects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.thecubecast.ReEngine.Data.Cube;
 import com.thecubecast.ReEngine.GameStates.PlayState;
@@ -18,13 +19,16 @@ public class Mine extends Interactable {
     boolean Hit = false;
     boolean IGNOREME = false;
 
-    public int[][] drops = new int[3][2];
-
     int TotalHits = 0;
 
     public Mine(int x, int y, int z, Vector3 size, type State, boolean collision) {
         super(x, y, z, size, State, collision);
         ID = "Mine";
+    }
+
+    @Override
+    public void draw(SpriteBatch batch, float Time) {
+        batch.draw(Image, getPosition().x + xoffset, getPosition().y);
     }
 
     @Override
