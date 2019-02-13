@@ -84,6 +84,7 @@ public class Item {
     public int getMax() {
         return Max;
     }
+
     public void setMax(int Max) {
         this.Max = Max;
     }

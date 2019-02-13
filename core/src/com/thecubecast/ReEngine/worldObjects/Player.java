@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
@@ -15,9 +13,6 @@ import com.thecubecast.ReEngine.Data.Item;
 
 import java.util.List;
 
-import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
-import static com.thecubecast.ReEngine.GameStates.PlayState.CraftingRecipes;
-import static com.thecubecast.ReEngine.GameStates.PlayState.player;
 import static com.thecubecast.ReEngine.Graphics.Draw.loadAnim;
 
 public class Player extends WorldObject {
@@ -36,24 +31,25 @@ public class Player extends WorldObject {
 
     public Direction playerDirection = Direction.South;
     public AnimationState AnimState = AnimationState.Standing;
- 
+
     private Animation<TextureRegion> PengAnim0, PengAnim1, PengAnim2, PengAnim3, PengAnim4, PengAnim5, PengAnim6, PengAnim7;
     Texture penguin0, penguin1, penguin2, penguin3, penguin4, penguin5, penguin6, penguin7;
 
     public enum Direction {
-        Direction () {
+        Direction() {
 
         },
         South, SouthEast, East, NorthEast, North, NorthWest, West, SouthWest
     }
 
     public boolean Facing = false; //true is left direction
+
     public enum AnimationState {
         Standing, Walking, Running, Jumping, Falling
     }
 
     public Player(int x, int y, int z) {
-        super(x, y, z, new Vector3(10,10,12),type.Dynamic);
+        super(x, y, z, new Vector3(10, 10, 12), type.Dynamic);
 
         Inventory[0] = new Item(4, 1);
         Inventory[7] = new Item(0, 12);
@@ -82,24 +78,24 @@ public class Player extends WorldObject {
     public void update(float delta, List<Cube> Colls) {
 
         //Debug.println("Player", "" + delta);
-        if (AttackTime - delta > 0 )
+        if (AttackTime - delta > 0)
             AttackTime -= delta;
 
-       // Debug.println("Player", "" + AttackTime);
+        // Debug.println("Player", "" + AttackTime);
 
         if (getState().equals(type.Dynamic)) {
 
-            super.setVelocityX((getVelocity().x + getVelocity().x*-1 * 0.25f));
-            super.setVelocityY((getVelocity().y + getVelocity().y*-1 * 0.25f));
-            super.setVelocityZ((getVelocity().z + getVelocity().z*-1 * 0.25f) - 1);
+            super.setVelocityX((getVelocity().x + getVelocity().x * -1 * 0.25f));
+            super.setVelocityY((getVelocity().y + getVelocity().y * -1 * 0.25f));
+            super.setVelocityZ((getVelocity().z + getVelocity().z * -1 * 0.25f) - 1);
 
-            Vector3 pos = new Vector3(getVelocity().x*delta, getVelocity().y*delta, getVelocity().z*delta);
+            Vector3 pos = new Vector3(getVelocity().x * delta, getVelocity().y * delta, getVelocity().z * delta);
             Vector3 newpos = new Vector3(getPosition()).add(getVelocity());
             if (pos.x < 0) { //Moving left
                 if (checkCollision(new Vector3(newpos.x, getPosition().y, getPosition().z), Colls)) {
                     super.setVelocityX(0);
                 } else {
-                    super.setPositionX((getPosition().x - getVelocity().x*-1));
+                    super.setPositionX((getPosition().x - getVelocity().x * -1));
                 }
             } else if (pos.x > 0) { // Moving right
                 if (checkCollision(new Vector3(newpos.x, getPosition().y, getPosition().z), Colls)) {
@@ -113,7 +109,7 @@ public class Player extends WorldObject {
                 if (checkCollision(new Vector3(getPosition().x, newpos.y, getPosition().z), Colls)) {
                     super.setVelocityY(0);
                 } else {
-                    super.setPositionY((getPosition().y - getVelocity().y*-1));
+                    super.setPositionY((getPosition().y - getVelocity().y * -1));
                 }
             } else if (pos.y > 0) {
                 if (checkCollision(new Vector3(getPosition().x, newpos.y, getPosition().z), Colls)) {
@@ -134,7 +130,7 @@ public class Player extends WorldObject {
 
 
                 } else {
-                    super.setPositionZ((getPosition().z - getVelocity().z*-1));
+                    super.setPositionZ((getPosition().z - getVelocity().z * -1));
                 }
             } else if (pos.z > 0) {
                 if (checkCollision(new Vector3(getPosition().x, getPosition().y, newpos.z), Colls)) {
@@ -147,7 +143,7 @@ public class Player extends WorldObject {
         }
 
         //Calculate the AnimState
-        if(Math.abs(getVelocity().x) > 0) {
+        if (Math.abs(getVelocity().x) > 0) {
             AnimState = AnimationState.Walking;
         } else {
             AnimState = AnimationState.Standing;
@@ -177,7 +173,7 @@ public class Player extends WorldObject {
         //Finds first Matching spot
         for (int j = 0; j < Inventory.length; j++) {
             if (Inventory[j] != null) {
-                if(Inventory[j].getID() == item.getID()) {
+                if (Inventory[j].getID() == item.getID()) {
                     Inventory[j].setQuantity(Inventory[j].getQuantity() + item.getQuantity());
                     found = true;
                     break;
@@ -202,7 +198,7 @@ public class Player extends WorldObject {
     public boolean DeductFromInventory(int ItemID, int Quant) {
         boolean Success = false;
 
-        if(getItemQuant(ItemID) >= Quant) {
+        if (getItemQuant(ItemID) >= Quant) {
 
             int ResourceRemaining = Quant;
 
@@ -245,28 +241,28 @@ public class Player extends WorldObject {
 
         switch (playerDirection) {
             case South:
-                RectPla = new BoundingBox(new Vector3(imageWidth/4 + getPosition().x, getPosition().y-(1 * getSize().y), getPosition().z), new Vector3(imageWidth/4 + getPosition().x+getSize().x, getPosition().y-(1 * getSize().y)+getSize().y, getPosition().z+getSize().z));
+                RectPla = new BoundingBox(new Vector3(imageWidth / 4 + getPosition().x, getPosition().y - (1 * getSize().y), getPosition().z), new Vector3(imageWidth / 4 + getPosition().x + getSize().x, getPosition().y - (1 * getSize().y) + getSize().y, getPosition().z + getSize().z));
                 break;
             case SouthEast:
-                RectPla = new BoundingBox(new Vector3(imageWidth/4 + getPosition().x+(1 * getSize().x), getPosition().y-(1 * getSize().y), getPosition().z), new Vector3(imageWidth/4 + getPosition().x+(1 * getSize().x)+getSize().x, getPosition().y-(1 * getSize().y)+getSize().y, getPosition().z+getSize().z));
+                RectPla = new BoundingBox(new Vector3(imageWidth / 4 + getPosition().x + (1 * getSize().x), getPosition().y - (1 * getSize().y), getPosition().z), new Vector3(imageWidth / 4 + getPosition().x + (1 * getSize().x) + getSize().x, getPosition().y - (1 * getSize().y) + getSize().y, getPosition().z + getSize().z));
                 break;
             case East:
-                RectPla = new BoundingBox(new Vector3(imageWidth/4 + getPosition().x+(1 * getSize().x), getPosition().y, getPosition().z), new Vector3(imageWidth/4 + getPosition().x+(1 * getSize().x)+getSize().x, getPosition().y+getSize().y, getPosition().z+getSize().z));
+                RectPla = new BoundingBox(new Vector3(imageWidth / 4 + getPosition().x + (1 * getSize().x), getPosition().y, getPosition().z), new Vector3(imageWidth / 4 + getPosition().x + (1 * getSize().x) + getSize().x, getPosition().y + getSize().y, getPosition().z + getSize().z));
                 break;
             case NorthEast:
-                RectPla = new BoundingBox(new Vector3(imageWidth/4 + getPosition().x+(1 * getSize().x), getPosition().y+(1 * getSize().y), getPosition().z), new Vector3(imageWidth/4 + getPosition().x+(1 * getSize().x)+getSize().x, getPosition().y+(1 * getSize().y)+getSize().y, getPosition().z+getSize().z));
+                RectPla = new BoundingBox(new Vector3(imageWidth / 4 + getPosition().x + (1 * getSize().x), getPosition().y + (1 * getSize().y), getPosition().z), new Vector3(imageWidth / 4 + getPosition().x + (1 * getSize().x) + getSize().x, getPosition().y + (1 * getSize().y) + getSize().y, getPosition().z + getSize().z));
                 break;
             case North:
-                RectPla = new BoundingBox(new Vector3(imageWidth/4 + getPosition().x, getPosition().y+(1 * getSize().y), getPosition().z), new Vector3(imageWidth/4 + getPosition().x+getSize().x, getPosition().y+(1 * getSize().y)+getSize().y, getPosition().z+getSize().z));
+                RectPla = new BoundingBox(new Vector3(imageWidth / 4 + getPosition().x, getPosition().y + (1 * getSize().y), getPosition().z), new Vector3(imageWidth / 4 + getPosition().x + getSize().x, getPosition().y + (1 * getSize().y) + getSize().y, getPosition().z + getSize().z));
                 break;
             case NorthWest:
-                RectPla = new BoundingBox(new Vector3(imageWidth/4 + getPosition().x-(1 * getSize().x), getPosition().y+(1 * getSize().y), getPosition().z), new Vector3(imageWidth/4 + getPosition().x-(1 * getSize().x)+getSize().x, getPosition().y+(1 * getSize().y)+getSize().y, getPosition().z+getSize().z));
+                RectPla = new BoundingBox(new Vector3(imageWidth / 4 + getPosition().x - (1 * getSize().x), getPosition().y + (1 * getSize().y), getPosition().z), new Vector3(imageWidth / 4 + getPosition().x - (1 * getSize().x) + getSize().x, getPosition().y + (1 * getSize().y) + getSize().y, getPosition().z + getSize().z));
                 break;
             case West:
-                RectPla = new BoundingBox(new Vector3(imageWidth/4 + getPosition().x-(1 * getSize().x), getPosition().y, getPosition().z), new Vector3(imageWidth/4 + getPosition().x-(1 * getSize().x)+getSize().x, getPosition().y+getSize().y, getPosition().z+getSize().z));
+                RectPla = new BoundingBox(new Vector3(imageWidth / 4 + getPosition().x - (1 * getSize().x), getPosition().y, getPosition().z), new Vector3(imageWidth / 4 + getPosition().x - (1 * getSize().x) + getSize().x, getPosition().y + getSize().y, getPosition().z + getSize().z));
                 break;
             case SouthWest:
-                RectPla = new BoundingBox(new Vector3(imageWidth/4 + getPosition().x-(1 * getSize().x), getPosition().y-(1 * getSize().y), getPosition().z), new Vector3(imageWidth/4 + getPosition().x-(1 * getSize().x)+getSize().x, getPosition().y-(1 * getSize().y)+getSize().y, getPosition().z+getSize().z));
+                RectPla = new BoundingBox(new Vector3(imageWidth / 4 + getPosition().x - (1 * getSize().x), getPosition().y - (1 * getSize().y), getPosition().z), new Vector3(imageWidth / 4 + getPosition().x - (1 * getSize().x) + getSize().x, getPosition().y - (1 * getSize().y) + getSize().y, getPosition().z + getSize().z));
                 break;
         }
         return RectPla;
@@ -275,40 +271,40 @@ public class Player extends WorldObject {
     @Override
     public void draw(SpriteBatch batch, float time) {
 
-        batch.draw(Shadow, getPosition().x, getPosition().y + getZFloor()/2);
+        batch.draw(Shadow, getPosition().x, getPosition().y + getZFloor() / 2);
 
         switch (playerDirection) {
             case South:
                 TextureRegion tempFrame0 = PengAnim0.getKeyFrame(time, true);
-                batch.draw(tempFrame0, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z/2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
+                batch.draw(tempFrame0, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z / 2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
                 break;
             case SouthEast:
                 TextureRegion tempFrame1 = PengAnim1.getKeyFrame(time, true);
-                batch.draw(tempFrame1, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z/2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
+                batch.draw(tempFrame1, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z / 2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
                 break;
             case East:
                 TextureRegion tempFrame2 = PengAnim2.getKeyFrame(time, true);
-                batch.draw(tempFrame2, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z/2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
+                batch.draw(tempFrame2, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z / 2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
                 break;
             case NorthEast:
                 TextureRegion tempFrame3 = PengAnim3.getKeyFrame(time, true);
-                batch.draw(tempFrame3, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z/2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
+                batch.draw(tempFrame3, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z / 2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
                 break;
             case North:
                 TextureRegion tempFrame4 = PengAnim4.getKeyFrame(time, true);
-                batch.draw(tempFrame4, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z/2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
+                batch.draw(tempFrame4, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z / 2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
                 break;
             case NorthWest:
                 TextureRegion tempFrame5 = PengAnim5.getKeyFrame(time, true);
-                batch.draw(tempFrame5, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z/2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
+                batch.draw(tempFrame5, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z / 2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
                 break;
             case West:
                 TextureRegion tempFrame6 = PengAnim6.getKeyFrame(time, true);
-                batch.draw(tempFrame6, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z/2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
+                batch.draw(tempFrame6, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z / 2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
                 break;
             case SouthWest:
                 TextureRegion tempFrame7 = PengAnim7.getKeyFrame(time, true);
-                batch.draw(tempFrame7, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z/2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
+                batch.draw(tempFrame7, Facing ? getPosition().x + (imageWidth) : getPosition().x, getPosition().y + getPosition().z / 2, Facing ? -(imageHeight) : (imageHeight), (imageHeight));
                 break;
         }
 
@@ -332,7 +328,7 @@ public class Player extends WorldObject {
         }
     }
 
-    public void MovePlayerVelocity(Direction direction,float speed) {
+    public void MovePlayerVelocity(Direction direction, float speed) {
 
         switch (direction) {
             case South:
@@ -416,7 +412,7 @@ public class Player extends WorldObject {
 
     @Override
     public BoundingBox getHitbox() {
-        BoundingBox PrismPla = new BoundingBox(new Vector3(imageWidth/4 + getPosition().x, getPosition().y, getPosition().z), new Vector3(imageWidth/4 + getPosition().x, getPosition().y, getPosition().z).add(getSize()));
+        BoundingBox PrismPla = new BoundingBox(new Vector3(imageWidth / 4 + getPosition().x, getPosition().y, getPosition().z), new Vector3(imageWidth / 4 + getPosition().x, getPosition().y, getPosition().z).add(getSize()));
         return PrismPla;
     }
 
@@ -426,9 +422,9 @@ public class Player extends WorldObject {
             return false;
         }
 
-        BoundingBox PrismPla = new BoundingBox(new Vector3(imageWidth/4 + Newposition.x, Newposition.y, Newposition.z), new Vector3(imageWidth/4 + Newposition.x, Newposition.y, Newposition.z).add(getSize()));
+        BoundingBox PrismPla = new BoundingBox(new Vector3(imageWidth / 4 + Newposition.x, Newposition.y, Newposition.z), new Vector3(imageWidth / 4 + Newposition.x, Newposition.y, Newposition.z).add(getSize()));
 
-        for(int i = 0; i < Colls.size(); i++) {
+        for (int i = 0; i < Colls.size(); i++) {
             if (PrismPla.intersects(Colls.get(i).getPrism())) {
                 return true; // Dont move
             }
@@ -442,8 +438,8 @@ public class Player extends WorldObject {
             return false;
         }
 
-        BoundingBox PrismPla = new BoundingBox(new Vector3(imageWidth/4 + Newposition.x, Newposition.y, Newposition.z), new Vector3(imageWidth/4 + Newposition.x, Newposition.y, Newposition.z).add(getSize()));
-        for(int i = 0; i < Colls.size(); i++) {
+        BoundingBox PrismPla = new BoundingBox(new Vector3(imageWidth / 4 + Newposition.x, Newposition.y, Newposition.z), new Vector3(imageWidth / 4 + Newposition.x, Newposition.y, Newposition.z).add(getSize()));
+        for (int i = 0; i < Colls.size(); i++) {
             if (PrismPla.intersects(Colls.get(i).getPrism())) {
                 if (FloorSearch) {
                     setZFloor(Colls.get(i).getPrism().max.z);

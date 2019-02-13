@@ -8,20 +8,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.thecubecast.ReEngine.Data.Cube;
 import com.thecubecast.ReEngine.Data.Item;
-import com.thecubecast.ReEngine.GameStates.GameState;
-import com.thecubecast.ReEngine.GameStates.PlayState;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
-import static com.thecubecast.ReEngine.GameStates.PlayState.Entities;
-import static com.thecubecast.ReEngine.GameStates.PlayState.player;
 import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
 import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
 
-public class Interactable extends Trigger{
+public class Interactable extends Trigger {
 
     public Texture Image;
 
@@ -39,12 +33,12 @@ public class Interactable extends Trigger{
     public String TexLocation = "";
 
     public Interactable(int x, int y, int z, Vector3 size, type State, boolean collision) {
-        super(x,y,z,size,State,collision,"", TriggerType.None);
+        super(x, y, z, size, State, collision, "", TriggerType.None);
         this.Collision = collision;
     }
 
     public Interactable(int x, int y, int z, Vector3 size, type State, boolean collision, String RawEvents, TriggerType TType) {
-        super(x,y,z,size,State,collision,RawEvents, TType);
+        super(x, y, z, size, State, collision, RawEvents, TType);
         this.Collision = collision;
     }
 
@@ -55,7 +49,7 @@ public class Interactable extends Trigger{
 
     @Override
     public void update(float delta, List<Cube> Colls) {
-
+        super.update(delta, Colls);
     }
 
     @Override
@@ -73,6 +67,7 @@ public class Interactable extends Trigger{
 
     /**
      * This will give you the area of the sprite, instead of the objects hitbox
+     *
      * @return the hitbox of the Sprite
      */
     public BoundingBox getImageHitbox() {
@@ -80,7 +75,7 @@ public class Interactable extends Trigger{
         if (Image != null) {
             BoundingBox temp = new BoundingBox(this.getPosition(), new Vector3(Image.getWidth(), Image.getHeight(), 0).add(this.getPosition()));
             return temp;
-        }  else {
+        } else {
             return null;
         }
     }

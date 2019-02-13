@@ -17,7 +17,7 @@ public class WorldItem extends WorldObject {
     public int JustDroppedDelay;
 
     public WorldItem(int x, int y, int z, Item item) {
-        super(x,y,z, new Vector3(4,4,4));
+        super(x, y, z, new Vector3(4, 4, 4));
         this.item = item;
         ItemImage = new Texture(Gdx.files.internal(item.getTexLocation()));
         JustDroppedDelay = 60;
@@ -37,6 +37,6 @@ public class WorldItem extends WorldObject {
     @Override
     public void draw(SpriteBatch batch, float Time) {
         //batch.draw(ItemImage, getPosition().x, getPosition().y + getPosition().z/2, getSize().x, getSize().y);
-        batch.draw(ItemImage, getPosition().x, getPosition().y + getPosition().z/2);
+        batch.draw(ItemImage, getPosition().x, getPosition().y + getPosition().z / 2);
     }
 }

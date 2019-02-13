@@ -22,7 +22,7 @@ public class TkCraftingRecipe extends Table {
                 @Override
                 public void act(float delta) {
                     super.act(delta);
-                    int ItemIDSearch  = CraftingRecipes.get(tempi).RequiredResources()[tempj][0];
+                    int ItemIDSearch = CraftingRecipes.get(tempi).RequiredResources()[tempj][0];
                     int TotalQuantity = 0;
                     for (int i = 0; i < player.Inventory.length; i++) {
                         if (player.Inventory[i] != null) {
@@ -49,7 +49,7 @@ public class TkCraftingRecipe extends Table {
             this.add(ItemB).size(32);
             if (j == 0)
                 this.add(new Label(" + ", skin));
-            if (j % 2 == 1 && j+1 < CraftingRecipes.get(tempi).RequiredResources().length)
+            if (j % 2 == 1 && j + 1 < CraftingRecipes.get(tempi).RequiredResources().length)
                 this.add(new Label(" + ", skin));
         }
 
@@ -73,9 +73,9 @@ public class TkCraftingRecipe extends Table {
 
         this.add(ItemBox).size(32);
 
-        Craftable.addListener(new ClickListener(){
+        Craftable.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 //Craft the item, put in first available slot
                 //Update label for information to user
 
@@ -108,7 +108,7 @@ public class TkCraftingRecipe extends Table {
 
                     //Finds first empty spot
                     for (int j = 0; j < player.Inventory.length; j++) {
-                        if(player.Inventory[j] == null) {
+                        if (player.Inventory[j] == null) {
                             Item tempItem = new Item(ItemPresets.get(CraftingRecipes.get(tempi).getCraftableID()));
                             tempItem.setQuantity(CraftingRecipes.get(tempi).getQuantity());
                             player.Inventory[j] = tempItem;

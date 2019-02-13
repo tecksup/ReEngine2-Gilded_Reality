@@ -26,6 +26,11 @@ public class Chop extends Interactable {
         ID = "Chop";
     }
 
+    public Chop(int x, int y, int z, Vector3 size, type State, boolean collision, String rawEvents, TriggerType triggerType) {
+        super(x, y, z, size, State, collision, rawEvents, triggerType);
+        ID = "Chop";
+    }
+
     @Override
     public void draw(SpriteBatch batch, float Time) {
         batch.draw(Image, getPosition().x + xoffset, getPosition().y);
@@ -54,7 +59,7 @@ public class Chop extends Interactable {
             //rand.nextInt((3 - 1) + 1) + 1;
             for (int i = 0; i < rand.nextInt((3 - 2) + 2) + 2; i++) {
                 for (int j = 0; j < Drops.size(); j++) {
-                    WorldItem temp = new WorldItem((int) this.getPosition().x + (int) this.getSize().x/2 + (rand.nextInt(((int) this.getSize().x/2 - (int) this.getSize().x/2) + (int) this.getSize().x/2) + (int) this.getSize().x/2), (int) this.getPosition().y + (int) this.getSize().y/2 + (rand.nextInt(((int) this.getSize().y/2 - (int) this.getSize().y/2) + (int) this.getSize().y/2) + (int) this.getSize().y/2), (int) player.getIntereactBox().max.z, ItemPresets.get(Drops.get(j).getID()));
+                    WorldItem temp = new WorldItem((int) this.getPosition().x + (int) this.getSize().x / 2 + (rand.nextInt(((int) this.getSize().x / 2 - (int) this.getSize().x / 2) + (int) this.getSize().x / 2) + (int) this.getSize().x / 2), (int) this.getPosition().y + (int) this.getSize().y / 2 + (rand.nextInt(((int) this.getSize().y / 2 - (int) this.getSize().y / 2) + (int) this.getSize().y / 2) + (int) this.getSize().y / 2), (int) player.getIntereactBox().max.z, ItemPresets.get(Drops.get(j).getID()));
                     temp.item.setQuantity(Drops.get(j).getQuantity());
                     PlayState.Entities.add(temp);
                 }
@@ -70,10 +75,10 @@ public class Chop extends Interactable {
         if (!Hit && tics > 30) {
             Hit = true;
             tics = 0;
-            PlayState.Particles.AddParticleEffect("Leaf", this.getPosition().x + this.getSize().x/2, this.getPosition().y + this.getSize().y).scaleEffect(3);
+            PlayState.Particles.AddParticleEffect("Leaf", this.getPosition().x + this.getSize().x / 2, this.getPosition().y + this.getSize().y).scaleEffect(3);
             PlayState.Particles.AddParticleEffect("Leaf", this.getPosition().x + this.getSize().x, this.getPosition().y + this.getSize().y).scaleEffect(3);
-            PlayState.Particles.AddParticleEffect("Leaf", this.getPosition().x + this.getSize().x, this.getPosition().y + this.getSize().y*2).scaleEffect(3);
-            PlayState.Particles.AddParticleEffect("Leaf", this.getPosition().x + this.getSize().x + this.getSize().x/2, this.getPosition().y + this.getSize().y).scaleEffect(3);
+            PlayState.Particles.AddParticleEffect("Leaf", this.getPosition().x + this.getSize().x, this.getPosition().y + this.getSize().y * 2).scaleEffect(3);
+            PlayState.Particles.AddParticleEffect("Leaf", this.getPosition().x + this.getSize().x + this.getSize().x / 2, this.getPosition().y + this.getSize().y).scaleEffect(3);
             TotalHits++;
         }
     }

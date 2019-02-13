@@ -5,11 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
-import com.thecubecast.ReEngine.Data.Equipment;
 import com.thecubecast.ReEngine.Data.Item;
 import com.thecubecast.ReEngine.worldObjects.Storage;
 
@@ -65,9 +67,9 @@ public class TkItem extends Stack {
         LabelTable.bottom().right();
         this.add(LabelTable);
 
-        this.addListener(new ClickListener(){
+        this.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 //Play a click sound
                 //AudioM.play("Click");
 
@@ -100,21 +102,21 @@ public class TkItem extends Stack {
             }
         });
 
-        this.addListener(new ClickListener(Input.Buttons.RIGHT){
+        this.addListener(new ClickListener(Input.Buttons.RIGHT) {
             @Override
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 //Play a click sound
                 //AudioM.play("Click");
 
                 if (CursorItem == null) { //Pickup half
                     if (player.Inventory[id].getQuantity() % 2 > 0) {
                         CursorItem = new Item(player.Inventory[id]);
-                        CursorItem.setQuantity(CursorItem.getQuantity()/2+1);
-                        player.Inventory[id].setQuantity(player.Inventory[id].getQuantity()/2);
+                        CursorItem.setQuantity(CursorItem.getQuantity() / 2 + 1);
+                        player.Inventory[id].setQuantity(player.Inventory[id].getQuantity() / 2);
                     } else {
                         CursorItem = new Item(player.Inventory[id]);
-                        CursorItem.setQuantity(CursorItem.getQuantity()/2);
-                        player.Inventory[id].setQuantity(player.Inventory[id].getQuantity()/2);
+                        CursorItem.setQuantity(CursorItem.getQuantity() / 2);
+                        player.Inventory[id].setQuantity(player.Inventory[id].getQuantity() / 2);
                     }
                     Reload();
 
@@ -124,13 +126,13 @@ public class TkItem extends Stack {
                         //Place half
                         if (CursorItem.getQuantity() % 2 > 0) {
                             Item temp = new Item(CursorItem);
-                            temp.setQuantity(CursorItem.getQuantity()/2+1);
-                            CursorItem.setQuantity(CursorItem.getQuantity()/2);
+                            temp.setQuantity(CursorItem.getQuantity() / 2 + 1);
+                            CursorItem.setQuantity(CursorItem.getQuantity() / 2);
                             player.Inventory[id] = temp;
                         } else {
                             Item temp = new Item(CursorItem);
-                            temp.setQuantity(CursorItem.getQuantity()/2);
-                            CursorItem.setQuantity(CursorItem.getQuantity()/2);
+                            temp.setQuantity(CursorItem.getQuantity() / 2);
+                            CursorItem.setQuantity(CursorItem.getQuantity() / 2);
                             player.Inventory[id] = temp;
                         }
 
@@ -175,9 +177,9 @@ public class TkItem extends Stack {
         LabelTable.bottom().right();
         this.add(LabelTable);
 
-        this.addListener(new ClickListener(){
+        this.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 //Play a click sound
                 //AudioM.play("Click");
 
@@ -210,21 +212,21 @@ public class TkItem extends Stack {
             }
         });
 
-        this.addListener(new ClickListener(Input.Buttons.RIGHT){
+        this.addListener(new ClickListener(Input.Buttons.RIGHT) {
             @Override
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 //Play a click sound
                 //AudioM.play("Click");
 
                 if (CursorItem == null) { //Pickup half
                     if (player.Equipment[id].getQuantity() % 2 > 0) {
                         CursorItem = new Item(player.Equipment[id]);
-                        CursorItem.setQuantity(CursorItem.getQuantity()/2+1);
-                        player.Equipment[id].setQuantity(player.Equipment[id].getQuantity()/2);
+                        CursorItem.setQuantity(CursorItem.getQuantity() / 2 + 1);
+                        player.Equipment[id].setQuantity(player.Equipment[id].getQuantity() / 2);
                     } else {
                         CursorItem = new Item(player.Equipment[id]);
-                        CursorItem.setQuantity(CursorItem.getQuantity()/2);
-                        player.Equipment[id].setQuantity(player.Equipment[id].getQuantity()/2);
+                        CursorItem.setQuantity(CursorItem.getQuantity() / 2);
+                        player.Equipment[id].setQuantity(player.Equipment[id].getQuantity() / 2);
                     }
                     Reload();
 
@@ -234,13 +236,13 @@ public class TkItem extends Stack {
                         //Place half
                         if (player.Equipment[id].getQuantity() % 2 > 0) {
                             Item temp = new Item(CursorItem);
-                            temp.setQuantity(CursorItem.getQuantity()/2+1);
-                            CursorItem.setQuantity(CursorItem.getQuantity()/2);
+                            temp.setQuantity(CursorItem.getQuantity() / 2 + 1);
+                            CursorItem.setQuantity(CursorItem.getQuantity() / 2);
                             player.Equipment[id] = temp;
                         } else {
                             Item temp = new Item(CursorItem);
-                            temp.setQuantity(CursorItem.getQuantity()/2);
-                            CursorItem.setQuantity(CursorItem.getQuantity()/2);
+                            temp.setQuantity(CursorItem.getQuantity() / 2);
+                            CursorItem.setQuantity(CursorItem.getQuantity() / 2);
                             player.Equipment[id] = temp;
                         }
 
@@ -255,10 +257,9 @@ public class TkItem extends Stack {
     }
 
     /**
-     *
      * @param skin
      * @param ItemArrayPos for the Storage object item location in array it's accessing
-     * @param DUD this tells us what storage object we are accessing
+     * @param DUD          this tells us what storage object we are accessing
      */
     public TkItem(Skin skin, int ItemArrayPos, Storage DUD) {
 
@@ -342,19 +343,34 @@ public class TkItem extends Stack {
     public void act(float delta) {
         super.act(delta);
         if (isEquipment) {
-            if (!Item.compare(BackupItem,player.Equipment[id])) {
+            if (!Item.compare(BackupItem, player.Equipment[id])) {
                 BackupItem = player.Equipment[id];
                 Reload();
+            } else if (BackupItem != null) {
+                if (BackupItem.getQuantity() != player.Equipment[id].getQuantity()) {
+                    BackupItem = player.Equipment[id];
+                    Reload();
+                }
             }
         } else if (isStorage) {
             if (!Item.compare(BackupItem, player.Inventory[id])) {
                 BackupItem = StorageBox.getInventory()[id];
                 Reload();
+            } else if (BackupItem != null) {
+                if (BackupItem.getQuantity() != StorageBox.getInventory()[id].getQuantity()) {
+                    BackupItem = StorageBox.getInventory()[id];
+                    Reload();
+                }
             }
         } else {
             if (!Item.compare(BackupItem, player.Inventory[id])) {
                 BackupItem = player.Inventory[id];
                 Reload();
+            } else if (BackupItem != null) {
+                if (BackupItem.getQuantity() != player.Inventory[id].getQuantity()) {
+                    BackupItem = player.Inventory[id];
+                    Reload();
+                }
             }
         }
 
@@ -369,7 +385,10 @@ public class TkItem extends Stack {
                 Texture Icon = new Texture(Gdx.files.internal(player.Equipment[id].getTexLocation()));
                 Icons.setDrawable(new TextureRegionDrawable(new TextureRegion(Icon)));
 
-                Quant.setText(player.Equipment[id].getQuantity() + "");
+                if (player.Equipment[id].getQuantity() > 99)
+                    Quant.setText("99+");
+                else
+                    Quant.setText(player.Equipment[id].getQuantity() + "");
                 Quant.skipToTheEnd();
             }
         } else if (isStorage) {
@@ -380,7 +399,10 @@ public class TkItem extends Stack {
                 Texture Icon = new Texture(Gdx.files.internal(StorageBox.getInventory()[id].getTexLocation()));
                 Icons.setDrawable(new TextureRegionDrawable(new TextureRegion(Icon)));
 
-                Quant.setText(StorageBox.getInventory()[id].getQuantity() + "");
+                if (StorageBox.getInventory()[id].getQuantity() > 99)
+                    Quant.setText("99+");
+                else
+                    Quant.setText(StorageBox.getInventory()[id].getQuantity() + "");
                 Quant.skipToTheEnd();
             }
         } else {
@@ -391,7 +413,10 @@ public class TkItem extends Stack {
                 Texture Icon = new Texture(Gdx.files.internal(player.Inventory[id].getTexLocation()));
                 Icons.setDrawable(new TextureRegionDrawable(new TextureRegion(Icon)));
 
-                Quant.setText(player.Inventory[id].getQuantity() + "");
+                if (player.Inventory[id].getQuantity() > 99)
+                    Quant.setText("99+");
+                else
+                    Quant.setText(player.Inventory[id].getQuantity() + "");
                 Quant.skipToTheEnd();
             }
         }
@@ -402,7 +427,7 @@ public class TkItem extends Stack {
             return player.Equipment[id];
         } else if (isStorage) {
             return StorageBox.getInventory()[id];
-        }else {
+        } else {
             return player.Inventory[id];
         }
     }

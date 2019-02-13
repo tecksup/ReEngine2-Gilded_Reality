@@ -20,6 +20,7 @@ import com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM;
 import com.thecubecast.ReEngine.Graphics.Scene2D.UI_state;
 import com.thecubecast.ReEngine.Graphics.ScreenShakeCameraController;
 import com.thecubecast.ReEngine.worldObjects.*;
+import com.thecubecast.ReEngine.worldObjects.EntityPrefabs.Hank;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class PlayState extends DialogStateExtention {
 
     public void init() {
 
-        tempshitgiggle = new TkMap("Saves/CubeEditor/Level.cube");
+        tempshitgiggle = new TkMap("Saves/CubeEditor/test.cube");
         ArrayList<WorldObject> tempobjsshit = tempshitgiggle.getObjects();
         for (int i = 0; i < tempobjsshit.size(); i++) {
             Entities.add(tempobjsshit.get(i));
@@ -71,7 +72,7 @@ public class PlayState extends DialogStateExtention {
                 Vector3 tempVec = tempobjsshit.get(i).getPosition();
                 Vector3 tempVecOffset = tempobjsshit.get(i).getHitboxOffset();
                 Vector3 tempVecSize = tempobjsshit.get(i).getSize();
-                Cube tempCube = new Cube((int)tempVec.x + (int)tempVecOffset.x, (int)tempVec.y + (int)tempVecOffset.y, (int)tempVec.z + (int)tempVecOffset.z, (int)tempVecSize.x, (int)tempVecSize.y, (int)tempVecSize.z );
+                Cube tempCube = new Cube((int) tempVec.x + (int) tempVecOffset.x, (int) tempVec.y + (int) tempVecOffset.y, (int) tempVec.z + (int) tempVecOffset.z, (int) tempVecSize.x, (int) tempVecSize.y, (int) tempVecSize.z);
                 Entities.get(i).CollisionHashID = Collisions.size();
                 Collisions.add(tempCube);
                 //System.out.println(tempshitgiggle.getObjects().get(i).getPosition());
@@ -81,7 +82,7 @@ public class PlayState extends DialogStateExtention {
         for (int x = 0; x < tempshitgiggle.getWidth(); x++) {
             for (int y = 0; y < tempshitgiggle.getHeight(); y++) {
                 if (tempshitgiggle.getCollision()[x][y]) {
-                    Collisions.add(new Cube(x * 16, y * 16, 0, 16, 16, 16 ));
+                    Collisions.add(new Cube(x * 16, y * 16, 0, 16, 16, 16));
                 }
             }
         }
@@ -97,7 +98,7 @@ public class PlayState extends DialogStateExtention {
             CraftingRecipes.put(Item, new Craftable(Item, Requirements, Quantity));
         }
 
-        player = new Player(13*16,1*16, 0);
+        player = new Player(13 * 16, 1 * 16, 0);
 
         MainCameraFocusPoint = player;
 
@@ -126,18 +127,7 @@ public class PlayState extends DialogStateExtention {
         //Particles
         Particles = new ParticleHandler();
 
-        //AddDialog("test", "{COLOR=GREEN}{WAVE}THIS IS FLAWLESSLY ADDED, HOW CONVENIENT");
-
-        /*Collisions.add(new Cube(64,56,0,32,64,16));
-        Collisions.add(new Cube(96,56,0,4,16,14));
-        Collisions.add(new Cube(100,56,0,4,16,12));
-        Collisions.add(new Cube(104,56,0,4,16,10));
-        Collisions.add(new Cube(108,56,0,4,16, 8));
-        Collisions.add(new Cube(112,56,0,4,16,6));
-        Collisions.add(new Cube(116,56,0,4,16,4));
-        Collisions.add(new Cube(120,56,0,4,16,2));
-        */
-
+        AddDialog("test", "{COLOR=GREEN}{WAVE}THIS IS FLAWLESSLY ADDED, HOW CONVENIENT");
 
     }
 
@@ -148,7 +138,7 @@ public class PlayState extends DialogStateExtention {
         for (int i = 0; i < Entities.size(); i++) {
             Entities.get(i).update(Gdx.graphics.getDeltaTime(), Collisions);
 
-            if(Entities.get(i) instanceof WorldItem) {
+            if (Entities.get(i) instanceof WorldItem) {
 
                 WorldItem Entitemp = (WorldItem) Entities.get(i);
 
@@ -170,23 +160,27 @@ public class PlayState extends DialogStateExtention {
             }
 
             //This is for if the object is interactable
-            else if(Entities.get(i) instanceof Interactable) {
+            else if (Entities.get(i) instanceof Interactable) {
                 Interactable Entitemp = (Interactable) Entities.get(i);
-                Entitemp.Trigger(player,shaker,this,MainCameraFocusPoint,Particles,Entities);
-                Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+                Entitemp.Trigger(player, shaker, this, MainCameraFocusPoint, Particles, Entities);
+                Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(pos);
-                if(Entitemp.getImageHitbox().contains(new Vector3(pos.x, pos.y, player.getPosition().z))) {
+                if (Entitemp.getImageHitbox().contains(new Vector3(pos.x, pos.y, player.getPosition().z))) {
                     ((Interactable) Entities.get(i)).Highlight = true;
                     ((Interactable) Entities.get(i)).HighlightColor = Color.YELLOW;
                     if (Gdx.input.isTouched() && !UI.isVisible()) {
                         //Trigger the action, mine it, open it, trigger the event code
                         ((Interactable) Entities.get(i)).HighlightColor = Color.RED;
+                        if (((Interactable) Entities.get(i)).getActivationType().equals(Trigger.TriggerType.OnClick) && !((Interactable) Entities.get(i)).JustRan) {
+                            ((Interactable) Entities.get(i)).RunCommands(player, shaker, this, MainCameraFocusPoint, Particles, Entities);
+                            ((Interactable) Entities.get(i)).JustRan = true;
+                        }
                         if (Entities.get(i) instanceof Storage) {
                             Storage temp = (Storage) Entities.get(i);
                             UI.StorageOpen = (Storage) Entities.get(i);
                             UI.setState(UI_state.InventoryAndStorage);
                             UI.setVisable(true);
-                        } else if (Entities.get(i) instanceof Interactable){
+                        } else if (Entities.get(i) instanceof Interactable) {
                             Interactable temp = (Interactable) Entities.get(i);
                             temp.Activated();
                         }
@@ -198,7 +192,7 @@ public class PlayState extends DialogStateExtention {
 
         }
 
-        cameraUpdate(MainCameraFocusPoint, camera, Entities,0,0, tempshitgiggle.getWidth()*tempshitgiggle.getTileSize(), tempshitgiggle.getHeight()*tempshitgiggle.getTileSize());
+        cameraUpdate(MainCameraFocusPoint, camera, Entities, 0, 0, tempshitgiggle.getWidth() * tempshitgiggle.getTileSize(), tempshitgiggle.getHeight() * tempshitgiggle.getTileSize());
 
         handleInput();
 
@@ -210,7 +204,7 @@ public class PlayState extends DialogStateExtention {
         shaker.update(gsm.DeltaTime);
         g.setProjectionMatrix(shaker.getCombinedMatrix());
 
-        Rectangle drawView = new Rectangle(camera.position.x - camera.viewportWidth/2 - camera.viewportWidth/4, camera.position.y - camera.viewportHeight/2  - camera.viewportHeight/4, camera.viewportWidth + camera.viewportWidth/4, camera.viewportHeight + camera.viewportHeight/4);
+        Rectangle drawView = new Rectangle(camera.position.x - camera.viewportWidth / 2 - camera.viewportWidth / 4, camera.position.y - camera.viewportHeight / 2 - camera.viewportHeight / 4, camera.viewportWidth + camera.viewportWidth / 4, camera.viewportHeight + camera.viewportHeight / 4);
 
         g.setShader(null);
         g.begin();
@@ -230,20 +224,20 @@ public class PlayState extends DialogStateExtention {
         Entities.sort(entitySort);
         Entities.sort(entitySortz);
         for (int i = 0; i < Entities.size(); i++) {
-            if(Entities.get(i).getHitbox().intersects(player.getIntereactBox())){
-                if(Entities.get(i) instanceof NPC) {
+            if (Entities.get(i).getHitbox().intersects(player.getIntereactBox())) {
+                if (Entities.get(i) instanceof NPC) {
                     NPC Entitemp = (NPC) Entities.get(i);
-                    if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getSize().x, Entitemp.getSize().y))) {
+                    if (drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getSize().x, Entitemp.getSize().y))) {
                         //Entities.get(i).draw(g, Time);
                         Entitemp.drawHighlight(g, Time);
                     }
                 } else {
-                    if(drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getSize().x, Entities.get(i).getSize().y))) {
+                    if (drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getSize().x, Entities.get(i).getSize().y))) {
                         Entities.get(i).draw(g, Time);
                     }
                 }
             } else {
-                if(drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getSize().x, Entities.get(i).getSize().y))) {
+                if (drawView.overlaps(new Rectangle(Entities.get(i).getPosition().x, Entities.get(i).getPosition().y, Entities.get(i).getSize().x, Entities.get(i).getSize().y))) {
                     Entities.get(i).draw(g, Time);
                 }
             }
@@ -253,9 +247,9 @@ public class PlayState extends DialogStateExtention {
         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
             gsm.Cursor = GameStateManager.CursorType.Question;
 
-            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(pos);
-            gsm.Render.GUIDrawText(g, Common.roundDown(pos.x)-5, Common.roundDown(pos.y)-5, "X: " + ((int)pos.x/16) + " Y: " + ((int)pos.y/16));
+            gsm.Render.GUIDrawText(g, Common.roundDown(pos.x) - 5, Common.roundDown(pos.y) - 5, "X: " + ((int) pos.x / 16) + " Y: " + ((int) pos.y / 16));
         } else {
             gsm.Cursor = GameStateManager.CursorType.Normal;
         }
@@ -265,9 +259,9 @@ public class PlayState extends DialogStateExtention {
 
         //Renders the GUI for entities
         for (int i = 0; i < Entities.size(); i++) {
-            if(Entities.get(i) instanceof NPC) {
+            if (Entities.get(i) instanceof NPC) {
                 NPC Entitemp = (NPC) Entities.get(i);
-                if(drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getSize().x, Entitemp.getSize().y))) {
+                if (drawView.overlaps(new Rectangle(Entitemp.getPosition().x, Entitemp.getPosition().y, Entitemp.getSize().x, Entitemp.getSize().y))) {
                     ((NPC) Entities.get(i)).drawGui(g, Time);
                 }
             }
@@ -285,11 +279,11 @@ public class PlayState extends DialogStateExtention {
 
                 //The bottom
                 gsm.Render.debugRenderer.setColor(Color.YELLOW);
-                gsm.Render.debugRenderer.rect(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y + Collisions.get(i).getPrism().min.z/2, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight());
+                gsm.Render.debugRenderer.rect(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y + Collisions.get(i).getPrism().min.z / 2, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight());
 
                 //The top of the Cube
                 gsm.Render.debugRenderer.setColor(Color.RED);
-                gsm.Render.debugRenderer.rect(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y + Collisions.get(i).getPrism().getDepth()/2 + Collisions.get(i).getPrism().min.z/2, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight());
+                gsm.Render.debugRenderer.rect(Collisions.get(i).getPrism().min.x, Collisions.get(i).getPrism().min.y + Collisions.get(i).getPrism().getDepth() / 2 + Collisions.get(i).getPrism().min.z / 2, Collisions.get(i).getPrism().getWidth(), Collisions.get(i).getPrism().getHeight());
 
                 gsm.Render.debugRenderer.setColor(Color.ORANGE);
             }
@@ -299,42 +293,42 @@ public class PlayState extends DialogStateExtention {
 
                 //The bottom
                 gsm.Render.debugRenderer.setColor(Color.GREEN);
-                gsm.Render.debugRenderer.rect(Entities.get(i).getHitbox().min.x, Entities.get(i).getHitbox().min.y + Entities.get(i).getHitbox().min.z/2, Entities.get(i).getHitbox().getWidth(), Entities.get(i).getHitbox().getHeight());
+                gsm.Render.debugRenderer.rect(Entities.get(i).getHitbox().min.x, Entities.get(i).getHitbox().min.y + Entities.get(i).getHitbox().min.z / 2, Entities.get(i).getHitbox().getWidth(), Entities.get(i).getHitbox().getHeight());
 
                 //The top of the Cube
                 gsm.Render.debugRenderer.setColor(Color.BLUE);
-                gsm.Render.debugRenderer.rect(Entities.get(i).getHitbox().min.x, Entities.get(i).getHitbox().min.y + Entities.get(i).getHitbox().getDepth()/2 + Entities.get(i).getHitbox().min.z/2, Entities.get(i).getHitbox().getWidth(), Entities.get(i).getHitbox().getHeight());
+                gsm.Render.debugRenderer.rect(Entities.get(i).getHitbox().min.x, Entities.get(i).getHitbox().min.y + Entities.get(i).getHitbox().getDepth() / 2 + Entities.get(i).getHitbox().min.z / 2, Entities.get(i).getHitbox().getWidth(), Entities.get(i).getHitbox().getHeight());
 
             }
 
             //The bottom of the PLAYER
             gsm.Render.debugRenderer.setColor(Color.YELLOW);
-            gsm.Render.debugRenderer.rect(player.getHitbox().min.x, player.getHitbox().min.y + player.getHitbox().min.z/2, player.getHitbox().getWidth(), player.getHitbox().getHeight());
+            gsm.Render.debugRenderer.rect(player.getHitbox().min.x, player.getHitbox().min.y + player.getHitbox().min.z / 2, player.getHitbox().getWidth(), player.getHitbox().getHeight());
             //The top of the Cube
             gsm.Render.debugRenderer.setColor(Color.RED);
-            gsm.Render.debugRenderer.rect(player.getHitbox().min.x, player.getHitbox().min.y + player.getHitbox().getDepth()/2 + player.getHitbox().min.z/2, player.getHitbox().getWidth(), player.getHitbox().getHeight());
+            gsm.Render.debugRenderer.rect(player.getHitbox().min.x, player.getHitbox().min.y + player.getHitbox().getDepth() / 2 + player.getHitbox().min.z / 2, player.getHitbox().getWidth(), player.getHitbox().getHeight());
 
             gsm.Render.debugRenderer.setColor(Color.PURPLE);
             gsm.Render.debugRenderer.box(player.getIntereactBox().min.x, player.getIntereactBox().min.y, player.getIntereactBox().min.z, player.getIntereactBox().getWidth(), player.getIntereactBox().getHeight(), player.getIntereactBox().getDepth());
 
             for (int i = 0; i < Areas.size(); i++) {
                 gsm.Render.debugRenderer.setColor(Color.BLUE);
-                gsm.Render.debugRenderer.rect(Areas.get(i).Rect.x+1, Areas.get(i).Rect.y+1, Areas.get(i).Rect.width-2, Areas.get(i).Rect.height-2);
+                gsm.Render.debugRenderer.rect(Areas.get(i).Rect.x + 1, Areas.get(i).Rect.y + 1, Areas.get(i).Rect.width - 2, Areas.get(i).Rect.height - 2);
             }
 
             //Item Collection
             gsm.Render.debugRenderer.setColor(Color.LIGHT_GRAY);
-            Vector3 tempCenter = new Vector3(player.getPosition().x + player.getSize().x/2 + 4, player.getPosition().y + player.getSize().y/2, player.getPosition().z + player.getSize().z/2);
+            Vector3 tempCenter = new Vector3(player.getPosition().x + player.getSize().x / 2 + 4, player.getPosition().y + player.getSize().y / 2, player.getPosition().z + player.getSize().z / 2);
             Vector3 CBS = new Vector3(48, 48, 32); //CollectionBoxSize
-            gsm.Render.debugRenderer.rect(tempCenter.x - CBS.x/2 , tempCenter.y - CBS.y/2, CBS.x , CBS.y);
-            
+            gsm.Render.debugRenderer.rect(tempCenter.x - CBS.x / 2, tempCenter.y - CBS.y / 2, CBS.x, CBS.y);
+
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //KeyHit
-            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(pos);
             gsm.Render.debugRenderer.setColor(Color.WHITE);
-            gsm.Render.debugRenderer.rect(((int)pos.x/16)*16+1, ((int)pos.y/16)*16+1, 15, 15);
+            gsm.Render.debugRenderer.rect(((int) pos.x / 16) * 16 + 1, ((int) pos.y / 16) * 16 + 1, 15, 15);
         }
 
         gsm.Render.debugRenderer.end();
@@ -350,17 +344,17 @@ public class PlayState extends DialogStateExtention {
         g.end();
         UI.Draw(g);
         if (UI.CursorItem != null) {
-            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             GuiCam.unproject(pos);
             if (!UI.CursorItem.isStructure()) {
                 g.begin();
-                g.draw(new Texture(Gdx.files.internal(UI.CursorItem.getTexLocation())), pos.x/2, pos.y/2, 16, 16);
+                g.draw(new Texture(Gdx.files.internal(UI.CursorItem.getTexLocation())), pos.x / 2, pos.y / 2, 16, 16);
             } else {
                 g.flush();
                 g.setShader(FillColorShader);
                 setFillColorShaderColor(Color.GREEN, 0.6f);
                 g.begin();
-                g.draw(new Texture(Gdx.files.internal(UI.CursorItem.getTexLocation())), pos.x/2, pos.y/2);
+                g.draw(new Texture(Gdx.files.internal(UI.CursorItem.getTexLocation())), pos.x / 2, pos.y / 2);
                 g.setShader(null);
             }
             g.end();
@@ -374,10 +368,11 @@ public class PlayState extends DialogStateExtention {
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isTouched()) { //KeyHit
-            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(pos);
             WorldObject Crop = new WorldObject() {
                 Texture Crop = new Texture(Gdx.files.internal("Sprites/Map/crops.png"));
+
                 @Override
                 public void init(int Width, int Height) {
 
@@ -390,18 +385,18 @@ public class PlayState extends DialogStateExtention {
 
                 @Override
                 public void draw(SpriteBatch batch, float Time) {
-                    batch.draw(Crop, getPosition().x, getPosition().y + getPosition().z/2);
+                    batch.draw(Crop, getPosition().x, getPosition().y + getPosition().z / 2);
                 }
             };
 
-            Crop.setPosition(((int)pos.x/16)*16, ((int)pos.y/16)*16, 0);
-            Crop.setSize(new Vector3(16,16,4));
+            Crop.setPosition(((int) pos.x / 16) * 16, ((int) pos.y / 16) * 16, 0);
+            Crop.setSize(new Vector3(16, 16, 4));
 
 
             Entities.add(Crop);
         }
 
-        Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+        Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(pos);
         updategsmValues(gsm, pos);
 
@@ -409,35 +404,35 @@ public class PlayState extends DialogStateExtention {
         boolean moving = false;
         Vector3 speedPercent = new Vector3(1, 1, 0);
 
-        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f || Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_X) > 0.2f || Gdx.input.isKeyPressed(Input.Keys.D)) {
             temp[3] = Player.Direction.East;
             moving = true;
-            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f)
-                speedPercent.x = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X);
-        } else if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) < -0.2f || Gdx.input.isKeyPressed(Input.Keys.A)) {
+            if (gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_X) > 0.2f)
+                speedPercent.x = gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_X);
+        } else if (gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_X) < -0.2f || Gdx.input.isKeyPressed(Input.Keys.A)) {
             temp[2] = Player.Direction.West;
             moving = true;
-            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > -0.2f)
-                speedPercent.x = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X);
+            if (gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_X) > -0.2f)
+                speedPercent.x = gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_X);
         }
 
-        if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_Y) < -0.2f || Gdx.input.isKeyPressed(Input.Keys.S)) {
             temp[1] = Player.Direction.South;
             moving = true;
-            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > -0.2f)
-                speedPercent.y = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y);
-        } else if (gsm.ctm.getAxis(0,controlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyPressed(Input.Keys.W)) {
+            if (gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_X) > -0.2f)
+                speedPercent.y = gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_Y);
+        } else if (gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_Y) > 0.2f || Gdx.input.isKeyPressed(Input.Keys.W)) {
             temp[0] = Player.Direction.North;
             moving = true;
-            if (gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_X) > 0.2f)
-                speedPercent.y = gsm.ctm.getAxis(0, controlerManager.axisies.AXIS_LEFT_Y);
+            if (gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_X) > 0.2f)
+                speedPercent.y = gsm.ctm.getAxis(0, ControlerManager.axisies.AXIS_LEFT_Y);
         }
 
-        if (gsm.ctm.isButtonJustDown(1, controlerManager.buttons.BUTTON_START)){
+        if (gsm.ctm.isButtonJustDown(1, ControlerManager.buttons.BUTTON_START)) {
             Common.print("Player 2 joined the game!!");
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+        if (gsm.ctm.isButtonJustDown(0, ControlerManager.buttons.BUTTON_START) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (UI.getState().equals(UI_state.Inventory) && UI.Visible) {
                 UI.setVisable(!UI.Visible);
             } else if (!UI.Visible) {
@@ -448,7 +443,7 @@ public class PlayState extends DialogStateExtention {
             //gsm.ctm.newController("template");
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             if (!UI.isVisible()) {
                 UI.setState(UI_state.Inventory);
             } else if (UI.getState().equals(UI_state.Inventory) || UI.getState().equals(UI_state.InventoryAndStorage) || UI.getState().equals(UI_state.CraftingNew)) {
@@ -457,30 +452,30 @@ public class PlayState extends DialogStateExtention {
             //gsm.ctm.newController("template");
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.Y)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
             if (UI.getState().equals(UI_state.CraftingNew)) {
                 UI.setVisable(!UI.isVisible());
-            }
-            else {
+            } else {
                 UI.setState(UI_state.CraftingNew);
             }
             //gsm.ctm.newController("template");
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.B)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
             shaker.addDamage(0.4f);
             AddDialog("Test", "{WAVE}{COLOR=GREEN}Hello {ENDWAVE},{WAIT} world!"
                     + "{COLOR=ORANGE}{SLOWER} Did{SHAKE} you{ENDSHAKE} know orange is my favorite color?");
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.T)){
-            Vector3 mousepos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+            Vector3 mousepos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(mousepos);
-            player.setPosition((int)mousepos.x, (int)mousepos.y, 0);
+            player.setPosition((int) mousepos.x, (int) mousepos.y, 0);
         }
 
         //We send the player the correct cardinal direction
-        Player.Direction finalDirect = player.playerDirection;;
+        Player.Direction finalDirect = player.playerDirection;
+        ;
 
         //Do the calculations
         if (temp[0] != null && temp[1] != null) {
@@ -514,49 +509,49 @@ public class PlayState extends DialogStateExtention {
             finalDirect = Player.Direction.East;
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_Y) || Gdx.input.isKeyJustPressed(Input.Keys.R)){
+        if (gsm.ctm.isButtonJustDown(0, ControlerManager.buttons.BUTTON_Y) || Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             if (DialogOpen) {
                 DialogNext();
             } else {
                 for (int i = 0; i < Entities.size(); i++) {
-                    if(Entities.get(i).getHitbox().intersects(player.getIntereactBox())){
-                        if(Entities.get(i) instanceof NPC) {
+                    if (Entities.get(i).getHitbox().intersects(player.getIntereactBox())) {
+                        if (Entities.get(i) instanceof NPC) {
                             NPC Entitemp = (NPC) Entities.get(i);
                             Entitemp.interact();
                         }
 
-                        if(Entities.get(i) instanceof Trigger) {
+                        if (Entities.get(i) instanceof Trigger) {
                             Trigger Ent = (Trigger) Entities.get(i);
-                            //Ent.Interact(player,shaker,entity,MainCameraFocusPoint,Particles,Entities);
+                            Ent.Interact(player,shaker,this,MainCameraFocusPoint,Particles,Entities);
                         }
                     }
                 }
             }
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_A)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || gsm.ctm.isButtonJustDown(0, ControlerManager.buttons.BUTTON_A)) {
             player.setVelocityZ(player.getVelocity().z + 10);
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
             gsm.setState(GameStateManager.State.MENU);
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_X) || Gdx.input.isKeyJustPressed(Input.Keys.C) ){ // ATTACK
-            if(player.AttackTime < .1f) {
+        if (gsm.ctm.isButtonJustDown(0, ControlerManager.buttons.BUTTON_X) || Gdx.input.isKeyJustPressed(Input.Keys.C)) { // ATTACK
+            if (player.AttackTime < .1f) {
 
                 //Vector3 addVeloc = new Vector3(player.getPosition().x - player.getAttackBox().min.x, player.getPosition().y - player.getAttackBox().min.y, 0);
                 //player.setVelocity(new Vector3(player.getVelocity().x + (addVeloc.x*1.4f * -1), player.getVelocity().y + (addVeloc.y*1.4f * -1), player.getVelocity().z + (addVeloc.z*1.4f * -1)));
 
                 Particles.AddParticleEffect("sparkle", player.getIntereactBox().getCenterX(), player.getIntereactBox().getCenterY());
                 for (int i = 0; i < Entities.size(); i++) {
-                    if(player.getAttackBox().intersects(Entities.get(i).getHitbox())){
-                        if(Entities.get(i) instanceof NPC) {
+                    if (player.getAttackBox().intersects(Entities.get(i).getHitbox())) {
+                        if (Entities.get(i) instanceof NPC) {
                             NPC Entitemp = (NPC) Entities.get(i);
 
                             float HitVelocity = 40;
 
-                            Vector3 hitDirection = new Vector3(player.VecDirction().x*HitVelocity, player.VecDirction().y*HitVelocity,0);
+                            Vector3 hitDirection = new Vector3(player.VecDirction().x * HitVelocity, player.VecDirction().y * HitVelocity, 0);
                             Entitemp.damage(10, hitDirection);
                             shaker.addDamage(0.35f);
                         }
@@ -569,21 +564,21 @@ public class PlayState extends DialogStateExtention {
             }
         }
 
-        if (gsm.ctm.isButtonJustDown(0, controlerManager.buttons.BUTTON_L3) || Gdx.input.isKeyJustPressed(Input.Keys.X)){ // THE HEALING BUTTON RIGHT NOW
+        if (gsm.ctm.isButtonJustDown(0, ControlerManager.buttons.BUTTON_L3) || Gdx.input.isKeyJustPressed(Input.Keys.X)) { // THE HEALING BUTTON RIGHT NOW
             Common.print("Healed");
             for (int i = 0; i < Entities.size(); i++) {
-                if(player.getAttackBox().intersects(Entities.get(i).getHitbox())){
-                    if(Entities.get(i) instanceof NPC) {
+                if (player.getAttackBox().intersects(Entities.get(i).getHitbox())) {
+                    if (Entities.get(i) instanceof NPC) {
                         NPC Entitemp = (NPC) Entities.get(i);
                         Entitemp.heal(10);
-                        Particles.AddParticleEffect("HealthArea", Entitemp.getPosition().x + Entitemp.getSize().x/2, Entitemp.getPosition().y + Entitemp.getSize().y/2);
+                        Particles.AddParticleEffect("HealthArea", Entitemp.getPosition().x + Entitemp.getSize().x / 2, Entitemp.getPosition().y + Entitemp.getSize().y / 2);
                     }
                 } //else
                 //Particles.AddParticleEffect("Health", player.getIntereactBox().x + player.getIntereactBox().width/2, player.getIntereactBox().y + player.getIntereactBox().height/2);
             }
         }
 
-        if(player.AttackTime > .1f) {
+        if (player.AttackTime > .1f) {
             moving = false;
         }
 
@@ -591,7 +586,7 @@ public class PlayState extends DialogStateExtention {
             if (DialogOpen) {
                 //Dont move
             } else {
-                player.MovePlayerVelocity(finalDirect,(int) (1));
+                player.MovePlayerVelocity(finalDirect, (int) (1));
             }
         }
     }
@@ -616,34 +611,34 @@ public class PlayState extends DialogStateExtention {
 
         for (int i = 0; i < Entities.size(); i++) {
             if (Entities.get(i).FocusStrength != 0) {
-                if(mainFocus.getPosition().dst(Entities.get(i).getPosition()) <= 200) {
+                if (mainFocus.getPosition().dst(Entities.get(i).getPosition()) <= 200) {
                     float tempX = Entities.get(i).getPosition().x;
                     float tempY = Entities.get(i).getPosition().y;
 
                     double dist = mainFocus.getPosition().dst(Entities.get(i).getPosition());
 
-                    double influence = -((dist-200)/200)*1;
+                    double influence = -((dist - 200) / 200) * 1;
 
-                    FocalPoint.x += (tempX * (Entities.get(i).FocusStrength*influence));
-                    FocalPoint.y += (tempY * (Entities.get(i).FocusStrength*influence));
-                    totalFocusPoints += Entities.get(i).FocusStrength*influence;
+                    FocalPoint.x += (tempX * (Entities.get(i).FocusStrength * influence));
+                    FocalPoint.y += (tempY * (Entities.get(i).FocusStrength * influence));
+                    totalFocusPoints += Entities.get(i).FocusStrength * influence;
                 }
             }
         }
 
-        if (FocalPoint.x - cam.viewportWidth/2 <= MinX) {
-            FocalPoint.x = MinX + cam.viewportWidth/2;
-        } else if (FocalPoint.x + cam.viewportWidth/2 >= MaxX) {
-            FocalPoint.x = MaxX - cam.viewportWidth/2;
+        if (FocalPoint.x - cam.viewportWidth / 2 <= MinX) {
+            FocalPoint.x = MinX + cam.viewportWidth / 2;
+        } else if (FocalPoint.x + cam.viewportWidth / 2 >= MaxX) {
+            FocalPoint.x = MaxX - cam.viewportWidth / 2;
         }
 
-        if (FocalPoint.y - cam.viewportHeight/2 <= MinY) {
-            FocalPoint.y = MinY + cam.viewportHeight/2;
-        } else if (FocalPoint.y + cam.viewportHeight/2 >= MaxY) {
-            FocalPoint.y = MaxY - cam.viewportHeight/2;
+        if (FocalPoint.y - cam.viewportHeight / 2 <= MinY) {
+            FocalPoint.y = MinY + cam.viewportHeight / 2;
+        } else if (FocalPoint.y + cam.viewportHeight / 2 >= MaxY) {
+            FocalPoint.y = MaxY - cam.viewportHeight / 2;
         }
 
-        cam.position.set((int) (FocalPoint.x/totalFocusPoints),(int) (FocalPoint.y/totalFocusPoints), 0);
+        cam.position.set((int) (FocalPoint.x / totalFocusPoints), (int) (FocalPoint.y / totalFocusPoints), 0);
 
         cam.update();
     }

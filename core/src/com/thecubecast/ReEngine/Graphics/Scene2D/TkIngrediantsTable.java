@@ -18,6 +18,7 @@ public class TkIngrediantsTable extends Table {
     }
 
     private int LocalCraftingId = -1;
+
     @Override
     public void act(float delta) {
         if (CraftingIDSelected != LocalCraftingId) {
@@ -48,12 +49,12 @@ public class TkIngrediantsTable extends Table {
                     if (StoredResource > 99)
                         Quant = new TypingLabel("{COLOR=red}99+/" + RequiredQuant, this.getSkin());
                     else
-                        Quant = new TypingLabel("{COLOR=red}"+ StoredResource + "/" + RequiredQuant, this.getSkin());
+                        Quant = new TypingLabel("{COLOR=red}" + StoredResource + "/" + RequiredQuant, this.getSkin());
                 } else {
                     if (StoredResource > 99)
                         Quant = new TypingLabel("{COLOR=green}99+/" + RequiredQuant, this.getSkin());
                     else
-                        Quant = new TypingLabel("{COLOR=green}"+ StoredResource + "/" + RequiredQuant, this.getSkin());
+                        Quant = new TypingLabel("{COLOR=green}" + StoredResource + "/" + RequiredQuant, this.getSkin());
                 }
 
                 Quant.skipToTheEnd();

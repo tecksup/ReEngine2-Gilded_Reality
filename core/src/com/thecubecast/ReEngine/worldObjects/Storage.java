@@ -18,6 +18,11 @@ public class Storage extends Interactable {
         ID = "Chest";
     }
 
+    public Storage(int x, int y, int z, Vector3 size, type State, boolean collision, String rawEvents, TriggerType triggerType) {
+        super(x, y, z, size, State, collision, rawEvents, triggerType);
+        ID = "Chest";
+    }
+
     @Override
     public void draw(SpriteBatch batch, float Time) {
         if (Highlight) {
@@ -76,7 +81,7 @@ public class Storage extends Interactable {
         //Finds first Matching spot
         for (int j = 0; j < Inventory.length; j++) {
             if (Inventory[j] != null) {
-                if(Inventory[j].getID() == item.getID()) {
+                if (Inventory[j].getID() == item.getID()) {
                     Inventory[j].setQuantity(Inventory[j].getQuantity() + item.getQuantity());
                     found = true;
                     break;
@@ -101,7 +106,7 @@ public class Storage extends Interactable {
     public boolean DeductFromInventory(int ItemID, int Quant) {
         boolean Success = false;
 
-        if(getItemQuant(ItemID) >= Quant) {
+        if (getItemQuant(ItemID) >= Quant) {
 
             int ResourceRemaining = Quant;
 

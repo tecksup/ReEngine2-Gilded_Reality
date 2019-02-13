@@ -1,33 +1,170 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ArtifactsWorkspaceSettings">
-    <artifacts-to-build>
-      <artifact name="ReEngine2:jar" />
-    </artifacts-to-build>
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb25fbef-5489-47ea-a71f-ccba7b5476c9" name="Default" comment="">
+    <list default="true" id="83d9966c-bfd2-4643-bc88-be9067f25df4" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ControlsManager.java" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/ReEngine2_jar.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/tecksup.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/libs.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/ReEngine2.iml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/core/core.iml" afterPath="$PROJECT_DIR$/.idea/modules/core/core.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/core/core_main.iml" afterPath="$PROJECT_DIR$/.idea/modules/core/core_main.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/core/core_test.iml" afterPath="$PROJECT_DIR$/.idea/modules/core/core_test.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/desktop/desktop.iml" afterPath="$PROJECT_DIR$/.idea/modules/desktop/desktop.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/desktop/desktop_main.iml" afterPath="$PROJECT_DIR$/.idea/modules/desktop/desktop_main.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/desktop/desktop_test.iml" afterPath="$PROJECT_DIR$/.idea/modules/desktop/desktop_test.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/ReEngine2-multi.iml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/ReEngine2-multi.ipr" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/ReEngine2-multi.iws" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/ReEngine2.iml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/ReEngine2.ipr" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/ReEngine2.iws" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
       <change beforePath="$PROJECT_DIR$/core/assets/Saves/CubeEditor/Level.cube" afterPath="$PROJECT_DIR$/core/assets/Saves/CubeEditor/Level.cube" />
+      <change beforePath="$PROJECT_DIR$/core/assets/Skins/flat-earth/skin/flat-earth-ui.json" afterPath="$PROJECT_DIR$/core/assets/Skins/flat-earth/skin/flat-earth-ui.json" />
+      <change beforePath="$PROJECT_DIR$/core/assets/Skins/neutralizer/skin/neutralizer-ui.json" afterPath="$PROJECT_DIR$/core/assets/Skins/neutralizer/skin/neutralizer-ui.json" />
+      <change beforePath="$PROJECT_DIR$/core/assets/Skins/test1/skin.json" afterPath="$PROJECT_DIR$/core/assets/Skins/test1/skin.json" />
+      <change beforePath="$PROJECT_DIR$/core/bin/mainclass.gwt.xml" afterPath="$PROJECT_DIR$/core/bin/mainclass.gwt.xml" />
+      <change beforePath="$PROJECT_DIR$/core/build.gradle" afterPath="$PROJECT_DIR$/core/build.gradle" />
+      <change beforePath="$PROJECT_DIR$/core/src/Editor/EditorMain.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/core/src/Editor/UIFSM.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/core/src/Editor/UI_state.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/core/src/Editor/WorldGenTesting.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Achievement.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Achievement.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Craftable.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Craftable.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Cube.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Cube.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Item.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Item.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelEntitiesLayer.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelEntitiesLayer.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelGridLayer.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelGridLayer.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelLayer.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelLayer.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelMap.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelMap.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelMapRenderer.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelMapRenderer.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelTilesLayer.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelTilesLayer.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelTileset.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/OGMO/OelTileset.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ParticleHandler.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ParticleHandler.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/PlayerPlatformer.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/PlayerPlatformer.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ReadWrite.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ReadWrite.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/SoundManager.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/SoundManager.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkTileset.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkTileset.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/controlerManager.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ControlerManager.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/controllerType.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ControllerType.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/oldPlayer.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/oldPlayer.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/DialogStateExtention.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/DialogStateExtention.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/GameState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/GameState.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/IntroState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/IntroState.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/LoadingState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/LoadingState.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MultiplayerTestState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MultiplayerTestState.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/Dialog.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/Dialog.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkCraftingRecipe.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkCraftingRecipe.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkIngrediantsTable.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkIngrediantsTable.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItemIcon.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItemIcon.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkLabel.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkLabel.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkTextButton.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkTextButton.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UIFSM.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UIFSM.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/ScreenShakeCameraController.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/ScreenShakeCameraController.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/SimplexNoise.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/SimplexNoise.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/SimplexNoiseOctave.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/SimplexNoiseOctave.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/serverclass2.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/serverclass2.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/FlatTiledConnection.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/FlatTiledConnection.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/FlatTiledGraph.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/FlatTiledGraph.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/FlatTiledNode.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/FlatTiledNode.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/TiledGraph.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/TiledGraph.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/TiledManhattanDistance.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/TiledManhattanDistance.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/TiledNode.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/TiledNode.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/TiledSmoothableGraphPath.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Pathfinding/TiledSmoothableGraphPath.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Smart.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Smart.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Student_State.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/AI/Student_State.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/EntityPrefabs/Hank.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/EntityPrefabs/Hank.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java" />
       <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Student.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Student.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Trigger.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Trigger.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldItem.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldItem.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java" afterPath="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/kryoNetwork/Connect.java" afterPath="$PROJECT_DIR$/core/src/kryoNetwork/Connect.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/kryoNetwork/KryoClient.java" afterPath="$PROJECT_DIR$/core/src/kryoNetwork/KryoClient.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/kryoNetwork/KryoServer.java" afterPath="$PROJECT_DIR$/core/src/kryoNetwork/KryoServer.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/kryoNetwork/Network.java" afterPath="$PROJECT_DIR$/core/src/kryoNetwork/Network.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/kryoNetwork/ServerSide.java" afterPath="$PROJECT_DIR$/core/src/kryoNetwork/ServerSide.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/kryoNetwork/User.java" afterPath="$PROJECT_DIR$/core/src/kryoNetwork/User.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/mainclass.gwt.xml" afterPath="$PROJECT_DIR$/core/src/mainclass.gwt.xml" />
+      <change beforePath="$PROJECT_DIR$/desktop/build.gradle" afterPath="$PROJECT_DIR$/desktop/build.gradle" />
+      <change beforePath="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/DesktopLauncher.java" afterPath="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/DesktopLauncher.java" />
+      <change beforePath="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/EditorLauncher.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/ServerLauncher2.java" afterPath="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/ServerLauncher2.java" />
+      <change beforePath="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/test.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Multiplayer/multiplayer.pyxel" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/Mecha.fnt" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/Mecha.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/Pixel.fnt" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/Pixel.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/button-close.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/button-pressed.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/button.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/button_d.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/checkbox-pressed.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/checkbox.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/earth.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/font-button-export.fnt" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/font-button-export.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/font-export.fnt" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/font-export.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/font-title-export.fnt" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/font-title-export.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/list.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/radio-pressed.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/scrollbar-android.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/scrollbar.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/select-box-pressed.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/select-box.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/slider-fancy-knob.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/slider-fancy.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/slider-horizontal.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/slider-knob.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/slider-vertical.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/splitpane-horizontal.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/splitpane-vertical.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/textfield.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/tooltip.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/touchpad-knob.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/touchpad.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/tree-minus.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/tree-plus.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/white.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/Overworld/Overworld_data/window.9.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/images/Skins/flat-earth/skin/flat-earth-ui.json" afterPath="$PROJECT_DIR$/images/Skins/flat-earth/skin/flat-earth-ui.json" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" afterPath="" />
     </list>
+    <ignored path="$PROJECT_DIR$/.gradle/" />
+    <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
     <ignored path="$PROJECT_DIR$/core/out/" />
     <ignored path="$PROJECT_DIR$/desktop/.gradle/" />
     <ignored path="$PROJECT_DIR$/desktop/build/" />
     <ignored path="$PROJECT_DIR$/desktop/out/" />
-    <ignored path="$PROJECT_DIR$/html/.gradle/" />
-    <ignored path="$PROJECT_DIR$/html/build/" />
-    <ignored path="$PROJECT_DIR$/html/out/" />
-    <ignored path="$PROJECT_DIR$/.gradle/" />
-    <ignored path="$PROJECT_DIR$/build/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,155 +172,75 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ErrorTreeViewConfiguration">
-    <option name="hideWarnings" value="true" />
-    <option name="HIDE_WARNINGS" value="true" />
-  </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
-  </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
-        <projects_view>
-          <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ReEngine2" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ReEngine2" type="f1a62948:ProjectNode" />
-                <item name="ReEngine2" type="2d1252cf:ModuleNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ReEngine2" type="f1a62948:ProjectNode" />
-                <item name="ReEngine2" type="2d1252cf:ModuleNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ReEngine2" type="f1a62948:ProjectNode" />
-                <item name="ReEngine2" type="2d1252cf:ModuleNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ReEngine2" type="f1a62948:ProjectNode" />
-                <item name="ReEngine2" type="2d1252cf:ModuleNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="other" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ReEngine2" type="f1a62948:ProjectNode" />
-                <item name=":desktop" type="2d1252cf:ModuleNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ReEngine2" type="f1a62948:ProjectNode" />
-                <item name=":desktop" type="2d1252cf:ModuleNode" />
-                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ReEngine2" type="f1a62948:ProjectNode" />
-                <item name=":desktop" type="2d1252cf:ModuleNode" />
-                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-                <item name="test" type="396b929e:GradleViewContributor$SourceSetNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ReEngine2" type="f1a62948:ProjectNode" />
-                <item name=":desktop" type="2d1252cf:ModuleNode" />
-                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-                <item name="test" type="396b929e:GradleViewContributor$SourceSetNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ReEngine2" type="f1a62948:ProjectNode" />
-                <item name=":desktop" type="2d1252cf:ModuleNode" />
-                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-                <item name="test" type="396b929e:GradleViewContributor$SourceSetNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-                <item name="core:main" type="ce49adb6:ExternalSystemViewDefaultContributor$ModuleDependencyDataExternalSystemNode" />
-              </path>
-            </expand>
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file leaf-file-name="EditorState.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4217">
-              <caret line="1060" column="52" lean-forward="true" selection-start-line="1060" selection-start-column="52" selection-end-line="1060" selection-end-column="52" />
+            <state relative-caret-position="377">
+              <caret line="1303" column="13" lean-forward="false" selection-start-line="1303" selection-start-column="13" selection-end-line="1303" selection-end-column="13" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3771#3772#0" expanded="true" />
-                <element signature="e#3797#3798#0" expanded="true" />
-                <element signature="e#25946#26126#0" expanded="true" />
-                <element signature="e#26125#26126#0" expanded="true" />
-                <element signature="e#27111#27291#0" expanded="true" />
-                <element signature="e#27290#27291#0" expanded="true" />
-                <element signature="e#27749#27932#0" expanded="true" />
-                <element signature="e#27931#27932#0" expanded="true" />
-                <element signature="e#32989#33184#0" expanded="true" />
-                <element signature="e#33183#33184#0" expanded="true" />
-                <element signature="e#34031#34226#0" expanded="true" />
-                <element signature="e#34225#34226#0" expanded="true" />
-                <element signature="e#34511#34841#0" expanded="true" />
-                <element signature="e#34840#34841#0" expanded="true" />
-                <element signature="e#35075#35419#0" expanded="true" />
-                <element signature="e#35418#35419#0" expanded="true" />
-                <element signature="e#35627#36011#0" expanded="true" />
-                <element signature="e#36010#36011#0" expanded="true" />
-                <element signature="e#36199#36583#0" expanded="true" />
-                <element signature="e#36582#36583#0" expanded="true" />
-                <element signature="e#36771#37155#0" expanded="true" />
-                <element signature="e#37154#37155#0" expanded="true" />
-                <element signature="e#37359#37842#0" expanded="true" />
-                <element signature="e#37841#37842#0" expanded="true" />
-                <element signature="e#38079#38599#0" expanded="true" />
-                <element signature="e#38598#38599#0" expanded="true" />
-                <element signature="e#38827#39313#0" expanded="true" />
-                <element signature="e#39312#39313#0" expanded="true" />
-                <element signature="e#39556#40078#0" expanded="true" />
-                <element signature="e#40077#40078#0" expanded="true" />
-                <element signature="e#40304#40788#0" expanded="true" />
-                <element signature="e#40787#40788#0" expanded="true" />
-                <element signature="e#41025#41545#0" expanded="true" />
-                <element signature="e#41544#41545#0" expanded="true" />
-                <element signature="e#41782#42122#0" expanded="true" />
-                <element signature="e#42121#42122#0" expanded="true" />
-                <element signature="e#42348#42878#0" expanded="true" />
-                <element signature="e#42877#42878#0" expanded="true" />
-                <element signature="e#43036#43378#0" expanded="true" />
-                <element signature="e#43377#43378#0" expanded="true" />
-                <element signature="e#43758#49985#0" expanded="true" />
-                <element signature="e#49984#49985#0" expanded="true" />
-                <element signature="e#50377#52120#0" expanded="true" />
-                <element signature="e#52119#52120#0" expanded="true" />
-                <element signature="e#52566#53636#0" expanded="true" />
-                <element signature="e#53635#53636#0" expanded="true" />
-                <element signature="e#54676#58209#0" expanded="true" />
-                <element signature="e#58208#58209#0" expanded="true" />
-                <element signature="e#58303#58671#0" expanded="true" />
-                <element signature="e#58670#58671#0" expanded="true" />
-                <element signature="e#65737#65745#0" expanded="true" />
+                <element signature="e#27111#27293#0" expanded="true" />
+                <element signature="e#27292#27293#0" expanded="true" />
+                <element signature="e#28278#28460#0" expanded="true" />
+                <element signature="e#28459#28460#0" expanded="true" />
+                <element signature="e#28918#29103#0" expanded="true" />
+                <element signature="e#29102#29103#0" expanded="true" />
+                <element signature="e#29557#29742#0" expanded="true" />
+                <element signature="e#29741#29742#0" expanded="true" />
+                <element signature="e#35199#35396#0" expanded="true" />
+                <element signature="e#35395#35396#0" expanded="true" />
+                <element signature="e#36320#36517#0" expanded="true" />
+                <element signature="e#36516#36517#0" expanded="true" />
+                <element signature="e#45461#45804#0" expanded="true" />
+                <element signature="e#45803#45804#0" expanded="true" />
+                <element signature="e#55104#56270#0" expanded="true" />
+                <element signature="e#56269#56270#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UI_state.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1395">
+              <caret line="324" column="42" lean-forward="false" selection-start-line="324" selection-start-column="27" selection-end-line="324" selection-end-column="42" />
+              <folding>
+                <element signature="e#18045#18046#0" expanded="true" />
+                <element signature="e#18089#18090#0" expanded="true" />
+                <element signature="e#18176#18177#0" expanded="true" />
+                <element signature="e#18212#18213#0" expanded="true" />
+                <element signature="e#26758#26759#0" expanded="true" />
+                <element signature="e#26794#26795#0" expanded="true" />
+                <element signature="e#35184#35185#0" expanded="true" />
+                <element signature="e#35220#35221#0" expanded="true" />
+                <element signature="e#44853#44854#0" expanded="true" />
+                <element signature="e#44897#44898#0" expanded="true" />
+                <element signature="e#44984#44985#0" expanded="true" />
+                <element signature="e#45020#45021#0" expanded="true" />
+                <element signature="e#48199#48200#0" expanded="true" />
+                <element signature="e#48243#48244#0" expanded="true" />
+                <element signature="e#48330#48331#0" expanded="true" />
+                <element signature="e#48366#48367#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TkMap.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2722">
+              <caret line="207" column="9" lean-forward="false" selection-start-line="207" selection-start-column="9" selection-end-line="207" selection-end-column="9" />
+              <folding>
+                <element signature="e#5729#5730#0" expanded="true" />
+                <element signature="e#5768#5769#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -192,49 +249,18 @@
       <file leaf-file-name="PlayState.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="351" column="25" lean-forward="false" selection-start-line="351" selection-start-column="15" selection-end-line="351" selection-end-column="25" />
+            <state relative-caret-position="226">
+              <caret line="66" column="57" lean-forward="false" selection-start-line="66" selection-start-column="57" selection-end-line="66" selection-end-column="57" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TkMap.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java">
+      <file leaf-file-name="Trigger.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Trigger.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="516" column="47" lean-forward="true" selection-start-line="516" selection-start-column="47" selection-end-line="516" selection-end-column="108" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5295#5296#0" expanded="true" />
-                <element signature="e#5327#5328#0" expanded="true" />
-                <element signature="e#5356#5357#0" expanded="true" />
-                <element signature="e#5384#5385#0" expanded="true" />
-                <element signature="e#5414#5415#0" expanded="true" />
-                <element signature="e#5443#5444#0" expanded="true" />
-                <element signature="e#5475#5476#0" expanded="true" />
-                <element signature="e#5506#5507#0" expanded="true" />
-                <element signature="e#5540#5541#0" expanded="true" />
-                <element signature="e#5569#5570#0" expanded="true" />
-                <element signature="e#5607#5608#0" expanded="true" />
-                <element signature="e#5640#5641#0" expanded="true" />
-                <element signature="e#5681#5682#0" expanded="true" />
-                <element signature="e#5713#5714#0" expanded="true" />
-                <element signature="e#5768#5769#0" expanded="true" />
-                <element signature="e#5801#5802#0" expanded="true" />
-                <element signature="e#5860#5861#0" expanded="true" />
-                <element signature="e#5897#5898#0" expanded="true" />
-                <element signature="e#21685#21693#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Interactable.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+            <state relative-caret-position="315">
+              <caret line="111" column="58" lean-forward="false" selection-start-line="111" selection-start-column="58" selection-end-line="111" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -245,86 +271,31 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
-        <option value="Singleton" />
-        <option value="AnnotationType" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>cameraUpdate</find>
-      <find>resize</find>
-      <find>Activ</find>
-      <find>isOver</find>
-      <find>Width</find>
-      <find>SelectedObjects.get(0)</find>
-      <find>&quot;&quot; +</find>
-      <find>batch.draw(Image, getPosition().x + xoffset, getPosition().y);</find>
-      <find />
-      <find>setHitboxOffset</find>
-      <find>setHitboXOffset</find>
-      <find>+ OffsetX</find>
-      <find>getPosition().y +</find>
-      <find>Cursor</find>
-      <find>UI.CursorItem.isStructure()</find>
-      <find>new String[] {&quot;1280X720&quot;, &quot;1366X768&quot;, &quot;1440X900&quot;, &quot;1600X900&quot;, &quot;1920X1080&quot;}</find>
-      <find>Collectables</find>
-      <find>CursorItem</find>
-      <find>ex</find>
-      <find>reg</find>
-      <find>Inventory</find>
-      <find>player.getInventory()</find>
-      <find>(Storage)</find>
-      <find>.getInventory()</find>
-      <find>Drops</find>
-      <find>SelectedObjects</find>
-      <find>SelectedObjects.c</find>
-      <find>SaveMap</find>
-      <find>This be</find>
-      <find>This</find>
+      <find>Start</find>
+      <find>SelectedArea</find>
+      <find>Testing</find>
+      <find>tempObject.get(&quot;TriggerType&quot;).getAsString()</find>
+      <find>r</find>
+      <find>R</find>
+      <find>input.keys.R</find>
+      <find>Trigger</find>
+      <find>65</find>
+      <find>dragg</find>
+      <find>Entities.add(tempObj);</find>
+      <find>widthL</find>
     </findStrings>
     <replaceStrings>
-      <replace>Entities.get(i).getHitbox()</replace>
-      <replace>imageWidth</replace>
-      <replace>imageHeight</replace>
-      <replace>player</replace>
-      <replace>4</replace>
-      <replace>Newposition</replace>
-      <replace>PengAnim</replace>
-      <replace>UI</replace>
-      <replace>init(WorldWidth, WorldHeight);</replace>
-      <replace>player.Inventory[ID]</replace>
-      <replace>Equipment</replace>
-      <replace>UIWindow</replace>
-      <replace>TextButton</replace>
-      <replace>StorageBox</replace>
-      <replace>backupSkin</replace>
-      <replace>Structure</replace>
-      <replace>[y][x]</replace>
-      <replace>Height</replace>
-      <replace>Depth</replace>
-      <replace>temp</replace>
-      <replace>&quot;&quot; + (int)</replace>
-      <replace>batch.draw(Image, getPosition().x, getPosition().y + (getPosition.z/2));</replace>
-      <replace>batch.draw(Image, getPosition().x + xoffset, getPosition().y + (getPosition.z/2));</replace>
-      <replace>batch.draw(Image, getPosition().x + xoffset, getPosition().y + (getPosition().z/2));</replace>
-      <replace>OffsetX</replace>
-      <replace>setHitboxOffset</replace>
-      <replace>+ getHitboxOffset().x</replace>
-      <replace>getPosition().y + getHitboxOffset().y +</replace>
-      <replace>getInventory()</replace>
-      <replace>player.Inventory</replace>
+      <replace>TriggerTypeChoice.getSelected()</replace>
+      <replace>ITEM_PRICE</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
-    <option name="PREVIOUS_COMMIT_AUTHORS">
-      <list>
-        <option value="tecksup &lt;eklofandy@gmail.com&gt;" />
-        <option value="tecksup" />
-      </list>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
@@ -343,12 +314,16 @@
         <entry>
           <key>
             <ExternalProjectPojo>
-              <option name="name" value="ReEngine2" />
+              <option name="name" value="GildedReality" />
               <option name="path" value="$PROJECT_DIR$" />
             </ExternalProjectPojo>
           </key>
           <value>
             <list>
+              <ExternalProjectPojo>
+                <option name="name" value="GildedReality" />
+                <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
               <ExternalProjectPojo>
                 <option name="name" value=":core" />
                 <option name="path" value="$PROJECT_DIR$/core" />
@@ -356,10 +331,6 @@
               <ExternalProjectPojo>
                 <option name="name" value=":desktop" />
                 <option name="path" value="$PROJECT_DIR$/desktop" />
-              </ExternalProjectPojo>
-              <ExternalProjectPojo>
-                <option name="name" value="ReEngine2" />
-                <option name="path" value="$PROJECT_DIR$" />
               </ExternalProjectPojo>
             </list>
           </value>
@@ -372,12 +343,12 @@
           <value>
             <list>
               <ExternalTaskPojo>
-                <option name="description" value="Displays the components produced by root project 'ReEngine2'. [incubating]" />
+                <option name="description" value="Displays the components produced by root project 'GildedReality'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="components" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Displays the sub-projects of root project 'ReEngine2'." />
+                <option name="description" value="Displays the sub-projects of root project 'GildedReality'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="projects" />
               </ExternalTaskPojo>
@@ -401,7 +372,7 @@
                 <option name="name" value="classes" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Displays all buildscript dependencies declared in root project 'ReEngine2'." />
+                <option name="description" value="Displays all buildscript dependencies declared in root project 'GildedReality'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="buildEnvironment" />
               </ExternalTaskPojo>
@@ -438,7 +409,7 @@
                 <option name="name" value="eclipseClasspath" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Displays the configuration model of root project 'ReEngine2'. [incubating]" />
+                <option name="description" value="Displays the configuration model of root project 'GildedReality'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="model" />
               </ExternalTaskPojo>
@@ -453,7 +424,7 @@
                 <option name="name" value="processResources" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Displays the tasks runnable from root project 'ReEngine2' (some of the displayed tasks may belong to subprojects)." />
+                <option name="description" value="Displays the tasks runnable from root project 'GildedReality' (some of the displayed tasks may belong to subprojects)." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="tasks" />
               </ExternalTaskPojo>
@@ -486,7 +457,7 @@
                 <option name="name" value="compileJava" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Displays the insight into a specific dependency in root project 'ReEngine2'." />
+                <option name="description" value="Displays the insight into a specific dependency in root project 'GildedReality'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="dependencyInsight" />
               </ExternalTaskPojo>
@@ -511,7 +482,7 @@
                 <option name="name" value="compileTestJava" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Displays all dependencies declared in root project 'ReEngine2'." />
+                <option name="description" value="Displays all dependencies declared in root project 'GildedReality'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="dependencies" />
               </ExternalTaskPojo>
@@ -551,7 +522,7 @@
                 <option name="name" value="eclipseProject" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Displays the properties of root project 'ReEngine2'." />
+                <option name="description" value="Displays the properties of root project 'GildedReality'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="properties" />
               </ExternalTaskPojo>
@@ -905,15 +876,12 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="9145671462538" />
+        <entry key="$PROJECT_DIR$" value="7748510582980" />
         <entry key="$PROJECT_DIR$/build.gradle" value="233713417" />
-        <entry key="$PROJECT_DIR$/com.thecubecast.Editor" value="0" />
         <entry key="$PROJECT_DIR$/core/build.gradle" value="2247302725" />
         <entry key="$PROJECT_DIR$/desktop/build.gradle" value="2843930806" />
         <entry key="$PROJECT_DIR$/gradle.properties" value="975134833" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="4179503194" />
-        <entry key="$PROJECT_DIR$/html/build.gradle" value="4045289196" />
-        <entry key="$PROJECT_DIR$/settings.gradle" value="4074417265" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -962,22 +930,9 @@
                       </ExternalModuleBuildClasspathPojo>
                     </value>
                   </entry>
-                  <entry key="$PROJECT_DIR$/html">
-                    <value>
-                      <ExternalModuleBuildClasspathPojo>
-                        <option name="entries">
-                          <list>
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.richsource.gradle.plugins/gwt-gradle-plugin/0.6/e38b28f04aaf547e992a4f68113e4274a0dceafb/gwt-gradle-plugin-0.6-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.richsource.gradle.plugins/gwt-gradle-plugin/0.6/7393243331d33bbf6fde148da090500249be9e53/gwt-gradle-plugin-0.6.jar" />
-                          </list>
-                        </option>
-                        <option name="path" value="$PROJECT_DIR$/html" />
-                      </ExternalModuleBuildClasspathPojo>
-                    </value>
-                  </entry>
                 </map>
               </option>
-              <option name="name" value="core" />
+              <option name="name" value="GildedReality" />
               <option name="projectBuildClasspath">
                 <list>
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-2.14.1-all/8bnwg5hd3w55iofp58khbp6yv/gradle-2.14.1/src/announce" />
@@ -1121,85 +1076,48 @@
     </option>
     <option name="projectSyncType">
       <map>
-        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
-        <entry key="$PROJECT_DIR$/com.thecubecast.Editor" value="RE_IMPORT" />
+        <entry key="$PROJECT_DIR$" value="IMPORT" />
+        <entry key="$PROJECT_DIR$/../Java-Utilities" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../Jazzy" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../RainyDay" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../ReEngine2" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../ReMine" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../ReMine2" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../ThreeColors" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../fadelandEditor" value="PREVIEW" />
       </map>
     </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/MainMenu_State.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/MenuFSM.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MultiplayerTestState.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/IntroState.java" />
-        <option value="$PROJECT_DIR$/desktop/bin/com/thecubecast/reengine2/desktop/FUCK.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ReadWrite.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Craftable.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkCraftingRecipe.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Equipment.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkIngrediantsTable.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItemIcon.java" />
-        <option value="$PROJECT_DIR$/core/assets/Structures.dat" />
-        <option value="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/DesktopLauncher.java" />
-        <option value="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/EditorLauncher.java" />
-        <option value="$PROJECT_DIR$/core/src/Editor/UIFSM.java" />
-        <option value="$PROJECT_DIR$/core/src/Editor/EditorMain.java" />
-        <option value="$PROJECT_DIR$/core/src/Editor/UI_state.java" />
-        <option value="$PROJECT_DIR$/core/src/Editor/WorldGenTesting.java" />
-        <option value="$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/test.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/LoadingState.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java" />
-        <option value="$PROJECT_DIR$/core/assets/Crafting.dat" />
-        <option value="$PROJECT_DIR$/core/assets/Items.dat" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/GameState.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldItem.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ParticleHandler.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UIFSM.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkTileset.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkTextButton.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/tst.java" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ControlsManager.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/InGameObject.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Trigger.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" />
-        <option value="$USER_HOME$/Downloads/Practice.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/SoundManager.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Item.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java" />
-        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java" />
+        <option value="$USER_HOME$/Desktop/Machine.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java" />
         <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java" />
+        <option value="$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Trigger.java" />
       </list>
     </option>
   </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <expand />
-      <select />
-    </treeState>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-8" />
     <option name="width" value="1429" />
     <option name="height" value="1038" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
-      <flattenPackages ProjectPane="true" />
+      <flattenPackages />
       <showMembers />
       <showModules />
       <showLibraryContents />
@@ -1207,63 +1125,84 @@
       <abbreviatePackageNames />
       <autoscrollToSource />
       <autoscrollFromSource />
-      <sortByType ProjectPane="false" />
+      <sortByType />
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="ReEngine" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="ReEngine" type="462c0819:PsiDirectoryNode" />
               <item name="Data" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="ReEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Data" type="462c0819:PsiDirectoryNode" />
+              <item name="OGMO" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="ReEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="Data" type="462c0819:PsiDirectoryNode" />
+              <item name="TkMap" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="ReEngine" type="462c0819:PsiDirectoryNode" />
               <item name="GameStates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="ReEngine" type="462c0819:PsiDirectoryNode" />
               <item name="Graphics" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="ReEngine" type="462c0819:PsiDirectoryNode" />
@@ -1271,16 +1210,25 @@
               <item name="Scene2D" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="ReEngine" type="462c0819:PsiDirectoryNode" />
               <item name="worldObjects" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="ReEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="worldObjects" type="462c0819:PsiDirectoryNode" />
+              <item name="AI" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="ReEngine" type="462c0819:PsiDirectoryNode" />
@@ -1288,19 +1236,33 @@
               <item name="EntityPrefabs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="kryoNetwork" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="META-INF" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="desktop" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="desktop" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="ReEngine2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReEngine2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="GildedReality" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GildedReality" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="desktop" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="desktop" type="462c0819:PsiDirectoryNode" />
@@ -1309,34 +1271,14 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/core/assets" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-    <property name="SearchEverywhereHistoryKey" value="setInputProcessor&#9;PSI&#9;JAVA://com.badlogic.gdx.Input#setInputProcessor" />
-    <property name="last.edited.regexp" value="Sample Text" />
-  </component>
-  <component name="RecentsManager">
-    <key name="ExtractSuperBase.RECENT_KEYS">
-      <recent name="com.thecubecast.ReEngine.Data" />
-    </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.thecubecast.ReEngine.Graphics" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.thecubecast.ReEngine.GameStates" />
-      <recent name="com.thecubecast.ReEngine.Graphics" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\GitHub\ReEngine2\core\src\Editor" />
-    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -1360,7 +1302,7 @@
     <configuration name="DesktopLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
-          <option name="PATTERN" value="com.thecubecast.reengine2.desktop.*" />
+          <option name="PATTERN" value="com.thecubecast.ReEngine2.desktop.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -1375,27 +1317,19 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="desktop_main" />
       <envs />
-      <RunnerSettings RunnerId="Debug with VisualVM">
-        <option name="visualVMId" value="235390901881522" />
-      </RunnerSettings>
     </configuration>
-    <configuration name="EditorLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="com.thecubecast.ReEngine2.desktop.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="MAIN_CLASS_NAME" value="com.thecubecast.ReEngine2.desktop.EditorLauncher" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/core/assets" />
+    <configuration name="Machine" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="Machine" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="desktop_main" />
+      <module name="" />
       <envs />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1411,61 +1345,6 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="" />
       <envs />
-    </configuration>
-    <configuration name="test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="com.thecubecast.ReEngine2.desktop.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="MAIN_CLASS_NAME" value="com.thecubecast.ReEngine2.desktop.test" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/core/assets" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="desktop_main" />
-      <envs />
-    </configuration>
-    <configuration name="ReEngine2 [dist]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="dist" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    </configuration>
-    <configuration name="ReEngine2 [idea]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="idea" />
-          </list>
-        </option>
-        <option name="vmOptions" value="" />
-      </ExternalSystemSettings>
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -1521,26 +1400,17 @@
       <properties />
       <listeners />
     </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-      <module name="" />
+    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file id="idea.log" enabled="true" />
     </configuration>
-    <list size="5">
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Application.DesktopLauncher" />
-      <item index="1" class="java.lang.String" itemvalue="Application.EditorLauncher" />
-      <item index="2" class="java.lang.String" itemvalue="Application.test" />
-      <item index="3" class="java.lang.String" itemvalue="Gradle.ReEngine2 [idea]" />
-      <item index="4" class="java.lang.String" itemvalue="Gradle.ReEngine2 [dist]" />
+      <item index="1" class="java.lang.String" itemvalue="Application.Machine" />
     </list>
     <recent_temporary>
-      <list size="5">
+      <list size="2">
         <item index="0" class="java.lang.String" itemvalue="Application.DesktopLauncher" />
-        <item index="1" class="java.lang.String" itemvalue="Application.test" />
-        <item index="2" class="java.lang.String" itemvalue="Application.EditorLauncher" />
-        <item index="3" class="java.lang.String" itemvalue="Gradle.ReEngine2 [idea]" />
-        <item index="4" class="java.lang.String" itemvalue="Gradle.ReEngine2 [dist]" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Machine" />
       </list>
     </recent_temporary>
   </component>
@@ -1552,720 +1422,305 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="eb25fbef-5489-47ea-a71f-ccba7b5476c9" name="Default" comment="" />
-      <created>1516596281097</created>
+      <changelist id="83d9966c-bfd2-4643-bc88-be9067f25df4" name="Default" comment="" />
+      <created>1549591102439</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1516596281097</updated>
+      <updated>1549591102439</updated>
     </task>
-    <task id="LOCAL-00001" summary="Working on animation&#10;Updated LibGDX">
-      <created>1518787539771</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1518787539771</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Added full controller support!!!">
-      <created>1519149087911</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1519149087911</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Added full controller support!!!&#10;Added World Object&#10;Added NPC&#10;Added player as extension of World Object">
-      <created>1520629326266</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1520629326266</updated>
-    </task>
-    <task id="LOCAL-00004" summary="set up a cool particle system&#10;Maybe messed around with some polygons instead of rectangle hitboxes.">
-      <created>1521057541407</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1521057541407</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Added FSM AI&#10;Added Pathfinding">
-      <created>1521684188876</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1521684188876</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Added Menu support&#10;Filled in the main menu again, with support for easy gamestate implementation.">
-      <created>1522342123222</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1522342123222</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Added props to tiled map&#10;Added camera follow, with focus points.&#10;Dialog is FULLY FUNCTIONAL AND DOPE">
-      <created>1526676906218</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1526676906218</updated>
-    </task>
-    <task id="LOCAL-00008" summary="pushing">
-      <created>1527960875440</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1527960875440</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Triggers are now working, and two commands are implemented.&#10;much more to do.">
-      <created>1531768713378</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1531768713378</updated>
-    </task>
-    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32616082" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25481313" sideWeight="0.5349087" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25254813" sideWeight="0.4650913" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.49785176" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25594565" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930845" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18313642" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="768" y="58" width="383" height="913" />
-      <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3216308" sideWeight="0.49791667" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Learn" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30075186" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973147" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22502685" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Learn" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36806342" sideWeight="0.48958334" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930845" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20838052" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32842582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <ignored-roots>
-      <path value="$PROJECT_DIR$" />
-    </ignored-roots>
-    <MESSAGE value="Working on animation" />
-    <MESSAGE value="Working on animation&#10;Updated LibGDX" />
-    <MESSAGE value="Added full controller support!!!" />
-    <MESSAGE value="Added full controller support!!!&#10;Added World Object&#10;Added NPC&#10;Added player as extension of World Object" />
-    <MESSAGE value="set up a cool particle system&#10;Maybe messed around with some polygons instead of rectangle hitboxes." />
-    <MESSAGE value="Added FSM AI&#10;Added Pathfinding" />
-    <MESSAGE value="Added Menu support&#10;Filled in the main menu again, with support for easy gamestate implementation." />
-    <MESSAGE value="Added props to tiled map&#10;Added camera follow, with focus points.&#10;Dialog is FULLY FUNCTIONAL AND DOPE" />
-    <MESSAGE value="pushing" />
-    <MESSAGE value="Triggers are now working, and two commands are implemented.&#10;much more to do." />
-    <option name="LAST_COMMIT_MESSAGE" value="Triggers are now working, and two commands are implemented.&#10;much more to do." />
-  </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java</url>
-          <line>198</line>
-          <properties />
-          <option name="timeStamp" value="79" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java</url>
-          <line>566</line>
-          <properties />
-          <option name="timeStamp" value="81" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-field">
-          <url>file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java</url>
-          <line>31</line>
-          <properties field="Drops" class="com.thecubecast.ReEngine.worldObjects.Interactable" />
-          <option name="timeStamp" value="82" />
-        </line-breakpoint>
-      </breakpoints>
-      <breakpoints-dialog>
-        <breakpoints-dialog />
-      </breakpoints-dialog>
-      <option name="time" value="83" />
-    </breakpoint-manager>
+    <breakpoint-manager />
     <watches-manager />
   </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="setValue">
-      <expression>
-        <expression-string>10</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>0.1</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
-  </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/math/collision/BoundingBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="135" column="37" lean-forward="true" selection-start-line="135" selection-start-column="37" selection-end-line="135" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/EntityPrefabs/Hank.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="73" column="32" lean-forward="false" selection-start-line="69" selection-start-column="8" selection-end-line="73" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_152/src.zip!/java/util/HashMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="554" column="13" lean-forward="false" selection-start-line="554" selection-start-column="13" selection-end-line="554" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Draw.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4431">
-          <caret line="233" column="23" lean-forward="false" selection-start-line="233" selection-start-column="8" selection-end-line="233" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/graphics/g2d/ParticleEffect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="44" column="11" lean-forward="false" selection-start-line="44" selection-start-column="11" selection-end-line="44" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ParticleHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="19" column="12" lean-forward="false" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/assets/Crafting.dat">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="24" column="19" lean-forward="false" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/ui/Image.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="54" column="79" lean-forward="true" selection-start-line="54" selection-start-column="8" selection-end-line="54" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/ui/ImageButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="91" column="18" lean-forward="false" selection-start-line="91" selection-start-column="14" selection-end-line="91" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/ui/Table.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="124" column="19" lean-forward="false" selection-start-line="124" selection-start-column="19" selection-end-line="124" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="24" column="43" lean-forward="false" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/DialogStateExtention.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="84" column="36" lean-forward="false" selection-start-line="84" selection-start-column="29" selection-end-line="84" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkLabel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="26" column="11" lean-forward="false" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/DesktopLauncher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/Input.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="736" column="16" lean-forward="false" selection-start-line="736" selection-start-column="16" selection-end-line="736" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Common.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="86" column="10" lean-forward="false" selection-start-line="86" selection-start-column="10" selection-end-line="86" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="80" column="31" lean-forward="false" selection-start-line="80" selection-start-column="31" selection-end-line="80" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/assets/Items.dat">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="882">
-          <caret line="42" column="21" lean-forward="false" selection-start-line="42" selection-start-column="17" selection-end-line="42" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/ui/Button.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="143" column="15" lean-forward="true" selection-start-line="143" selection-start-column="15" selection-end-line="143" selection-end-column="38" />
-          <folding>
-            <element signature="e#4774#4775#0" expanded="false" />
-            <element signature="e#4810#4811#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/tst.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" column="30" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ReadWrite.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="23" column="39" lean-forward="false" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/Stage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-170">
-          <caret line="325" column="19" lean-forward="false" selection-start-line="325" selection-start-column="19" selection-end-line="325" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/build.gradle">
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/desktop/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="66" column="52" lean-forward="false" selection-start-line="66" selection-start-column="52" selection-end-line="66" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/controlerManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-840">
-          <caret line="52" column="25" lean-forward="false" selection-start-line="52" selection-start-column="25" selection-end-line="52" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkTextButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="24" column="25" lean-forward="false" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-87">
-          <caret line="76" column="13" lean-forward="false" selection-start-line="76" selection-start-column="13" selection-end-line="76" selection-end-column="13" />
           <folding>
-            <element signature="e#5453#5454#0" expanded="false" />
-            <element signature="e#5472#5473#0" expanded="false" />
-            <element signature="e#6143#6144#0" expanded="false" />
-            <element signature="e#6162#6163#0" expanded="false" />
+            <element signature="e#27111#27293#0" expanded="true" />
+            <element signature="e#27292#27293#0" expanded="true" />
+            <element signature="e#28278#28460#0" expanded="true" />
+            <element signature="e#28459#28460#0" expanded="true" />
+            <element signature="e#28918#29103#0" expanded="true" />
+            <element signature="e#29102#29103#0" expanded="true" />
+            <element signature="e#29557#29742#0" expanded="true" />
+            <element signature="e#29741#29742#0" expanded="true" />
+            <element signature="e#35199#35396#0" expanded="true" />
+            <element signature="e#35395#35396#0" expanded="true" />
+            <element signature="e#36320#36517#0" expanded="true" />
+            <element signature="e#36516#36517#0" expanded="true" />
+            <element signature="e#45461#45804#0" expanded="true" />
+            <element signature="e#45803#45804#0" expanded="true" />
+            <element signature="e#55104#56270#0" expanded="true" />
+            <element signature="e#56269#56270#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/GameState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="14" column="30" lean-forward="false" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_152/src.zip!/java/lang/Enum.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="129" column="18" lean-forward="false" selection-start-line="129" selection-start-column="18" selection-end-line="129" selection-end-column="18" />
-          <folding>
-            <element signature="e#4005#4006#0" expanded="false" />
-            <element signature="e#4032#4033#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/InGameObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="4" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkTileset.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="15" column="17" lean-forward="false" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_152/src.zip!/java/awt/event/MouseEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="550" column="11" lean-forward="false" selection-start-line="550" selection-start-column="11" selection-end-line="550" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/WorldObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="228" column="5" lean-forward="false" selection-start-line="228" selection-start-column="5" selection-end-line="228" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="211" column="12" lean-forward="false" selection-start-line="211" selection-start-column="12" selection-end-line="211" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Trigger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="172" column="16" lean-forward="false" selection-start-line="172" selection-start-column="16" selection-end-line="172" selection-end-column="16" />
-          <folding>
-            <element signature="e#9800#9801#0" expanded="true" />
-            <element signature="e#9847#9848#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/NPC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="12" column="22" lean-forward="false" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Downloads/Practice.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="536">
-          <caret line="39" column="37" lean-forward="false" selection-start-line="39" selection-start-column="37" selection-end-line="39" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Cube.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="15" column="11" lean-forward="false" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UIFSM.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="97" column="16" lean-forward="false" selection-start-line="97" selection-start-column="16" selection-end-line="97" selection-end-column="16" />
+        <state relative-caret-position="2562">
+          <caret line="140" column="25" lean-forward="false" selection-start-line="140" selection-start-column="25" selection-end-line="140" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="351" column="25" lean-forward="false" selection-start-line="351" selection-start-column="15" selection-end-line="351" selection-end-column="25" />
+        <state relative-caret-position="126">
+          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/Editor/EditorMain.java" />
+    <entry file="file://$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/DesktopLauncher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/desktop/src/com/thecubecast/ReEngine2/desktop/test.java" />
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ControlerManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="31" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="31" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="20" column="18" lean-forward="false" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/ControlsManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="13" column="43" lean-forward="false" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+          <folding>
+            <element signature="e#711#712#0" expanded="false" />
+            <element signature="e#739#740#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="70" column="26" lean-forward="false" selection-start-line="70" selection-start-column="26" selection-end-line="70" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/mainclass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2559">
+          <caret line="38" column="40" lean-forward="false" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/SoundManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="633">
+          <caret line="145" column="57" lean-forward="false" selection-start-line="145" selection-start-column="57" selection-end-line="145" selection-end-column="57" />
+          <folding>
+            <element signature="e#3514#3515#0" expanded="false" />
+            <element signature="e#3549#3550#0" expanded="false" />
+            <element signature="e#3918#3919#0" expanded="false" />
+            <element signature="e#3952#3953#0" expanded="false" />
+            <element signature="e#4314#4315#0" expanded="false" />
+            <element signature="e#4348#4349#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="51" column="33" lean-forward="false" selection-start-line="51" selection-start-column="33" selection-end-line="51" selection-end-column="33" />
+          <folding>
+            <element signature="e#1536#1537#0" expanded="false" />
+            <element signature="e#1578#1579#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/Machine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="38" column="37" lean-forward="true" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/GameStateManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="329" column="28" lean-forward="true" selection-start-line="329" selection-start-column="28" selection-end-line="329" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/MainMenuState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="759">
+          <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+          <folding>
+            <element signature="e#3758#3759#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/PlayState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="66" column="57" lean-forward="false" selection-start-line="66" selection-start-column="57" selection-end-line="66" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3641">
+          <caret line="390" column="50" lean-forward="false" selection-start-line="390" selection-start-column="50" selection-end-line="390" selection-end-column="50" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/UI_state.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="859" column="65" lean-forward="false" selection-start-line="859" selection-start-column="65" selection-end-line="859" selection-end-column="65" />
+        <state relative-caret-position="1395">
+          <caret line="324" column="42" lean-forward="false" selection-start-line="324" selection-start-column="27" selection-end-line="324" selection-end-column="42" />
           <folding>
-            <element signature="e#27040#27041#0" expanded="false" />
-            <element signature="e#27076#27077#0" expanded="false" />
-            <element signature="e#35447#35448#0" expanded="false" />
-            <element signature="e#35483#35484#0" expanded="false" />
-            <element signature="class#38396:38959" expanded="false" />
-            <element signature="e#45115#45116#0" expanded="false" />
-            <element signature="e#45159#45160#0" expanded="false" />
-            <element signature="e#45246#45247#0" expanded="false" />
-            <element signature="e#45282#45283#0" expanded="false" />
+            <element signature="e#18045#18046#0" expanded="true" />
+            <element signature="e#18089#18090#0" expanded="true" />
+            <element signature="e#18176#18177#0" expanded="true" />
+            <element signature="e#18212#18213#0" expanded="true" />
+            <element signature="e#26758#26759#0" expanded="true" />
+            <element signature="e#26794#26795#0" expanded="true" />
+            <element signature="e#35184#35185#0" expanded="true" />
+            <element signature="e#35220#35221#0" expanded="true" />
+            <element signature="e#44853#44854#0" expanded="true" />
+            <element signature="e#44897#44898#0" expanded="true" />
+            <element signature="e#44984#44985#0" expanded="true" />
+            <element signature="e#45020#45021#0" expanded="true" />
+            <element signature="e#48199#48200#0" expanded="true" />
+            <element signature="e#48243#48244#0" expanded="true" />
+            <element signature="e#48330#48331#0" expanded="true" />
+            <element signature="e#48366#48367#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Graphics/Scene2D/TkItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="390" column="78" lean-forward="false" selection-start-line="390" selection-start-column="62" selection-end-line="390" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/Item.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="81" column="5" lean-forward="true" selection-start-line="81" selection-start-column="5" selection-end-line="81" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Interactable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/Data/TkMap/TkMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="516" column="47" lean-forward="true" selection-start-line="516" selection-start-column="47" selection-end-line="516" selection-end-column="108" />
+        <state relative-caret-position="-2722">
+          <caret line="207" column="9" lean-forward="false" selection-start-line="207" selection-start-column="9" selection-end-line="207" selection-end-column="9" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5295#5296#0" expanded="true" />
-            <element signature="e#5327#5328#0" expanded="true" />
-            <element signature="e#5356#5357#0" expanded="true" />
-            <element signature="e#5384#5385#0" expanded="true" />
-            <element signature="e#5414#5415#0" expanded="true" />
-            <element signature="e#5443#5444#0" expanded="true" />
-            <element signature="e#5475#5476#0" expanded="true" />
-            <element signature="e#5506#5507#0" expanded="true" />
-            <element signature="e#5540#5541#0" expanded="true" />
-            <element signature="e#5569#5570#0" expanded="true" />
-            <element signature="e#5607#5608#0" expanded="true" />
-            <element signature="e#5640#5641#0" expanded="true" />
-            <element signature="e#5681#5682#0" expanded="true" />
-            <element signature="e#5713#5714#0" expanded="true" />
+            <element signature="e#5729#5730#0" expanded="true" />
             <element signature="e#5768#5769#0" expanded="true" />
-            <element signature="e#5801#5802#0" expanded="true" />
-            <element signature="e#5860#5861#0" expanded="true" />
-            <element signature="e#5897#5898#0" expanded="true" />
-            <element signature="e#21685#21693#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Storage.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Trigger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="797">
-          <caret line="48" column="32" lean-forward="false" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
-          <folding>
-            <element signature="e#1137#1138#0" expanded="true" />
-            <element signature="e#1169#1170#0" expanded="true" />
-            <element signature="e#1219#1220#0" expanded="true" />
-            <element signature="e#1256#1257#0" expanded="true" />
-            <element signature="e#1435#1436#0" expanded="true" />
-            <element signature="e#1473#1474#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Chop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="59" column="17" lean-forward="true" selection-start-line="55" selection-start-column="16" selection-end-line="59" selection-end-column="17" />
-          <folding>
-            <element signature="e#890#891#0" expanded="true" />
-            <element signature="e#967#968#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/worldObjects/Mine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="59" column="17" lean-forward="false" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="17" />
-          <folding>
-            <element signature="e#890#891#0" expanded="true" />
-            <element signature="e#967#968#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="315">
+          <caret line="111" column="58" lean-forward="false" selection-start-line="111" selection-start-column="58" selection-end-line="111" selection-end-column="58" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/thecubecast/ReEngine/GameStates/EditorState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4217">
-          <caret line="1060" column="52" lean-forward="true" selection-start-line="1060" selection-start-column="52" selection-end-line="1060" selection-end-column="52" />
+        <state relative-caret-position="377">
+          <caret line="1303" column="13" lean-forward="false" selection-start-line="1303" selection-start-column="13" selection-end-line="1303" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3771#3772#0" expanded="true" />
-            <element signature="e#3797#3798#0" expanded="true" />
-            <element signature="e#25946#26126#0" expanded="true" />
-            <element signature="e#26125#26126#0" expanded="true" />
-            <element signature="e#27111#27291#0" expanded="true" />
-            <element signature="e#27290#27291#0" expanded="true" />
-            <element signature="e#27749#27932#0" expanded="true" />
-            <element signature="e#27931#27932#0" expanded="true" />
-            <element signature="e#32989#33184#0" expanded="true" />
-            <element signature="e#33183#33184#0" expanded="true" />
-            <element signature="e#34031#34226#0" expanded="true" />
-            <element signature="e#34225#34226#0" expanded="true" />
-            <element signature="e#34511#34841#0" expanded="true" />
-            <element signature="e#34840#34841#0" expanded="true" />
-            <element signature="e#35075#35419#0" expanded="true" />
-            <element signature="e#35418#35419#0" expanded="true" />
-            <element signature="e#35627#36011#0" expanded="true" />
-            <element signature="e#36010#36011#0" expanded="true" />
-            <element signature="e#36199#36583#0" expanded="true" />
-            <element signature="e#36582#36583#0" expanded="true" />
-            <element signature="e#36771#37155#0" expanded="true" />
-            <element signature="e#37154#37155#0" expanded="true" />
-            <element signature="e#37359#37842#0" expanded="true" />
-            <element signature="e#37841#37842#0" expanded="true" />
-            <element signature="e#38079#38599#0" expanded="true" />
-            <element signature="e#38598#38599#0" expanded="true" />
-            <element signature="e#38827#39313#0" expanded="true" />
-            <element signature="e#39312#39313#0" expanded="true" />
-            <element signature="e#39556#40078#0" expanded="true" />
-            <element signature="e#40077#40078#0" expanded="true" />
-            <element signature="e#40304#40788#0" expanded="true" />
-            <element signature="e#40787#40788#0" expanded="true" />
-            <element signature="e#41025#41545#0" expanded="true" />
-            <element signature="e#41544#41545#0" expanded="true" />
-            <element signature="e#41782#42122#0" expanded="true" />
-            <element signature="e#42121#42122#0" expanded="true" />
-            <element signature="e#42348#42878#0" expanded="true" />
-            <element signature="e#42877#42878#0" expanded="true" />
-            <element signature="e#43036#43378#0" expanded="true" />
-            <element signature="e#43377#43378#0" expanded="true" />
-            <element signature="e#43758#49985#0" expanded="true" />
-            <element signature="e#49984#49985#0" expanded="true" />
-            <element signature="e#50377#52120#0" expanded="true" />
-            <element signature="e#52119#52120#0" expanded="true" />
-            <element signature="e#52566#53636#0" expanded="true" />
-            <element signature="e#53635#53636#0" expanded="true" />
-            <element signature="e#54676#58209#0" expanded="true" />
-            <element signature="e#58208#58209#0" expanded="true" />
-            <element signature="e#58303#58671#0" expanded="true" />
-            <element signature="e#58670#58671#0" expanded="true" />
-            <element signature="e#65737#65745#0" expanded="true" />
+            <element signature="e#27111#27293#0" expanded="true" />
+            <element signature="e#27292#27293#0" expanded="true" />
+            <element signature="e#28278#28460#0" expanded="true" />
+            <element signature="e#28459#28460#0" expanded="true" />
+            <element signature="e#28918#29103#0" expanded="true" />
+            <element signature="e#29102#29103#0" expanded="true" />
+            <element signature="e#29557#29742#0" expanded="true" />
+            <element signature="e#29741#29742#0" expanded="true" />
+            <element signature="e#35199#35396#0" expanded="true" />
+            <element signature="e#35395#35396#0" expanded="true" />
+            <element signature="e#36320#36517#0" expanded="true" />
+            <element signature="e#36516#36517#0" expanded="true" />
+            <element signature="e#45461#45804#0" expanded="true" />
+            <element signature="e#45803#45804#0" expanded="true" />
+            <element signature="e#55104#56270#0" expanded="true" />
+            <element signature="e#56269#56270#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
   </component>
-  <component name="gradleExecuteTaskHistory">
-    <option value="$PROJECT_DIR$" />
-    <option value="idea" />
-    <option value="gradlew idea" />
-  </component>
   <component name="masterDetails">
     <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <last-edited>ReEngine2:jar</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-                <option value="0.5" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
           <splitter-proportions>
@@ -2289,18 +1744,6 @@
           </splitter-proportions>
         </settings>
       </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>core</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
       <state key="ProjectJDKs.UI">
         <settings>
           <last-edited>1.8</last-edited>
@@ -2315,7 +1758,17 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>libs</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
           <splitter-proportions>
             <option name="proportions">
               <list>

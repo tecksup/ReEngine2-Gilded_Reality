@@ -30,14 +30,17 @@ public class Trigger extends WorldObject {
     boolean TriggerActive = false;
     boolean TriggerRun = false;
 
+    public boolean JustRan = false;
+
     /**
      * Creates a blank WorldObject
-     * @param x the x pos
-     * @param y the y pos
+     *
+     * @param x    the x pos
+     * @param y    the y pos
      * @param size the size of the hitbox, x and y, ignore z
      **/
-    public Trigger (int x, int y, int z, Vector3 size, String RawEvents, TriggerType TType) {
-        super(x,y,z,size);
+    public Trigger(int x, int y, int z, Vector3 size, String RawEvents, TriggerType TType) {
+        super(x, y, z, size);
         RawCommands = RawEvents;
 
         ActivationType = TType;
@@ -46,8 +49,8 @@ public class Trigger extends WorldObject {
         String[] Lines = RawCommands.split("&#xD;&#xA;");
         for (int i = 0; i < Lines.length; i++) {
             //Replaces all the XML markup chars with real ones, or cuts them for easier parsing later
-            //Lines[i] = Lines[i].replace("&quot;", "");
-            //Lines[i] = Lines[i].replace(" ", "");
+            Lines[i] = Lines[i].replace("&quot;", "");
+            Lines[i] = Lines[i].replace(" ", "");
         }
 
         //Max of 10 Args for each command
@@ -58,7 +61,7 @@ public class Trigger extends WorldObject {
             String CommandName = Lines[i].split("\\(")[0];
 
             if (CommandName.equals("") || CommandName.equals("Null") || CommandName.equals("null")) {
-                Commands[i] = new String[] {CommandName};
+                Commands[i] = new String[]{CommandName};
                 continue;
             }
 
@@ -70,7 +73,7 @@ public class Trigger extends WorldObject {
             if (Lines[i].indexOf("(") != -1 && Lines[i].indexOf(")") != -1) {
 
                 params = Lines[i].substring(
-                        Lines[i].indexOf("(")+1,
+                        Lines[i].indexOf("(") + 1,
                         Lines[i].indexOf(")"));
 
                 params = params.replace(", ", ",");
@@ -86,10 +89,9 @@ public class Trigger extends WorldObject {
             for (int j = 0; j < temp2.length; j++) {
                 if (j <= 0) {
                     temp2[0] = CommandName;
-                }
-                else {
+                } else {
                     //IF PARAMS IS EMPTY THEN DONT FILL IT WITH AN EMPTY SCORE
-                    temp2[j] = paramsSplit[j-1];
+                    temp2[j] = paramsSplit[j - 1];
                 }
             }
 
@@ -98,14 +100,14 @@ public class Trigger extends WorldObject {
 
     }
 
-    public Trigger (int x, int y, int z, Vector3 size, type State, boolean collision, String RawEvents, TriggerType TType) {
-        super(x,y,z,size,State,collision);
+    public Trigger(int x, int y, int z, Vector3 size, type State, boolean collision, String RawEvents, TriggerType TType) {
+        super(x, y, z, size, State, collision);
         RawCommands = RawEvents;
 
         ActivationType = TType;
 
         //Parse and then run the script
-        String[] Lines = RawCommands.split("&#xD;&#xA;");
+        String[] Lines = RawCommands.split(";");
         for (int i = 0; i < Lines.length; i++) {
             //Replaces all the XML markup chars with real ones, or cuts them for easier parsing later
             //Lines[i] = Lines[i].replace("&quot;", "");
@@ -120,7 +122,7 @@ public class Trigger extends WorldObject {
             String CommandName = Lines[i].split("\\(")[0];
 
             if (CommandName.equals("") || CommandName.equals("Null") || CommandName.equals("null")) {
-                Commands[i] = new String[] {CommandName};
+                Commands[i] = new String[]{CommandName};
                 continue;
             }
 
@@ -132,7 +134,7 @@ public class Trigger extends WorldObject {
             if (Lines[i].indexOf("(") != -1 && Lines[i].indexOf(")") != -1) {
 
                 params = Lines[i].substring(
-                        Lines[i].indexOf("(")+1,
+                        Lines[i].indexOf("(") + 1,
                         Lines[i].indexOf(")"));
 
                 params = params.replace(", ", ",");
@@ -148,10 +150,9 @@ public class Trigger extends WorldObject {
             for (int j = 0; j < temp2.length; j++) {
                 if (j <= 0) {
                     temp2[0] = CommandName;
-                }
-                else {
+                } else {
                     //IF PARAMS IS EMPTY THEN DONT FILL IT WITH AN EMPTY SCORE
-                    temp2[j] = paramsSplit[j-1];
+                    temp2[j] = paramsSplit[j - 1];
                 }
             }
 
@@ -167,6 +168,9 @@ public class Trigger extends WorldObject {
 
     @Override
     public void update(float delta, List<Cube> Colls) {
+        if(!Gdx.input.isTouched()) {
+            JustRan = false;
+        }
 
     }
 
@@ -184,19 +188,19 @@ public class Trigger extends WorldObject {
 
         if (TriggerActive != TriggerRun && !TriggerRun) { //OnEntry
             if (ActivationType == TriggerType.OnEntry) {
-                RunCommands(player,shaker,dialog,MainCameraFocusPoint,Particles,Entities);
+                RunCommands(player, shaker, dialog, MainCameraFocusPoint, Particles, Entities);
             }
             TriggerRun = TriggerActive;
         } else if (TriggerActive != TriggerRun && TriggerRun) { //OnExit
             if (ActivationType == TriggerType.OnExit) {
-                RunCommands(player,shaker,dialog,MainCameraFocusPoint,Particles,Entities);
+                RunCommands(player, shaker, dialog, MainCameraFocusPoint, Particles, Entities);
             }
             TriggerRun = TriggerActive;
         }
 
         if (ActivationType == TriggerType.OnTrigger) {
             if (TriggerActive) {
-                RunCommands(player,shaker,dialog,MainCameraFocusPoint,Particles,Entities);
+                RunCommands(player, shaker, dialog, MainCameraFocusPoint, Particles, Entities);
             }
         }
 
@@ -204,7 +208,7 @@ public class Trigger extends WorldObject {
 
     public void Interact(WorldObject player, ScreenShakeCameraController shaker, DialogStateExtention dialog, WorldObject MainCameraFocusPoint, ParticleHandler Particles, List<WorldObject> Entities) {
         if (ActivationType == TriggerType.OnInteract) {
-            RunCommands(player,shaker,dialog,MainCameraFocusPoint,Particles,Entities);
+            RunCommands(player, shaker, dialog, MainCameraFocusPoint, Particles, Entities);
         }
     }
 
@@ -213,19 +217,19 @@ public class Trigger extends WorldObject {
             //System.out.println("Command " + Commands[i][0]);
             if (Commands[i][0].equals("shaker.addDamage")) { //The screen shake
                 try {
-                    shaker.addDamage((float) Integer.parseInt(Commands[i][1])/10);
+                    shaker.addDamage((float) Integer.parseInt(Commands[i][1]) / 10);
                 } catch (Exception e) {
                     System.out.println("Exception " + e);
                 }
             } else if (Commands[i][0].equals("shaker.setDamage")) { //The screen shake
                 try {
-                    shaker.setDamage((float) Integer.parseInt(Commands[i][1])/10);
+                    shaker.setDamage((float) Integer.parseInt(Commands[i][1]) / 10);
                 } catch (Exception e) {
                     System.out.println("Exception " + e);
                 }
             } else if (Commands[i][0].equals("Particle")) {
                 try {
-                    Particles.AddParticleEffect(Commands[i][1], Integer.parseInt(Commands[i][2])*16, Integer.parseInt(Commands[i][3])*16);
+                    Particles.AddParticleEffect(Commands[i][1], Integer.parseInt(Commands[i][2]) * 16, Integer.parseInt(Commands[i][3]) * 16);
                 } catch (Exception e) {
                     System.out.println("Exception " + e);
                 }
@@ -283,5 +287,9 @@ public class Trigger extends WorldObject {
 
     public String getRawCommands() {
         return RawCommands;
+    }
+
+    public void setRawCommands(String rawCommands) {
+        RawCommands = rawCommands;
     }
 }

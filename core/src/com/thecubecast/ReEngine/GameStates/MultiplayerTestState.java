@@ -63,7 +63,7 @@ public class MultiplayerTestState extends GameState {
     }
 
     public void AddAchievement(String text, int IconID, float Time, float Durration, boolean Anim) {
-        Achievement temp = new Achievement(text, IconID, Time,  Durration, Anim);
+        Achievement temp = new Achievement(text, IconID, Time, Durration, Anim);
         Achievements.add(Achievements.size(), temp);
         Common.print("Added Achievement: " + text);
     }
@@ -73,12 +73,13 @@ public class MultiplayerTestState extends GameState {
         gsm.DiscordManager.setPresenceDetails("Multiplayer Demo - Level 1");
         gsm.DiscordManager.setPresenceState("In Game");
         gsm.DiscordManager.getPresence().largeImageText = "Level 1";
-        gsm.DiscordManager.getPresence().startTimestamp = System.currentTimeMillis() / 1000;;
+        gsm.DiscordManager.getPresence().startTimestamp = System.currentTimeMillis() / 1000;
+        ;
 
         //SETUP NETWORK CONNECTION
         try {
             network = new KryoClient("username", "IP", 54555, 54777);
-            while(!network.established) {
+            while (!network.established) {
                 Common.sleep(5);
             }
         } catch (IOException e) {
@@ -109,9 +110,9 @@ public class MultiplayerTestState extends GameState {
         //ShaderInit(guiBatch);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        camera.position.set((network.GetClient().x*64), (network.GetClient().y*64), camera.position.z);
+        camera.position.set((network.GetClient().x * 64), (network.GetClient().y * 64), camera.position.z);
         position = camera.position;
 
         //Setup Network
@@ -125,12 +126,12 @@ public class MultiplayerTestState extends GameState {
         //Setup the Shaders
         String vertexShader = Gdx.files.internal("testShader/vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("testShader/fragment.glsl").readString();
-        shaderProgram = new ShaderProgram(vertexShader,fragmentShader);
+        shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
 
         //SETUP THE PARTICLES
         pe = new ParticleEffect();
-        pe.load(Gdx.files.internal("particles/fire.p"),Gdx.files.internal(""));
-        pe.getEmitters().first().setPosition(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        pe.load(Gdx.files.internal("particles/fire.p"), Gdx.files.internal(""));
+        pe.getEmitters().first().setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         pe.start();
 
     }
@@ -144,7 +145,7 @@ public class MultiplayerTestState extends GameState {
 
         camera.update();
 
-        for(int l=0; l< Achievements.size(); l++){
+        for (int l = 0; l < Achievements.size(); l++) {
             if (Achievements.get(l).getTime() >= Achievements.get(l).getDuration()) {
                 Achievements.remove(l);
             }
@@ -154,7 +155,7 @@ public class MultiplayerTestState extends GameState {
     }
 
     public void draw(SpriteBatch g, int width, int height, float Time) {
-        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
+        Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
         RenderCam();
 
         g.begin();
@@ -167,8 +168,8 @@ public class MultiplayerTestState extends GameState {
         //g.draw(gsm.Render.Images[03], 0, 0, width, height);
 
         if (network.GetUsers().size() != 0) {
-            for(int l=0; l< network.GetUsers().size(); l++){
-                gsm.Render.GUIDrawText(g, Common.roundDown((network.GetUsers().get(l).x*64)), Common.roundDown((network.GetUsers().get(l).y*64)), network.GetUsers().get(l).username);
+            for (int l = 0; l < network.GetUsers().size(); l++) {
+                gsm.Render.GUIDrawText(g, Common.roundDown((network.GetUsers().get(l).x * 64)), Common.roundDown((network.GetUsers().get(l).y * 64)), network.GetUsers().get(l).username);
                 //g.draw(gsm.Render.GUI[24], network.GetUsers().get(l).x*64,	network.GetUsers().get(l).y*64,	gsm.Render.GUI[00].getWidth()/2, gsm.Render.GUI[00].getWidth()/2, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), 1, 1, network.GetUsers().get(l).angle, 0, 0, (gsm.Render.GUI[00].getWidth()), (gsm.Render.GUI[00].getWidth()), false, false);
             }
 
@@ -188,13 +189,13 @@ public class MultiplayerTestState extends GameState {
         guiBatch.begin();
         //guiBatch.setProjectionMatrix(cameraGui.combined);
 
-        gsm.Render.GUIDeco(guiBatch, 0, height-80, "Multiplayer test");
+        gsm.Render.GUIDeco(guiBatch, 0, height - 80, "Multiplayer test");
         //gsm.Render.HUDNotification(guiBatch, width/2, height-100, 300 ,"Hey does this really wrap itself it would be so cool if it did so now i have to write a realllllllly long string to fill it up and make it wrap", gsm.ticks);
 
         if (Achievements.size() != 0) {
-            for(int l=0; l< Achievements.size(); l++){
+            for (int l = 0; l < Achievements.size(); l++) {
                 Achievements.get(l).setTime(Time);
-                gsm.Render.HUDAchievement(guiBatch, width-260, (70 * l), Achievements.get(l).getText(), Achievements.get(l).getIconID(), Achievements.get(l).getOpacity(), Achievements.get(l).getAnim(), Time);
+                gsm.Render.HUDAchievement(guiBatch, width - 260, (70 * l), Achievements.get(l).getText(), Achievements.get(l).getIconID(), Achievements.get(l).getOpacity(), Achievements.get(l).getAnim(), Time);
             }
 
         }
@@ -202,9 +203,9 @@ public class MultiplayerTestState extends GameState {
         if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) { //KeyHit
             gsm.Cursor = GameStateManager.CursorType.Question;
 
-            Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+            Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(pos);
-            gsm.Render.GUIDrawText(g, Common.roundDown(pos.x)-5, Common.roundDown(pos.y)-5, "X: " + ((int)pos.x/16) + " Y: " + ((int)pos.y/16));
+            gsm.Render.GUIDrawText(g, Common.roundDown(pos.x) - 5, Common.roundDown(pos.y) - 5, "X: " + ((int) pos.x / 16) + " Y: " + ((int) pos.y / 16));
         } else {
             gsm.Cursor = GameStateManager.CursorType.Normal;
         }
@@ -222,7 +223,7 @@ public class MultiplayerTestState extends GameState {
 
         int size = 16; // gsm.Render.GUI[00].getWidth()
         Rectangle player = new Rectangle(network.GetClient().x, network.GetClient().y, size, size);
-        player.setCenter(network.GetClient().x + size/2, network.GetClient().y + size/2);
+        player.setCenter(network.GetClient().x + size / 2, network.GetClient().y + size / 2);
 
         //Rectangle player = new Rectangle(posx, posy, size, size);
         //layer.setCenter(posx + size/2, posy + size/2);
@@ -259,20 +260,20 @@ public class MultiplayerTestState extends GameState {
         int mapBoundX = 10000;
         int mapBoundY = 10000;
 
-        position.x += (playerx*64 - position.x) * lerp * deltaTime;
-        position.y += (playery*64 - position.y) * lerp * deltaTime;
+        position.x += (playerx * 64 - position.x) * lerp * deltaTime;
+        position.y += (playery * 64 - position.y) * lerp * deltaTime;
 
-    //    float PosibleX = position.x + (playerx - position.x) * lerp * deltaTime;
-    //    if (PosibleX - (Gdx.graphics.getWidth()/2) >= 0 && PosibleX - (Gdx.graphics.getWidth()/2) <= mapBoundX) {
-    //        position.x += (playerx - position.x) * lerp * deltaTime;
-    //    }
+        //    float PosibleX = position.x + (playerx - position.x) * lerp * deltaTime;
+        //    if (PosibleX - (Gdx.graphics.getWidth()/2) >= 0 && PosibleX - (Gdx.graphics.getWidth()/2) <= mapBoundX) {
+        //        position.x += (playerx - position.x) * lerp * deltaTime;
+        //    }
 
-    //    float PosibleY = position.y + (playery - position.y) * lerp * deltaTime;
-    //    if (PosibleY - (Gdx.graphics.getHeight()/2) >= 0 && PosibleY - (Gdx.graphics.getHeight()/2) <= mapBoundY) {
-    //        position.y += (playery - position.y) * lerp * deltaTime;
-    //    } else if (PosibleY - (Gdx.graphics.getHeight()/2) >= mapBoundY) {
-    //        position.y += (playery+160 - position.y) * lerp * deltaTime;
-    //    }
+        //    float PosibleY = position.y + (playery - position.y) * lerp * deltaTime;
+        //    if (PosibleY - (Gdx.graphics.getHeight()/2) >= 0 && PosibleY - (Gdx.graphics.getHeight()/2) <= mapBoundY) {
+        //        position.y += (playery - position.y) * lerp * deltaTime;
+        //    } else if (PosibleY - (Gdx.graphics.getHeight()/2) >= mapBoundY) {
+        //        position.y += (playery+160 - position.y) * lerp * deltaTime;
+        //    }
 
         //position.x += ((player.getLocation()[0]*64)+40 - position.x) * lerp * deltaTime;
         //position.y += ((player.getLocation()[1]*64)+40 - position.y) * lerp * deltaTime;
@@ -283,7 +284,7 @@ public class MultiplayerTestState extends GameState {
 
     private void handleInput() {
 
-        Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+        Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(pos);
 
         gsm.MouseX = (int) pos.x;
@@ -295,7 +296,7 @@ public class MultiplayerTestState extends GameState {
 
         Vector2 Location = new Vector2(network.GetClient().x, network.GetClient().y);
 
-        Vector2 center = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        Vector2 center = new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         Vector2 MousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
 
         float angle = Common.GetAngle(center, MousePos);
@@ -303,7 +304,7 @@ public class MultiplayerTestState extends GameState {
         //Common.print("Angle: " + Location.angle(MousePos));
         //Common.print("Start: " + Location + " Mouse: " + MousePos);
 
-            Vector2 move = new Vector2(0,0);
+        Vector2 move = new Vector2(0, 0);
 
         if (Gdx.input.isKeyPressed(Keys.W)) { //KeyHit
             move.y += 1;
@@ -325,7 +326,7 @@ public class MultiplayerTestState extends GameState {
         if (Gdx.input.isKeyJustPressed(Keys.NUM_9)) {
             String vertexShader = Gdx.files.internal("testShader/vertex.glsl").readString();
             String fragmentShader = Gdx.files.internal("testShader/fragment.glsl").readString();
-            shaderProgram = new ShaderProgram(vertexShader,fragmentShader);
+            shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
         }
 
         move(new Vector2(move.x, move.y), Location);
@@ -337,10 +338,10 @@ public class MultiplayerTestState extends GameState {
 
     public void move(Vector2 pos, Vector2 Location) {
         if (pos.x < 0) { //Moving left
-            if (checkCollision(Location.x - (pos.x*-1), Location.y)) {
+            if (checkCollision(Location.x - (pos.x * -1), Location.y)) {
                 //Cant move
             } else {
-                Location.x -= (pos.x*-1);
+                Location.x -= (pos.x * -1);
             }
         } else if (pos.x > 0) { // Moving right
             if (checkCollision(Location.x + pos.x, Location.y)) {
@@ -351,10 +352,10 @@ public class MultiplayerTestState extends GameState {
         }
 
         if (pos.y < 0) { // Moving down
-            if (checkCollision(Location.x, Location.y - (pos.y*-1))) {
+            if (checkCollision(Location.x, Location.y - (pos.y * -1))) {
                 //Cant move
             } else {
-                Location.y -= (pos.y*-1);
+                Location.y -= (pos.y * -1);
             }
         } else if (pos.y > 0) {
             if (checkCollision(Location.x, Location.y + pos.y)) {
@@ -366,12 +367,12 @@ public class MultiplayerTestState extends GameState {
     }
 
     public boolean checkCollision(float posx, float posy) {
-      for(int i = 0; i < Collisions.size(); i++) {
-          if (posx >= Collisions.get(i).getX() && posx < (Collisions.get(i).getX() + Collisions.get(i).getWidth()) && posy >= Collisions.get(i).getY() && posy < (Collisions.get(i).getY() + Collisions.get(i).getHeight())) {
-              return true; // Dont move
-          }
-      }
-      return false;
+        for (int i = 0; i < Collisions.size(); i++) {
+            if (posx >= Collisions.get(i).getX() && posx < (Collisions.get(i).getX() + Collisions.get(i).getWidth()) && posy >= Collisions.get(i).getY() && posy < (Collisions.get(i).getY() + Collisions.get(i).getHeight())) {
+                return true; // Dont move
+            }
+        }
+        return false;
     }
 
     public void reSize(SpriteBatch g, int H, int W) {

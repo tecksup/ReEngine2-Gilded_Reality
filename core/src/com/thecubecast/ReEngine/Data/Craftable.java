@@ -2,8 +2,6 @@ package com.thecubecast.ReEngine.Data;
 
 import com.google.gson.JsonArray;
 
-import java.util.HashMap;
-
 public class Craftable {
 
     // Resources to craft it, and the quantity required

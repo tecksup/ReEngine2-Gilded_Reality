@@ -5,16 +5,13 @@ import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledGraph;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.FlatTiledNode;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.TiledManhattanDistance;
 import com.thecubecast.ReEngine.worldObjects.AI.Pathfinding.TiledSmoothableGraphPath;
-import com.thecubecast.ReEngine.worldObjects.NPC;
 import com.thecubecast.ReEngine.worldObjects.Student;
-import com.thecubecast.ReEngine.worldObjects.WorldObject;
 
 import static com.badlogic.gdx.utils.TimeUtils.nanoTime;
 
@@ -62,16 +59,16 @@ public class Smart implements Telegraph {
         pathFinder = new IndexedAStarPathFinder<FlatTiledNode>(worldMap, true);
     }
 
-    public void updatePath (boolean forceUpdate) {
-        int tileX = (int) getDestination().x/16;
-        int tileY = (int) getDestination().y/16;
+    public void updatePath(boolean forceUpdate) {
+        int tileX = (int) getDestination().x / 16;
+        int tileY = (int) getDestination().y / 16;
         if (forceUpdate || tileX != WorldObject.getPosition().x || tileY != WorldObject.getPosition().y) {
-            FlatTiledNode startNode = worldMap.getNode((int) WorldObject.getPosition().x/16,(int) WorldObject.getPosition().y/16);
+            FlatTiledNode startNode = worldMap.getNode((int) WorldObject.getPosition().x / 16, (int) WorldObject.getPosition().y / 16);
             FlatTiledNode endNode = worldMap.getNode(tileX, tileY);
             if (forceUpdate || endNode.type == FlatTiledNode.GROUND) {
                 if (endNode.type == FlatTiledNode.GROUND) {
-                    WorldObject.setPositionX(tileX*16);
-                    WorldObject.setPositionY(tileY*16);
+                    WorldObject.setPositionX(tileX * 16);
+                    WorldObject.setPositionY(tileY * 16);
                 } else {
                     endNode = worldMap.getNode(tileX, tileY);
                 }

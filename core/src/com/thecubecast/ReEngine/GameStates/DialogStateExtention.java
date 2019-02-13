@@ -22,7 +22,7 @@ import com.thecubecast.ReEngine.Graphics.Scene2D.TkLabel;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DialogStateExtention extends GameState{
+public abstract class DialogStateExtention extends GameState {
 
     //Dialog Vars
     private Skin skin;
@@ -65,14 +65,14 @@ public abstract class DialogStateExtention extends GameState{
         dialogBox.add(dialogBoxTitleT).left().expandX().padLeft(3).padTop(-2).row();
         dialogBox.add(dialogBoxTextT).expandX().left().padLeft(3);
 
-        dialogBoxTextT.addListener(new ClickListener(){
+        dialogBoxTextT.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 DialogNext();
             }
 
             @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 //dialogBoxIcon.setDrawable(skin, "A_icon_alt");
             }
 
@@ -85,8 +85,8 @@ public abstract class DialogStateExtention extends GameState{
         dialogBoxTitle = new TkLabel("", skin);
         dialogBoxTitle.setAlignment(Align.left);
         dialogBoxFace = new Image(new Texture(Gdx.files.internal("Sprites/face.png")));
-        dialogBoxFace.setSize(20,20);
-        dialogBoxText= new TypingLabel("{COLOR=GREEN}Hello", skin);
+        dialogBoxFace.setSize(20, 20);
+        dialogBoxText = new TypingLabel("{COLOR=GREEN}Hello", skin);
         dialogBoxText.setAlignment(Align.left);
         dialogBoxText.setWrap(true);
 
@@ -107,7 +107,8 @@ public abstract class DialogStateExtention extends GameState{
 
     public void AddDialog(String Speaker, String Conversation) {
         Dialog temp = new Dialog(Speaker, Conversation) {
-            public void exit() {}
+            public void exit() {
+            }
         };
 
         DialogCache.add(temp);
@@ -117,7 +118,8 @@ public abstract class DialogStateExtention extends GameState{
 
     public void AddDialog(String Speaker, String Conversation, int Cooldown) {
         Dialog temp = new Dialog(Speaker, Conversation) {
-            public void exit() {}
+            public void exit() {
+            }
         };
 
         temp.setCooldown(Cooldown);
@@ -129,7 +131,8 @@ public abstract class DialogStateExtention extends GameState{
 
     public void AddDialog(String Speaker, String Conversation, int Cooldown, Texture texture) {
         Dialog temp = new Dialog(Speaker, texture, Conversation) {
-            public void exit() {}
+            public void exit() {
+            }
         };
 
         temp.setCooldown(Cooldown);
@@ -141,7 +144,7 @@ public abstract class DialogStateExtention extends GameState{
 
     public void UpdateDialogBox() {
         DialogTics = 0;
-        if(DialogCache.size() > 0) {
+        if (DialogCache.size() > 0) {
             dialogBoxTitle.setText(DialogCache.get(0).getSpeaker());
             dialogBoxText.restart(DialogCache.get(0).getText());
             dialogBoxFace.setDrawable(new TextureRegionDrawable(new TextureRegion(DialogCache.get(0).getSpeakerImage())));
@@ -150,11 +153,11 @@ public abstract class DialogStateExtention extends GameState{
 
     public void DialogNext() {
         if (DialogOpen) {
-            if(DialogTics > DialogCache.get(0).getCooldown()) {
+            if (DialogTics > DialogCache.get(0).getCooldown()) {
                 if (DialogCache.size() > 0) {
                     DialogCache.remove(0).exit();
                     //REPLACE THIS LINE WITH DIALOG CLOSE SOUND
-                    if(DialogCache.size() == 0) {
+                    if (DialogCache.size() == 0) {
                         DialogOpen = false;
                     }
                     UpdateDialogBox();
@@ -169,7 +172,7 @@ public abstract class DialogStateExtention extends GameState{
     }
 
     public void MenuDraw(SpriteBatch batch, float Delta) {
-        if(DialogTics < 1000)
+        if (DialogTics < 1000)
             DialogTics++;
         Guistage.act(0.015f);
 

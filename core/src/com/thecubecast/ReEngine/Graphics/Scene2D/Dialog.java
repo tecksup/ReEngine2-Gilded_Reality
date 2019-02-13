@@ -10,13 +10,13 @@ public abstract class Dialog {
     private Texture SpeakerImage;
     private int cooldown = 60;
 
-    public Dialog (String Speaker, String Text) {
+    public Dialog(String Speaker, String Text) {
         this.Speaker = Speaker;
         this.Text = Text;
         this.SpeakerImage = new Texture(Gdx.files.internal("Sprites/face.png"));
     }
 
-    public Dialog (String Speaker, Texture face, String Text) {
+    public Dialog(String Speaker, Texture face, String Text) {
         this.Speaker = Speaker;
         this.Text = Text;
         this.SpeakerImage = face;

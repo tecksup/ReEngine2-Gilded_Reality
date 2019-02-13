@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import com.google.gson.*;
-import com.thecubecast.ReEngine.Data.Cube;
 import com.thecubecast.ReEngine.Data.Item;
 import com.thecubecast.ReEngine.worldObjects.*;
 
@@ -22,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.thecubecast.ReEngine.Data.GameStateManager.ItemPresets;
-import static com.thecubecast.ReEngine.Graphics.Draw.OutlineShader;
-import static com.thecubecast.ReEngine.Graphics.Draw.setOutlineShaderColor;
 
 public class TkMap {
 
@@ -60,7 +56,7 @@ public class TkMap {
                 MapObject.get("Tilesets").getAsJsonArray().get(0).getAsJsonObject().get("TileSize").getAsJsonObject().get("Width").getAsInt(),
                 MapObject.get("Tilesets").getAsJsonArray().get(0).getAsJsonObject().get("TileSize").getAsJsonObject().get("Height").getAsInt(),
                 MapObject.get("Tilesets").getAsJsonArray().get(0).getAsJsonObject().get("TileSep").getAsInt()
-                );
+        );
 
         Ground = new int[Width][Height];
         Foreground = new int[Width][Height];
@@ -73,7 +69,7 @@ public class TkMap {
         String[] Bits = PreparedBitString.split(",");
 
         int index = 0;
-        for (int y = Height-1; y >= 0; y--) {
+        for (int y = Height - 1; y >= 0; y--) {
             for (int x = 0; x < Width; x++) {
 
                 Ground[x][y] = Integer.parseInt(Bits[index]);
@@ -89,7 +85,7 @@ public class TkMap {
         Bits = PreparedBitString.split(",");
 
         index = 0;
-        for (int y = Height-1; y >= 0; y--) {
+        for (int y = Height - 1; y >= 0; y--) {
             for (int x = 0; x < Width; x++) {
 
                 Foreground[x][y] = Integer.parseInt(Bits[index]);
@@ -105,10 +101,10 @@ public class TkMap {
         Bits = PreparedBitString.split("");
 
         index = 0;
-        for (int y = Height-1; y >= 0; y--) {
+        for (int y = Height - 1; y >= 0; y--) {
             for (int x = 0; x < Width; x++) {
 
-                if(Bits[index].equals("1"))
+                if (Bits[index].equals("1"))
                     Collision[x][y] = true;
                 else
                     Collision[x][y] = false;
@@ -127,13 +123,13 @@ public class TkMap {
         this.Height = Height;
         this.TileSize = TileSize;
 
-        Tileset = new TkTileset("World","Sprites/Map/World.png", TileSize, TileSize, 0);
+        Tileset = new TkTileset("World", "Sprites/Map/World.png", TileSize, TileSize, 0);
 
         Ground = new int[Width][Height];
         Foreground = new int[Width][Height];
         Collision = new Boolean[Width][Height];
 
-        for (int y = this.getHeight()-1; y >= 0; y--) {
+        for (int y = this.getHeight() - 1; y >= 0; y--) {
             for (int x = 0; x < this.getWidth(); x++) {
                 this.Ground[x][y] = 150;
             }
@@ -141,7 +137,7 @@ public class TkMap {
 
         //----------------------------------------------------
 
-        for (int y = this.getHeight()-1; y >= 0; y--) {
+        for (int y = this.getHeight() - 1; y >= 0; y--) {
             for (int x = 0; x < this.getWidth(); x++) {
                 this.Foreground[x][y] = -1;
             }
@@ -149,7 +145,7 @@ public class TkMap {
 
         //---------------------------------------------------
 
-        for (int y = this.getHeight()-1; y >= 0; y--) {
+        for (int y = this.getHeight() - 1; y >= 0; y--) {
             for (int x = 0; x < this.getWidth(); x++) {
                 this.Collision[x][y] = false;
             }
@@ -184,12 +180,32 @@ public class TkMap {
         return Collision;
     }
 
+    public void setCollision(int x, int y) {
+        if (x >= 0 && x < getWidth()) {
+            if (y >= 0 && y < getHeight()) {
+                Collision[x][y] = true;
+            }
+        }
+    }
+
+    public void ClearCollision(int x, int y) {
+        Collision[x][y] = false;
+    }
+
     public void setGroundCell(int x, int y, int ID) {
-        Ground[x][y] = ID;
+        if (x >= 0 && x < getWidth()) {
+            if (y >= 0 && y < getHeight()) {
+                Ground[x][y] = ID;
+            }
+        }
     }
 
     public void setForegroundCell(int x, int y, int ID) {
-        Foreground[x][y] = ID;
+        if (x >= 0 && x < getWidth()) {
+            if (y >= 0 && y < getHeight()) {
+                Foreground[x][y] = ID;
+            }
+        }
     }
 
     public void Draw(OrthographicCamera cam, SpriteBatch batch) {
@@ -198,24 +214,24 @@ public class TkMap {
         if (cam != null) {
             drawView = new Rectangle(cam.position.x - cam.viewportWidth, cam.position.y - cam.viewportHeight, cam.viewportWidth + cam.viewportWidth, cam.viewportHeight + cam.viewportHeight);
         } else {
-            drawView = new Rectangle(0, 0, Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight()/4);
+            drawView = new Rectangle(0, 0, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4);
         }
 
         //Draw the Ground
-        for (int y = Height-1; y >= 0; y--) {
+        for (int y = Height - 1; y >= 0; y--) {
             for (int x = 0; x < Width; x++) {
                 if (Ground[x][y] != -1) {
-                    if(drawView.overlaps(new Rectangle(x*16, y*16, 16, 16))) {
+                    if (drawView.overlaps(new Rectangle(x * 16, y * 16, 16, 16))) {
                         batch.draw(Tileset.Tiles[Ground[x][y]], x * 16, y * 16);
                     }
                 }
             }
         }
         //Draw the Foreground
-        for (int y = Height-1; y >= 0; y--) {
+        for (int y = Height - 1; y >= 0; y--) {
             for (int x = 0; x < Width; x++) {
                 if (Foreground[x][y] != -1) {
-                    if(drawView.overlaps(new Rectangle(x*16, y*16, 16, 16))) {
+                    if (drawView.overlaps(new Rectangle(x * 16, y * 16, 16, 16))) {
                         batch.draw(Tileset.Tiles[Foreground[x][y]], x * 16, y * 16);
                     }
                 }
@@ -229,18 +245,18 @@ public class TkMap {
         if (cam != null) {
             drawView = new Rectangle(cam.position.x - cam.viewportWidth, cam.position.y - cam.viewportHeight, cam.viewportWidth + cam.viewportWidth, cam.viewportHeight + cam.viewportHeight);
         } else {
-            drawView = new Rectangle(0, 0, Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight()/4);
+            drawView = new Rectangle(0, 0, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4);
         }
 
-        for (int y = Height-1; y >= 0; y--) {
+        for (int y = Height - 1; y >= 0; y--) {
             for (int x = 0; x < Width; x++) {
 
                 if (Collision[x][y]) {
-                    if(drawView.overlaps(new Rectangle(x*16, y*16, 16, 16))) {
+                    if (drawView.overlaps(new Rectangle(x * 16, y * 16, 16, 16))) {
                         batch.draw(pixel, x * 16, y * 16, 16, 16);
                     }
                 } else {
-                    if(drawView.overlaps(new Rectangle(x*16, y*16, 16, 16))) {
+                    if (drawView.overlaps(new Rectangle(x * 16, y * 16, 16, 16))) {
                         //batch.draw(pixel, x * 16, y * 16, 16, 16);
                     }
                 }
@@ -256,7 +272,7 @@ public class TkMap {
         }
         JsonArray temparray = getMapObject().get("Objects").getAsJsonArray();
         for (int i = 0; i < temparray.size(); i++) {
-            int X,Y,Z,W,H,D,OffsetX,OffsetY,OffsetZ;
+            int X, Y, Z, W, H, D, OffsetX, OffsetY, OffsetZ;
             JsonObject tempObject = temparray.get(i).getAsJsonObject();
             X = tempObject.get("x").getAsInt();
             String Name = tempObject.get("Name").getAsString();
@@ -270,23 +286,39 @@ public class TkMap {
             OffsetY = tempObject.get("HeightOffset").getAsInt();
             OffsetZ = tempObject.get("DepthOffset").getAsInt();
             String tempImgLoc = tempObject.get("TexLocation").getAsString();
+            String RawEvents = tempObject.get("Event").getAsString();
+            Trigger.TriggerType TriggerType = Trigger.TriggerType.None;
             WorldObject.type Type;
             boolean Collidable = false;
             if (tempObject.get("Physics").getAsString().equals("Static")) {
                 Type = WorldObject.type.Static;
                 if (tempObject.get("Collidable").getAsBoolean())
                     Collidable = true;
-            } else if (tempObject.get("Physics").getAsString().equals("Dynamic")){
+            } else if (tempObject.get("Physics").getAsString().equals("Dynamic")) {
                 Type = WorldObject.type.Dynamic;
-            } else { Type = WorldObject.type.Static;}
+            } else {
+                Type = WorldObject.type.Static;
+            }
+
+            if (tempObject.get("TriggerType").getAsString().equals("OnEntry")) {
+                TriggerType = Trigger.TriggerType.OnEntry;
+            } else if (tempObject.get("TriggerType").getAsString().equals("OnTrigger")) {
+                TriggerType = Trigger.TriggerType.OnTrigger;
+            } else if (tempObject.get("TriggerType").getAsString().equals("OnExit")) {
+                TriggerType = Trigger.TriggerType.OnExit;
+            } else if (tempObject.get("TriggerType").getAsString().equals("OnInteract")) {
+                TriggerType = Trigger.TriggerType.OnInteract;
+            } else if (tempObject.get("TriggerType").getAsString().equals("OnClick")) {
+                TriggerType = Trigger.TriggerType.OnClick;
+            }
 
             if (tempObject.get("Operation").getAsString().equals("Chest")) {
-                Storage tempObj = new Storage(X, Y, Z, new Vector3(W,H,D), Type, Collidable);
+                Storage tempObj = new Storage(X, Y, Z, new Vector3(W, H, D), Type, Collidable, RawEvents, TriggerType);
                 tempObj.setTexLocation(tempImgLoc);
                 tempObj.Name = Name;
                 tempObj.Description = Description;
 
-                if (!tempObject.get("Collectible").getAsString().equals("")){
+                if (!tempObject.get("Collectible").getAsString().equals("")) {
                     String[] Inventory = tempObject.get("Collectible").getAsString().split(";");
 
                     for (int j = 0; j < Inventory.length; j++) {
@@ -302,16 +334,16 @@ public class TkMap {
                     }
                 }
 
-                tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
+                tempObj.setHitboxOffset(new Vector3(OffsetX, OffsetY, OffsetZ));
 
                 temp.add(tempObj);
             } else if (tempObject.get("Operation").getAsString().equals("Chop")) {
-                Chop tempObj = new Chop(X, Y, Z, new Vector3(W,H,D), Type, Collidable);
+                Chop tempObj = new Chop(X, Y, Z, new Vector3(W, H, D), Type, Collidable, RawEvents, TriggerType);
                 tempObj.setTexLocation(tempImgLoc);
                 tempObj.Name = Name;
                 tempObj.Description = Description;
 
-                if (!tempObject.get("Collectible").getAsString().equals("")){
+                if (!tempObject.get("Collectible").getAsString().equals("")) {
                     String[] Inventory = tempObject.get("Collectible").getAsString().split(";");
 
                     for (int j = 0; j < Inventory.length; j++) {
@@ -327,16 +359,16 @@ public class TkMap {
                     }
                 }
 
-                tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
+                tempObj.setHitboxOffset(new Vector3(OffsetX, OffsetY, OffsetZ));
 
                 temp.add(tempObj);
             } else if (tempObject.get("Operation").getAsString().equals("Mine")) {
-                Mine tempObj = new Mine(X, Y, Z, new Vector3(W,H,D), Type, Collidable);
+                Mine tempObj = new Mine(X, Y, Z, new Vector3(W, H, D), Type, Collidable, RawEvents, TriggerType);
                 tempObj.setTexLocation(tempImgLoc);
                 tempObj.Name = Name;
                 tempObj.Description = Description;
 
-                if (!tempObject.get("Collectible").getAsString().equals("")){
+                if (!tempObject.get("Collectible").getAsString().equals("")) {
                     String[] Inventory = tempObject.get("Collectible").getAsString().split(";");
 
                     for (int j = 0; j < Inventory.length; j++) {
@@ -352,16 +384,16 @@ public class TkMap {
                     }
                 }
 
-                tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
+                tempObj.setHitboxOffset(new Vector3(OffsetX, OffsetY, OffsetZ));
 
                 temp.add(tempObj);
             } else {
-                Interactable tempObj = new Interactable(X, Y, Z, new Vector3(W,H,D), Type, Collidable);
+                Interactable tempObj = new Interactable(X, Y, Z, new Vector3(W, H, D), Type, Collidable, RawEvents, TriggerType);
                 tempObj.setTexLocation(tempImgLoc);
                 tempObj.Name = Name;
                 tempObj.Description = Description;
 
-                if (!tempObject.get("Collectible").getAsString().equals("")){
+                if (!tempObject.get("Collectible").getAsString().equals("")) {
                     String[] Inventory = tempObject.get("Collectible").getAsString().split(";");
 
                     for (int j = 0; j < Inventory.length; j++) {
@@ -377,7 +409,7 @@ public class TkMap {
                     }
                 }
 
-                tempObj.setHitboxOffset(new Vector3(OffsetX,OffsetY,OffsetZ));
+                tempObj.setHitboxOffset(new Vector3(OffsetX, OffsetY, OffsetZ));
 
                 temp.add(tempObj);
             }
@@ -396,22 +428,22 @@ public class TkMap {
         Output.addProperty("Height", this.getHeight());
 
         JsonArray Tilesets = new JsonArray();
-            JsonObject TilesetObject = new JsonObject();
-            TilesetObject.addProperty("Name", Tileset.Name);
-            TilesetObject.addProperty("FilePath", Tileset.FilePath);
-            JsonObject Size = new JsonObject();
-            Size.addProperty("Width", Tileset.TileSizeW);
-            Size.addProperty("Height", Tileset.TileSizeH);
-            TilesetObject.add("TileSize", Size);
-            TilesetObject.addProperty("TileSep", Tileset.TileSep);
-            Tilesets.add(TilesetObject);
+        JsonObject TilesetObject = new JsonObject();
+        TilesetObject.addProperty("Name", Tileset.Name);
+        TilesetObject.addProperty("FilePath", Tileset.FilePath);
+        JsonObject Size = new JsonObject();
+        Size.addProperty("Width", Tileset.TileSizeW);
+        Size.addProperty("Height", Tileset.TileSizeH);
+        TilesetObject.add("TileSize", Size);
+        TilesetObject.addProperty("TileSep", Tileset.TileSep);
+        Tilesets.add(TilesetObject);
         Output.add("Tilesets", Tilesets);
 
         JsonObject GroundLayer = new JsonObject();
         GroundLayer.addProperty("tileset", this.Tileset.Name);
         GroundLayer.addProperty("exportMode", "CSV");
         String GroundTiles = "";
-        for (int y = this.getHeight()-1; y >= 0; y--) {
+        for (int y = this.getHeight() - 1; y >= 0; y--) {
             for (int x = 0; x < this.getWidth(); x++) {
                 if (x == 0) {
                     GroundTiles += "" + this.Ground[x][y];
@@ -420,7 +452,7 @@ public class TkMap {
                 }
             }
             if (y != 0) {
-                GroundTiles += "\n" ;
+                GroundTiles += "\n";
             }
         }
         GroundLayer.addProperty("text", GroundTiles);
@@ -432,7 +464,7 @@ public class TkMap {
         ForegroundLayer.addProperty("tileset", this.Tileset.Name);
         ForegroundLayer.addProperty("exportMode", "CSV");
         String ForegroundTiles = "";
-        for (int y = this.getHeight()-1; y >= 0; y--) {
+        for (int y = this.getHeight() - 1; y >= 0; y--) {
             for (int x = 0; x < this.getWidth(); x++) {
                 if (x == 0) {
                     ForegroundTiles += "" + this.Foreground[x][y];
@@ -441,7 +473,7 @@ public class TkMap {
                 }
             }
             if (y != 0) {
-                ForegroundTiles += "\n" ;
+                ForegroundTiles += "\n";
             }
         }
         ForegroundLayer.addProperty("text", ForegroundTiles);
@@ -452,16 +484,16 @@ public class TkMap {
         JsonObject CollisionLayer = new JsonObject();
         CollisionLayer.addProperty("exportMode", "Bitstring");
         String CollisionTiles = "";
-        for (int y = this.getHeight()-1; y >= 0; y--) {
+        for (int y = this.getHeight() - 1; y >= 0; y--) {
             for (int x = 0; x < this.getWidth(); x++) {
-                    if (this.Collision[x][y]) {
-                        CollisionTiles += "1";
-                    } else {
-                        CollisionTiles += "0";
-                    }
+                if (this.Collision[x][y]) {
+                    CollisionTiles += "1";
+                } else {
+                    CollisionTiles += "0";
+                }
             }
             if (y != 0) {
-                CollisionTiles += "\n" ;
+                CollisionTiles += "\n";
             }
         }
         CollisionLayer.addProperty("text", CollisionTiles);
@@ -475,22 +507,22 @@ public class TkMap {
                 JsonObject Entity = new JsonObject();
                 Entity.addProperty("Name", ((Interactable) entities.get(i)).Name);
                 Entity.addProperty("Description", "");
-                Entity.addProperty("x",  entities.get(i).getPosition().x);
-                Entity.addProperty("y",  entities.get(i).getPosition().y);
-                Entity.addProperty("z",  entities.get(i).getPosition().z);
-                Entity.addProperty("Width",  entities.get(i).getSize().x);
-                Entity.addProperty("WidthOffset",  entities.get(i).getHitboxOffset().x);
-                Entity.addProperty("Height",  entities.get(i).getSize().y);
-                Entity.addProperty("HeightOffset",  entities.get(i).getHitboxOffset().y);
-                Entity.addProperty("Depth",  entities.get(i).getSize().z);
-                Entity.addProperty("DepthOffset",  entities.get(i).getHitboxOffset().z);
+                Entity.addProperty("x", entities.get(i).getPosition().x);
+                Entity.addProperty("y", entities.get(i).getPosition().y);
+                Entity.addProperty("z", entities.get(i).getPosition().z);
+                Entity.addProperty("Width", entities.get(i).getSize().x);
+                Entity.addProperty("WidthOffset", entities.get(i).getHitboxOffset().x);
+                Entity.addProperty("Height", entities.get(i).getSize().y);
+                Entity.addProperty("HeightOffset", entities.get(i).getHitboxOffset().y);
+                Entity.addProperty("Depth", entities.get(i).getSize().z);
+                Entity.addProperty("DepthOffset", entities.get(i).getHitboxOffset().z);
                 if (entities.get(i) instanceof Interactable) {
                     Entity.addProperty("TexLocation", ((Interactable) entities.get(i)).getTexLocation());
                 } else {
                     Entity.addProperty("TexLocation", "");
                 }
-                Entity.addProperty("Physics",  entities.get(i).getState().name());
-                Entity.addProperty("Collidable",  entities.get(i).isCollidable());
+                Entity.addProperty("Physics", entities.get(i).getState().name());
+                Entity.addProperty("Collidable", entities.get(i).isCollidable());
                 if (entities.get(i) instanceof Interactable)
                     Entity.addProperty("Operation", ((Interactable) entities.get(i)).ID);
                 else
@@ -508,8 +540,7 @@ public class TkMap {
 
 
                     Entity.addProperty("Collectible", Inventory);
-                }
-                else {
+                } else {
                     String Inventory = "";
 
                     for (int j = 0; j < ((Interactable) entities.get(i)).Drops.size(); j++) {
@@ -519,11 +550,12 @@ public class TkMap {
 
 
                     Entity.addProperty("Collectible", Inventory);
-                } if (entities.get(i) instanceof Trigger) {
-                    Entity.addProperty("TriggerType",  ((Trigger) entities.get(i)).getActivationType().toString());
-                    Entity.addProperty("Event",  ((Trigger) entities.get(i)).getRawCommands());
+                }
+                if (entities.get(i) instanceof Trigger) {
+                    Entity.addProperty("TriggerType", ((Trigger) entities.get(i)).getActivationType().toString());
+                    Entity.addProperty("Event", ((Trigger) entities.get(i)).getRawCommands());
                 } else {
-                    Entity.addProperty("TriggerType",  "");
+                    Entity.addProperty("TriggerType", "");
                     Entity.addProperty("Event", "");
                 }
 
