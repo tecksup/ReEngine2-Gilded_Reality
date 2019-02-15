@@ -25,6 +25,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.thecubecast.ReEngine.Data.*;
 import com.thecubecast.ReEngine.Data.TkMap.TkMap;
+import com.thecubecast.ReEngine.Graphics.Scene2D.TkImageButton;
 import com.thecubecast.ReEngine.Graphics.Scene2D.TkTextButton;
 import com.thecubecast.ReEngine.Graphics.Scene2D.UIFSM;
 import com.thecubecast.ReEngine.Graphics.Scene2D.UI_state;
@@ -377,7 +378,6 @@ public class EditorState extends GameState {
     public void drawUI(SpriteBatch g, int height, int width, float Time) {
         //Draws things on the screen, and not the world positions
         g.setProjectionMatrix(GuiCam.combined);
-        UI.Draw(g);
         if (UI.CursorItem != null) {
             Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             GuiCam.unproject(pos);
@@ -398,6 +398,7 @@ public class EditorState extends GameState {
         UIStage.getViewport().update(gsm.UIWidth, gsm.UIHeight, true);
         UIStage.draw();
         UIStage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        UI.Draw(g);
     }
 
     private void handleInput() {
@@ -406,7 +407,14 @@ public class EditorState extends GameState {
             SaveMap(SaveNameText);
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE) || Gdx.input.isKeyJustPressed(Input.Keys.DEL)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            camera.zoom += 0.1f;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            camera.zoom -= 0.1f;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(Input.Keys.DEL)) {
             if (!OverHud) {
                 for (int i = 0; i < SelectedObjects.size(); i++) {
                     Entities.remove(SelectedObjects.get(i));
@@ -554,10 +562,10 @@ public class EditorState extends GameState {
         camera.position.set(campostemp);
         GuiCam.setToOrtho(false, gsm.UIWidth, gsm.UIHeight);
         shaker.reSize(camera);
-
+*/
         UI.reSize();
 
-        //shaker.reSize(camera); */
+        //shaker.reSize(camera);
     }
 
     public void UISetup() {
@@ -673,7 +681,11 @@ public class EditorState extends GameState {
         Background.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                selected = selection.Ground;
+                if (selected.equals(selection.Ground)) {
+                    selected = selection.None;
+                } else {
+                    selected = selection.Ground;
+                }
             }
         });
         TkTextButton Foreground = new TkTextButton("Foreground", skin) {
@@ -691,7 +703,11 @@ public class EditorState extends GameState {
         Foreground.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                selected = selection.Forground;
+                if (selected.equals(selection.Forground)) {
+                    selected = selection.None;
+                } else {
+                    selected = selection.Forground;
+                }
             }
         });
         TkTextButton Collision = new TkTextButton("Collision", skin) {
@@ -709,7 +725,11 @@ public class EditorState extends GameState {
         Collision.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                selected = selection.Collision;
+                if (selected.equals(selection.Collision)) {
+                    selected = selection.None;
+                } else {
+                    selected = selection.Collision;
+                }
             }
         });
         TkTextButton Objects = new TkTextButton("Objects", skin) {
@@ -727,10 +747,14 @@ public class EditorState extends GameState {
         Objects.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                selected = selection.Object;
+                if (selected.equals(selection.Object)) {
+                    selected = selection.None;
+                } else {
+                    selected = selection.Object;
+                }
             }
         });
-        TkTextButton Eraser = new TkTextButton("Eraser", skin) {
+        TkImageButton Eraser = new TkImageButton(skin, "Eraser") {
             @Override
             public void act(float delta) {
                 super.act(delta);
@@ -748,33 +772,16 @@ public class EditorState extends GameState {
                 Erasing = !Erasing;
             }
         });
-        TkTextButton None = new TkTextButton("None", skin) {
-            @Override
-            public void act(float delta) {
-                super.act(delta);
-                if (selected.equals(selection.None)) {
-                    this.setChecked(true);
-                } else {
-                    this.setChecked(false);
-                }
-            }
-        };
-        None.togglable = true;
-        None.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                selected = selection.None;
-            }
-        });
-        TkTextButton Hide = new TkTextButton("^", skin);
+        TkImageButton Hide = new TkImageButton(skin, "Dropdown");
         Hide.togglable = true;
+        float YPos = BoxStuff.getY();
         Hide.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (Hide.isChecked()) {
-                    BoxStuff.setPosition(BoxStuff.getX(), BoxStuff.getY() - 105);
+                    BoxStuff.setPosition(BoxStuff.getX(), YPos - 105);
                 } else {
-                    BoxStuff.setPosition(BoxStuff.getX(), BoxStuff.getY() + 105);
+                    BoxStuff.setPosition(BoxStuff.getX(), YPos);
                 }
             }
         });
@@ -784,8 +791,7 @@ public class EditorState extends GameState {
         ButtonHolder.add(Collision);
         ButtonHolder.add(Objects);
         ButtonHolder.add(Eraser);
-        ButtonHolder.add(None);
-        ButtonHolder.add(Hide);
+        ButtonHolder.add(Hide).right();
         BoxStuff.add(ButtonHolder).row();
         EditorTable.add(BoxStuff);
 
@@ -894,7 +900,9 @@ public class EditorState extends GameState {
             }
         }
 
-        CollisionEditor.add(new Label("Left click to place CollisionTiles. Toggle the Eraser to erase them. ", skin));
+        Label CollisionExplain = new Label("Left click to place CollisionTiles. Toggle the Eraser to erase them. ", skin);
+        CollisionExplain.setWrap(true);
+        CollisionEditor.add(CollisionExplain).width(gsm.UIWidth/3);
 
         //Object Editor Stuff
         Label NameL = new Label("Name", skin);
@@ -1242,32 +1250,7 @@ public class EditorState extends GameState {
         ObjectEditor.add(CollectiblesL).left();
         ObjectEditor.add(Collectables).row();
         //
-        CheckBox IsTrigger = new CheckBox("IsTrigger", skin);
-        SelectBox TriggerTypeChoice = new SelectBox(skin) {
-            @Override
-            public void act(float delta) {
-                super.act(delta);
-                setDisabled(!IsTrigger.isChecked());
-            }
-        };
-        TriggerTypeChoice.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if (SelectedObjects.size() == 1) {
-                    if (Operation.getSelected().equals("OnEntry")) {
-                        ((Interactable) SelectedObjects.get(0)).setActivationType(Trigger.TriggerType.OnEntry);
-                    } else if (Operation.getSelected().equals("OnTrigger")) {
-                        ((Interactable) SelectedObjects.get(0)).setActivationType(Trigger.TriggerType.OnTrigger);
-                    } else if (Operation.getSelected().equals("OnExit")) {
-                        ((Interactable) SelectedObjects.get(0)).setActivationType(Trigger.TriggerType.OnExit);
-                    } else if (Operation.getSelected().equals("OnInteract")) {
-                        ((Interactable) SelectedObjects.get(0)).setActivationType(Trigger.TriggerType.OnInteract);
-                    } else if (Operation.getSelected().equals("OnClick")) {
-                        ((Interactable) SelectedObjects.get(0)).setActivationType(Trigger.TriggerType.OnClick);
-                    }
-                }
-            }
-        });
+        SelectBox TriggerTypeChoice = new SelectBox(skin);
         TriggerTypeChoice.setItems(new String[]{"OnEntry", "OnTrigger", "OnExit", "OnInteract", "OnClick"});
         TriggerTypeChoice.setSelected("OnInteract");
         TriggerTypeChoice.addListener(new ChangeListener() {
@@ -1300,7 +1283,13 @@ public class EditorState extends GameState {
             @Override
             public void act(float delta) {
                 super.act(delta);
-                setDisabled(!IsTrigger.isChecked());
+                if (SelectedObjects.size() > 0 && SelectedObjects.get(0) instanceof Interactable) {
+                    if (((Interactable)SelectedObjects.get(0)).getActivationType().equals(Trigger.TriggerType.None)) {
+                        setDisabled(true);
+                    } else {
+                        setDisabled(false);
+                    }
+                }
             }
         };
         EventCode.addListener(new ChangeListener() {
@@ -1313,10 +1302,9 @@ public class EditorState extends GameState {
                 }
             }
         });
-        ObjectEditor.add(IsTrigger).left();
         ObjectEditor.add(TriggerTypeChoice).fillX().row();
         ObjectEditor.add(EventL);
-        ObjectEditor.add(EventCode).row();
+        ObjectEditor.add(EventCode).height(64).row();
         TkTextButton DuplicateOrCreate = new TkTextButton("", skin) {
             @Override
             public void act(float delta) {
@@ -1442,11 +1430,6 @@ public class EditorState extends GameState {
                         }
                         Collectables.setText(Inventory);
                     }
-                    if (temp.getActivationType().name().equals("None")) {
-                        IsTrigger.setChecked(false);
-                    } else {
-                        IsTrigger.setChecked(true);
-                    }
                     TriggerTypeChoice.setSelected(temp.getActivationType().name().toString());
                     EventCode.setText(temp.getRawCommands());
                 } else if (SelectedObjects.size() == 0) {
@@ -1467,7 +1450,6 @@ public class EditorState extends GameState {
                     Collision.setChecked(false);
                     Operation.setSelected("----");
                     Collectables.setText("NOPE");
-                    IsTrigger.setChecked(false);
                     TriggerTypeChoice.setSelected("None");
                     EventCode.setText("None");
                 } else if (SelectedObjects.size() > 1) {
@@ -1488,7 +1470,6 @@ public class EditorState extends GameState {
                     Collision.setChecked(false);
                     Operation.setSelected("----");
                     Collectables.setText("NOPE");
-                    IsTrigger.setChecked(false);
                     TriggerTypeChoice.setSelected("None");
                     EventCode.setText("None");
                 }

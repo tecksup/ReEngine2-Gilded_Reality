@@ -294,9 +294,6 @@ public class GameStateManager {
     public void reSize(SpriteBatch bbg, int H, int W) {
         System.out.println("Resize Just Ran");
 
-        if (gameState != null) {
-            gameState.reSize(bbg, H, W);
-        }
         Matrix4 matrix = new Matrix4();
         matrix.setToOrtho2D(0, 0, W, H);
         bbg.setProjectionMatrix(matrix);
@@ -322,6 +319,10 @@ public class GameStateManager {
 
         WorldFBO = new FrameBuffer(Pixmap.Format.RGBA8888, Width / Scale, Height / Scale, false);
         UIFBO = new FrameBuffer(Pixmap.Format.RGBA8888, Width / (Scale / 2), Height / (Scale / 2), false);
+
+        if (gameState != null) {
+            gameState.reSize(bbg, H, W);
+        }
 
     }
 

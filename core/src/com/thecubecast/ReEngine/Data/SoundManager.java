@@ -35,7 +35,7 @@ public class SoundManager {
         if (Gdx.app.getPreferences("properties").contains("MusicVolume")) {
             MusicVolume = Gdx.app.getPreferences("properties").getFloat("MusicVolume");
         } else {
-            Gdx.app.getPreferences("properties").putFloat("MasterVolume", MusicVolume);
+            Gdx.app.getPreferences("properties").putFloat("MusicVolume", MusicVolume);
         }
 
         if (Gdx.app.getPreferences("properties").contains("SoundVolume")) {

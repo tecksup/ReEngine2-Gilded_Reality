@@ -1228,7 +1228,7 @@ public enum UI_state implements State<UIFSM> {
 
 
     public void ControllerCheck(Table table) {
-        if (ctm.controllers.size() > 0) {
+        /*if (ctm.controllers.size() > 0) {
             for (int i = 0; i < table.getCells().size; i++) {
                 if (table.getCells().get(i).getActor() instanceof TkTextButton) {
                     int nextSelection = i;
@@ -1272,7 +1272,7 @@ public enum UI_state implements State<UIFSM> {
                 }
             }
 
-        }
+        }*/
     }
 
 

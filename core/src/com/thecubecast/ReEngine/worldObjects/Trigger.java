@@ -245,13 +245,30 @@ public class Trigger extends WorldObject {
                 } catch (Exception e) {
                     System.out.println("Exception " + e);
                 }
-            } else if (Commands[i][0].equals("")) {
+            } else if (Commands[i][0].equals("setFocusPoint")) {
                 try {
+                    WorldObject temp = new WorldObject(Integer.parseInt(Commands[i][1]), Integer.parseInt(Commands[i][2]), 0, new Vector3()) {
+                        @Override
+                        public void init(int Width, int Height) {
 
+                        }
+
+                        @Override
+                        public void update(float delta, List<Cube> Colls) {
+
+                        }
+
+                        @Override
+                        public void draw(SpriteBatch batch, float Time) {
+
+                        }
+                    };
+                    temp.FocusStrength = Integer.parseInt(Commands[i][3]);
+                    Entities.add(temp);
                 } catch (Exception e) {
                     System.out.println("Exception " + e);
                 }
-            } else if (Commands[i][0].equals("")) {
+            } else if (Commands[i][0].equals("Player")) {
                 try {
 
                 } catch (Exception e) {
