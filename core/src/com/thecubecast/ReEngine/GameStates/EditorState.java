@@ -120,6 +120,9 @@ public class EditorState extends GameState {
 
     public void init() {
 
+        //gsm.setWorldFBOSize(Gdx.graphics.getWidth()*2, Gdx.graphics.getHeight()*2);
+        //gsm.setUIFBOSize(Gdx.graphics.getWidth()*2, Gdx.graphics.getHeight()*2);
+
         Path path = Paths.get("Saves/CubeEditor/" + SaveNameText + ".cube");
         if (Files.notExists(path)) {
             System.out.println("It's a new save!");
@@ -408,10 +411,10 @@ public class EditorState extends GameState {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            camera.zoom += 0.1f;
+            camera.zoom += 0.2f;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            camera.zoom -= 0.1f;
+            camera.zoom -= 0.2f;
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(Input.Keys.DEL)) {

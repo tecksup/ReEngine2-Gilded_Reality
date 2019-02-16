@@ -189,13 +189,13 @@ public class MultiplayerTestState extends GameState {
         guiBatch.begin();
         //guiBatch.setProjectionMatrix(cameraGui.combined);
 
-        gsm.Render.GUIDeco(guiBatch, 0, height - 80, "Multiplayer test");
+        //gsm.Render.GUIDeco(guiBatch, 0, height - 80, "Multiplayer test");
         //gsm.Render.HUDNotification(guiBatch, width/2, height-100, 300 ,"Hey does this really wrap itself it would be so cool if it did so now i have to write a realllllllly long string to fill it up and make it wrap", gsm.ticks);
 
         if (Achievements.size() != 0) {
             for (int l = 0; l < Achievements.size(); l++) {
                 Achievements.get(l).setTime(Time);
-                gsm.Render.HUDAchievement(guiBatch, width - 260, (70 * l), Achievements.get(l).getText(), Achievements.get(l).getIconID(), Achievements.get(l).getOpacity(), Achievements.get(l).getAnim(), Time);
+                //gsm.Render.HUDAchievement(guiBatch, width - 260, (70 * l), Achievements.get(l).getText(), Achievements.get(l).getIconID(), Achievements.get(l).getOpacity(), Achievements.get(l).getAnim(), Time);
             }
 
         }

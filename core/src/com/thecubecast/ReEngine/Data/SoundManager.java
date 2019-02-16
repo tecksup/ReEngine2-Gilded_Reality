@@ -3,6 +3,8 @@ package com.thecubecast.ReEngine.Data;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,8 +54,14 @@ public class SoundManager {
 
     public void update() {
         for (int i = 0; i < HandledMusic.size(); i++) {
-            HandledMusic.get(i).setVolume(MusicVolume * MasterVolume);
+            if (HandledMusic.get(i).getVolume() != MusicVolume*MasterVolume) {
+                Vector2 temp = new Vector2(HandledMusic.get(i).getVolume(), 0).interpolate(new Vector2(MusicVolume * MasterVolume, 0), 0.15f, Interpolation.exp5In);
+                HandledMusic.get(i).setVolume(temp.x);
+            }
+
+
         }
+
     }
 
     public void playS(String soundName) {
@@ -88,6 +96,20 @@ public class SoundManager {
         HandledMusic.add(temp);
         temp.play();
         temp.setVolume(MusicVolume * MasterVolume);
+        if (looping) {
+            temp.setLooping(looping);
+        }
+        return HandledMusic.size() - 1;
+    }
+
+    public int playMusic(String Music, boolean looping, boolean FadeIn) {
+        Music temp = Gdx.audio.newMusic(Gdx.files.internal("Music/" + Music));
+        HandledMusic.add(temp);
+        temp.play();
+        if (FadeIn)
+            temp.setVolume(0);
+        else
+            temp.setVolume(MusicVolume * MasterVolume);
         if (looping) {
             temp.setLooping(looping);
         }

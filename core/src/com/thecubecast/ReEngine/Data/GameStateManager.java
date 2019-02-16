@@ -335,4 +335,16 @@ public class GameStateManager {
         gameState.dispose();
         gameState.Shutdown();
     }
+
+    public void setWorldFBOSize(int WorldWidth, int WorldHeight) {
+        this.WorldWidth = WorldWidth;
+        this.WorldHeight = WorldHeight;
+        WorldFBO = new FrameBuffer(Pixmap.Format.RGBA8888, this.WorldWidth, this.WorldHeight, false);
+    }
+
+    public void setUIFBOSize(int UIWidth, int UIHeight) {
+        this.UIWidth = UIWidth;
+        this.UIHeight = UIHeight;
+        WorldFBO = new FrameBuffer(Pixmap.Format.RGBA8888, this.UIWidth, this.UIHeight, false);
+    }
 }

@@ -45,7 +45,7 @@ public class MainMenuState extends GameState {
 
         Menus = new UIFSM(cameraGui, gsm);
 
-        BGMusicID = AudioM.playMusic("NoName.wav", true);
+        BGMusicID = AudioM.playMusic("NoName.wav", true, true);
     }
 
     public void update() {

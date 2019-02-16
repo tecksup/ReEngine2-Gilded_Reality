@@ -4,18 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectSet;
+
+import java.util.HashMap;
 
 public class Draw {
 
     public AssetManager manager = new AssetManager();
+    private TextureAtlas textureAtlas;
+
+    private String textureAtlasFilename = "textureAtlas/atlas.atlas";
 
     //Animation Variables
     public Animation<TextureRegion> LoadingAnimation; // Must declare frame type (TextureRegion)
@@ -41,76 +45,18 @@ public class Draw {
         font.getData().markupEnabled = true;
         LoadShaders();
 
+        // load the texture atlas
+        manager.load(textureAtlasFilename, TextureAtlas.class);
+
         // Initialize the Animation with the frame interval and array of frames
         LoadingAnimation = new Animation<TextureRegion>(0.1f, loadAnim(LoadingSheet, "cube_loading_sprite.png", 4, 1));
     }
 
-    public void Load() {
-        //The loops bellow grab the tiles and add them to the variable
-
+    /** Retrieve the loaded texture atlas */
+    public void retrieveTextureAtlas() {
+        textureAtlas = manager.get(textureAtlasFilename, TextureAtlas.class);
     }
 
-    public void LoadVariables() {
-		/*
-		//The loops bellow grab the tiles and add them to the variable
-		for(int i=0; i < Tiles.length; ++i){
-			if (i >= 10) {
-				try {
-					//Common.print("Loaded images /Sprites/"+ Integer.toString(i) +".png");
-					Tiles[i] = manager.get("Sprites/oldTiles/megaminer_"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			} else {
-				try {
-					//Common.print("Loaded images /Sprites/0"+ Integer.toString(i) +".png");
-					Tiles[i] = manager.get("Sprites/oldTiles/megaminer_0"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			}
-		}
-		for(int i=0; i < Images.length; ++i){
-			if (i >= 10) {
-				try {
-					//Common.print("Loaded images /Images/"+ Integer.toString(i) +".png");
-					Images[i] = manager.get("Images/image_"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			} else {
-				try {
-					//Common.print("Loaded images /Images/0"+ Integer.toString(i) +".png");
-					Images[i] = manager.get("Images/image_0"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			}
-		}
-		for(int i=0; i < GUI.length; ++i){
-			if (i >= 10) {
-				try {
-					//Common.print("Loaded GUI images Sprites/GUI/GUI_"+ Integer.toString(i) +".png");
-					GUI[i] = manager.get("Sprites/GUI/GUI_"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			} else {
-				try {
-					//Common.print("Loaded GUI images Sprites/GUI/GUI_0"+ Integer.toString(i) +".png");
-					GUI[i] = manager.get("Sprites/GUI/GUI_0"+ Integer.toString(i) +".png", Texture.class);
-				}
-				catch(Exception e) {
-					//e.printStackTrace();
-				}
-			}
-		}*/
-    }
 
     public static TextureRegion[] loadAnim(Texture TexSheet, String FileLocation, int Cols, int Rows) {
         // Load the sprite sheet as a Texture
@@ -143,33 +89,6 @@ public class Draw {
         buffer.draw(currentFrame, x, y);
     }
 
-    public void DrawSplash(SpriteBatch buffer, int ID, int x, int y, float x2, float y2, boolean centered) { // The x2 and y2 is Percentage of 100
-		/*
-			int SizeX = Images[ID].getDiffuse().getWidth();
-			int SizeY = Images[ID].getDiffuse().getHeight();
-
-			if (centered) {
-				buffer.draw(Images[ID].getDiffuse(), x-((SizeX * x2)/2), y-((SizeY * y2)/2), SizeX * x2, SizeY * y2);
-			}
-			else {
-				buffer.draw(Images[ID].getDiffuse(), x, y, SizeX * x2, SizeY * y2);
-			}*/
-    }
-
-    public void DrawAny(SpriteBatch buffer, int ID, String Type, int x, int y) {
-		/*
-		if(Type.equals("Tiles")) {
-			buffer.draw(Tiles[ID], x, y);
-		}
-		if(Type.equals("Images")) {
-			buffer.draw(Images[ID], x, y);	
-		}
-		if(Type.equals("Gui")) {
-			buffer.draw(GUI[ID], x, y);	
-		}
-		*/
-    }
-
     public void GUIDrawText(SpriteBatch buffer, int PosX, int PosY, String Text) {
         font.draw(buffer, Text, PosX, PosY);
     }
@@ -178,39 +97,6 @@ public class Draw {
         font.setColor(color);
         font.draw(buffer, Text, PosX, PosY);
         font.setColor(Color.WHITE);
-    }
-
-
-    //The GUI or Menu would go here.
-    public void GUIDeco(SpriteBatch buffer, int PosX, int PosY, String Text) {
-		/*
-		buffer.draw(GUI[00], PosX, PosY);
-		buffer.draw(GUI[01], PosX + GUI[00].getWidth(), PosY);
-		buffer.draw(GUI[01], PosX + (GUI[00].getWidth()*2), PosY);
-		buffer.draw(GUI[01], PosX + (GUI[00].getWidth()*3), PosY);
-		buffer.draw(GUI[01], PosX + (GUI[00].getWidth()*4), PosY);
-		buffer.draw(GUI[02], PosX + (GUI[00].getWidth()*5), PosY);
-		font.draw(buffer, "testing GUI - " + Text, PosX + GUI[00].getWidth(), PosY + (GUI[00].getHeight()/2));
-		*/
-    }
-
-    public void HUDAchievement(SpriteBatch buffer, int PosX, int PosY, String text, int iconID, float Opacity, boolean Anim, float Time) {
-		/*
-		buffer.draw(GUI[00], PosX, PosY);
-		buffer.draw(GUI[01], PosX + Tiles[59].getWidth(), PosY);
-		buffer.draw(GUI[02], PosX + (Tiles[59].getWidth()*2), PosY);
-		if (Anim) {
-			if (iconID == 4 || iconID == 5 || iconID == 6) {
-				//DrawAnimatedTile(buffer, StarsAnimation, PosX + (Tiles[59].getWidth()*2) + (Tiles[59].getWidth()/2), PosY + (Tiles[59].getWidth()/2)-(Tiles[59].getWidth()/8), Time);
-			} else {
-				Common.print("Not Configured To Animate");
-			}
-		} else {
-			buffer.draw(Tiles[iconID], PosX + (Tiles[59].getWidth()*2) + (Tiles[59].getWidth()/2), PosY + (Tiles[59].getWidth()/2)-(Tiles[59].getWidth()/8), Tiles[iconID].getWidth()/4, Tiles[iconID].getHeight()/4);
-		}
-		//buffer.draw(Tiles[iconID], PosX, PosY);
-		font.draw(buffer, text, PosX + 20, PosY + (Tiles[59].getHeight()/2)+5);
-		*/
     }
 
     public static void setOutlineShaderColor(Color outlineColor) {
@@ -252,6 +138,51 @@ public class Draw {
         debugRenderer.setColor(color);
         debugRenderer.end();
         Gdx.gl.glLineWidth(1);
+    }
+
+    private HashMap<String, TextureAtlas.AtlasRegion> cachedTextures = new HashMap<>();
+    private HashMap<String, Array<TextureAtlas.AtlasRegion>> cachedTextureGroups = new HashMap<>();
+
+    public TextureAtlas.AtlasRegion getTextureRegion(String name) {
+        TextureAtlas.AtlasRegion texture = cachedTextures.get(name);
+
+        if (texture != null)
+            return texture;
+        else {
+            texture = textureAtlas.findRegion(name);
+            if (texture == null)
+                throw new RuntimeException("Region not found on atlas, name: "+ name + "\nAll regions: " + getRegionsNames());
+
+            cachedTextures.put(name, texture);
+            return texture;
+        }
+    }
+
+    public Texture getTexture(String name) {
+        return getTextureRegion(name).getTexture();
+    }
+
+    public Array<TextureAtlas.AtlasRegion> getTextures(String name) {
+        Array<TextureAtlas.AtlasRegion> textures = cachedTextureGroups.get(name);
+        if (textures != null)
+            return textures;
+        else {
+            textures = textureAtlas.findRegions(name);
+            if (textures.size == 0)
+                throw new RuntimeException("Group of regions ( .findRegions() ) not found on atlas, name: " + name);
+
+            cachedTextureGroups.put(name, textures);
+            return textures;
+        }
+    }
+
+    private String getRegionsNames() {
+        ObjectSet<String> names = new ObjectSet<>();
+        for (TextureAtlas.AtlasRegion region : textureAtlas.getRegions()) {
+            names.add(region.name);
+        }
+
+        return names.toString("; ");
     }
 
 }
